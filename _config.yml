@@ -3,17 +3,17 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
+title: Ryo的小站
 subtitle: ''
-description: ''
+description: 'Ryo的全栈路的学习和生活记录'
 keywords:
-author: John Doe
-language: en
+author: Ryo
+language: zh-CN
 timezone: ''
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: http://example.com
+url: https://saebaryoo.github.io/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -50,6 +50,18 @@ highlight:
   tab_replace: ''
   wrap: true
   hljs: false
+  background: '#2d2d2d'
+  currentLine: '#393939'
+  selection: '#515151'
+  foreground: '#cccccc'
+  comment: '#999999'
+  red: '#f2777a'
+  orange: '#f99157'
+  yellow: '#ffcc66'
+  green: '#99cc99'
+  aqua: '#66cccc'
+  blue: '#6699cc'
+  purple: '#cc99cc'
 prismjs:
   enable: false
   preprocess: true
@@ -97,8 +109,12 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: hexo-theme-bamboo
 
+# 站内搜索  hexo-generator-search
+search:
+  path: search.xml
+  field: post
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
