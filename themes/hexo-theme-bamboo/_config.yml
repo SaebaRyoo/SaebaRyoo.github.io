@@ -165,7 +165,7 @@ preloader:
 
 # 首页轮播图设置
 swiper:
-  on: true # 设置为false, 则首页不显示轮播图
+  on: false # 设置为false, 则首页不显示轮播图
   # 当在.md文件中，设置swiper:true，会将该文章放到轮播中，
   showPrevNext: true # 是否显示左右切换按钮
   showIndicators: false  # 是否显示指示器
@@ -184,12 +184,12 @@ swiper:
   defaultImg: 'https://pic4.zhimg.com/80/v2-5317ee3782ed2cdc733a907b0065f895_1440w.jpg' # 图片，没有则随机选取
   defaultVideo: '' # video，min-width:992px show
   defaultVideoLoadingImg: 'https://img14.360buyimg.com/ddimg/jfs/t1/175057/18/19582/882056/60ee7ac8Ef0045710/202d2ad878684a3b.gif' # video loading img -- use .gif img, 视频预加载动画，使用gif图片作为loading，为空则视频没有预加载动画
-  defaultTile: '青墨书晚风' # 标题
+  defaultTile: '春有百花秋有月，夏有凉风冬有雪' # 标题
   defaultDesc: [] #描 述，例如 ['煮酒洗净尘嚣，论知交', '万般付之一笑，共偕老']
-  defaultLeftBtnText: '阅读文档' # 左边按钮文字, 空字符串则不显示
-  defaultLeftBtnLink: 'https://yuang01.gitee.io/2021/02/08/hexo-theme-bamboo-new/' # 左边按钮链接 
-  defaultRightBtnText: '下载主题' # 右边按钮的文字，空字符串则不显示
-  defaultRightBtnLink: 'https://gitee.com/yuang01/hexo-theme-bamboo/repository/archive/dev.zip' # 右边的按钮的链接
+  defaultLeftBtnText: '' # 左边按钮文字, 空字符串则不显示
+  defaultLeftBtnLink: '' # 左边按钮链接 
+  defaultRightBtnText: '' # 右边按钮的文字，空字符串则不显示
+  defaultRightBtnLink: '' # 右边的按钮的链接
   defaultDescTyped: true # defaultDesc文字是否开启打字特效  is typed
   defaultDescTypedSpeed: 100 # defaultDesc 打字速度, typed typeSpeed
   defaultDescTypedBackSpeed: 50 # defaultDesc 打字返回速度 typed backSpeed
@@ -415,8 +415,8 @@ copyright:
 # 首页座右铭
 motto:
   on: true
-  title: '座右铭'
-  content: '沉淀后我愿意做个温暖的人，有自己的喜好，有自己的原则，有自己的信仰，不急功近利，不浮夸轻薄。宠辱不惊，淡定安逸，心静如水，不忘初心，方得始终。——凌茜'
+  title: '做好自己'
+  content: '春有百花秋有月，夏有凉风冬有雪'
   background: 'url("https://img10.360buyimg.com/ddimg/jfs/t1/166587/8/21344/72069/6088c24fEda5fdeb6/f9730ab637b7ca47.png")' # url("xxx") or red or #000 or rgba() ..
 
 # 首页公告
