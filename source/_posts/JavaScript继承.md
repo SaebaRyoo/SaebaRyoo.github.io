@@ -3,7 +3,7 @@ title: JavaScript常用的集中继承
 categories:
 - 前端
 tags: 
-- js
+- JavaScript
 - 原型链
 ---
 ## 原型链继承
