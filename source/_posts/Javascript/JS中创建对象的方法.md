@@ -4,7 +4,6 @@ categories:
 - 前端
 tags: 
 - JavaScript
-- 构造函数
 ---
 
 ### 工厂模式
@@ -13,7 +12,7 @@ tags:
 1. 无法通过constructor识别对象，创建的对象的constructor都是Object，而不是createPerson
 2. 通用的方法会创建多次，占用内存
 
-```
+```js
 function createPerson(name, age) {
    var o = {};
    o.name = name;
@@ -47,7 +46,7 @@ console.log(person1.constructor) // Object
 3. 执行构造函数中的代码 （向对象中增加属性）
 4. 返回新对象
 
-```
+```js
 function Person(name, age) {
    this.name = name;
    this.age = age;
@@ -70,7 +69,7 @@ console.log(person1 instanceof Object) // true
 2. 无法通过向构造函数传参去初始化参数。所有的方法都是共有的，无法创建实例自己的属性和方法。
 3. 在调用方法或者获取属性时，会搜索两次，第一次是在实例中查找，如果在实例中没有查询到则进入原型链查找。
 
-```
+```js
 function Person() {}
 
 Person.prototype.name = 'william';
@@ -91,8 +90,8 @@ console.log(person2.colors) //  ['green', 'yellow', 'blue', 'red']
 **优点：**
 1. 解决工厂、构造函数中通用方法占用内存
 2. 解决原型中引用类型共享内存的，没有实例自己的属性和方法
-```
 
+```js
 function Person(name, age, colors) {
    this.name = name;
    this.age = age;
@@ -112,7 +111,8 @@ console.log(person2)  //  ['green', 'yellow', 'blue']
 
 ### 动态原型模式
 **优点：** 只有当实例上不存在getInfo方法时才在原型上创建
-```
+
+```js
 function Person(name, age, colors) {
    this.name = name;
    this.age = age;
@@ -129,7 +129,8 @@ var person1 = new Person('william', 23,  ['green', 'yellow', 'blue'])
 
 ### 寄生构造函数
 该模式和工厂模式一样，除了使用了new
-```
+
+```js
 function Person(name, age) {
    var o = {};
    o.name = name;
@@ -142,7 +143,7 @@ function Person(name, age) {
 var person1 = new Person('william', 23)
 ```
 当想要创建一个具有额外方法的数组，但是有不能直接修改Array构造函数时，可以使用这个模式
-```
+```js
 function SpecialArray() {
    var values = new Array;
    values.push.apply(values, argumenst);
@@ -160,7 +161,7 @@ colors.toPipedString() // "red|bule|green"
 ### 稳妥构造函数
 **优点：** 定义私有变量，只能通过指定方法获取属性
 **缺点：** 无法区分实例类别
-```
+```js
 function Person(name) {
   var o = new Object()
   o.getName= function() {

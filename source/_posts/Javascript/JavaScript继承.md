@@ -4,11 +4,10 @@ categories:
 - 前端
 tags: 
 - JavaScript
-- 原型链
 ---
 ## 原型链继承
 
-```
+```js
 function SuperType() {
     this.property = true
 }
@@ -42,7 +41,7 @@ instance.constructor // SuperType
 1. 当父类中包含引用类型时，且子类继承父类，并创建实例，那么所有的实例将会共享该属性
 2. 在子类创建类型的实例时，无法向父类型传递参数（无法在不影响所有对象实例的情况下给父类构造函数传递参数）
 3. 因为重写原型丢失了默认的constructor
-```
+```js
 function SuperType() {
     this.colors = ['red', 'green', 'blue']
 }
@@ -61,7 +60,7 @@ instance2.colors // ['red', 'green', 'blue', 'yellow']
 ## 借用构造函数/伪造对象/经典继承
 
 通过在子类构造函数中调用父类构造函数,该方法虽然解决了实例共享引用属性，但是所有的方法都在构造函数中定义，而且父类原型上定义的方法对子类都是不可见的，也就谈不上复用。
-```
+```js
 function SuperType(name) {
     this.colors = ['red', 'green', 'blue'];
     this.name = name;
@@ -89,7 +88,7 @@ instance2.name // petter
 `SubType.prototype.isPrototypeOf(instance1)`
 识别对象
 
-```
+```js
 function SuperType(name) {
     this.colors = ['red', 'green', 'blue'];
     this.name = name
@@ -130,7 +129,7 @@ console.log(instance2.colors)
 
 ### 原型式继承
 借助原型可以基于已有的对象创建新对象，同时还不必因此创建自定义类型。
-```
+```js
 function object(o) {
      function F(){}
      F.prototype = o;
@@ -140,7 +139,7 @@ function object(o) {
 ECMAScript 5新增了Object.create()方法规范了**原型式继承**, 该方法的第二个参数和Object.definedProperties方法的第二个参数相同,每个属性通过自己的描述符定义。
 
 当我们只是想一个对象与另一个对象保持类似，而不需要兴师动众的创建构造函数时，我们可以使用这个方法
-```
+```js
 var person = {
     name: 'William',
     job: 'front-end'
@@ -157,7 +156,7 @@ var another = Object.create(person, {
 寄生式继承是与原型式继承紧密相关的一种思路。思路类似于寄生构造函数和工厂模式，即创建一个 **仅用于封装继承过程的函数** ，改函数在内部以某种方式增强对象。然后再返回对象
 
 使用寄生式继承来为对象添加函数，会由于不能做到函数复用而降低效率。这和构造函数模式类似
-```
+```js
 function createAnother(original) {
     var clone = object(original) // 创建一个新对象
     clone.sayHi = function() { // 增强对象
@@ -168,7 +167,7 @@ function createAnother(original) {
 ```
 
 ## 寄生组合继承
-```
+```js
 function inheritPrototype(subType, superType) { 
     var prototype = object(superType.prototype); // 创建对象
     prototype.constructor = subType;  // 增强对象
@@ -179,8 +178,8 @@ function inheritPrototype(subType, superType) {
 然后我们在通过寄生组合继承实现继承
 1. 改善调用两次父类构造函数的情况
 2. 弥补之前因为重写原型而丢失默认的constructor属性
-```
 
+```js
 function SuperType(name) {
     this.colors = ['red', 'green', 'blue'];
     this.name = name

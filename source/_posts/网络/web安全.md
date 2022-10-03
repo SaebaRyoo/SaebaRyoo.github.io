@@ -1,9 +1,11 @@
 ---
 title: 常见web安全问题
+date: 2022-09-29 20:08
 categories:
+- 网络
+tags:
 - 安全
-tags: 
-- web安全
+- 网络
 ---
 
 ### 1. 攻击者如何发起一次csrf（Cross-site request forgery 跨站请求伪造）

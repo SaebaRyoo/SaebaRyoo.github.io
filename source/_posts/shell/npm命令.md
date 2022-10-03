@@ -3,9 +3,8 @@ title: npm 配置
 categories:
 - 前端
 tags: 
-- 工程化
-- node
-- npm
+- Node
+- Npm
 ---
 
 # [原文地址，本篇仅做记录学习](https://www.cnblogs.com/PeunZhang/p/5553574.html)

@@ -2,9 +2,8 @@
 title: setState是同步还是异步的
 categories:
 - 前端
-tags: 
+tags:
 - React
-- React源码学习
 ---
 
 1. setState 只在合成事件和钩子函数中是“异步”的，在原生事件和 setTimeout 中都是同步的。

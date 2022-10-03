@@ -2,9 +2,8 @@
 title: React Hook
 categories:
 - 前端
-tags: 
+tags:
 - React
-- React Hook
 ---
 
 ## useCallback
@@ -42,13 +41,73 @@ function updateCallback<T>(callback: T, deps: Array<mixed> | void | null): T {
 ```
 
 **那么它的作用是什么呢？**
+useCallback返回一个 memoized 回调函数。一般和`React.memo()`一起用于性能优化。
 
-返回一个 memoized 回调函数。且在callback中访问的state依赖于依赖项的更新，也就是如果想在callback中访问到新的state，则需要在依赖项中注明
-如果依赖项没变，则会返回之前的callback，那么这个时候，这个旧的callback中访问的就是旧的state。
-如果依赖项修改了，则会返回一个新的callback，并且访问已经更新后的state
+我们首先可以看下面这个没有使用`useCallback`的例子,即使使用了React.memo，且`DemoChildren`的依赖看上去并没有变化（每次都是传入getInfo方法）
+但是无论是`input`还是`number`产生变化都会触发`DemoChildren`更新。这是因为无论哪一个，只要触发了更新，`App`这个函数组件都会被重新渲染。
+然后`getInfo`这个函数的引用就会被重新分配，所以即使看上去`getInfo`没有变化，但是到了`React.memo`的默认`compair`中还是判断组件发生了变化，
+进而导致子组件`DemoChildren`重新渲染。
 
+```jsx
+const DemoChildren = React.memo((props)=>{
+    console.log('子组件更新')
+    useEffect(()=>{
+        props.getInfo('子组件')
+    },[])
+    return <div>子组件</div>
+})
 
-## useMemo 
+const App =()=>{
+    const [number, setNumber] = useState(1)
+    const [input, setInput] = useState('')
+    const getInfo  = (tmp)=>{
+        console.log(tmp)
+    }
+    return (
+        <div>
+            <input value={input} onChange={e => setInput(e.target.value)}/>
+            <br/>
+            <span>{number}</span><button onClick={ ()=>setNumber(number+1) } >增加</button>
+            <DemoChildren getInfo={getInfo} />
+        </div>
+    )
+}
+```
+
+然后我们在看这个例子，这个子组件`DemoChildren`只有两种情况下会产生更新
+- 初始化
+- 父组件的`number`state变化时
+
+因为在父组件中对`getInfo`函数使用了`useCallback`进行函数缓存。所以子组件使用了React.memo后发现props并没有更新
+
+```jsx
+const DemoChildren = React.memo((props)=>{
+    console.log('子组件更新')
+    useEffect(()=>{
+        props.getInfo('子组件')
+    },[])
+    return <div>子组件</div>
+})
+
+const App =()=>{
+    const [number, setNumber] = useState(1)
+    const [input, setInput] = useState('')
+    const getInfo  = useCallback((tmp)=>{
+        console.log(tmp)
+    },[number])
+    return (
+        <div>
+            <input value={input} onChange={e => setInput(e.target.value)}/>
+            <br/>
+            <span>{number}</span><button onClick={ ()=>setNumber(number+1) } >增加</button>
+            <DemoChildren getInfo={getInfo} />
+        </div>
+    )
+}
+
+```
+
+## useMemo
 
 
 **作用：** 它可以针对耗时计算来缓存值，并根据依赖项是否更新决定是否再一次进行耗时计算
@@ -94,7 +153,7 @@ const App = () => {
   setTimeout(() => {
       setData('test')
   }, 1000)
-  
+
   return <span>{test}</span>
 }
 
@@ -311,7 +370,7 @@ class MousePosition extends React.Component {
 const App = () => {
   return (
     <div>
-      <MousePosition 
+      <MousePosition
         render={ (data) => {
           return [
             <div>x: {data.x}</div>,
@@ -330,7 +389,7 @@ function withMousePosition(Component) {
   class Comp extends React.Component {
     render() {
       return (
-        <MousePosition 
+        <MousePosition
           render={ data => (<Component {...this.props} data={data} />)}
         />
       )

@@ -4,7 +4,6 @@ categories:
 - 前端
 tags: 
 - React
-- React源码学习
 ---
 
 > 首先，我们需要知道redux的相关概念
@@ -24,7 +23,7 @@ tags:
 
 下面是我画的一个流程图
 <div align="center">
-   <img src="http://rj2tm9fta.hn-bkt.clouddn.com/redux.png" width = "600" alt="" align=center />
+   <img src="https://i.postimg.cc/HnwQLjsd/redux.png" width = "600" alt="" align=center />
 </div>
 
 > 我使用的是`npm run build`后的代码讲解的

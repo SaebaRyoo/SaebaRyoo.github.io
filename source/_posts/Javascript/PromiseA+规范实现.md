@@ -4,10 +4,9 @@ categories:
 - 前端
 tags: 
 - JavaScript
-- Promise
 ---
 
-```
+```js
 var soon = (function() {
   var c = [];
   function b() {

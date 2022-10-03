@@ -3,7 +3,6 @@ title: git 命令大全
 categories:
 - 前端
 tags: 
-- 工程化
 - git
 ---
 

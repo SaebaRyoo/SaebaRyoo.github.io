@@ -2,9 +2,8 @@
 title: React 源码学习(二)
 categories:
 - 前端
-tags: 
+tags:
 - React
-- React源码学习
 ---
 
 # [文章出处](https://react.iamkasong.com/preparation/idea.html#%E7%90%86%E8%A7%A3-%E9%80%9F%E5%BA%A6%E5%BF%AB)
@@ -116,7 +115,7 @@ const App = () => {
 ```
 对应Fiber树
 <div align="center">
-   <img src="http://rj2tm9fta.hn-bkt.clouddn.com/fiber.png" width = "300" alt="" align=center />
+   <img src="https://i.postimg.cc/8PdHpXjM/fiber.png" width = "600" alt="" align=center />
 </div>
 
 2. 作为静态的数据结构

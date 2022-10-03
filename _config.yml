@@ -108,8 +108,8 @@ ignore:
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
-## Themes: https://hexo.io/themes/
 theme: hexo-theme-bamboo
+# theme: kaze
 
 # 站内搜索  hexo-generator-search
 search:
@@ -119,5 +119,9 @@ search:
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: https://github.com/SaebaRyoo/SaebaRyoo.github.io.git
+  repo: git@github.com:SaebaRyoo/SaebaRyoo.github.io.git
   branch: main
+
+permalink_pinyin:
+  enable: true
+  separator: '-' # default: '-'
