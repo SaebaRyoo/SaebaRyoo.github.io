@@ -8,7 +8,7 @@
     "deploy": "hexo deploy",
     "server": "hexo server",
     "local": "hexo c & hexo g & hexo s",
-    "gen": "hexo c & hexo g & hexo d"
+    "gen": "hexo clean & hexo generate & hexo deploy"
   },
   "hexo": {
     "version": "6.3.0"

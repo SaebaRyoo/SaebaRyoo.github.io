@@ -116,7 +116,7 @@ const App = () => {
 ```
 对应Fiber树
 <div align="center">
-   <img src="http://rj2tm9fta.hn-bkt.clouddn.com/fiber.png" width = "300" alt="" align=center />
+   <img src="https://i.postimg.cc/8PdHpXjM/fiber.png" width = "300" alt="" align=center />
 </div>
 
 2. 作为静态的数据结构
