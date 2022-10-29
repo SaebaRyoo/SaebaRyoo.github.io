@@ -4,7 +4,7 @@ categories:
 - 网络
 - 前端
 tags: 
-- Javascript
+- JavaScript
 ---
 
 # WebWorker介绍
