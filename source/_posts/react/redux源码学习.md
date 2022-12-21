@@ -4,7 +4,6 @@ categories:
 - 前端
 tags: 
 - React
-- React源码学习
 ---
 
 > 首先，我们需要知道redux的相关概念

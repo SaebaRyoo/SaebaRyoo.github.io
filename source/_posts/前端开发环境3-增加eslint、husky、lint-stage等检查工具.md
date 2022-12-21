@@ -1,9 +1,9 @@
 ---
 title: 如何搭建一个前端开发环境(三):添加eslint+husky+lint-stage等预检工具
 categories:
-- Webpack
+- 前端
+tags: 
 - 工程化
-- Git
 ---
 
 **前端开发配置系列文章的github仓库为： https://github.com/SaebaRyoo/webpack-config ,如果您在看的过程中发现了什么不足和错误，感谢您能指出！**

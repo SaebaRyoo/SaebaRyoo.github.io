@@ -4,7 +4,6 @@ categories:
 - 前端
 tags: 
 - JavaScript
-- 原型链
 ---
 ## 原型链继承
 

@@ -1,6 +1,8 @@
 ---
 title: 如何搭建一个前端开发环境(二):Webpack(二) - 添加React + TS
 categories:
+- 前端
+tags: 
 - Webpack
 - 工程化
 ---

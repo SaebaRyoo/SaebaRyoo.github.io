@@ -4,7 +4,6 @@ categories:
 - 前端
 tags: 
 - JavaScript
-- 构造函数
 ---
 
 ### 工厂模式

@@ -1,9 +1,10 @@
 ---
 title: 如何搭建一个前端开发环境(六):如何优化webpack?
 categories:
-- Webpack
-- 性能优化
+- 前端
+tags: 
 - 工程化
+- Webpack
 ---
 
 

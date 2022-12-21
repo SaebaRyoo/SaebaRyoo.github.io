@@ -1,7 +1,7 @@
 ---
 title: Axios源码学习
 categories:
-- Axios
+- 网络
 ---
 
 ### axios中统一的封装了如下的问题

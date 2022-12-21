@@ -1,7 +1,7 @@
 ---
 title: HTTP总结
 categories:
-- HTTP
+- 网络
 ---
 
 ### [HTTP method](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods)

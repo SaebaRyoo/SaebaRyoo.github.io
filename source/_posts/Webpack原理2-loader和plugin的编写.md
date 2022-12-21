@@ -1,6 +1,9 @@
 ---
 title: Webpack的的loader和plugin的编写
 categories:
+- 前端
+tags: 
+- 工程化
 - Webpack
 ---
 

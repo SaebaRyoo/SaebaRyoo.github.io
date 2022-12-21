@@ -11,9 +11,9 @@ menu:
   Categories:
     url: /categories
     icon: fas fa-bookmark
-  # Tags:
-  #   url: /tags
-  #   icon: fas fa-tags
+  Tags:
+    url: /tags
+    icon: fas fa-tags
   # About:
   #   url: /about
   #   icon: fas fa-user

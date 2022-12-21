@@ -4,7 +4,6 @@ categories:
 - 前端
 tags: 
 - JavaScript
-- Promise
 ---
 
 ```

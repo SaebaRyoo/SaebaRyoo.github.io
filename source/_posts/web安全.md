@@ -1,9 +1,9 @@
 ---
 title: 常见web安全问题
 categories:
-- 安全
+- 前端
 tags: 
-- web安全
+- 安全
 ---
 
 ### 1. 攻击者如何发起一次csrf（Cross-site request forgery 跨站请求伪造）

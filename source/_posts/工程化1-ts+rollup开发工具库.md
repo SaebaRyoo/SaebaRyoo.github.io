@@ -1,10 +1,9 @@
 ---
 title: 使用Typescript和rollup开发一个工具库,并使用github actions来自动发布npm包
 categories:
-- Typescript
-- 工程化
-- Git
+- 前端
 tags: 
+- 工程化
 ---
 
 

@@ -1,8 +1,7 @@
 ---
 title: TCP/IP总结
 categories:
-- HTTP
-- TCP/IP
+- 网络
 ---
 
 ### TCP/IP的三次握手四次挥手

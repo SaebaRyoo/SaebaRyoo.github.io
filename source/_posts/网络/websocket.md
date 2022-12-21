@@ -1,7 +1,7 @@
 ---
 title: WebSocket
 categories:
-- WebSocket
+- 网络
 ---
 
 ### 什么是websocket？

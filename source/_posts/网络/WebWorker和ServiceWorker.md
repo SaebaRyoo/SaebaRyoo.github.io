@@ -1,7 +1,7 @@
 ---
 title: Web Worker和Service Worker
 categories:
-- JavaScript
+- 网络
 ---
 
 # WebWorker介绍
