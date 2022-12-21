@@ -1,10 +1,9 @@
 ---
 title: 如何搭建一个前端开发环境(三):添加eslint+husky+lint-stage等预检工具
 categories:
-- 前端
+- Webpack
 - 工程化
-tags: 
-- git
+- Git
 ---
 
 **前端开发配置系列文章的github仓库为： https://github.com/SaebaRyoo/webpack-config ,如果您在看的过程中发现了什么不足和错误，感谢您能指出！**
@@ -186,7 +185,7 @@ max_line_length = 0
 2. 在package.json中添加一个script，并运行一次
 ```json
 {
-    "scripts": "husky install"
+    "prepare": "husky install"
 }
 ```
 `yarn run prepare`
@@ -200,9 +199,9 @@ git add .husky/pre-commit
 然后提交代码,他会在每次commit前运行npm run lint
 `git commit -m "Keep calm and commit"`
 
-但是在遗留代码库工作会遇到新的问题，开启Lint初期，你改动一个文件，可能其他文件中也有大量lint error需要修复。但是修改整个项目显然成本很高，且容易出错。所以为了稳定，肯东是最好能lint修改的部分。其他的部分渐进修改。
+但是在遗留代码库工作会遇到新的问题，开启Lint初期，你改动一个文件，可能其他文件中也有大量lint error需要修复。但是修改整个项目显然成本很高，且容易出错。所以为了稳定，肯定是最好能lint修改的部分。其他的部分渐进修改。
 
-基于这个想吗lint-staged出现了，stage就是git中的概念，指待提交区，在配合lint-stage后。你的每次commit都只会lint你的待提交区的修改过的代码。
+基于这个想法lint-staged出现了，stage就是git中的概念，指待提交区，在配合lint-stage后。你的每次commit都只会lint你的待提交区的修改过的代码。
 
 用法如下：
 

@@ -1,8 +1,6 @@
 ---
 title: 面试总结-react篇
 categories:
-- 前端
-tags: 
 - 面试总结
 ---
 
@@ -187,6 +185,19 @@ function areEqual(prevProps, nextProps) {
 }
 export default React.memo(MyComponent, areEqual);
 ```
+
+memo通常和useMemo和useCallback同时使用，
+因为当优化一个组件的时候，这个组件不可能总是传入基本数据类型的props，会有数组，对象，函数等。
+这个时候，对象这个引用数据类型的可以通过在parent组件中通过useMemo将依赖的一些基本数据类型组装成memoized对象，
+然后传给使用过memo方法包裹的wrap组件。或者是传入memo的第二个方法，来进行deep equaity对比。
+不然，引用类型在每次re-rendering时都是不同的，这就没有办法对组件进行性能优化。
+
+还有就是当组件中需要传入方法的时候， a `function () {}` 或者 `() => {}` 总是创建一个不同的function,那么child组件就总是会receive到不同的props，
+这和传入引用类型的值相似，也会导致child组件每次都会进行re-rendering。而useCallback的作用就是可以缓存一个函数的 **definition** ，
+这样，child组件将会接受到相同的props，并且可以跳过re-rendering。
+
+上面是一种使用的情况
+
 
 ### 在哪里进行网络请求？为什么？
 可以在constructor、componentDidMount、componentDidUpdate中发起网络请求。
@@ -400,7 +411,7 @@ class TestComp extends React.Component {
 
 具体而言，高阶组件是参数为组件，返回值为新组件的函数。
 
-```
+```jsx
 const EnhancedComponent = higherOrderComponent(WrappedComponent);
 
 ```

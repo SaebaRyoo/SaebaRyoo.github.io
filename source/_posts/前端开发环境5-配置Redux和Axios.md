@@ -1,9 +1,6 @@
 ---
 title: 如何搭建一个前端开发环境(五):状态管理库Redux和Axios请求配置
 categories:
-- 前端
-- 工程化
-tags: 
 - React
 - Redux
 - Axios

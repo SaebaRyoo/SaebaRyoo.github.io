@@ -8,29 +8,29 @@ menu:
   Archives:
     url: /archives
     icon: fas fa-archive
-  Tags:
-    url: /tags
-    icon: fas fa-tags
   Categories:
     url: /categories
     icon: fas fa-bookmark
-  About:
-    url: /about
-    icon: fas fa-user
+  # Tags:
+  #   url: /tags
+  #   icon: fas fa-tags
+  # About:
+  #   url: /about
+  #   icon: fas fa-user
   # Friends:
   #   url: /friends
-  更多: # 这是二级菜单的写法
-   icon: fas fa-link
-   children:
-    # - name: 图库
-    #   url: /gallery
-    #   icon: fas fa-music
-    # - name: 友情连接
-    #   url: /huoban
-    #   icon: fas fa-film
-    - name: 简历
-      url: /about/resume
-      icon: fas fa-film
+  # 更多: # 这是二级菜单的写法
+  #  icon: fas fa-link
+  #  children:
+  #   - name: 图库
+  #     url: /gallery
+  #     icon: fas fa-music
+  #   - name: 友情连接
+  #     url: /huoban
+  #     icon: fas fa-film
+  #   - name: 简历
+  #     url: /about/resume
+  #     icon: fas fa-film
 # github地址, 头部导航右上角的github链接
 Github: 
   on: true

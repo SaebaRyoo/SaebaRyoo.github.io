@@ -1,9 +1,6 @@
 ---
 title: Web Worker和Service Worker
 categories:
-- 网络
-- 前端
-tags: 
 - JavaScript
 ---
 

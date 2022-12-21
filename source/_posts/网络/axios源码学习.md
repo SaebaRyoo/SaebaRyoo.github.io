@@ -1,10 +1,7 @@
 ---
 title: Axios源码学习
 categories:
-- 前端
-- 网络
-tags: 
-- JavaScript
+- Axios
 ---
 
 ### axios中统一的封装了如下的问题

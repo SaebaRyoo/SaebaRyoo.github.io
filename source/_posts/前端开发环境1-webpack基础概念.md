@@ -1,10 +1,8 @@
 ---
 title: 如何搭建一个前端开发环境(一):Webpack(一) - 基础概念
 categories:
-- 前端
-- 工程化
-tags: 
 - Webpack
+- 工程化
 ---
 
 **前端开发配置系列文章的github仓库为： https://github.com/SaebaRyoo/webpack-config ,如果您在看的过程中发现了什么不足和错误，感谢您能指出！**

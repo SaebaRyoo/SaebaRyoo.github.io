@@ -1,8 +1,6 @@
 ---
 title: TCP/IP总结
 categories:
-- 网络
-tags: 
 - HTTP
 - TCP/IP
 ---

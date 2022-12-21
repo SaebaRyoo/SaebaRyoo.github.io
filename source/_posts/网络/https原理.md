@@ -1,8 +1,6 @@
 ---
 title: HTTPS总结
 categories:
-- 网络
-tags: 
 - HTTP
 - HTTPS
 ---

@@ -1,8 +1,6 @@
 ---
 title: HTTP总结
 categories:
-- 网络
-tags: 
 - HTTP
 ---
 

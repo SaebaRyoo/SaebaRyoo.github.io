@@ -1,8 +1,6 @@
 ---
 title: 面试总结-js篇
 categories:
-- 前端
-tags: 
 - 面试总结
 ---
 
