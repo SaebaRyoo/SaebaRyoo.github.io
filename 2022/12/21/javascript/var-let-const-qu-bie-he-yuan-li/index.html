@@ -532,27 +532,24 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="var、let、const的作用和区别"><a href="#var、let、const的作用和区别" class="headerlink" title="var、let、const的作用和区别"></a>var、let、const的作用和区别</h2><p>var</p>
-<ul>
+        <h2 id="var、let、const的作用和区别"><a href="#var、let、const的作用和区别" class="headerlink" title="var、let、const的作用和区别"></a>var、let、const的作用和区别</h2><h3 id="var"><a href="#var" class="headerlink" title="var"></a>var</h3><ul>
 <li>会在当前执行环境中进行变量提升</li>
 <li>可重复声明，可以修改</li>
-<li>如果未使用var关键字声明，则会提升为全局  &#x2F;&#x2F; 严格模式下回报错</li>
+<li>如果未使用var关键字声明，则会提升为全局  &#x2F;&#x2F; 严格模式下会报错</li>
 </ul>
-<p>let </p>
-<ul>
+<h3 id="let"><a href="#let" class="headerlink" title="let"></a>let</h3><ul>
 <li>let无法重复声明</li>
 <li>let有暂存死区，无法进行变量提升</li>
 <li>let声明的变量的作用域是块级的</li>
 </ul>
-<p>const</p>
-<ul>
+<h3 id="const"><a href="#const" class="headerlink" title="const"></a>const</h3><ul>
 <li>const声明一个常量，无法修改。但是在声明引用类型时，可以修改值。</li>
 <li>其他同let</li>
 </ul>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
 <li>为什么var会有变量提升呢?</li>
-<li>为什么let和const有暂存死区？</li>
 <li>let、const是否有变量提升？</li>
+<li>为什么let和const有暂存死区？</li>
 <li>为什么var可以重复声明、修改，let不能重复声明，却可以修改，const可以修改引用类型的值？</li>
 </ol>
 <p>接下来我们按照问题去解答</p>
@@ -563,11 +560,6 @@
 <li>解析和预编译过程中的声明提升可以提高性能，让函数可以在执行时预先为变量分配栈空间</li>
 <li>声明提升还可以提高JS代码的容错性，使一些不规范的代码也可以正常执行</li>
 </ol>
-<h3 id="为什么let和const有暂存死区"><a href="#为什么let和const有暂存死区" class="headerlink" title="为什么let和const有暂存死区"></a>为什么let和const有暂存死区</h3><p>首先可以看一段es6的标准</p>
-<blockquote>
-<p>let and const declarations define variables that are scoped to the running execution context’s LexicalEnvironment. The variables are created when their containing Lexical Environment is instantiated but may not be accessed in any way until the variable’s LexicalBinding is evaluated. A variable defined by a LexicalBinding with an Initializer is assigned the value of its Initializer’s AssignmentExpression when the LexicalBinding is evaluated, not when the variable is created. If a LexicalBinding in a let declaration does not have an Initializer the variable is assigned the value undefined when the LexicalBinding is evaluated.</p>
-</blockquote>
-<p><em>它的大概意思就是let和const会将当前执行的上下文栈形成一个封闭的作用域。在语法上，<strong>从块顶部到该变量的初始化语句,称为 “暂时性死区”</strong>（ temporal dead zone，简称 TDZ）。</em></p>
 <h3 id="let、const是否有变量提升？"><a href="#let、const是否有变量提升？" class="headerlink" title="let、const是否有变量提升？"></a>let、const是否有变量提升？</h3><blockquote>
 <p>出处<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/27558914">let和const有提升吗(hoist)</a></p>
 </blockquote>
@@ -576,6 +568,11 @@
 <li>从块顶部到该变量的初始化语句，这块区域叫做 TDZ（临时死区）</li>
 <li>如果你在 TDZ 内使用该变量，JS 就会报错（var 没有TDZ）</li>
 </ul>
+<h3 id="为什么let和const有暂存死区"><a href="#为什么let和const有暂存死区" class="headerlink" title="为什么let和const有暂存死区"></a>为什么let和const有暂存死区</h3><p>首先可以看一段es6的标准</p>
+<blockquote>
+<p>let and const declarations define variables that are scoped to the running execution context’s LexicalEnvironment. The variables are created when their containing Lexical Environment is instantiated but may not be accessed in any way until the variable’s LexicalBinding is evaluated. A variable defined by a LexicalBinding with an Initializer is assigned the value of its Initializer’s AssignmentExpression when the LexicalBinding is evaluated, not when the variable is created. If a LexicalBinding in a let declaration does not have an Initializer the variable is assigned the value undefined when the LexicalBinding is evaluated.</p>
+</blockquote>
+<p><em>它的大概意思就是let和const会将当前执行的上下文栈形成一个封闭的作用域。在语法上，<strong>从块顶部到该变量的初始化语句,称为 “暂时性死区”</strong>（ temporal dead zone，简称 TDZ）。</em></p>
 <h3 id="为什么var可以重复声明、修改，let不能重复声明，却可以修改，const可以修改引用类型的值"><a href="#为什么var可以重复声明、修改，let不能重复声明，却可以修改，const可以修改引用类型的值" class="headerlink" title="为什么var可以重复声明、修改，let不能重复声明，却可以修改，const可以修改引用类型的值"></a>为什么var可以重复声明、修改，let不能重复声明，却可以修改，const可以修改引用类型的值</h3><ul>
 <li><p>var的话会直接在栈内存里预分配内存空间，然后等到实际语句执行的时候，再存储对应的变量，如果传的是引用类型，那么会在堆内存里开辟一个内存空间存储实际内容，栈内存会存储一个指向堆内存的指针</p>
 </li>
@@ -584,7 +581,12 @@
 <li><p>const也不会预分配内存空间，在栈内存分配变量时也会做同样的检查。不过const存储的变量是不可修改的，对于基本类型来说你无法修改定义的值，对于引用类型来说你无法修改栈内存里分配的指针，但是你可以修改指针指向的对象里面的属性</p>
 </li>
 </ul>
-<h3 id="参考文档以及博客如下"><a href="#参考文档以及博客如下" class="headerlink" title="参考文档以及博客如下"></a>参考文档以及博客如下</h3><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/var">MDN var</a><br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/let">MDN let</a><br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/const">MDN const</a><br><a target="_blank" rel="noopener" href="http://www.ecma-international.org/ecma-262/6.0/#sec-let-and-const-declarations">ECMA262 6.0</a></p>
+<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/var">MDN var</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/let">MDN let</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/const">MDN const</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.ecma-international.org/ecma-262/6.0/#sec-let-and-const-declarations">ECMA262 6.0</a></li>
+</ul>
 
       </div>
       <div class="post-tags-categories">
@@ -628,16 +630,27 @@
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/7.jpg" class="lazyload placeholder" data-srcset="/medias/7.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/6.jpg" class="lazyload placeholder" data-srcset="/medias/6.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2022/12/21/react/react-hook/" class="post-nav-link">
+    <a href="/2022/12/21/react/8.reactssr/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">React Hook</div>
+        <div class="title-text">React SSR（Server Side Render）</div>
       </div>
       
       <!-- <div class="content">
-        useCallback我们可以看一下useCallback的源码，下面有两个函数。mountCallback是在初始化时
+        客户端渲染vs服务端渲染
+
+
+
+客户端渲染
+服务端渲染
+
+
+
+请求
+多个请求(HTML, 数据等)
+1个请求(HTML)
       </div> -->
     </a>
   </div>
