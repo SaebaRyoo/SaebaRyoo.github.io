@@ -6,6 +6,7 @@ tags:
 - 网络
 ---
 
+> [我的掘金](https://juejin.cn/user/588993961408685/posts)
 
 ## 域名
 拿我们常用的 `www.baidu.com`举例，它并不是完整的域名，完整的域名还需要加上一个`www.baidu.com.`(注意最后有一个`.`)。

@@ -710,9 +710,10 @@ site_footer:
     #   url: https://github.com/yuang01/hexo-theme-bamboo
     # - icon: fas fa-qq
     #   url: tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1730241541
-  copyright: 'Copyright © 2019 - 2020 <a href="https://github.com/yuang01">yuang01</a> | Powered by <a href="https://hexo.io/zh-cn/docs/">Hexo</a> | Theme <a href="https://github.com/yuang01/theme">Bamboo</a> '
+  copyright: 'Copyright © 2019 - 2023'
   custom: # 根据需要自行取消注释，label: 'markdown格式'，会在下面继续增加内容
     # - label: '<br>'
+
     # - label: '[Hello World](http://baidu.com)'
 
 # tag标签 按钮，文本高亮等等..

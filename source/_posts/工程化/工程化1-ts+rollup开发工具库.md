@@ -2,14 +2,14 @@
 title: 使用Typescript和rollup开发一个工具库,并使用github actions来自动发布npm包
 categories:
 - 前端
-tags: 
+tags:
 - 工程化
 ---
 
 
 
 在日常开发中，经常会遇到一些通用的逻辑，导致每次都需要复制粘贴。而我们作为coder，可以将一些常用业务逻辑封装成通用的函数库，并发布到npm中。
-这样，每次遇到新的项目时，只需要 install一下即可 
+这样，每次遇到新的项目时，只需要 install一下即可
 
 **这里我们已经有了一个[fe-utils](https://github.com/SaebaRyoo/fe-utils) 前端日常开发工具库，也是本文最后的产物，并且后续也会持续更新。如果你有一个开源的心，但是没信心去为大的项目提pr，不妨从这个封装日常通用逻辑的项目做起，我们一起进步！！！**
 
@@ -180,7 +180,7 @@ ts类型文件
 - "types": "lib/index.d.ts",
 
 
-使用`yarn run build`打包项目 
+使用`yarn run build`打包项目
 - "scripts": {
     "build": "rollup -c",
   },
@@ -443,7 +443,7 @@ jobs:
 
 ## 为readme添加badge(徽章)
 
-我们会发现在一个开源项目中，readme通常都会写的很好，而且还有很多的badge,如ant-design的readme 
+我们会发现在一个开源项目中，readme通常都会写的很好，而且还有很多的badge,如ant-design的readme
 
 ![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/89d6d77ff1cb47549efff3c34806ad3c~tplv-k3u1fbpfcp-zoom-1.image)
 
@@ -451,9 +451,9 @@ jobs:
 
 比如：
 
-workflow工作流状态： ![GitHub Workflow Status](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1b685d42f946452d9f203c47fa332849~tplv-k3u1fbpfcp-zoom-1.image) 
+workflow工作流状态： ![GitHub Workflow Status](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1b685d42f946452d9f203c47fa332849~tplv-k3u1fbpfcp-zoom-1.image)
 
-npm包版本： ![npm](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/672520d5f7e24fd5a4cd385fc88424a5~tplv-k3u1fbpfcp-zoom-1.image) 
+npm包版本： ![npm](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/672520d5f7e24fd5a4cd385fc88424a5~tplv-k3u1fbpfcp-zoom-1.image)
 
 license: ![GitHub](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d888e9488a5e4fe7a1a2f12cc422959b~tplv-k3u1fbpfcp-zoom-1.image)
 
