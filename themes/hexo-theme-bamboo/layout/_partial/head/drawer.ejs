@@ -2,7 +2,7 @@
   <div class="drawer-box-icon">
     <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
   </div>
-  
+
   <transition name="fade">
     <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
     </div>
@@ -17,6 +17,7 @@
       var menuMap = new Map();
       menuMap.set("Home", "首页");
       menuMap.set("Tags", "标签");
+      menuMap.set("Visual", "可视化搭建")
       menuMap.set("Categories", "分类");
       menuMap.set("Archives", "归档");
       menuMap.set("About", "关于");

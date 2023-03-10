@@ -2,6 +2,7 @@
     var menuMap = new Map();
     menuMap.set("Home", "首页");
     menuMap.set("Tags", "标签");
+    menuMap.set("Visual", "可视化搭建")
     menuMap.set("Categories", "分类");
     menuMap.set("Archives", "归档");
     menuMap.set("About", "关于");
@@ -12,7 +13,7 @@
     var topImg = page.imgTop === false ? 'no-img-top' : '';
     var defaultBg = !theme.color_scheme.common.headerMenuTransparent ? 'header-bg-color' : '';
 %>
-<header class="header <%- noSwiper %> <%- topImg %> <%- defaultBg %>" 
+<header class="header <%- noSwiper %> <%- topImg %> <%- defaultBg %>"
   id="navHeader"
   style="position: fixed;
   left: 0; top: 0; z-index: 10;width: 100%;"
@@ -66,7 +67,7 @@
           <% }); %>
         <% }%>
       </ul>
-      
+
       <% if(theme.search.on === true) { %>
         <%- partial('_partial/head/search') %>
       <% } %>
@@ -101,6 +102,6 @@
         }
       }
     </script>
-    <script src="<%- url_for(theme.CDN.weather) %>"></script> 
+    <script src="<%- url_for(theme.CDN.weather) %>"></script>
     <% } %>
 </header>

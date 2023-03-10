@@ -14,6 +14,8 @@ menu:
   Tags:
     url: /tags
     icon: fas fa-tags
+  Visual:
+    url: /visualization-layout
   # About:
   #   url: /about
   #   icon: fas fa-user
