@@ -1,5 +1,6 @@
 ---
 title: 前端需要了解的Nginx知识
+date: 2022-09-10 20:18
 categories:
 - 前端
 tags:
