@@ -1,7 +1,9 @@
 ---
-title: 面试总结-js篇
+title: JavaScript常见问题
 categories:
-- 面试总结
+- 前端
+tags:
+- JavaScript
 ---
 
 ## 闭包 和 作用域
@@ -61,7 +63,7 @@ var jspy = (function() {
     getCount: getCount
   };
 
-})();  
+})();
 ```
 
 
@@ -75,7 +77,7 @@ var jspy = (function() {
 
 !function (){}()
 
-void function () {}() 
+void function () {}()
 
 function foo() {
     return function() {}
@@ -100,7 +102,7 @@ function foo() {
 Function.prototype.call = function(context) {
     // this传参为null则指向window
     var context = context || window;
-    
+
     context.fn = this;
 
     var args = [];
@@ -108,7 +110,7 @@ Function.prototype.call = function(context) {
     for (var i = 1, len = arguments.length; i < len ; i++) {
         args.push('arguments[' + i + ']');
     }
-    
+
     var result = eval('context.fn(' + args +')');
     delete context.fn;
     return result;
@@ -116,7 +118,7 @@ Function.prototype.call = function(context) {
 
 Function.prototype.apply = function(context, arr) {
     var context = Object(context) || window;
-    
+
     context.fn = this;
 
     var result;
@@ -162,10 +164,10 @@ function fakeNew() {
 ```
 
 ### 函数防抖和函数节流
-**防抖函数概念：** 
+**防抖函数概念：**
 > 该函数只能在指定延时结束后才能调用，如果在过程中重复调用，则重新计时。
 
-**应用场景:** 
+**应用场景:**
 1. 用户在搜索框输入时的数据查询，指定`n` 毫秒 延时，只能在输入完后过了`n`毫秒后才会去搜索，中间的持续输入则会重新计时
 2. 在监听window.onresize事件，并触发某些操作时。
 ```js
@@ -184,7 +186,7 @@ function debounce(fn, interval) {
 
 ```
 
-**函数节流:** 
+**函数节流:**
 > 在规定时间内，函数只能被调用一次。如果单位时间内多次触发，则忽略
 
 **应用场景：**
@@ -309,7 +311,7 @@ function Person(name) {
 
 var person1 = new Person('william');
 Object.preventExtensions(person1); // 阻止扩展属性
-person1.age = 10; 
+person1.age = 10;
 
 console.log(person1) // {name: 'william'}
 
@@ -324,7 +326,7 @@ var person2 = {
 Object.preventExtensions(person2);
 person2.info.sex = 'male'; // 可以扩展深层属性
 
-person2.info.sex; // male 
+person2.info.sex; // male
 
 ```
 

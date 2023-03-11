@@ -4,7 +4,7 @@ date: 2020-09-03 10:23
 categories:
 - 前端
 tags:
-- npm
+- Npm
 - Node
 ---
 

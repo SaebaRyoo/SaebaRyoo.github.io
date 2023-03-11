@@ -6,41 +6,295 @@ tags:
 - React
 ---
 
-## useCallback
+## 类组件的不足（Hooks要解决的问题）
+### 缺少逻辑复用机制
 
-我们可以看一下useCallback的源码，下面有两个函数。
-`mountCallback`是在初始化时调用，主要的作用就是记录callback和deps依赖项
-`updateCallback`是当组件发生更新时调用的函数，它的作用就是会对比依赖，如果依赖未改变，则使用旧的callback，也就是 memoized 函数
+为了复用逻辑增加无实际渲染效果的组件（高阶组件、渲染属性），它们增加了组件层级显示十分臃肿，增加了调试的难度以及运行效率的降低
+
+
+### 类组件经常会变得很复杂难以维护
+- 将一组相干的业务逻辑拆分到了很多个生命周期函数中
+- 在一个生命周期函数内存在多个不相干的业务逻辑
+
+### 类成员方法不能保证this指向的正确性
+- 通过bind修改this指向
+- 箭头函数
+
+## React Hooks 是用来干什么的
+
+它的作用就是对函数型组件进行增强，让函数型组件可以存储状态，可以拥有处理副作用的能力。让开发者在不使用类组件的情况下，实现相同的功能
+
+在React中，副作用指的是只要不是将数据变为视图的操作都视为副作用，如：
+- 获取dom元素
+- 发起ajax请求
+
+
+## useState
+
+- 接收唯一的参数即状态初始值，初始值可以为任意类型
+
+
+## useReducer
+- useReducer 和 redux 中 reducer 很像
+- useState 内部就是靠 useReducer 来实现的
+- useState 的替代方案，它接收一个形如 (state, action) => newState 的 reducer，并返回当前的 state 以及与其配套的 dispatch 方法
+- 在某些场景下，useReducer 会比 useState 更适用，例如 state 逻辑较复杂且包含多个子值，或者下一个 state 依赖于之前的 state 等
 
 ```jsx
-
-function mountCallback<T>(callback: T, deps: Array<mixed> | void | null): T {
-  const hook = mountWorkInProgressHook();
-  const nextDeps = deps === undefined ? null : deps;
-  // 初始化时记录callback和deps
-  hook.memoizedState = [callback, nextDeps];
-  return callback;
-}
-
-function updateCallback<T>(callback: T, deps: Array<mixed> | void | null): T {
-  const hook = updateWorkInProgressHook();
-  const nextDeps = deps === undefined ? null : deps;
-  const prevState = hook.memoizedState;
-  if (prevState !== null) {
-    if (nextDeps !== null) {
-      const prevDeps: Array<mixed> | null = prevState[1];
-      // 组件发生更新时对比依赖，如果依赖未改变，则使用旧的callback
-      if (areHookInputsEqual(nextDeps, prevDeps)) {
-        return prevState[0];
-      }
-    }
+const initialState = 0;
+function reducer(state, action) {
+  switch (action.type) {
+    case 'increment':
+      return {number: state.number + 1};
+    case 'decrement':
+      return {number: state.number - 1};
+    default:
+      throw new Error();
   }
-  hook.memoizedState = [callback, nextDeps];
-  return callback;
+}
+function init(initialState){
+    return {number:initialState};
+}
+function Counter(){
+    const [state, dispatch] = useReducer(reducer, initialState,init);
+    return (
+        <>
+          Count: {state.number}
+          <button onClick={() => dispatch({type: 'increment'})}>+</button>
+          <button onClick={() => dispatch({type: 'decrement'})}>-</button>
+        </>
+    )
 }
 ```
 
-**那么它的作用是什么呢？**
+
+## useContext
+用于跨组件传递状态，比如下面这个主题数据传输
+
+```jsx
+
+const themes = {
+  light: {
+    foreground: "#000000",
+    background: "#eeeeee"
+  },
+  dark: {
+    foreground: "#ffffff",
+    background: "#222222"
+  }
+};
+
+const ThemeContext = React.createContext(themes.light);
+
+function App() {
+  return (
+    <ThemeContext.Provider value={themes.dark}>
+      <Toolbar />
+    </ThemeContext.Provider>
+  );
+}
+
+function Toolbar(props) {
+  return (
+    <div>
+      <ThemedButton />
+    </div>
+  );
+}
+
+function ThemedButton() {
+  const theme = useContext(ThemeContext);
+  return (
+    <button style={{ background: theme.background, color: theme.foreground }}>
+      I am styled by theme context!
+    </button>
+  );
+}
+
+```
+
+## useEffect()
+
+### 执行时机
+- useEffect( () => {})
+    - 只传入一个回调函数，那么这个钩子会在组件每次挂载时，和更新时被调用。相当于componentDidMount 和 componentDidUpdate
+- useEffect(() => {}, [])
+  - 传入一个函数和空数组,只会在挂载时被调用，相当于componentDidMount
+  - 第二个参数可以用于监控当前组件的状态和传入的props中的状态，确保回调在特定的数据变化时才触发更新
+- useEffect(() =>  () => {}])
+  - 传入一个回调函数，在回调中返回一个函数，这个被返回的函数会在组件销毁前调用,相当于componentDidUnMount
+
+## useRef
+### 获取dom元素对象
+```jsx
+const App = () => {
+  const username = useRef();
+
+  const handler = () => {console.log(username)};
+
+  return <input ref={username} onChange={handler} />
+}
+```
+
+### 保存数据（跨组件周期）
+
+即使组件重新渲染，保存的数据任然还在。保存的数据被更改不会触发组件重新渲染。
+
+通常用`useRef`保存程序在运行当中的一些辅助数据
+
+比如，我们要设置一个定时累加的任务，并且需要一个停止的方法。
+但是将timerId定义在组件中时，每隔1秒，count都会更新一次，组件也会重新渲染，timerId就会被重新赋值一次：
+```jsx
+const App = () => {
+  const [count, setCount] = useState(0);
+  let timerId = null;
+  useEffect(() => {
+    timerId = setInterval(() => {
+      setCount(count + 1)
+    }, 1000)
+  })
+
+  const stopCount = () => {
+    clearInterval()
+  }
+
+  return (
+    <div>
+      {count}
+      <button onClick={stopCount}>停止</button>
+    </div>
+  )
+}
+```
+
+这个时候我们就需要用到useRef来保存这个数据,组件重新渲染后，数据也不会消失
+
+```jsx
+
+const App = () => {
+  const [count, setCount] = useState(0);
+  let timerId = useRef();
+  useEffect(() => {
+    timerId.current = setInterval(() => {
+      setCount(count + 1)
+    }, 1000)
+  })
+
+  const stopCount = () => {
+    clearInterval(timerId.current)
+  }
+
+  return (
+    <div>
+      {count}
+      <button onClick={stopCount}>停止</button>
+    </div>
+  )
+}
+```
+
+
+### 失控的Ref
+对于`Ref`，什么叫失控？
+
+首先是不失控的情况：
+- 执行`ref.current`的`focus`,`blur`等方法
+- 执行`ref.current.scrollIntoView`使`element`滚动到视野内
+- 执行`ref.current.getBoundingClientRect`测量DOM尺寸
+
+这些情况，虽然操作了`DOM`，但涉及的都是React控制范围外的因素，所以不算失控
+
+但是下面的情况：
+- 执行`ref.current.remove`移除DOM
+- 执行`ref.current.appendChild`插入子节点
+
+同样是操作DOM，但是这些原本应该在React控制范围内的操作，通过`ref`执行就属于失控的情况
+
+### 限制失控
+所以在react中，函数组件可以访问自己的`宿主元素`的DOM节点，但父函数组件是无法直接通过`ref`来访问到子函数组件内的宿主元素的DOM。这样就将`ref失控`的范围控制在了单个组件内，不会出现跨层级的失控
+比如以下代码，点击了就会报错:
+```jsx
+function MyInput(props) {
+  return <input {...props} />;
+}
+
+function Form() {
+  const inputRef = useRef(null);
+
+  function handleClick() {
+    inputRef.current.focus();
+  }
+
+  return (
+    <>
+      <MyInput ref={inputRef} />
+      <button onClick={handleClick}>
+        input聚焦
+      </button>
+    </>
+  );
+}
+```
+
+### 使用forwardRef取消限制
+但是在某些场景下，比如组件库开发，就需要通过`forwardRef`将`ref`暴露给使用者。
+当然，这种是将整个DOM通过ref传递给了使用者，需要使用者自己来承担误用的风险
+```jsx
+const MyInput = forwardRef((props, ref) => {
+  return <input {...props} ref={ref} />;
+});
+
+function Form() {
+  const inputRef = useRef(null);
+
+  function handleClick() {
+    inputRef.current.focus();
+  }
+
+  return (
+    <>
+      <MyInput ref={inputRef} />
+      <button onClick={handleClick}>
+        Focus the input
+      </button>
+    </>
+  );
+}
+```
+
+### useImperativeHandle限制ref中的方法
+
+比如，还是用上面的`MyInput`组件举例，这个组件，我们在封装是只能暴露给用户`focus`方法，需要屏蔽其他增删改的方法。那么就可以使用`useImerativeHandle`修改`MyInput`
+```jsx
+
+const MyInput = forwardRef((props, ref) => {
+  const realInput = useRef(null);
+  useImerativeHandle(ref, () => ({
+    focus() {
+      realInputRef.current.focus()
+    }
+  }))
+  return <input {...props} ref={ref} />;
+});
+
+```
+
+现在，`Form`组件中通过`inputRef.current`只能取到如下结构:
+```jsx
+{
+  focus() {
+    realInputRef.current.focus();
+  },
+}
+```
+
+**这样就杜绝了开发者通过ref取到DOM后，执行不该被使用的API，出现ref失控的情况。**
+
+
+
+
+## useCallback
+
 useCallback返回一个 memoized 回调函数。一般和`React.memo()`一起用于性能优化。
 
 我们首先可以看下面这个没有使用`useCallback`的例子,即使使用了React.memo，且`DemoChildren`的依赖看上去并没有变化（每次都是传入getInfo方法）

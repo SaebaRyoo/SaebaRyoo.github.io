@@ -2,7 +2,7 @@
 title: npm 配置
 categories:
 - 前端
-tags: 
+tags:
 - Node
 - Npm
 ---
@@ -114,7 +114,7 @@ npm ls [[<@scope>/]<pkg> ...]
 aliases: list, la, ll
 ```
 
-### npm help 查看某条命令的详细帮助 
+### npm help 查看某条命令的详细帮助
 1. 基础语法
 `npm help <term> [<terms..>]`
 
