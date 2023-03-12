@@ -1,1 +1,0 @@
-import{_ as o,R as l,a as n}from"./index-e60f790f.js";function c(e){var t=e.schema,a=o(e,["schema"]),s=t.propValue,r=t.style;return l.createElement("button",n({},a,{style:r}),s||"按钮")}export{c as default};

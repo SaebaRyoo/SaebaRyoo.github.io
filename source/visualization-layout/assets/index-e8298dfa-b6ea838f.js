@@ -1,0 +1,1 @@
+import{_ as m,R as c,a as l}from"./index-fe148188.js";function p(e){var a=e.schema,s=m(e,["schema"]),r=a.propValue,t=a.style;return c.createElement("img",l({src:r},s,{style:t||{}}))}export{p as default};
