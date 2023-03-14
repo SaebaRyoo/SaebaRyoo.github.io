@@ -294,6 +294,9 @@ describe('sum', () => {
 
 `npm who am i`查询当前登录的账号
 
+> Scoped packages default to restricted, but you can either publish them as public using npm publish --access=public, or set their access as public using npm access public after the initial publish.
+范围内的软件包默认为限制性的，但你可以使用`npm publish --access=public`将其发布为公共的，或者在初始发布后使用`npm access public`将其访问权限设置为公共的。
+
 登录成功就可以通过`npm publish`将包推送到服务器上
 
 如果某版本的包有问题，可以使用`npm unpublish [pkg]@[version]`将其撤回
