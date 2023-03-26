@@ -2,9 +2,8 @@
 title: 如何锁定项目的node版本
 date: 2020-09-03 10:23
 categories:
-- 前端
+- Node
 tags:
-- Npm
 - Node
 ---
 
