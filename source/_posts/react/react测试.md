@@ -2,7 +2,7 @@
 title: 关于React测试的思考
 categories:
 - 前端
-tags: 
+tags:
 - React
 - 测试
 ---
@@ -104,14 +104,14 @@ react-testing-library根据行为分类可以分为3大类api，**它们决定�
     );
   };
   ```
-  
+
   ```js
   // DomQuery.test.tsx
   import React from "react";
   import { render, screen } from "@testing-library/react";
   import { DomQuery } from "../components/DomQuery";
 
-  describe("tests for 《4 | DOM查询(上)：页面元素的渲染和行为查询》 & 《5 | DOM查询(下)：页面元素的参照物查询和优先级》", () => {
+  describe("tests for label", () => {
     // ...
     test("labelText", () => {
       render(<DomQuery />);
@@ -128,7 +128,6 @@ import { FC } from "react";
 
 interface IProps {}
 
-// 《4 | DOM查询(上)：页面元素的渲染和行为查询》 & 《5 |DOM查询(下)：页面元素的参照物查询和优先级》
 export const DomQuery: FC<IProps> = ({}) => {
   return (
     <div>
@@ -143,7 +142,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { DomQuery } from "../components/DomQuery";
 
-describe("tests for 《4 | DOM查询(上)：页面元素的渲染和行为查询》 & 《5 | DOM查询(下)：页面元素的参照物查询和优先级》", () => {
+describe("tests for placeholder", () => {
   // ...
    test("placeholder", () => {
     render(<DomQuery />);
@@ -163,8 +162,6 @@ describe("tests for 《4 | DOM查询(上)：页面元素的渲染和行为查询
 import { FC } from "react";
 
 interface IProps {}
-
-// 《4 | DOM查询(上)：页面元素的渲染和行为查询》 & 《5 |DOM查询(下)：页面元素的参照物查询和优先级》
 export const DomQuery: FC<IProps> = ({}) => {
   return (
     <div>
@@ -178,7 +175,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { DomQuery } from "../components/DomQuery";
 
-describe("tests for 《4 | DOM查询(上)：页面元素的渲染和行为查询》 & 《5 | DOM查询(下)：页面元素的参照物查询和优先级》", () => {
+describe("tests for displayValue", () => {
   // ...
    test("value", () => {
     render(<DomQuery />);
@@ -196,7 +193,6 @@ import { FC } from "react";
 
 interface IProps {}
 
-// 《4 | DOM查询(上)：页面元素的渲染和行为查询》 & 《5 |DOM查询(下)：页面元素的参照物查询和优先级》
 export const DomQuery: FC<IProps> = ({}) => {
   return (
     <div>
@@ -210,7 +206,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { DomQuery } from "../components/DomQuery";
 
-describe("tests for 《4 | DOM查询(上)：页面元素的渲染和行为查询》 & 《5 | DOM查询(下)：页面元素的参照物查询和优先级》", () => {
+describe("tests for alt", () => {
   // ...
    test("alt", () => {
     render(<DomQuery />);
@@ -229,7 +225,6 @@ import { FC } from "react";
 
 interface IProps {}
 
-// 《4 | DOM查询(上)：页面元素的渲染和行为查询》 & 《5 |DOM查询(下)：页面元素的参照物查询和优先级》
 export const DomQuery: FC<IProps> = ({}) => {
   return (
     <div>
@@ -243,7 +238,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { DomQuery } from "../components/DomQuery";
 
-describe("tests for 《4 | DOM查询(上)：页面元素的渲染和行为查询》 & 《5 | DOM查询(下)：页面元素的参照物查询和优先级》", () => {
+describe("tests for testid", () => {
   // ...
    test("testid", () => {
     render(<DomQuery />);
@@ -296,7 +291,7 @@ jest.config.mjs
 ```js
 export default {
   // ...
-  
+
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
     "\.(css|less|scss|sass)$": "identity-obj-proxy" , // 对css文件使用identity-obj-proxy进行代理,该包的作用是将对象的访问直接返回对应的字符串，比如 styles.title 将会返回 title 字符串
@@ -315,7 +310,7 @@ export default {
   transform: {
     "^.+\.(js|ts|tsx)$": "babel-jest", // 给jest添加一个转换器
   },
-} 
+}
 ```
 
 
