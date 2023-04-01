@@ -5,7 +5,7 @@ categories:
 tags:
 - Node
 ---
-> 这个系列是翻译，当然，我自己做了一些修改。如果你愿意看原版，那可以根据这个[链接](https://wanago.io/2019/02/11/node-js-typescript-modules-file-system)去查找。
+> 这个系列是翻译文章，虽然是翻译，但有些地方还是做了一些修改。如果你想要看原版，那可以根据这个[链接](https://wanago.io/2019/02/11/node-js-typescript-modules-file-system)去查找。
 
 在这个系列中，我们介绍了Node.js的核心概念。一般来说，在这个系列中，我们关注的是**Node.js**的环境，而不是**JavaScript**本身，同时使用TypeScript的静态类型优势。它涵盖了文件系统、事件循环和工作线程等方面。在本文中，我们创建了一个脚本，可以根据执行时传递的参数创建和读取文件。虽然我们在这里没有创建任何特定的Web应用程序，但我们学习了Node.js如何处理文件和服务器连接，这在许多情况下可能会有帮助。
 
@@ -111,8 +111,8 @@ process.argv.forEach(argument => console.log(argument));
 
 然后输出如下信息:
 ```
-/Users/zhuqingyuan/.nvm/versions/node/v14.19.1/bin/node
-/Users/zhuqingyuan/Documents/practice/Demos/node/main.js
+/Users/xxx/.nvm/versions/node/v14.19.1/bin/node
+/Users/xxx/Documents/practice/Demos/node/main.js
 one
 two
 three
