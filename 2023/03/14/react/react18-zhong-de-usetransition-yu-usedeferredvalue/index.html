@@ -552,7 +552,7 @@
     <article class="post post-detail">
       <div class="post-content">
         <p>React18 引入了一个关键概念 <code>并发性（Concurrency）</code>。 并发则涉及到多个<code>更新操作</code>的同时执行，这可以说是React18中最重要的功能。<br>除了并发，React18 新增了两个hook ，也就是<code>useTransition</code>和<code>useDeferredValue</code>。它们的作用都是降低<code>更新操作</code>的优先级，但问题是，何时应该使用它们？</p>
-<h2 id="并发-Concurrent"><a href="#并发-Concurrent" class="headerlink" title="并发(Concurrent)"></a>并发(Concurrent)</h2><p>在实现”并发”之前，渲染是同步的(<strong>所谓的同步，就是指如果react的某个组件执行时间长，它无法中断，会一致执行，直到组件完成渲染到DOM。在这个过程中，由于Javascript是单线程的，因此渲染任务会占满JavaScript线程，阻塞浏览器的主线程，从而导致用户无法进行交互操作</strong>)。</p>
+<h2 id="并发-Concurrent"><a href="#并发-Concurrent" class="headerlink" title="并发(Concurrent)"></a>并发(Concurrent)</h2><p>在实现”并发”之前，渲染是同步的(<strong>所谓的同步，就是指如果react的某个组件执行时间长，它无法中断，会一直执行，直到组件完成渲染到DOM。在这个过程中，由于Javascript是单线程的，因此渲染任务会占满JavaScript线程，阻塞浏览器的主线程，从而导致用户无法进行交互操作</strong>)。</p>
 <p>然而，有了并发渲染（<strong>并发指的就是通过time slice将任务拆分为多个，然后react根据优先级来完成调度策略，将低优先级的任务先挂起，将高优先级的任务分配到浏览器主线程的一帧的空闲时间中去执行，如果浏览器在当前一帧中还有剩余的空闲时间，那么React就会利用空闲时间来执行剩下的低优先级的任务</strong>），react的渲染和更新可以被中断和恢复。那么如果在执行某个组件更新过程中又有了新的更新请求到达。比如我们下面的<code>input输入事件</code>，那么React就会创建一个<code>新的更新版本</code>。这种情况下，在某个时间段内可能会同时存在多个<code>更新版本</code>。</p>
 <p>为了优化上述问题，React 18 提供了新的 Hook 函数 <code>useTransition</code>，它可以将<code>多个版本的更新</code>打包到一起，在未来的某一帧空闲时间内执行，从而优化应用的性能和响应时间。而<code>useDeferredValue</code> 的作用是将某个值的更新推迟到未来的某个时间片内执行，从而避免不必要的重复渲染和性能开销。</p>
 <h2 id="没有使用任何优化手段，同步更新"><a href="#没有使用任何优化手段，同步更新" class="headerlink" title="没有使用任何优化手段，同步更新"></a>没有使用任何优化手段，同步更新</h2><p>假设我们有一个包含从0到19,999数字的数组。这些数字在用户界面上显示为一个列表。该用户界面还有一个文本框，允许我们过滤这些数字。例如，我可以通过在文本框中输入数字99来过滤掉以99开头的数字。</p>
@@ -1589,10 +1589,8 @@
 <!-- 鼠标点击特效 -->
 <!-- 爱心点击 -->
 
-  
-    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
-    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
-    <script src="/js/cursor/explosion.min.js"></script>
+   
+    <script src="/js/cursor/clicklove.js"></script> 
   
 
 

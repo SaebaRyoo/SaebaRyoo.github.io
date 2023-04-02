@@ -551,21 +551,19 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h3 id="TCP-x2F-IP的三次握手四次挥手"><a href="#TCP-x2F-IP的三次握手四次挥手" class="headerlink" title="TCP&#x2F;IP的三次握手四次挥手"></a>TCP&#x2F;IP的三次握手四次挥手</h3><p>SYN 表示建立连接，<br>FIN 表示关闭连接，<br>ACK 表示响应，<br>PSH 表示有<br>DATA 数据传输，<br>RST 表示连接重置。</p>
-<p>SYN_SENT 状态表示请求连接<br>SEND_RCVD 服务端被动打开后,接收到了客户端的SYN并且发送了ACK时的状态<br>ESTABLISHED 的意思是建立连接。表示两台机器正在通信。<br>CLOSE_WAIT 对方主动关闭连接或者网络异常导致连接中断，这时我方的状态会变成CLOSE_WAIT 此时我方要调用close()来使得连接正确关闭<br>TIME_WAIT  我方主动调用close()断开连接，收到对方确认后状态变为TIME_WAIT</p>
-<p>RST表示连接重置。<br><strong>三次握手</strong></p>
-<ol>
-<li>客户端发起SYN_SENT, 发送SYN&#x3D;1、seq&#x3D;k（seq为随机数）请求连接</li>
-<li>服务器确认SEND_RCVD， 并针对客户端的SYN进行应答，发送SYN&#x3D;1、 ACK&#x3D;1、ack&#x3D;k+1、seq&#x3D;j（seq为随机数），建立请求连接；</li>
-<li>客户端ESTABLISHED,并针对服务器SYN进行应答,发送ACK&#x3D;1， ack&#x3D;j+1。服务器接收到ACK，进入ESTABLISHED 状态，连接建立完成</li>
+        <h2 id="TCP的三次握手四次挥手"><a href="#TCP的三次握手四次挥手" class="headerlink" title="TCP的三次握手四次挥手"></a>TCP的三次握手四次挥手</h2><h3 id="三次握手的过程如下："><a href="#三次握手的过程如下：" class="headerlink" title="三次握手的过程如下："></a>三次握手的过程如下：</h3><ol>
+<li>客户端向服务器发送SYN包，表示请求连接。</li>
+<li>服务器收到SYN包后，向客户端发送SYN+ACK包，表示确认请求，并准备好接受数据。</li>
+<li>客户端收到SYN+ACK包后，向服务器发送ACK包，表示确认连接已建立。</li>
 </ol>
-<p><strong>四次挥手</strong></p>
-<ol>
-<li>客户端状态进入FIN_WAIT&#x3D;1，发送FIN&#x3D;M，用来关闭客户端到服务器的数据传送</li>
-<li>服务器针对客户端的FIN应答，发送ack&#x3D;M+1，状态改为CLOSE_WAIT，表示服务器已经接收到关闭请求，但是没有做好准备，然后客户端状态变为FIN_WAIT&#x3D;2；</li>
-<li>服务器发送FIN&#x3D;N，表示服务器确定数据已经发送完毕。告诉客户端，已准备好关闭连接。服务器状态改为LAST_ACK。</li>
-<li>客户端接收FIN_N报文后，知道可以关闭连接，但它怕服务器不知道要关闭，所以还是需要发送ACK&#x3D;1、ack&#x3D;N+1。然后进入TIME_WAIT，如果服务端收到ACK后，则就知道可以断开了。客户端等待2MSL( Maximum Segment Life 每个报文段的生命周期是1个MSL) 后依然没收到回复，则服务器正常关闭</li>
+<h3 id="四次挥手的过程如下："><a href="#四次挥手的过程如下：" class="headerlink" title="四次挥手的过程如下："></a>四次挥手的过程如下：</h3><ol>
+<li>客户端向服务器发送FIN包，表示要关闭连接。</li>
+<li>服务器收到FIN包后，向客户端发送ACK包，表示确认收到FIN包。</li>
+<li>服务器向客户端发送FIN包，表示准备好关闭连接。</li>
+<li>客户端收到FIN包后，向服务器发送ACK包，表示确认收到FIN包，并关闭连接。</li>
 </ol>
+<p>三次握手的目的是为了确保客户端和服务器都已准备好发送和接收数据，并且双方的序列号和确认号都已同步。四次挥手的目的是为了确保数据传输完毕后安全地关闭连接，避免数据的丢失和不完整。</p>
+<p>需要注意的是，在TCP协议中，连接是双向的，因此每个方向的关闭都需要经过一次挥手过程。所以总共需要四次挥手。</p>
 
       </div>
       <div class="post-tags-categories">
@@ -1575,10 +1573,8 @@
 <!-- 鼠标点击特效 -->
 <!-- 爱心点击 -->
 
-  
-    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
-    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
-    <script src="/js/cursor/explosion.min.js"></script>
+   
+    <script src="/js/cursor/clicklove.js"></script> 
   
 
 

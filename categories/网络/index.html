@@ -747,8 +747,10 @@ TODO: 步骤分析用户输入urlDNS解析TCP连接IP寻址网卡数据传输
             </a>
           </div>
           <div class="post-content">
-            TCP&#x2F;IP的三次握手四次挥手SYN 表示建立连接，FIN 表示关闭连接，ACK 表示响应，PSH 表示有DATA 数据传输，RST 表示连接重置。
-SYN_SENT 状态表示请求连接SEND_RCVD 服务端被动打开后,接收到了
+            TCP的三次握手四次挥手三次握手的过程如下：
+客户端向服务器发送SYN包，表示请求连接。
+服务器收到SYN包后，向客户端发送SYN+ACK包，表示确认请求，并准备好接受数据。
+客户端收到SYN+ACK包后，向服务器发送ACK包，表示确认连接
           </div>
         </div>
         <div class="post-more">
@@ -1720,10 +1722,8 @@ http&#x2F;0.9是1991年提出的，该版本的只有get请求，被用来传输
 <!-- 鼠标点击特效 -->
 <!-- 爱心点击 -->
 
-  
-    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
-    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
-    <script src="/js/cursor/explosion.min.js"></script>
+   
+    <script src="/js/cursor/clicklove.js"></script> 
   
 
 

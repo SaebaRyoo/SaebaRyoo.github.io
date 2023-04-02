@@ -698,10 +698,11 @@
 <p>参考:<br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context">MDN</a></p>
 <h3 id="FFC（Flex-Formatting-Contexts，弹性格式化上下文）"><a href="#FFC（Flex-Formatting-Contexts，弹性格式化上下文）" class="headerlink" title="FFC（Flex Formatting Contexts，弹性格式化上下文）"></a>FFC（Flex Formatting Contexts，弹性格式化上下文）</h3><p>用于排列弹性盒子，其中弹性盒子具有更灵活的布局方式，可以通过指定伸缩比例、对齐方式等属性来调整布局。</p>
 <h3 id="GFC（Grid-Formatting-Contexts，网格格式化上下文）"><a href="#GFC（Grid-Formatting-Contexts，网格格式化上下文）" class="headerlink" title="GFC（Grid Formatting Contexts，网格格式化上下文）"></a>GFC（Grid Formatting Contexts，网格格式化上下文）</h3><p>用于排列网格盒子，其中网格盒子具有二维的排列方式，可以通过指定行列数、单元格大小、对齐方式等属性来调整布局。</p>
-<h2 id="移动端适配方案"><a href="#移动端适配方案" class="headerlink" title="移动端适配方案"></a>移动端适配方案</h2><p>在正常开发中，UI&#x2F;UX给出的都是一个具体设计稿，都是<code>px</code>尺寸的。那么无论是下面那种适配方案，其核心都是需要计算出当前设计稿的<code>比例因子</code>。比如常见的750设计稿(通常是指以 iPhone 6&#x2F;7&#x2F;8 为基准的设计稿),它的屏幕宽度为 <code>750px(像素)</code>，屏幕高度为 <code>1334px(像素)</code>。那么需要依照此设计稿算出<code>比例因子</code>,我们可以选择一个可以让我们在后面填写元素尺寸时比较好计算的 <code>750px / 7.5 = 100px</code> 。如果使用<code>rem</code>布局，那么需要在根元素设置<code>font-size</code>，这就是我们的比例因子</p>
+<h2 id="移动端适配方案"><a href="#移动端适配方案" class="headerlink" title="移动端适配方案"></a>移动端适配方案</h2><p>在正常开发中，UI&#x2F;UX给出的都是一个具体设计稿，都是<code>px</code>尺寸的。那么无论是下面那种适配方案，<strong>其核心都是需要根据设计稿上的元素占设计稿的比例</strong>。<br>比如常见的750设计稿(通常是指以 iPhone 6&#x2F;7&#x2F;8 为基准的设计稿),它的屏幕宽度为 <code>750px(像素)</code>，屏幕高度为 <code>1334px(像素)</code>。<br>那么我们可以选择一个可以让我们在后面填写元素尺寸时比较好计算的 <code>750px / 7.5 = 100px</code> 。也就是说，我们将屏幕的宽度分成了<code>7.5份</code>，每一份占<code>100px</code>。</p>
+<p>如果使用<code>rem</code>布局，那么需要在根元素设置<code>font-size</code>,表示我们的<code>1em</code>为100px</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">100px</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>后面，我们通过设计稿绘制页面的时候，如果遇到需要绘制一个div为200px * 200px ，内部字体为16px的，那么我们只需要根据<code>设计稿的尺寸 / 100 </code>就可以得到最后的适配尺寸，来完成在各种不同移动端设备下的适配</p>
+<p>后面，我们通过设计稿绘制页面的时候，如果遇到需要绘制一个div为200px * 200px ，内部字体为16px的，那么我们只需要根据<code>设计稿上元素的尺寸 / 100 </code>就可以得到各种元素所占屏幕的比例，来完成在各种不同移动端设备下的适配</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">0.16em</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">2em</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">2em</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
@@ -1811,10 +1812,8 @@
 <!-- 鼠标点击特效 -->
 <!-- 爱心点击 -->
 
-  
-    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
-    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
-    <script src="/js/cursor/explosion.min.js"></script>
+   
+    <script src="/js/cursor/clicklove.js"></script> 
   
 
 

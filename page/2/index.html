@@ -1068,8 +1068,10 @@ css会阻塞DOM渲染，不会阻塞解析。因为渲
             </a>
           </div>
           <div class="post-content">
-            TCP&#x2F;IP的三次握手四次挥手SYN 表示建立连接，FIN 表示关闭连接，ACK 表示响应，PSH 表示有DATA 数据传输，RST 表示连接重置。
-SYN_SENT 状态表示请求连接SEND_RCVD 服务端被动打开后,接收到了
+            TCP的三次握手四次挥手三次握手的过程如下：
+客户端向服务器发送SYN包，表示请求连接。
+服务器收到SYN包后，向客户端发送SYN+ACK包，表示确认请求，并准备好接受数据。
+客户端收到SYN+ACK包后，向服务器发送ACK包，表示确认连接
           </div>
         </div>
         <div class="post-more">
@@ -1195,7 +1197,7 @@ SYN_SENT 状态表示请求连接SEND_RCVD 服务端被动打开后,接收到了
       
   <header>
     
-      <a style="color: " href='/blog/categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
+      <a style="color: " href='/categories/'><i class="fas fa-folder-open fa-fw" aria-hidden="true"></i><span class='name'>文章分类</span></a>
     
   </header>
 
@@ -1455,7 +1457,7 @@ SYN_SENT 状态表示请求连接SEND_RCVD 服务端被动打开后,接收到了
         <div class="webinfo-item">
           <div>最后活动时间：</div>
           
-            <div id="last-update" style="display: none;">Sun Apr 02 2023 09:51:32 GMT+0800 (中国标准时间)</div>
+            <div id="last-update" style="display: none;">Sun Apr 02 2023 20:37:20 GMT+0800 (中国标准时间)</div>
             <div id="last-update-show">2023-04-02 日</div>
           
         </div>
@@ -2196,10 +2198,8 @@ SYN_SENT 状态表示请求连接SEND_RCVD 服务端被动打开后,接收到了
 <!-- 鼠标点击特效 -->
 <!-- 爱心点击 -->
 
-  
-    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 999; pointer-events: none;" ></canvas>
-    <script src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
-    <script src="/js/cursor/explosion.min.js"></script>
+   
+    <script src="/js/cursor/clicklove.js"></script> 
   
 
 
