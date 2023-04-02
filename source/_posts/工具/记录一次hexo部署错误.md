@@ -1,5 +1,6 @@
 ---
 title: 如何解决 hexo g 报错REMOTE HOST IDENTIFICATION HAS CHANGED!
+date: 2023-03-15 20:00
 categories:
 - 前端
 tags:
