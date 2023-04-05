@@ -1,8 +1,8 @@
 ---
-title: JavaScript常用的集中继承
+title: JavaScript常用的几种继承
 categories:
 - 前端
-tags: 
+tags:
 - JavaScript
 ---
 ## 原型链继承
@@ -168,7 +168,7 @@ function createAnother(original) {
 
 ## 寄生组合继承
 ```js
-function inheritPrototype(subType, superType) { 
+function inheritPrototype(subType, superType) {
     var prototype = object(superType.prototype); // 创建对象
     prototype.constructor = subType;  // 增强对象
     subType.prototype = prototype;  //  指定原型

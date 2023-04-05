@@ -79,7 +79,7 @@ sidebar:
         icon: fas fa-folder-open
         icon_color: # 标题字体颜色
         title: 文章分类
-        url: /blog/categories/
+        url: /categories/
     # ---------------------------------------
     # tagcloud widget
     side_tagcloud:
@@ -241,7 +241,7 @@ sharejs:
 # 鼠标点击特效
 cursor_effect:
   on: true
-  type: explosion  # fireworks: 礼花 | explosion: 爆炸 | love: 浮出爱心 | text: 浮出文字
+  type: love  # fireworks: 礼花 | explosion: 爆炸 | love: 浮出爱心 | text: 浮出文字
 
 # 头部导航是否显示天气
 weather:

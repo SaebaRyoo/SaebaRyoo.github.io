@@ -2,9 +2,14 @@
 title: Promise/A+规范实现
 categories:
 - 前端
-tags: 
+tags:
 - JavaScript
 ---
+
+实现Promise的核心主要有以下几个步骤：
+1. 需要有一个任务队列，支持将`.then(callback)` 中的`callback`插入到队列中。且then方法返回一个新的`Promise`来支持`.then`的链式调用
+2. 实现`resolve`和`reject`
+3. 实现一个`异步调度`函数(微任务>宏任务)，来调用队列当中的方法
 
 ```js
 var soon = (function() {
@@ -88,7 +93,7 @@ function resolvePromise(promise2, x, resolve, reject) {
     reject(new TypeError(`${promise2} and ${x} refer to the same object`));
     return;
   }
-  
+
   if (x instanceof Promise) {
     if (x.status === 'pending') {
       x.then(function(value) {
