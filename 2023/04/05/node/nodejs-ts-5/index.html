@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>归档 | Ryo的小站</title>
+  <title>Node.js TypeScript#5. Writable Stream(可写流) | Ryo的小站</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -490,280 +490,431 @@
 </header>
 
         <!-- 内容区域 -->
-        <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
-<div class="bg-light-floor-archive" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -3;"></div>
-<div class="archive-header" style="background-image:url('https://pic1.zhimg.com/80/v2-1414b3a4b205e19060db18a20d08723a_1440w.jpg?source=1940ef5c')">
-  <div class="archive-header-title">
-    archive
-  </div>
-  <div class="archive-header-desc">
+        
+ <!-- prismjs 代码高亮 -->
+ 
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('/medias/4.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
-  <span class="title" id="archive-header-desc"></span>
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        Node.js TypeScript#5. Writable Stream(可写流)
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2023-04-05 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/Node/" class="post-detail-header_category">
+              Node
+            </a>
+          
+        </span>
+      
+
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content row justify-position" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <p>在这篇文章中，我们会继续讲解<code>stream</code>，不过这次我们重点说的是<code>writable stream</code>和<code>pipe</code>。我们会通过几个例子来理解<code>writable stream</code>的工作原理。同时，我们提供了Node环境中<code>process</code>对象中出现的流的例子:<code>stdin</code>,<code>stdout</code>和<code>stderr</code>。</p>
+<h2 id="Writable-Stream"><a href="#Writable-Stream" class="headerlink" title="Writable Stream"></a>Writable Stream</h2><p>在之前文章的例子中，我们使用<code>fs.writeFile</code>方法创建和写入文件:</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">writeFile</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> fs.<span class="property">promises</span>.<span class="title function_">writeFile</span>(<span class="string">&#x27;./file.txt&#x27;</span>, <span class="string">&#x27;hello-world&#x27;</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;File created successfully&#x27;</span>)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(err)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">3</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">writeFile</span>()</span><br></pre></td></tr></table></figure>
+
+<p>不过在同一个文件上多次使用 <code>fs.writeFile</code> 会引起文件的并发写入问题，这意味着多个写入操作可能会同时尝试访问同一个文件，并导致数据写入的混乱和不确定性。因此，为了保证文件的数据完整性和安全性，每次使用 <code>fs.writeFile</code> 写入文件时，需要等待前一个操作完成后才能进行下一个操作，这样可以避免并发写入的问题。这种方式虽然简单易用，但不适用于处理大量数据的情况，因为等待时间可能会很长，导致程序的性能下降。我们可以看下面这个例子:</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">writeToFile</span>(<span class="params">data: <span class="built_in">string</span> | NodeJS.ArrayBufferView</span>) &#123;</span><br><span class="line">  fs.<span class="title function_">writeFile</span>(<span class="string">&#x27;test.txt&#x27;</span>, data, &#123; <span class="attr">flag</span>: <span class="string">&#x27;a+&#x27;</span> &#125;, <span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (err) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">error</span>(err);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 连续写入 5 次数据</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">  <span class="title function_">writeToFile</span>(<span class="string">`Data <span class="subst">$&#123;i&#125;</span>\n`</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当你运行这段代码时，你会发现，可能会出现乱序输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Data 0</span><br><span class="line">Data 2</span><br><span class="line">Data 1</span><br><span class="line">Data 4</span><br><span class="line">Data 3</span><br></pre></td></tr></table></figure>
+
+<p>相比之下，使用 <code>fs.createWriteStream</code> 可以更好地处理大量数据的写入操作，下面是一个简单的例子：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建可写流</span></span><br><span class="line"><span class="keyword">const</span> writeStream = fs.<span class="title function_">createWriteStream</span>(<span class="string">&#x27;test.txt&#x27;</span>, &#123; <span class="attr">flags</span>: <span class="string">&#x27;a+&#x27;</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 写入数据</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">writeToStream</span>(<span class="params">data: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">  writeStream.<span class="title function_">write</span>(data);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 连续写入 5 次数据</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">  <span class="title function_">writeToStream</span>(<span class="string">`Data <span class="subst">$&#123;i&#125;</span>\n`</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 关闭可写流</span></span><br><span class="line">writeStream.<span class="title function_">end</span>();</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们使用 <code>fs.createWriteStream</code> 创建了一个可写流，并通过 <code>writeStream.write</code> 方法向文件中写入数据。这种方式可以分块逐个写入数据，避免了一次性写入大量数据的问题，因此可以更好地处理大量数据的写入操作，并提高程序的性能。</p>
+<h2 id="Pipe"><a href="#Pipe" class="headerlink" title="Pipe"></a>Pipe</h2><p><code>pipe()</code> 是一个非常常用的方法，用于将可读流和可写流连接起来，以便从可读流中读取数据并将其写入到可写流中。例如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> readableStream = fs.<span class="title function_">createReadStream</span>(<span class="string">&#x27;./file.txt&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> writableStream = fs.<span class="title function_">createWriteStream</span>(<span class="string">&#x27;./all.txt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">readableStream.<span class="title function_">pipe</span>(writableStream)</span><br></pre></td></tr></table></figure>
+
+<p>在上面的例子中，我们通过创建了<code>readableStream</code>和<code>writableStream</code>两个流来读取和写数据。<br>然后我们通过<code>pipe</code>方法来将可读流中的数据传输到可写流中，直到可读流结束或者可写流关闭为止。</p>
+<p>这种方式可以非常高效的处理大量数据，且不需要手动控制数据的流动。</p>
+<p>除了将可读流和可写流连接起来，<code>pipe</code>还可以将多个可读流连接起来，并输出给单个可写流。这可以很方便的处理多个源的数据，例如多文件合并为单文件。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> readableStream1 = fs.<span class="title function_">createReadStream</span>(<span class="string">&#x27;file1.txt&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> readableStream2 = fs.<span class="title function_">createReadStream</span>(<span class="string">&#x27;file2.txt&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> writableStream = fs.<span class="title function_">createWriteStream</span>(<span class="string">&#x27;output.txt&#x27;</span>);</span><br><span class="line"></span><br><span class="line">readableStream1.<span class="title function_">pipe</span>(writableStream);</span><br><span class="line">readableStream2.<span class="title function_">pipe</span>(writableStream);</span><br></pre></td></tr></table></figure>
+
+<h2 id="可写流的原理"><a href="#可写流的原理" class="headerlink" title="可写流的原理"></a>可写流的原理</h2><p><code>fs.createWriteStream</code>不是唯一创建可读流的方法。我们可以自己创建一个可读流。</p>
+<p>每个可读流需要实现一个<code>_write</code>方法。当我们将数据写到流中时，就会间接的调用这个方法</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Writable</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;stream&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> writable = <span class="keyword">new</span> <span class="title class_">Writable</span>();</span><br><span class="line"></span><br><span class="line">writable.<span class="property">_write</span> = <span class="keyword">function</span>(<span class="params">chunk, encoding, next</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(chunk.<span class="title function_">toString</span>());</span><br><span class="line">  <span class="title function_">next</span>();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">writable.<span class="title function_">write</span>(<span class="string">&#x27;Hello world!&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>上面的例子会输出<code>Hello world!</code></p>
+<p>在上面这个例子中，每次我们写入<code>stream</code>，字符串就会被console输出。<code>encoding</code>变量是一个字符串，表示我们数据的编码格式。调用<code>next</code>方法表示数据已经刷新，意味着我们完成了对它的处理。</p>
+<p><code>_write</code>方法也可以通过<code>Writable</code>构造函数，或者继承<code>Writable</code>类来声明。</p>
+<p>有了这些知识，我们可以实现一个简化版的流，把数据写到一个文件中。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">WritableFileStream</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Writable</span> &#123;</span><br><span class="line">  <span class="attr">path</span>: <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">path: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>();</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">path</span> = path;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">async</span> <span class="title function_">_write</span>(<span class="params">chunk: <span class="built_in">any</span>, encoding: <span class="built_in">string</span>, next: (error?: <span class="built_in">Error</span>) =&gt; <span class="built_in">void</span></span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">await</span> fs.<span class="property">promises</span>.<span class="title function_">writeFile</span>(<span class="variable language_">this</span>.<span class="property">path</span>, chunk, &#123;<span class="attr">flag</span>: <span class="string">&#x27;a+&#x27;</span>&#125;)</span><br><span class="line">      <span class="title function_">next</span>();</span><br><span class="line">    &#125; <span class="keyword">catch</span>(err) &#123;</span><br><span class="line">      <span class="title function_">next</span>(err)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> readable = fs.<span class="title function_">createReadStream</span>(<span class="string">&#x27;./test.txt&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> readable1 = fs.<span class="title function_">createReadStream</span>(<span class="string">&#x27;./file.txt&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> writable = <span class="keyword">new</span> <span class="title class_">WritableFileStream</span>(<span class="string">&#x27;./output.txt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">readable.<span class="title function_">pipe</span>(writable)</span><br><span class="line">readable1.<span class="title function_">pipe</span>(writable)</span><br></pre></td></tr></table></figure>
+<p>在上面的例子中，每次我们写入数据时(使用的是pipe，会自动调用<code>writable.write</code>)，都会将数据添加到<code>output.txt</code>后。</p>
+<h2 id="Process流"><a href="#Process流" class="headerlink" title="Process流"></a>Process流</h2><p>在第一章中，我们提到过全局<code>process</code>对象。除了<code>process.argv</code>和<code>process.execPath</code>等属性外，它还包含我们的应用程序可以使用的流。</p>
+<h3 id="process-stdin"><a href="#process-stdin" class="headerlink" title="process.stdin"></a>process.stdin</h3><p><code>process.stdin</code>是一个标准输入流(<code>standard input</code>)，用于读取用户的输入。我们可以通过以下代码创建一个简单的<code>REPL（Read-Eval-Print Loop）</code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> readline <span class="keyword">from</span> <span class="string">&#x27;readline&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> rl = readline.<span class="title function_">createInterface</span>(&#123;</span><br><span class="line">  <span class="attr">input</span>: process.<span class="property">stdin</span>,</span><br><span class="line">  <span class="attr">output</span>: process.<span class="property">stdout</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">rl.<span class="title function_">question</span>(<span class="string">&#x27;What is your name? &#x27;</span>, <span class="function">(<span class="params">name: <span class="built_in">any</span></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Hello, <span class="subst">$&#123;name&#125;</span>!`</span>);</span><br><span class="line">  rl.<span class="title function_">close</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>在这个例子中，<code>readline</code> 模块创建了一个 <code>Interface</code> 对象，将 <code>process.stdin</code> 作为输入流传递给它，然后通过 <code>rl.question()</code> 方法向用户提出一个问题，并在用户输入回答后，将回答作为参数传递给回调函数。</p>
+<p><code>process.stdin</code> 可以通过监听 <code>data</code> 事件来读取用户输入的数据，例如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">process.<span class="property">stdin</span>.<span class="title function_">on</span>(<span class="string">&#x27;data&#x27;</span>, <span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Received: <span class="subst">$&#123;data&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这段代码会打印出用户输入的数据。当用户按下回车键时，Node.js 会将输入的数据作为一个 Buffer 对象触发 <code>data</code> 事件，然后程序可以通过该事件的回调函数来处理数据。</p>
+<h3 id="process-stdout-和-process-stderr"><a href="#process-stdout-和-process-stderr" class="headerlink" title="process.stdout 和 process.stderr"></a>process.stdout 和 process.stderr</h3><p><code>process.stdout</code>和<code>process.stderr</code>是一个可写流。它们被用在<code>console.log()</code>和<code>console.error()</code>,向它们写入文本就会在控制台中输出。我们可以轻松地利用它们来记录文件：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> readable = fs.<span class="title function_">createReadStream</span>(<span class="string">&#x27;./test.txt&#x27;</span>);</span><br><span class="line">readable.<span class="title function_">pipe</span>(process.<span class="property">stdout</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在本文中，我们介绍了可写流：如何使用它们来处理文件以及如何通过管道与可读流结合使用。我们还实现了可写流来处理文件，其中包括编写 _write 函数。我们还学习了如何通过 process.stdin 流传递附加数据以及 process.stdout 和 process.stderr 流的作用。</p>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/Node/" class="">
+              Node
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Ryo</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2023/04/05/node/nodejs-ts-5/" target="_blank" title="Node.js TypeScript#5. Writable Stream(可写流)">https://saebaryoo.github.io/2023/04/05/node/nodejs-ts-5/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2023/04/05/node/nodejs-ts-4/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">Node.js TypeScript#4. Readable Stream(可读流)</div>
+      </div>
+      <!-- <div class="content">
+        在Nodejs中，Stream是非常重要的，我们可以通过Stream来高效的读写数据。比如在处理文件或者处理http请求
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <!-- 文章详情页右侧目录 -->
+
+  <div class="toc-aside">
+    <div class="toc-main">
+      <div class="toc-aside-title">
+        <i class="fas fa-list-ul" aria-hidden="true"></i><span>本文目录</span>
+        
+          <div class="toc-open-close">本文目录</div>
+        
+      </div>
+      <div class="toc-content">
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 手机端目录按钮 -->
+  <div id="toc-mobile-btn">
+    <i class="fas fa-list-ul" aria-hidden="true"></i>
+  </div>
+
+
+<script>
+  function closeToc(init) {
+    $(".toc-aside").css({'width': 0, 'padding': 0, 'transition': init ?  'noe' : 'width 0.3s' });
+    $(".toc-content").css({'width': 0});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'none'});
+    $(".main-content").css({'width': '75%', 'margin-left': 'auto', 'margin-right': 'auto',});
+  };
+  function openToc() {
+    $(".main-content").css({'width': '65%', 'margin-right': '10px', 'margin-left': 'calc(35% - 350px)'});
+    $(".toc-aside").css({'width': '300px', 'padding': '0 10px', 'transition': 'width 0.3s'});
+    $(".toc-content").css({'width': '300px'});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'inline-block'});
+  }
+  function openBtnClickFn () {
+    let openOrCloseBtn = $('.toc-aside .toc-aside-title .toc-open-close');
+    let open = eval('' || 'true');
+    openOrCloseBtn.click(function() {
+      if (open) {
+        closeToc();
+        open = false;
+      } else {
+        openToc();
+        open = true;
+      }
+    });
+  };
+  openBtnClickFn();
+  initCloseTocWidth(true);
+
+  function initCloseTocWidth(init) {
+    if (window.innerWidth >= 992) {
+      let isClose = false;
+      isClose && closeToc(init)
+    }
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    $(".toc-aside").css({'transition': 'no'});
+  })
+  document.addEventListener('pjax:complete', function () {
+    openBtnClickFn();
+  })
+  
+</script>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
   <script>
-  function typedFn() {
-    const el = '#archive-header-desc';
-    const type = 'archive';
-    let desc = '春有百花秋有月，夏有凉风冬有雪'
-    var typed = new Typed(el, {
-      strings: [desc],
-      startDelay: 100,
-      typeSpeed: 100,
-      loop: true,
-      backSpeed: 50,
-      showCursor: true
-    });
-  }
-  typedFn();
-</script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
   
-  </div>
-  <div class="mask-box"></div>
-</div>
-
-<div class="archive-video">
-  <video class="full-video" autoplay loop muted>
-      <source style="width: 100%;height: 100vh;" src="/">
-  </video>
-  <div class="video-header-title">
-    archive
-  </div>
-  <div class="video-header-desc">
-  
-      <span class="title" id="archive-video-header-desc"></span>
-      <script>
-  function typedFn() {
-    const el = '#archive-video-header-desc';
-    const type = 'archive';
-    let desc = '春有百花秋有月，夏有凉风冬有雪'
-    var typed = new Typed(el, {
-      strings: [desc],
-      startDelay: 100,
-      typeSpeed: 100,
-      loop: true,
-      backSpeed: 50,
-      showCursor: true
-    });
-  }
-  typedFn();
 </script>
-      
-  </div>
-  <div class="mask-box"></div>
-</div>
 
-<!-- hash算法 -->
-
-
-<div class="archive-main">
-  <section class="archive">
-    <div class="archive-content">
-      <ul class="post-archive">
-        
-        
-          
-            
-            <div class="year" data-aos="zoom-in-up">
-                <div class="bullet"></div>
-                <a href="/archives/2023">2023</a>
-            </div>
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/02/27/javascript/javascript-she-ji-mo-shi/0.she-ji-yuan-ze/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/2.jpg" class="lazyload placeholder" data-srcset="/medias/2.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">02-27</span>
-              </div>
-              <a class="post-title" href="/2023/02/27/javascript/javascript-she-ji-mo-shi/0.she-ji-yuan-ze/">JavaScript设计模式 -- 设计原则</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/02/27/javascript/javascript-she-ji-mo-shi/1.dan-li-mo-shi/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/10.jpg" class="lazyload placeholder" data-srcset="/medias/10.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">02-27</span>
-              </div>
-              <a class="post-title" href="/2023/02/27/javascript/javascript-she-ji-mo-shi/1.dan-li-mo-shi/">JavaScript设计模式 -- 1.单例模式</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/02/27/javascript/javascript-she-ji-mo-shi/2.ce-lue-mo-shi/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/13.jpg" class="lazyload placeholder" data-srcset="/medias/13.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">02-27</span>
-              </div>
-              <a class="post-title" href="/2023/02/27/javascript/javascript-she-ji-mo-shi/2.ce-lue-mo-shi/">JavaScript设计模式 -- 2.策略模式</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/02/27/mian-shi-zong-jie/5-qian-duan-xing-neng-you-hua/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">02-27</span>
-              </div>
-              <a class="post-title" href="/2023/02/27/mian-shi-zong-jie/5-qian-duan-xing-neng-you-hua/">前端性能优化篇</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/02/27/yi-dong-duan/h5-kai-fa-chang-jian-wen-ti/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">02-27</span>
-              </div>
-              <a class="post-title" href="/2023/02/27/yi-dong-duan/h5-kai-fa-chang-jian-wen-ti/">移动端开发H5页面，各种问题介绍</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/02/27/shu-ju-ku/1.mysql/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/15.jpg" class="lazyload placeholder" data-srcset="/medias/15.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">02-27</span>
-              </div>
-              <a class="post-title" href="/2023/02/27/shu-ju-ku/1.mysql/">mysql基础</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/02/27/react/reactssr/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/6.jpg" class="lazyload placeholder" data-srcset="/medias/6.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">02-27</span>
-              </div>
-              <a class="post-title" href="/2023/02/27/react/reactssr/">React SSR（Server Side Render）</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/02/27/shell/npm-ming-ling/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/5.jpg" class="lazyload placeholder" data-srcset="/medias/5.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">02-27</span>
-              </div>
-              <a class="post-title" href="/2023/02/27/shell/npm-ming-ling/">npm 配置</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/02/27/shell/git-ming-ling/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/8.jpg" class="lazyload placeholder" data-srcset="/medias/8.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">02-27</span>
-              </div>
-              <a class="post-title" href="/2023/02/27/shell/git-ming-ling/">git 命令大全</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/02/27/javascript/shuang-xiang-bang-ding/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/3.jpg" class="lazyload placeholder" data-srcset="/medias/3.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">02-27</span>
-              </div>
-              <a class="post-title" href="/2023/02/27/javascript/shuang-xiang-bang-ding/">Proxy构造函数</a>
-            </div>
-          </li>
-        
-      </ul>
-    </div>
-  </section>
-  <div class="w-70">
-    
-  <!-- <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/archives/page/5/">上一页</a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/4/">4</a><a class="page-number" href="/archives/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/archives/page/7/">7</a><a class="page-number" href="/archives/page/8/">8</a><a class="extend next" rel="next" href="/archives/page/7/">下一页</a>
-  </nav> -->
-  <div class="page-nav">
-    
-      <a href="/archives/page/5/"
-         class="page-nav-pre">
-         <i class="fas fa-angle-left"></i><span class="ml-5">上一页</span>
-      </a>
-    
-    <div class="page-info">
-        <div class="page-info-text">6 / 8</div>
-    </div>
-    
-      <a href="/archives/page/7/"
-         class="page-nav-next">
-          <span class="mr-5">下一页</span><i class="fas fa-angle-right"></i>
-      </a>
-      
-  </div>
-
-  </div>
-</div>
 
       </main>
     </div>

@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>Node.js TypeScript#3. Readable Stream(可读流) | Ryo的小站</title>
+  <title>Node.js TypeScript#4. Readable Stream(可读流) | Ryo的小站</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -504,14 +504,14 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('/medias/9.jpg')">
+  background-position: center center;position: relative;background-image:url('/medias/4.jpg')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        Node.js TypeScript#3. Readable Stream(可读流)
+        Node.js TypeScript#4. Readable Stream(可读流)
       </span>
     </div>
     
@@ -570,7 +570,7 @@
 <li>使用<code>StringDecoder</code><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">StringDecoder</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;string_decoder&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> decoder = <span class="keyword">new</span> <span class="title class_">StringDecoder</span>(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> stream = fs.<span class="title function_">createReadStream</span>(<span class="string">&#x27;./file.txt&#x27;</span>);</span><br><span class="line"></span><br><span class="line">stream.<span class="title function_">on</span>(<span class="string">&#x27;data&#x27;</span>, <span class="function">(<span class="params">chunk</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;New chunk of data:&#x27;</span>, decoder.<span class="title function_">write</span>(chunk <span class="keyword">as</span> <span class="title class_">Buffer</span>));</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
 <li>还有一种就是通过在<code>createReadStream</code>中明确定义字符编码<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> stream = fs.<span class="title function_">createReadStream</span>(<span class="string">&#x27;./file.txt&#x27;</span>, &#123;<span class="attr">encoding</span>: <span class="string">&#x27;utf-8&#x27;</span>&#125;);</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h2 id="为什么会触发data事件？"><a href="#为什么会触发data事件？" class="headerlink" title="为什么会触发data事件？"></a>为什么会触发<code>data</code>事件？</h2><p>在上面的示例中，我们通过在<code>data</code>事件上添加监听器，使<code>stream</code>开始发出<code>chunk</code>。</p>
+<h2 id="关于流的两个模式"><a href="#关于流的两个模式" class="headerlink" title="关于流的两个模式"></a>关于流的两个模式</h2><p>在上面的示例中，我们通过在<code>data</code>事件上添加监听器，使<code>stream</code>开始发出<code>chunk</code>。</p>
 <p>那么如果我们在创建<code>stream</code>后一段时间再添加回调函数，结果是什么呢？</p>
 <p>我们仍然可以监听到数据。</p>
 <p>想要更好的理解它，我们需要去看一下可读流的模式。<code>readable stream</code>有两个模式:</p>
@@ -621,7 +621,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/2023/04/05/node/nodejs-ts-4/" target="_blank" title="Node.js TypeScript#3. Readable Stream(可读流)">https://saebaryoo.github.io/2023/04/05/node/nodejs-ts-4/</a>
+    <a href="/2023/04/05/node/nodejs-ts-4/" target="_blank" title="Node.js TypeScript#4. Readable Stream(可读流)">https://saebaryoo.github.io/2023/04/05/node/nodejs-ts-4/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
@@ -638,6 +638,24 @@
 <div class="post-nav">
 
 
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2023/04/05/node/nodejs-ts-5/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">Node.js TypeScript#5. Writable Stream(可写流)</div>
+      </div>
+      
+      <!-- <div class="content">
+        在这篇文章中，我们会继续讲解stream，不过这次我们重点说的是writable stream和pipe。我们会通过几个
+      </div> -->
+    </a>
+  </div>
 
 
 
