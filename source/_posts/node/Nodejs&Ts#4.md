@@ -1,5 +1,5 @@
 ---
-title: Node.js TypeScript#3. Readable Stream(可读流)
+title: Node.js TypeScript#4. Readable Stream(可读流)
 date: 2023-04-05 10:24
 categories:
 - Node
@@ -75,7 +75,7 @@ stream.on('data', (chunk) => {
 const stream = fs.createReadStream('./file.txt', {encoding: 'utf-8'});
 ```
 
-## 为什么会触发`data`事件？
+## 关于流的两个模式
 在上面的示例中，我们通过在`data`事件上添加监听器，使`stream`开始发出`chunk`。
 
 那么如果我们在创建`stream`后一段时间再添加回调函数，结果是什么呢？
