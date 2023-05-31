@@ -2,7 +2,7 @@
 title: 如何搭建一个前端开发环境(六):如何优化webpack?
 categories:
 - 前端
-tags: 
+tags:
 - 工程化
 - Webpack
 ---
@@ -202,7 +202,7 @@ module.exports = {
 在这个安装的过程中可能会出现错误(我是在使用 **imagemin** 时出现的，可能和@squoosh/lib无关)，可以按照以下方法逐步排除（我的是在mac中出现的，如果是在别的环境，就按照别的环境的命令安装）
 - node lib/install.js error: `brew install automake autoconf libtool` https://github.com/imagemin/imagemin-mozjpeg/issues/11
 - Permission denied @ apply2files: `sudo chown -R ${LOGNAME}:staff /usr/local/lib/node_modules`  https://stackoverflow.com/questions/61899041/macos-permission-denied-apply2files-usr-local-lib-node-modules-expo-cli-n
-- Build error: no nasm (Netwide Assembler) found: `brew install nasm` 
+- Build error: no nasm (Netwide Assembler) found: `brew install nasm`
 
 然后就是在生产构建流程中加入以下配置
 ```js
@@ -234,7 +234,7 @@ module.exports = {
 
 ```js
 module.exports = {
-  
+
   optimization: {
     runtimeChunk: 'single',
     splitChunks: {
@@ -280,4 +280,10 @@ module.exports = {
     'react-router-dom': 'react-router-dom',
   },
 }
+```
+
+然后将这些排除的第三方库的稳定包采用cdn部署，并在项目的入口`index.html`文件中引入
+```html
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 ```

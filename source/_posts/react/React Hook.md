@@ -290,7 +290,62 @@ const MyInput = forwardRef((props, ref) => {
 
 **这样就杜绝了开发者通过ref取到DOM后，执行不该被使用的API，出现ref失控的情况。**
 
+### 使用useImperativeHandle回传子组件内定义的方法
+在一些情况下，父组件不光需要获取子组件的DOM,可能还需要获取子组件内的方法。那我们也可以通过`useImperativeHandle`来将方法绑定到ref上，然后再传给父组件
+```tsx
+type ChildRef = {
+  getBoundingClientRect: () => DOMRect | undefined;
+  handleClick: () => void;
+};
+const Father: React.FC = () => {
+  const childRef = useRef<ChildRef>(null);
 
+  useEffect(() => {
+    console.log(childRef.current?.getBoundingClientRect());
+  }, []);
+
+  const handleClick = () => {
+    childRef.current?.handleClick();
+  };
+  return (
+    <div>
+      <h1>father page</h1>
+      <button onClick={handleClick}>父组件添加</button>
+      <Child ref={childRef} />
+    </div>
+  );
+};
+
+export default Father;
+
+const Child = React.forwardRef((props, ref: Ref<ChildRef>) => {
+  // 子组件内重新定义ref获取子组件的dom
+  const divRef = useRef<HTMLDivElement>(null);
+  const [count, setCount] = useState(0);
+  const handleClick = () => {
+    setCount((prev) => prev + 1);
+  };
+
+  useImperativeHandle(ref, () => {
+    return {
+      // 获取子组件DOM的getBoundingClientRect 方法
+      getBoundingClientRect: () => {
+        return divRef.current?.getBoundingClientRect();
+      },
+      // 获取子组件自定义的 handleClick 方法
+      handleClick: () => handleClick(),
+    };
+  });
+
+  return (
+    <div ref={divRef}>
+      {count}
+      <button onClick={handleClick}>添加</button>
+    </div>
+  );
+});
+
+```
 
 
 ## useCallback
