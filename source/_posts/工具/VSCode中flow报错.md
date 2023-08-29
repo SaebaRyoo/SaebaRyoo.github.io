@@ -3,6 +3,8 @@ title: 关于查看React源码使用flow，却提示ts类型检查的错误
 date: 2022-11-01 21:50
 categories:
 - 工具
+tags:
+- vscode
 ---
 
 ## 问题
