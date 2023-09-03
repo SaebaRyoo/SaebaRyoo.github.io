@@ -1,7 +1,7 @@
 ---
 title: API with Nestjs#1 Controllers, 路由和模块(module)结构
 categories:
-- Node
+- Nest.js
 tags:
 - Node
 - Nest.js

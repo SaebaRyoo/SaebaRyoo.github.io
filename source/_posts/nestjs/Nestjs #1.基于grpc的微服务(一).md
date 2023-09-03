@@ -1,3 +1,12 @@
+---
+title: Nestjs#1.基于grpc的微服务(一)
+categories:
+- Nest.js
+tags:
+- Nest.js
+- Node
+---
+
 ## Why
 [微服务的优缺点](https://cloud.tencent.com/developer/article/1877057)
 
@@ -334,3 +343,7 @@ return this.apiGatewayService.createOrder(data);
 
 在命令行输入`curl -X POST http://localhost:3000/order`
 然后输出`{"status":200,"id":1}%`即表示成功
+
+
+## 相关链接
+[protoc: command not found (Linux)](https://stackoverflow.com/questions/47704968/protoc-command-not-found-linux)

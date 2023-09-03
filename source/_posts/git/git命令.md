@@ -1,8 +1,8 @@
 ---
 title: git 命令大全
 categories:
-- 前端
-tags: 
+- git
+tags:
 - git
 ---
 
@@ -372,7 +372,7 @@ git stash drop
 ```
 
 
-## commit 
+## commit
 ```shell
 # 提交暂存区到仓库区附带提交信息
 git commit -m [message]
