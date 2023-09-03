@@ -526,8 +526,8 @@
         <span class="post-detail-header_categories">
           <i class="iconfont iconbookmark1"></i> 分类：
           
-            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-detail-header_category">
-              前端
+            <a href="/categories/git/" class="post-detail-header_category">
+              git
             </a>
           
         </span>
@@ -626,6 +626,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将experimentBranch应用到master上面</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git rebase &lt;basebranch&gt; &lt;topicbranch&gt;</span></span><br><span class="line">git rebase master experimentBranch</span><br><span class="line">reset (谨慎使用)</span><br><span class="line">将当前的头指针复位到一个特定的状态。这样可以使你撤销 merge、pull、commits、add 等 这是个很强大的命令，但是在使用时一定要清楚其所产生的后果</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">使 staging 区域恢复到上次提交时的状态，不改变现在的工作目录</span></span><br><span class="line">git reset</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">使 staging 区域恢复到上次提交时的状态，覆盖现在的工作目录</span></span><br><span class="line">git reset --hard</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将当前分支恢复到某次提交，不改变现在的工作目录</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在工作目录中所有的改变仍然存在</span></span><br><span class="line">git reset dha78as</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将当前分支恢复到某次提交，覆盖现在的工作目录</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">并且删除所有未提交的改变和指定提交之后的所有提交</span></span><br><span class="line">git reset --hard dha78as</span><br></pre></td></tr></table></figure>
 
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">生成一个可供发布的压缩包</span></span><br><span class="line">git archive</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">打补丁</span></span><br><span class="line">git apply ../sync.patch</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">测试补丁能否成功</span></span><br><span class="line">git apply --check ../sync.patch</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看Git的版本</span></span><br><span class="line">git --version</span><br></pre></td></tr></table></figure>
+
       </div>
       <div class="post-tags-categories">
         
@@ -646,7 +647,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/2023/04/22/shell/git-ming-ling/" target="_blank" title="git 命令大全">https://saebaryoo.github.io/2023/04/22/shell/git-ming-ling/</a>
+    <a href="/2023/04/22/git/git-ming-ling/" target="_blank" title="git 命令大全">https://saebaryoo.github.io/2023/04/22/git/git-ming-ling/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
