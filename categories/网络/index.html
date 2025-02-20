@@ -539,17 +539,14 @@
         <div class="post-info">
           <div class="post-time">
             <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2024-12-24</span>
+            <span class="post-time">2023-09-18</span>
           </div>
           <div class="post-title">
-            <a class="post-title-link" href="/2024/12/24/wang-luo/qing-qiu-url-fa-sheng-liao-shi-me/">请求一个url时发生了什么?</a>
+            <a class="post-title-link" href="/2023/09/18/wang-luo/webworker-he-serviceworker/">Web Worker和Service Worker</a>
           </div>
           <div class="post-meta">
             <div class="post-tags">
               <!-- 文章详情页的标签 -->
-
-    <i class="iconfont icontag"></i>
-    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
 
             </div>
             <div class="post-categories">
@@ -564,31 +561,25 @@
             </div>
           </div>
           <div class="post-img-mobile">
-            <a href="/2024/12/24/wang-luo/qing-qiu-url-fa-sheng-liao-shi-me/" style="background-size: cover; 
+            <a href="/2023/09/18/wang-luo/webworker-he-serviceworker/" style="background-size: cover; 
               background-position: center center;">
-              <img class="lazyload lazyload placeholder" src="/medias/9.jpg" class="lazyload placeholder" data-srcset="/medias/9.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
             </a>
           </div>
           <div class="post-content">
-            
-我的掘金
-
-网上的信息都比较碎片化，所以想自己画一张完整的图并总结
-宏观分析下图为网络连接的大致流程
-
-TODO: 步骤分析用户输入urlDNS解析TCP连接IP寻址网卡数据传输
+            WebWorker 介绍什么是 Web Worker？为 JS 创造多线程的环境，允许主线程创建 Worker 线程，将一些任务分配给后者运行。也就是主线程和 worker 线程并行。等到 Worker 线程完成计算的任务，再通过 post
           </div>
         </div>
         <div class="post-more">
-          <a href="/2024/12/24/wang-luo/qing-qiu-url-fa-sheng-liao-shi-me/">
+          <a href="/2023/09/18/wang-luo/webworker-he-serviceworker/">
             <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
           </a>
         </div>
       </div>
       <div class="post-img">
-        <a href="/2024/12/24/wang-luo/qing-qiu-url-fa-sheng-liao-shi-me/" style="background-size: cover; 
+        <a href="/2023/09/18/wang-luo/webworker-he-serviceworker/" style="background-size: cover; 
           background-position: center center;">
-          <img class="lazyload lazyload placeholder" src="/medias/9.jpg" class="lazyload placeholder" data-srcset="/medias/9.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+          <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
         </a>
       </div>
     </article>
@@ -599,17 +590,14 @@ TODO: 步骤分析用户输入urlDNS解析TCP连接IP寻址网卡数据传输
         <div class="post-info">
           <div class="post-time">
             <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2024-12-24</span>
+            <span class="post-time">2023-09-18</span>
           </div>
           <div class="post-title">
-            <a class="post-title-link" href="/2024/12/24/wang-luo/tu-jie-dns-yu-ming-jie-xi/">图解dns域名解析</a>
+            <a class="post-title-link" href="/2023/09/18/wang-luo/tcp/">TCP原理</a>
           </div>
           <div class="post-meta">
             <div class="post-tags">
               <!-- 文章详情页的标签 -->
-
-    <i class="iconfont icontag"></i>
-    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
 
             </div>
             <div class="post-categories">
@@ -624,7 +612,278 @@ TODO: 步骤分析用户输入urlDNS解析TCP连接IP寻址网卡数据传输
             </div>
           </div>
           <div class="post-img-mobile">
-            <a href="/2024/12/24/wang-luo/tu-jie-dns-yu-ming-jie-xi/" style="background-size: cover; 
+            <a href="/2023/09/18/wang-luo/tcp/" style="background-size: cover; 
+              background-position: center center;">
+              <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+            </a>
+          </div>
+          <div class="post-content">
+            TCP 的三次握手四次挥手三次握手的过程如下：
+客户端向服务器发送 SYN 包，表示请求连接。
+服务器收到 SYN 包后，向客户端发送 SYN+ACK 包，表示确认请求，并准备好接受数据。
+客户端收到 SYN+ACK 包后，向服务器发送 A
+          </div>
+        </div>
+        <div class="post-more">
+          <a href="/2023/09/18/wang-luo/tcp/">
+            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
+          </a>
+        </div>
+      </div>
+      <div class="post-img">
+        <a href="/2023/09/18/wang-luo/tcp/" style="background-size: cover; 
+          background-position: center center;">
+          <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+        </a>
+      </div>
+    </article>
+  
+    
+    <article class="post reveal" style="flex-direction: row-reverse;   ">
+      <div class="post-main">
+        <div class="post-info">
+          <div class="post-time">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <span class="post-time">2023-09-18</span>
+          </div>
+          <div class="post-title">
+            <a class="post-title-link" href="/2023/09/18/wang-luo/websocket/">WebSocket</a>
+          </div>
+          <div class="post-meta">
+            <div class="post-tags">
+              <!-- 文章详情页的标签 -->
+
+            </div>
+            <div class="post-categories">
+              <!-- 文章详情页的分类 -->
+
+<div class="article-category">
+  <i class="iconfont iconbookmark1"></i>
+  <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
+</div>
+
+
+            </div>
+          </div>
+          <div class="post-img-mobile">
+            <a href="/2023/09/18/wang-luo/websocket/" style="background-size: cover; 
+              background-position: center center;">
+              <img class="lazyload lazyload placeholder" src="/medias/15.jpg" class="lazyload placeholder" data-srcset="/medias/15.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+            </a>
+          </div>
+          <div class="post-content">
+            什么是 websocket？websocket 是一种网络传输协议，它和 http 一样，都位于 OSI 模型的应用层。且都依赖于 TCP 协议。但是他的协议是 ws 或 wss。
+功能？websocket 协议支持浏览器于 web 服务器
+          </div>
+        </div>
+        <div class="post-more">
+          <a href="/2023/09/18/wang-luo/websocket/">
+            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
+          </a>
+        </div>
+      </div>
+      <div class="post-img">
+        <a href="/2023/09/18/wang-luo/websocket/" style="background-size: cover; 
+          background-position: center center;">
+          <img class="lazyload lazyload placeholder" src="/medias/15.jpg" class="lazyload placeholder" data-srcset="/medias/15.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+        </a>
+      </div>
+    </article>
+  
+    
+    <article class="post reveal" style="   ">
+      <div class="post-main">
+        <div class="post-info">
+          <div class="post-time">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <span class="post-time">2023-09-04</span>
+          </div>
+          <div class="post-title">
+            <a class="post-title-link" href="/2023/09/04/wang-luo/cookie/">cookie详解</a>
+          </div>
+          <div class="post-meta">
+            <div class="post-tags">
+              <!-- 文章详情页的标签 -->
+
+    <i class="iconfont icontag"></i>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
+
+            </div>
+            <div class="post-categories">
+              <!-- 文章详情页的分类 -->
+
+<div class="article-category">
+  <i class="iconfont iconbookmark1"></i>
+  <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
+</div>
+
+
+            </div>
+          </div>
+          <div class="post-img-mobile">
+            <a href="/2023/09/04/wang-luo/cookie/" style="background-size: cover; 
+              background-position: center center;">
+              <img class="lazyload lazyload placeholder" src="/medias/12.jpg" class="lazyload placeholder" data-srcset="/medias/12.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+            </a>
+          </div>
+          <div class="post-content">
+            Cookie 相关知识
+github
+掘金
+
+常见问题主域名可以访问子域名的 cookie 吗？在浏览器中，主域名是无法直接访问子域名的 cookie 的，这是由同源策略所限制的。同源策略要求两个页面只有在协议、主机和端口号都相同的情况下，
+          </div>
+        </div>
+        <div class="post-more">
+          <a href="/2023/09/04/wang-luo/cookie/">
+            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
+          </a>
+        </div>
+      </div>
+      <div class="post-img">
+        <a href="/2023/09/04/wang-luo/cookie/" style="background-size: cover; 
+          background-position: center center;">
+          <img class="lazyload lazyload placeholder" src="/medias/12.jpg" class="lazyload placeholder" data-srcset="/medias/12.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+        </a>
+      </div>
+    </article>
+  
+    
+    <article class="post reveal" style="flex-direction: row-reverse;   ">
+      <div class="post-main">
+        <div class="post-info">
+          <div class="post-time">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <span class="post-time">2023-09-04</span>
+          </div>
+          <div class="post-title">
+            <a class="post-title-link" href="/2023/09/04/wang-luo/https-yuan-li/">HTTPS总结</a>
+          </div>
+          <div class="post-meta">
+            <div class="post-tags">
+              <!-- 文章详情页的标签 -->
+
+            </div>
+            <div class="post-categories">
+              <!-- 文章详情页的分类 -->
+
+<div class="article-category">
+  <i class="iconfont iconbookmark1"></i>
+  <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
+</div>
+
+
+            </div>
+          </div>
+          <div class="post-img-mobile">
+            <a href="/2023/09/04/wang-luo/https-yuan-li/" style="background-size: cover; 
+              background-position: center center;">
+              <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+            </a>
+          </div>
+          <div class="post-content">
+            HTTPShttps 采用对称加密和非对称加密+数字证书的方式，对传输数据进行加密
+对称加密方式如下
+
+客户端发送加密套件列表（就是客户端支持的加密方式）+ client-random
+服务器从加密套件中选择一个加密方式，并生成 servi
+          </div>
+        </div>
+        <div class="post-more">
+          <a href="/2023/09/04/wang-luo/https-yuan-li/">
+            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
+          </a>
+        </div>
+      </div>
+      <div class="post-img">
+        <a href="/2023/09/04/wang-luo/https-yuan-li/" style="background-size: cover; 
+          background-position: center center;">
+          <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+        </a>
+      </div>
+    </article>
+  
+    
+    <article class="post reveal" style="   ">
+      <div class="post-main">
+        <div class="post-info">
+          <div class="post-time">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <span class="post-time">2023-09-04</span>
+          </div>
+          <div class="post-title">
+            <a class="post-title-link" href="/2023/09/04/wang-luo/http-fa-zhan-yi-ji-ban-ben-dui-bi/">HTTP的发展以及个版本对比</a>
+          </div>
+          <div class="post-meta">
+            <div class="post-tags">
+              <!-- 文章详情页的标签 -->
+
+            </div>
+            <div class="post-categories">
+              <!-- 文章详情页的分类 -->
+
+<div class="article-category">
+  <i class="iconfont iconbookmark1"></i>
+  <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
+</div>
+
+
+            </div>
+          </div>
+          <div class="post-img-mobile">
+            <a href="/2023/09/04/wang-luo/http-fa-zhan-yi-ji-ban-ben-dui-bi/" style="background-size: cover; 
+              background-position: center center;">
+              <img class="lazyload lazyload placeholder" src="/medias/13.jpg" class="lazyload placeholder" data-srcset="/medias/13.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+            </a>
+          </div>
+          <div class="post-content">
+            http&#x2F;0.9 http&#x2F;1.0 http&#x2F;1.1 的发展http&#x2F;0.9
+http&#x2F;0.9 是 1991 年提出的，该版本的只有 get 请求，被用来传输 html 超文本内容，如 GE
+          </div>
+        </div>
+        <div class="post-more">
+          <a href="/2023/09/04/wang-luo/http-fa-zhan-yi-ji-ban-ben-dui-bi/">
+            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
+          </a>
+        </div>
+      </div>
+      <div class="post-img">
+        <a href="/2023/09/04/wang-luo/http-fa-zhan-yi-ji-ban-ben-dui-bi/" style="background-size: cover; 
+          background-position: center center;">
+          <img class="lazyload lazyload placeholder" src="/medias/13.jpg" class="lazyload placeholder" data-srcset="/medias/13.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+        </a>
+      </div>
+    </article>
+  
+    
+    <article class="post reveal" style="flex-direction: row-reverse;   ">
+      <div class="post-main">
+        <div class="post-info">
+          <div class="post-time">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <span class="post-time">2023-09-04</span>
+          </div>
+          <div class="post-title">
+            <a class="post-title-link" href="/2023/09/04/wang-luo/tu-jie-dns-yu-ming-jie-xi/">图解dns域名解析</a>
+          </div>
+          <div class="post-meta">
+            <div class="post-tags">
+              <!-- 文章详情页的标签 -->
+
+            </div>
+            <div class="post-categories">
+              <!-- 文章详情页的分类 -->
+
+<div class="article-category">
+  <i class="iconfont iconbookmark1"></i>
+  <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
+</div>
+
+
+            </div>
+          </div>
+          <div class="post-img-mobile">
+            <a href="/2023/09/04/wang-luo/tu-jie-dns-yu-ming-jie-xi/" style="background-size: cover; 
               background-position: center center;">
               <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
             </a>
@@ -639,13 +898,13 @@ TODO: 步骤分析用户输入urlDNS解析TCP连接IP寻址网卡数据传输
           </div>
         </div>
         <div class="post-more">
-          <a href="/2024/12/24/wang-luo/tu-jie-dns-yu-ming-jie-xi/">
-            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
+          <a href="/2023/09/04/wang-luo/tu-jie-dns-yu-ming-jie-xi/">
+            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
           </a>
         </div>
       </div>
       <div class="post-img">
-        <a href="/2024/12/24/wang-luo/tu-jie-dns-yu-ming-jie-xi/" style="background-size: cover; 
+        <a href="/2023/09/04/wang-luo/tu-jie-dns-yu-ming-jie-xi/" style="background-size: cover; 
           background-position: center center;">
           <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
         </a>
@@ -653,22 +912,22 @@ TODO: 步骤分析用户输入urlDNS解析TCP连接IP寻址网卡数据传输
     </article>
   
     
-    <article class="post reveal" style="flex-direction: row-reverse;   ">
+    <article class="post reveal" style="   ">
       <div class="post-main">
         <div class="post-info">
           <div class="post-time">
             <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2024-12-24</span>
+            <span class="post-time">2023-09-04</span>
           </div>
           <div class="post-title">
-            <a class="post-title-link" href="/2024/12/24/wang-luo/tu-jie-zheng-fan-xiang-dai-li/">图解正反向代理</a>
+            <a class="post-title-link" href="/2023/09/04/wang-luo/liu-lan-qi-xiang-guan-zhi-shi/">浏览器相关知识</a>
           </div>
           <div class="post-meta">
             <div class="post-tags">
               <!-- 文章详情页的标签 -->
 
     <i class="iconfont icontag"></i>
-    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
 
             </div>
             <div class="post-categories">
@@ -683,7 +942,61 @@ TODO: 步骤分析用户输入urlDNS解析TCP连接IP寻址网卡数据传输
             </div>
           </div>
           <div class="post-img-mobile">
-            <a href="/2024/12/24/wang-luo/tu-jie-zheng-fan-xiang-dai-li/" style="background-size: cover; 
+            <a href="/2023/09/04/wang-luo/liu-lan-qi-xiang-guan-zhi-shi/" style="background-size: cover; 
+              background-position: center center;">
+              <img class="lazyload lazyload placeholder" src="/medias/6.jpg" class="lazyload placeholder" data-srcset="/medias/6.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+            </a>
+          </div>
+          <div class="post-content">
+            浏览器的工作原理https://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/
+CSS
+css 外部资源的由独立的线程异步加载
+css 会阻塞 DOM 渲染，不会阻塞解析
+          </div>
+        </div>
+        <div class="post-more">
+          <a href="/2023/09/04/wang-luo/liu-lan-qi-xiang-guan-zhi-shi/">
+            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
+          </a>
+        </div>
+      </div>
+      <div class="post-img">
+        <a href="/2023/09/04/wang-luo/liu-lan-qi-xiang-guan-zhi-shi/" style="background-size: cover; 
+          background-position: center center;">
+          <img class="lazyload lazyload placeholder" src="/medias/6.jpg" class="lazyload placeholder" data-srcset="/medias/6.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+        </a>
+      </div>
+    </article>
+  
+    
+    <article class="post reveal" style="flex-direction: row-reverse;   ">
+      <div class="post-main">
+        <div class="post-info">
+          <div class="post-time">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <span class="post-time">2023-09-04</span>
+          </div>
+          <div class="post-title">
+            <a class="post-title-link" href="/2023/09/04/wang-luo/tu-jie-zheng-fan-xiang-dai-li/">图解正反向代理</a>
+          </div>
+          <div class="post-meta">
+            <div class="post-tags">
+              <!-- 文章详情页的标签 -->
+
+            </div>
+            <div class="post-categories">
+              <!-- 文章详情页的分类 -->
+
+<div class="article-category">
+  <i class="iconfont iconbookmark1"></i>
+  <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
+</div>
+
+
+            </div>
+          </div>
+          <div class="post-img-mobile">
+            <a href="/2023/09/04/wang-luo/tu-jie-zheng-fan-xiang-dai-li/" style="background-size: cover; 
               background-position: center center;">
               <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
             </a>
@@ -697,13 +1010,13 @@ TODO: 步骤分析用户输入urlDNS解析TCP连接IP寻址网卡数据传输
           </div>
         </div>
         <div class="post-more">
-          <a href="/2024/12/24/wang-luo/tu-jie-zheng-fan-xiang-dai-li/">
+          <a href="/2023/09/04/wang-luo/tu-jie-zheng-fan-xiang-dai-li/">
             <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
           </a>
         </div>
       </div>
       <div class="post-img">
-        <a href="/2024/12/24/wang-luo/tu-jie-zheng-fan-xiang-dai-li/" style="background-size: cover; 
+        <a href="/2023/09/04/wang-luo/tu-jie-zheng-fan-xiang-dai-li/" style="background-size: cover; 
           background-position: center center;">
           <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
         </a>
@@ -716,17 +1029,17 @@ TODO: 步骤分析用户输入urlDNS解析TCP连接IP寻址网卡数据传输
         <div class="post-info">
           <div class="post-time">
             <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2024-12-24</span>
+            <span class="post-time">2023-09-04</span>
           </div>
           <div class="post-title">
-            <a class="post-title-link" href="/2024/12/24/wang-luo/http-fa-zhan-yi-ji-ban-ben-dui-bi/">HTTP的发展以及个版本对比</a>
+            <a class="post-title-link" href="/2023/09/04/wang-luo/qing-qiu-url-fa-sheng-liao-shi-me/">请求一个url时发生了什么?</a>
           </div>
           <div class="post-meta">
             <div class="post-tags">
               <!-- 文章详情页的标签 -->
 
     <i class="iconfont icontag"></i>
-    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
 
             </div>
             <div class="post-categories">
@@ -741,308 +1054,31 @@ TODO: 步骤分析用户输入urlDNS解析TCP连接IP寻址网卡数据传输
             </div>
           </div>
           <div class="post-img-mobile">
-            <a href="/2024/12/24/wang-luo/http-fa-zhan-yi-ji-ban-ben-dui-bi/" style="background-size: cover; 
+            <a href="/2023/09/04/wang-luo/qing-qiu-url-fa-sheng-liao-shi-me/" style="background-size: cover; 
               background-position: center center;">
-              <img class="lazyload lazyload placeholder" src="/medias/13.jpg" class="lazyload placeholder" data-srcset="/medias/13.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              <img class="lazyload lazyload placeholder" src="/medias/9.jpg" class="lazyload placeholder" data-srcset="/medias/9.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
             </a>
           </div>
           <div class="post-content">
-            http&#x2F;0.9 http&#x2F;1.0 http&#x2F;1.1的发展http&#x2F;0.9
-http&#x2F;0.9是1991年提出的，该版本的只有get请求，被用来传输html超文本内容，如 GET /index
+            
+我的掘金
+
+网上的信息都比较碎片化，所以想自己画一张完整的图并总结
+宏观分析下图为网络连接的大致流程
+
+TODO: 步骤分析用户输入 urlDNS 解析TCP 连接IP 寻址网卡数据传输
           </div>
         </div>
         <div class="post-more">
-          <a href="/2024/12/24/wang-luo/http-fa-zhan-yi-ji-ban-ben-dui-bi/">
+          <a href="/2023/09/04/wang-luo/qing-qiu-url-fa-sheng-liao-shi-me/">
             <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
           </a>
         </div>
       </div>
       <div class="post-img">
-        <a href="/2024/12/24/wang-luo/http-fa-zhan-yi-ji-ban-ben-dui-bi/" style="background-size: cover; 
+        <a href="/2023/09/04/wang-luo/qing-qiu-url-fa-sheng-liao-shi-me/" style="background-size: cover; 
           background-position: center center;">
-          <img class="lazyload lazyload placeholder" src="/medias/13.jpg" class="lazyload placeholder" data-srcset="/medias/13.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-        </a>
-      </div>
-    </article>
-  
-    
-    <article class="post reveal" style="flex-direction: row-reverse;   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2024-12-24</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2024/12/24/wang-luo/tcp/">TCP原理</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
-
-    <i class="iconfont icontag"></i>
-    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
-
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
-</div>
-
-
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2024/12/24/wang-luo/tcp/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-            </a>
-          </div>
-          <div class="post-content">
-            TCP的三次握手四次挥手三次握手的过程如下：
-客户端向服务器发送SYN包，表示请求连接。
-服务器收到SYN包后，向客户端发送SYN+ACK包，表示确认请求，并准备好接受数据。
-客户端收到SYN+ACK包后，向服务器发送ACK包，表示确认连接
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2024/12/24/wang-luo/tcp/">
-            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
-          </a>
-        </div>
-      </div>
-      <div class="post-img">
-        <a href="/2024/12/24/wang-luo/tcp/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-        </a>
-      </div>
-    </article>
-  
-    
-    <article class="post reveal" style="   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2024-12-24</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2024/12/24/wang-luo/websocket/">WebSocket</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
-
-    <i class="iconfont icontag"></i>
-    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
-
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
-</div>
-
-
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2024/12/24/wang-luo/websocket/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload lazyload placeholder" src="/medias/15.jpg" class="lazyload placeholder" data-srcset="/medias/15.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-            </a>
-          </div>
-          <div class="post-content">
-            什么是websocket？websocket是一种网络传输协议，它和http一样，都位于OSI模型的应用层。且都依赖于TCP协议。但是他的协议是ws或wss。
-功能？websocket协议支持浏览器于web服务器之间的双向通信。
-在webs
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2024/12/24/wang-luo/websocket/">
-            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
-          </a>
-        </div>
-      </div>
-      <div class="post-img">
-        <a href="/2024/12/24/wang-luo/websocket/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload lazyload placeholder" src="/medias/15.jpg" class="lazyload placeholder" data-srcset="/medias/15.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-        </a>
-      </div>
-    </article>
-  
-    
-    <article class="post reveal" style="flex-direction: row-reverse;   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2024-12-24</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2024/12/24/wang-luo/https-yuan-li/">HTTPS总结</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
-
-    <i class="iconfont icontag"></i>
-    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
-
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
-</div>
-
-
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2024/12/24/wang-luo/https-yuan-li/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-            </a>
-          </div>
-          <div class="post-content">
-            HTTPShttps采用对称加密和非对称加密+数字证书的方式，对传输数据进行加密
-对称加密方式如下
-
-客户端发送加密套件列表（就是客户端支持的加密方式）+ client-random
-服务器从加密套件中选择一个加密方式，并生成service
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2024/12/24/wang-luo/https-yuan-li/">
-            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
-          </a>
-        </div>
-      </div>
-      <div class="post-img">
-        <a href="/2024/12/24/wang-luo/https-yuan-li/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-        </a>
-      </div>
-    </article>
-  
-    
-    <article class="post reveal" style="   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2024-12-24</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2024/12/24/wang-luo/webworker-he-serviceworker/">Web Worker和Service Worker</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
-
-    <i class="iconfont icontag"></i>
-    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
-
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
-</div>
-
-
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2024/12/24/wang-luo/webworker-he-serviceworker/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-            </a>
-          </div>
-          <div class="post-content">
-            WebWorker介绍什么是Web Worker？为JS创造多线程的环境，允许主线程创建Worker线程，将一些任务分配给后者运行。也就是主线程和worker线程并行。等到Worker线程完成计算的任务，再通过postMessage与主线程
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2024/12/24/wang-luo/webworker-he-serviceworker/">
-            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
-          </a>
-        </div>
-      </div>
-      <div class="post-img">
-        <a href="/2024/12/24/wang-luo/webworker-he-serviceworker/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-        </a>
-      </div>
-    </article>
-  
-    
-    <article class="post reveal" style="flex-direction: row-reverse;   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2022-09-29</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2022/09/29/wang-luo/web-an-quan/">常见web安全问题</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
-
-    <i class="iconfont icontag"></i>
-    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a></li></ul>
-
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
-</div>
-
-
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2022/09/29/wang-luo/web-an-quan/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-            </a>
-          </div>
-          <div class="post-content">
-            1. 攻击者如何发起一次csrf（Cross-site request forgery 跨站请求伪造）
-2. 如何实现xss(Cross Site Scripting 跨站脚本攻击)持久性攻击
-3. 如何组织起一次xss（非持久性攻击）
-
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2022/09/29/wang-luo/web-an-quan/">
-            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
-          </a>
-        </div>
-      </div>
-      <div class="post-img">
-        <a href="/2022/09/29/wang-luo/web-an-quan/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+          <img class="lazyload lazyload placeholder" src="/medias/9.jpg" class="lazyload placeholder" data-srcset="/medias/9.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
         </a>
       </div>
     </article>
@@ -1051,6 +1087,22 @@ http&#x2F;0.9是1991年提出的，该版本的只有get请求，被用来传输
 </div>
 <div class="w-70">
   
+  <!-- <nav class="page-nav">
+    <span class="page-number current">1</span><a class="page-number" href="/categories/%E7%BD%91%E7%BB%9C/page/2/">2</a><a class="extend next" rel="next" href="/categories/%E7%BD%91%E7%BB%9C/page/2/">下一页</a>
+  </nav> -->
+  <div class="page-nav">
+    
+    <div class="page-info">
+        <div class="page-info-text">1 / 2</div>
+    </div>
+    
+      <a href="/categories/%E7%BD%91%E7%BB%9C/page/2/"
+         class="page-nav-next">
+          <span class="mr-5">下一页</span><i class="fas fa-angle-right"></i>
+      </a>
+      
+  </div>
+
 </div>
 
       </main>

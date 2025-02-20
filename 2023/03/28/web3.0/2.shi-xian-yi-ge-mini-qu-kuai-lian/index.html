@@ -551,8 +551,8 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <p>我们可以使用Node来实现一个区块链，它的格式如下:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">index</span>: <span class="number">0</span>, <span class="comment">// 索引</span></span><br><span class="line">        <span class="attr">timestamp</span>: <span class="string">&#x27;时间戳&#x27;</span>,</span><br><span class="line">        <span class="attr">data</span>: <span class="string">&#x27;区块的具体信息, 主要是交易信息&#x27;</span>,</span><br><span class="line">        <span class="attr">hash</span>: <span class="string">&#x27;当前区块信息的hash值&#x27;</span>,</span><br><span class="line">        <span class="attr">prevHash</span>: <span class="string">&#x27;上一个区块的哈希&#x27;</span>,</span><br><span class="line">        <span class="attr">nonce</span>: <span class="string">&#x27;随机数,用于计算出符合条件的hash&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">index</span>: <span class="number">1</span>, <span class="comment">// 索引</span></span><br><span class="line">        <span class="attr">timestamp</span>: <span class="string">&#x27;时间戳&#x27;</span>,</span><br><span class="line">        <span class="attr">data</span>: <span class="string">&#x27;区块的具体信息, 主要是交易信息&#x27;</span>,</span><br><span class="line">        <span class="attr">hash</span>: <span class="string">&#x27;当前区块信息的hash值&#x27;</span>,</span><br><span class="line">        <span class="attr">prevHash</span>: <span class="string">&#x27;上一个区块的哈希&#x27;</span>,</span><br><span class="line">        <span class="attr">nonce</span>: <span class="string">&#x27;随机数,用于计算出符合条件的hash&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+        <p>我们可以使用 Node 来实现一个区块链，它的格式如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">index</span>: <span class="number">0</span>, <span class="comment">// 索引</span></span><br><span class="line">    <span class="attr">timestamp</span>: <span class="string">&quot;时间戳&quot;</span>,</span><br><span class="line">    <span class="attr">data</span>: <span class="string">&quot;区块的具体信息, 主要是交易信息&quot;</span>,</span><br><span class="line">    <span class="attr">hash</span>: <span class="string">&quot;当前区块信息的hash值&quot;</span>,</span><br><span class="line">    <span class="attr">prevHash</span>: <span class="string">&quot;上一个区块的哈希&quot;</span>,</span><br><span class="line">    <span class="attr">nonce</span>: <span class="string">&quot;随机数,用于计算出符合条件的hash&quot;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">index</span>: <span class="number">1</span>, <span class="comment">// 索引</span></span><br><span class="line">    <span class="attr">timestamp</span>: <span class="string">&quot;时间戳&quot;</span>,</span><br><span class="line">    <span class="attr">data</span>: <span class="string">&quot;区块的具体信息, 主要是交易信息&quot;</span>,</span><br><span class="line">    <span class="attr">hash</span>: <span class="string">&quot;当前区块信息的hash值&quot;</span>,</span><br><span class="line">    <span class="attr">prevHash</span>: <span class="string">&quot;上一个区块的哈希&quot;</span>,</span><br><span class="line">    <span class="attr">nonce</span>: <span class="string">&quot;随机数,用于计算出符合条件的hash&quot;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
 
 <p>然后就是根据信息实现区块链的功能</p>
 <ol>
@@ -560,7 +560,7 @@
 <li>交易</li>
 <li>非对称加密</li>
 <li>挖矿</li>
-<li>p2p网络</li>
+<li>p2p 网络</li>
 </ol>
 
       </div>
@@ -597,16 +597,19 @@
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/8.jpg" class="lazyload placeholder" data-srcset="/medias/8.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2023/04/05/node/nodejs-ts-4/" class="post-nav-link">
+    <a href="/2023/03/29/gong-ju/git/git-ming-ling/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">Node.js TypeScript#4. Readable Stream(可读流)</div>
+        <div class="title-text">git 命令大全</div>
       </div>
       
       <!-- <div class="content">
-        在Nodejs中，Stream是非常重要的，我们可以通过Stream来高效的读写数据。比如在处理文件或者处理http请求
+        Update
+此项为博主了解的时间为基础，并非 git 实际更新时间
+
+2022.10.01 更新github 在更新后
       </div> -->
     </a>
   </div>
@@ -625,7 +628,7 @@
         <div class="title-text">区块链是什么</div>
       </div>
       <!-- <div class="content">
-        web3和区块链的关系Web3 是一种以区块链为基础的新型互联网协议，它通过区块链技术来实现去中心化应用程序（DApp）
+        web3 和区块链的关系Web3 是一种以区块链为基础的新型互联网协议，它通过区块链技术来实现去中心化应用程序（DApp
       </div> -->
     </a>
   </div>
