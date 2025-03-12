@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>分类 | Ryo的小站</title>
+  <title>MySQL基础语法 | Ryo的小站</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -491,139 +491,522 @@
 
         <!-- 内容区域 -->
         
-<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
-<div class="bg-light-floor-categories" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -3;"></div>
+ <!-- prismjs 代码高亮 -->
+ 
 
-<div class="categories-header" style="background-image:url('https://pic2.zhimg.com/80/v2-7c496c95897fb15768593cc5170c8b1a_1440w.jpg?source=1940ef5c')">
-    <div class="categories-header-title">
-        categories
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('/medias/14.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        MySQL基础语法
+      </span>
     </div>
-    <div class="categories-header-desc">
     
-        <span class="title" id="categories-header-desc"></span>
-    <script>
-  function typedFn() {
-    const el = '#categories-header-desc';
-    const type = 'categories';
-    let desc = '春有百花秋有月，夏有凉风冬有雪'
-    var typed = new Typed(el, {
-      strings: [desc],
-      startDelay: 100,
-      typeSpeed: 100,
-      loop: true,
-      backSpeed: 50,
-      showCursor: true
-    });
-  }
-  typedFn();
-</script>
     
-    </div>
-    <div class="mask-box"></div>
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2023-04-01 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-detail-header_category">
+              后端
+            </a>
+          
+        </span>
+      
+
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
 </div>
 
 
 
-<div id="categories" class="container">
-    <div class="card">
-        <div class="card-content">
-            <div class="category-title center-align">
-                <i class="fas fa-tags"></i>&nbsp;&nbsp;文章分类
-            </div>
-            <div class="category-chips">
-                
-                
-                <a href="/categories/Web3-0/" title="Web3.0: 3">
-                    <span class="category-content"
-                        title="Web3.0" style="background-color: #85C1E9;">Web3.0
-                        <span class="category-length">3</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="数据结构: 1">
-                    <span class="category-content"
-                        title="数据结构" style="background-color: #F5EEF8;">数据结构
-                        <span class="category-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/%E7%BD%91%E7%BB%9C/" title="网络: 12">
-                    <span class="category-content"
-                        title="网络" style="background-color: #FFF;">网络
-                        <span class="category-length">12</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/%E8%BF%90%E7%BB%B4/" title="运维: 3">
-                    <span class="category-content"
-                        title="运维" style="background-color: #F9EBEA;">运维
-                        <span class="category-length">3</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/" title="面试总结: 2">
-                    <span class="category-content"
-                        title="面试总结" style="background-color: #82E0AA;">面试总结
-                        <span class="category-length">2</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95/" title="开发问题记录: 4">
-                    <span class="category-content"
-                        title="开发问题记录" style="background-color: #FEF9E7;">开发问题记录
-                        <span class="category-length">4</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/%E5%95%86%E5%9F%8E/" title="商城: 1">
-                    <span class="category-content"
-                        title="商城" style="background-color: #E8F8F5;">商城
-                        <span class="category-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/%E5%89%8D%E7%AB%AF/" title="前端: 52">
-                    <span class="category-content"
-                        title="前端" style="background-color: #FEF9E7;">前端
-                        <span class="category-length">52</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/%E5%90%8E%E7%AB%AF/" title="后端: 16">
-                    <span class="category-content"
-                        title="后端" style="background-color: #F9EBEA;">后端
-                        <span class="category-length">16</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/%E5%B7%A5%E5%85%B7/" title="工具: 3">
-                    <span class="category-content"
-                        title="工具" style="background-color: #E8F8F5;">工具
-                        <span class="category-length">3</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" title="数据库: 1">
-                    <span class="category-content"
-                        title="数据库" style="background-color: #F9E79F;">数据库
-                        <span class="category-length">1</span>
-                    </span>
-                </a>
-                
-            </div>
+
+
+<div class="post-detail-content row justify-position" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h2 id="数据库基本概念"><a href="#数据库基本概念" class="headerlink" title="数据库基本概念"></a>数据库基本概念</h2><ol>
+<li>数据库的英文单词：DataBase，简称：DB</li>
+<li>什么是数据库？<ul>
+<li>用于存储和管理数据的仓库</li>
+</ul>
+</li>
+<li>数据库的特点：<ul>
+<li>持久化存储数据，本质是一个文件系统</li>
+<li>方便存储和管理数据</li>
+<li>使用统一的方式操作数据库 – SQL</li>
+</ul>
+</li>
+</ol>
+<h2 id="MySQL-8-0安装与配置"><a href="#MySQL-8-0安装与配置" class="headerlink" title="MySQL 8.0安装与配置"></a>MySQL 8.0安装与配置</h2><h3 id="使用Docker安装MySQL"><a href="#使用Docker安装MySQL" class="headerlink" title="使用Docker安装MySQL"></a>使用Docker安装MySQL</h3><ol>
+<li><p>拉取MySQL 8镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql:8</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建数据持久化目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /path/to/mysql/data</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行MySQL容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run --name mysql8 \</span><br><span class="line">  -e MYSQL_ROOT_PASSWORD=your_password \</span><br><span class="line">  -p 3306:3306 \</span><br><span class="line">  -v /path/to/mysql/data:/var/lib/mysql \</span><br><span class="line">  -v /path/to/mysql/conf:/etc/mysql/conf.d \</span><br><span class="line">  -d mysql:8</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="Docker环境下的配置文件"><a href="#Docker环境下的配置文件" class="headerlink" title="Docker环境下的配置文件"></a>Docker环境下的配置文件</h3><p>Docker中MySQL的主配置文件位于容器内的<code>/etc/mysql/my.cnf</code>，自定义配置可以通过挂载配置文件到<code>/etc/mysql/conf.d</code>目录实现。以下是一个基本的配置文件示例（<code>custom.cnf</code>）：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[mysqld]</span></span><br><span class="line"><span class="comment"># 字符集设置</span></span><br><span class="line"><span class="attr">character-set-server</span>=utf8mb4</span><br><span class="line"><span class="attr">collation-server</span>=utf8mb4_unicode_ci</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接设置</span></span><br><span class="line"><span class="attr">port</span>=<span class="number">3306</span></span><br><span class="line"><span class="attr">max_connections</span>=<span class="number">1000</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># InnoDB配置</span></span><br><span class="line"><span class="attr">innodb_buffer_pool_size</span>=<span class="number">1</span>G</span><br><span class="line"><span class="attr">innodb_log_file_size</span>=<span class="number">256</span>M</span><br><span class="line"><span class="attr">innodb_log_buffer_size</span>=<span class="number">64</span>M</span><br><span class="line"><span class="attr">innodb_flush_log_at_trx_commit</span>=<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 日志设置</span></span><br><span class="line"><span class="attr">slow_query_log</span>=<span class="number">1</span></span><br><span class="line"><span class="attr">slow_query_log_file</span>=/var/lib/mysql/slow.log</span><br><span class="line"><span class="attr">long_query_time</span>=<span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="section">[client]</span></span><br><span class="line"><span class="attr">default-character-set</span>=utf8mb4</span><br><span class="line"></span><br><span class="line"><span class="section">[mysql]</span></span><br><span class="line"><span class="attr">default-character-set</span>=utf8mb4</span><br></pre></td></tr></table></figure>
+
+<p>配置文件说明：</p>
+<ul>
+<li>character-set-server：服务器字符集，推荐使用utf8mb4</li>
+<li>max_connections：最大连接数</li>
+<li>innodb_buffer_pool_size：InnoDB缓冲池大小，建议设置为总内存的50%-70%</li>
+<li>innodb_log_file_size：事务日志文件大小</li>
+<li>slow_query_log：开启慢查询日志</li>
+</ul>
+<h3 id="MySQL登录"><a href="#MySQL登录" class="headerlink" title="MySQL登录"></a>MySQL登录</h3><ol>
+<li><p>容器内登录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it mysql8 mysql -uroot -p</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>主机登录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -h127.0.0.1 -uroot -p</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>带参数登录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql --host=127.0.0.1 --user=root --password=your_password</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="SQL语言"><a href="#SQL语言" class="headerlink" title="SQL语言"></a>SQL语言</h2><h3 id="SQL概述"><a href="#SQL概述" class="headerlink" title="SQL概述"></a>SQL概述</h3><p>Structured Query Language（结构化查询语言）是所有关系型数据库的标准语言。</p>
+<h3 id="SQL通用语法规则"><a href="#SQL通用语法规则" class="headerlink" title="SQL通用语法规则"></a>SQL通用语法规则</h3><ol>
+<li>SQL语句可以单行或多行书写，以分号结尾</li>
+<li>可使用空格和缩进提高可读性</li>
+<li>MySQL 8不区分大小写，但建议关键字大写</li>
+<li>注释方式：<ul>
+<li>单行注释：– 注释内容</li>
+<li>单行注释：# 注释内容（MySQL特有）</li>
+<li>多行注释：&#x2F;* 注释内容 *&#x2F;</li>
+</ul>
+</li>
+</ol>
+<h3 id="SQL分类"><a href="#SQL分类" class="headerlink" title="SQL分类"></a>SQL分类</h3><ol>
+<li><p>DDL（Data Definition Language）数据定义语言</p>
+<ul>
+<li>用于定义数据库对象：数据库、表、列等</li>
+<li>关键字：CREATE、DROP、ALTER等</li>
+</ul>
+</li>
+<li><p>DML（Data Manipulation Language）数据操作语言</p>
+<ul>
+<li>用于对表中数据进行增删改</li>
+<li>关键字：INSERT、DELETE、UPDATE等</li>
+</ul>
+</li>
+<li><p>DQL（Data Query Language）数据查询语言</p>
+<ul>
+<li>用于查询表中记录</li>
+<li>关键字：SELECT、WHERE等</li>
+</ul>
+</li>
+<li><p>DCL（Data Control Language）数据控制语言</p>
+<ul>
+<li>用于定义数据库访问权限和安全级别</li>
+<li>关键字：GRANT、REVOKE等</li>
+</ul>
+</li>
+</ol>
+<h3 id="DDL：数据库操作"><a href="#DDL：数据库操作" class="headerlink" title="DDL：数据库操作"></a>DDL：数据库操作</h3><h4 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建数据库</span></span><br><span class="line"><span class="keyword">CREATE</span> DATABASE db_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 判断不存在则创建</span></span><br><span class="line"><span class="keyword">CREATE</span> DATABASE IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> db_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 指定字符集创建</span></span><br><span class="line"><span class="keyword">CREATE</span> DATABASE db_name <span class="type">CHARACTER</span> <span class="keyword">SET</span> utf8mb4;</span><br></pre></td></tr></table></figure>
+
+<h4 id="查询数据库"><a href="#查询数据库" class="headerlink" title="查询数据库"></a>查询数据库</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看所有数据库</span></span><br><span class="line"><span class="keyword">SHOW</span> DATABASES;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看创建语句</span></span><br><span class="line"><span class="keyword">SHOW</span> <span class="keyword">CREATE</span> DATABASE db_name;</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改数据库"><a href="#修改数据库" class="headerlink" title="修改数据库"></a>修改数据库</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 修改字符集</span></span><br><span class="line"><span class="keyword">ALTER</span> DATABASE db_name <span class="type">CHARACTER</span> <span class="keyword">SET</span> utf8mb4;</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 删除数据库</span></span><br><span class="line"><span class="keyword">DROP</span> DATABASE db_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 判断存在则删除</span></span><br><span class="line"><span class="keyword">DROP</span> DATABASE IF <span class="keyword">EXISTS</span> db_name;</span><br></pre></td></tr></table></figure>
+
+<h3 id="DDL：表操作"><a href="#DDL：表操作" class="headerlink" title="DDL：表操作"></a>DDL：表操作</h3><h4 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> table_name (</span><br><span class="line">    id <span class="type">INT</span>,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">50</span>),</span><br><span class="line">    age <span class="type">INT</span>,</span><br><span class="line">    score <span class="type">DECIMAL</span>(<span class="number">5</span>,<span class="number">2</span>),</span><br><span class="line">    birth_date <span class="type">DATE</span>,</span><br><span class="line">    create_time <span class="type">TIMESTAMP</span> <span class="keyword">DEFAULT</span> <span class="built_in">CURRENT_TIMESTAMP</span>,</span><br><span class="line">    update_time <span class="type">TIMESTAMP</span> <span class="keyword">DEFAULT</span> <span class="built_in">CURRENT_TIMESTAMP</span> <span class="keyword">ON</span> <span class="keyword">UPDATE</span> <span class="built_in">CURRENT_TIMESTAMP</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>数据类型说明：</p>
+<ul>
+<li>INT：整数类型</li>
+<li>VARCHAR：可变长字符串</li>
+<li>DECIMAL：精确小数</li>
+<li>DATE：日期，格式YYYY-MM-DD</li>
+<li>TIMESTAMP：时间戳，自动记录创建和更新时间</li>
+</ul>
+<h4 id="修改表"><a href="#修改表" class="headerlink" title="修改表"></a>修改表</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 修改表名</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> old_name RENAME <span class="keyword">TO</span> new_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 添加列</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name <span class="keyword">ADD</span> column_name datatype;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改列</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name MODIFY column_name new_datatype;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除列</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name <span class="keyword">DROP</span> column_name;</span><br></pre></td></tr></table></figure>
+
+<h3 id="DML：数据操作"><a href="#DML：数据操作" class="headerlink" title="DML：数据操作"></a>DML：数据操作</h3><h4 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 指定列插入</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> table_name(column1, column2) <span class="keyword">VALUES</span>(value1, value2);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 全列插入</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> table_name <span class="keyword">VALUES</span>(value1, value2, ...);</span><br></pre></td></tr></table></figure>
+
+<h4 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> table_name <span class="keyword">SET</span> column1<span class="operator">=</span>value1, column2<span class="operator">=</span>value2 <span class="keyword">WHERE</span> <span class="keyword">condition</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 删除满足条件的记录</span></span><br><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> table_name <span class="keyword">WHERE</span> <span class="keyword">condition</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 清空表（效率更高）</span></span><br><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> table_name;</span><br></pre></td></tr></table></figure>
+
+<h3 id="DQL：数据查询"><a href="#DQL：数据查询" class="headerlink" title="DQL：数据查询"></a>DQL：数据查询</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    [<span class="keyword">DISTINCT</span>] column1, column2</span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    table_name</span><br><span class="line">[<span class="keyword">WHERE</span> </span><br><span class="line">    <span class="keyword">condition</span>]</span><br><span class="line">[<span class="keyword">GROUP</span> <span class="keyword">BY</span> </span><br><span class="line">    <span class="keyword">column</span>]</span><br><span class="line">[<span class="keyword">HAVING</span> </span><br><span class="line">    group_condition]</span><br><span class="line">[<span class="keyword">ORDER</span> <span class="keyword">BY</span> </span><br><span class="line">    <span class="keyword">column</span> [<span class="keyword">ASC</span><span class="operator">|</span><span class="keyword">DESC</span>]]</span><br><span class="line">[LIMIT </span><br><span class="line">    <span class="keyword">offset</span>, row_count];</span><br></pre></td></tr></table></figure>
+
+<h4 id="条件查询"><a href="#条件查询" class="headerlink" title="条件查询"></a>条件查询</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 比较运算符</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> students <span class="keyword">WHERE</span> age <span class="operator">&gt;=</span> <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 范围查询</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> students <span class="keyword">WHERE</span> age <span class="keyword">BETWEEN</span> <span class="number">20</span> <span class="keyword">AND</span> <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- IN查询</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> students <span class="keyword">WHERE</span> age <span class="keyword">IN</span> (<span class="number">18</span>, <span class="number">20</span>, <span class="number">22</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 模糊查询</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> students <span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">&#x27;张%&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- NULL值查询</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> students <span class="keyword">WHERE</span> score <span class="keyword">IS</span> <span class="keyword">NULL</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="DCL：权限管理"><a href="#DCL：权限管理" class="headerlink" title="DCL：权限管理"></a>DCL：权限管理</h3><h4 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建用户</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">&#x27;username&#x27;</span>@<span class="string">&#x27;host&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;password&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改密码</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">USER</span> <span class="string">&#x27;username&#x27;</span>@<span class="string">&#x27;host&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;new_password&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除用户</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">USER</span> <span class="string">&#x27;username&#x27;</span>@<span class="string">&#x27;host&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 授予权限</span></span><br><span class="line"><span class="keyword">GRANT</span> privileges <span class="keyword">ON</span> database.table <span class="keyword">TO</span> <span class="string">&#x27;username&#x27;</span>@<span class="string">&#x27;host&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 撤销权限</span></span><br><span class="line"><span class="keyword">REVOKE</span> privileges <span class="keyword">ON</span> database.table <span class="keyword">FROM</span> <span class="string">&#x27;username&#x27;</span>@<span class="string">&#x27;host&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看权限</span></span><br><span class="line"><span class="keyword">SHOW</span> GRANTS <span class="keyword">FOR</span> <span class="string">&#x27;username&#x27;</span>@<span class="string">&#x27;host&#x27;</span>;</span><br></pre></td></tr></table></figure>
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/MySQL/" class="">
+              MySQL
+            </a>
+          
         </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Ryo</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2023/04/01/hou-duan/shu-ju-ku/mysql/1.mysql-ji-chu-yu-fa/" target="_blank" title="MySQL基础语法">https://saebaryoo.github.io/2023/04/01/hou-duan/shu-ju-ku/mysql/1.mysql-ji-chu-yu-fa/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/14.jpg" class="lazyload placeholder" data-srcset="/medias/14.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
+    <a href="/2023/04/04/hou-duan/node/nodejs-ts-1/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">Node.js TypeScript#1. Modules, process参数, 文件系统基础</div>
+      </div>
+      
+      <!-- <div class="content">
+        
+这个系列是翻译文章，虽然是翻译，但有些地方还是做了一些修改。如果你想要看原版，那可以根据这个链接去查找。
+
+在这个系列
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/12.jpg" class="lazyload placeholder" data-srcset="/medias/12.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2023/04/01/hou-duan/shu-ju-ku/mysql/2.mysql-chang-jian-xie-fa/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">MySQL常见基础写法</div>
+      </div>
+      <!-- <div class="content">
+        本文档旨在为开发者提供一份全面且实用的MySQL常用操作指南。随着Docker容器化技术的普及，在容器环境下使用MySQ
+      </div> -->
+    </a>
+  </div>
+
 </div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <!-- 文章详情页右侧目录 -->
+
+  <div class="toc-aside">
+    <div class="toc-main">
+      <div class="toc-aside-title">
+        <i class="fas fa-list-ul" aria-hidden="true"></i><span>本文目录</span>
+        
+          <div class="toc-open-close">本文目录</div>
+        
+      </div>
+      <div class="toc-content">
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 手机端目录按钮 -->
+  <div id="toc-mobile-btn">
+    <i class="fas fa-list-ul" aria-hidden="true"></i>
+  </div>
+
+
+<script>
+  function closeToc(init) {
+    $(".toc-aside").css({'width': 0, 'padding': 0, 'transition': init ?  'noe' : 'width 0.3s' });
+    $(".toc-content").css({'width': 0});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'none'});
+    $(".main-content").css({'width': '75%', 'margin-left': 'auto', 'margin-right': 'auto',});
+  };
+  function openToc() {
+    $(".main-content").css({'width': '65%', 'margin-right': '10px', 'margin-left': 'calc(35% - 350px)'});
+    $(".toc-aside").css({'width': '300px', 'padding': '0 10px', 'transition': 'width 0.3s'});
+    $(".toc-content").css({'width': '300px'});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'inline-block'});
+  }
+  function openBtnClickFn () {
+    let openOrCloseBtn = $('.toc-aside .toc-aside-title .toc-open-close');
+    let open = eval('' || 'true');
+    openOrCloseBtn.click(function() {
+      if (open) {
+        closeToc();
+        open = false;
+      } else {
+        openToc();
+        open = true;
+      }
+    });
+  };
+  openBtnClickFn();
+  initCloseTocWidth(true);
+
+  function initCloseTocWidth(init) {
+    if (window.innerWidth >= 992) {
+      let isClose = false;
+      isClose && closeToc(init)
+    }
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    $(".toc-aside").css({'transition': 'no'});
+  })
+  document.addEventListener('pjax:complete', function () {
+    openBtnClickFn();
+  })
+  
+</script>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
 
       </main>
     </div>

@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>JavaScript设计模式 -- 6.命令模式 | Ryo的小站</title>
+  <title>MySQL常见基础写法 | Ryo的小站</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -504,21 +504,21 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('/medias/11.jpg')">
+  background-position: center center;position: relative;background-image:url('/medias/12.jpg')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        JavaScript设计模式 -- 6.命令模式
+        MySQL常见基础写法
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> 发表于：2021-06-06 |
+          <i class="fas fa-calendar"></i> 发表于：2023-04-01 |
         </span>
       
 
@@ -526,8 +526,8 @@
         <span class="post-detail-header_categories">
           <i class="iconfont iconbookmark1"></i> 分类：
           
-            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-detail-header_category">
-              前端
+            <a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-detail-header_category">
+              后端
             </a>
           
         </span>
@@ -551,57 +551,257 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><blockquote>
-<p>命令模式中的命令（command）指的是一个执行某些特定事情的指令</p>
+        <p>本文档旨在为开发者提供一份全面且实用的MySQL常用操作指南。随着Docker容器化技术的普及，在容器环境下使用MySQL已成为一种主流选择。本文将从安装配置开始，系统性地介绍MySQL的各项基础功能，包括基本查询、数据操作、表管理等实践知识。</p>
+<p>这篇文章适合以下读者：</p>
+<ul>
+<li>初学MySQL的开发者</li>
+<li>需要在Docker环境中使用MySQL的工程师</li>
+<li>想要系统回顾MySQL基础知识的程序员</li>
+<li>寻找MySQL常用操作速查手册的开发人员</li>
+</ul>
+<h2 id="安装与配置"><a href="#安装与配置" class="headerlink" title="安装与配置"></a>安装与配置</h2><h3 id="使用Docker安装MySQL"><a href="#使用Docker安装MySQL" class="headerlink" title="使用Docker安装MySQL"></a>使用Docker安装MySQL</h3><ol>
+<li><p>拉取MySQL 8镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql:8</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行MySQL容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run --name mysql8 \</span><br><span class="line">  -e MYSQL_ROOT_PASSWORD=your_password \</span><br><span class="line">  -p 3306:3306 \</span><br><span class="line">  -v mysql_data:/var/lib/mysql \</span><br><span class="line">  -d mysql:8</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查容器状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="连接MySQL"><a href="#连接MySQL" class="headerlink" title="连接MySQL"></a>连接MySQL</h3><ol>
+<li><p>使用命令行连接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -h localhost -P 3306 -u root -p</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用Docker容器内连接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it mysql8 mysql -u root -p</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="常见SQL语句"><a href="#常见SQL语句" class="headerlink" title="常见SQL语句"></a>常见SQL语句</h2><h3 id="基本查询"><a href="#基本查询" class="headerlink" title="基本查询"></a>基本查询</h3><h4 id="选择数据"><a href="#选择数据" class="headerlink" title="选择数据"></a>选择数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 选择所有列的数据</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> `<span class="keyword">table</span>`;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 从表中选择某一列</span></span><br><span class="line"><span class="keyword">select</span> `col` <span class="keyword">from</span> `<span class="keyword">table</span>`;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 当row数据重复时，只列出一条</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> `col` <span class="keyword">from</span> `<span class="keyword">table</span>`;</span><br></pre></td></tr></table></figure>
+
+<h4 id="限制和排序"><a href="#限制和排序" class="headerlink" title="限制和排序"></a>限制和排序</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 限制查询多少条</span></span><br><span class="line"><span class="keyword">select</span> `col` <span class="keyword">from</span> `<span class="keyword">table</span>` limit <span class="number">0</span>, <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 排序数据 order by 字句优先级高</span></span><br><span class="line"><span class="keyword">select</span> `col` <span class="keyword">from</span> `<span class="keyword">table</span>` <span class="keyword">order</span> <span class="keyword">by</span> `col` [limit <span class="number">0</span>, <span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 可通过指定DESC关键字指定为倒序（默认为升序）</span></span><br><span class="line"><span class="keyword">select</span> `col`, `col1` <span class="keyword">from</span> `<span class="keyword">table</span>` <span class="keyword">order</span> <span class="keyword">by</span> `col` <span class="keyword">desc</span>, `col1`;</span><br></pre></td></tr></table></figure>
+
+<h3 id="条件查询"><a href="#条件查询" class="headerlink" title="条件查询"></a>条件查询</h3><h4 id="WHERE子句"><a href="#WHERE子句" class="headerlink" title="WHERE子句"></a>WHERE子句</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 基本过滤</span></span><br><span class="line"><span class="keyword">select</span> `col` <span class="keyword">from</span> `<span class="keyword">table</span>` <span class="keyword">where</span> `col`<span class="operator">=</span><span class="string">&#x27;xxx&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 不匹配</span></span><br><span class="line"><span class="keyword">select</span> `col` <span class="keyword">from</span> `<span class="keyword">table</span>` <span class="keyword">where</span> `col`<span class="operator">!=</span><span class="string">&#x27;xxx&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 空值</span></span><br><span class="line"><span class="keyword">select</span> `col` <span class="keyword">from</span> `<span class="keyword">table</span>` <span class="keyword">where</span> `col` <span class="keyword">is</span> <span class="keyword">NULL</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 范围</span></span><br><span class="line"><span class="keyword">select</span> `col` <span class="keyword">from</span> `<span class="keyword">table</span>` <span class="keyword">where</span> `col` <span class="keyword">between</span> a <span class="keyword">and</span> b;</span><br></pre></td></tr></table></figure>
+
+<h4 id="逻辑操作符"><a href="#逻辑操作符" class="headerlink" title="逻辑操作符"></a>逻辑操作符</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- AND操作符</span></span><br><span class="line"><span class="keyword">select</span> `col1`, `col2`,`col3` <span class="keyword">from</span> `<span class="keyword">table</span>` <span class="keyword">where</span> `col1` <span class="operator">=</span><span class="operator">=</span><span class="operator">=</span> <span class="string">&#x27;xxx&#x27;</span> <span class="keyword">and</span> `colnam2` <span class="operator">&gt;</span> <span class="string">&#x27;xxx&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- OR操作符</span></span><br><span class="line"><span class="keyword">select</span> `col1`, `col2`,`col3` <span class="keyword">from</span> `<span class="keyword">table</span>` <span class="keyword">where</span> `col1` <span class="operator">=</span><span class="operator">=</span><span class="operator">=</span> <span class="string">&#x27;xxx&#x27;</span> <span class="keyword">or</span> `colnam2` <span class="operator">&gt;</span> <span class="string">&#x27;xxx&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- IN操作符</span></span><br><span class="line"><span class="keyword">select</span> `col` <span class="keyword">from</span> `<span class="keyword">table</span>` <span class="keyword">where</span> `col` <span class="keyword">in</span> (<span class="number">1002</span>, <span class="number">1003</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- NOT IN</span></span><br><span class="line"><span class="keyword">select</span> `col` <span class="keyword">from</span> `<span class="keyword">table</span>` <span class="keyword">where</span> `col` <span class="keyword">not</span> <span class="keyword">in</span> (<span class="number">1002</span>, <span class="number">1003</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>IN操作符的优点：</p>
+<ul>
+<li>语法更清楚直观</li>
+<li>计算次序更容易管理</li>
+<li>执行速度通常更快</li>
+<li>可以包含其他SELECT语句</li>
+</ul>
 </blockquote>
-<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>有时候需要向某些对象发送请求，但是并不知道请求的接收者是谁，也不知道被请求的操作是什么。此时希望用一种松耦合的方式来设计程序，<br>使得发送者和请求接收者能够消除彼此间的耦合关系。</p>
-<p>假设现在项目中有一个 Menu 组件，里面有至少数十个按钮，由于项目复杂度很高，组员们需要分工合作，一部分人完成绘制工作，一部分人完成具体的执行逻辑。<br>那么完成按钮的绘制工作后，如何增加 click 事件去执行具体逻辑呢？</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;btn1&quot;</span>&gt;</span>按钮1<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;btn2&quot;</span>&gt;</span>按钮2<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;btn3&quot;</span>&gt;</span>按钮3<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="模式匹配"><a href="#模式匹配" class="headerlink" title="模式匹配"></a>模式匹配</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用LIKE和通配符</span></span><br><span class="line"><span class="keyword">select</span> `col` <span class="keyword">from</span> `<span class="keyword">table</span>` <span class="keyword">where</span> `col` <span class="keyword">like</span> <span class="string">&#x27;xxx%&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用正则表达式</span></span><br><span class="line"><span class="keyword">select</span> `col` <span class="keyword">from</span> `<span class="keyword">table</span>` <span class="keyword">where</span> `col` regexp <span class="string">&#x27;^test&#x27;</span>;</span><br><span class="line"><span class="keyword">select</span> `col` <span class="keyword">from</span> `<span class="keyword">table</span>` <span class="keyword">where</span> `col` regexp <span class="string">&#x27;1$|2$&#x27;</span>;</span><br><span class="line"><span class="keyword">select</span> `col` <span class="keyword">from</span> `<span class="keyword">table</span>` <span class="keyword">where</span> `col` regexp <span class="string">&#x27;[123] Ton&#x27;</span>;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> btn1 = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;btn1&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> btn2 = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;btn2&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> btn3 = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;btn3&quot;</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="计算字段"><a href="#计算字段" class="headerlink" title="计算字段"></a>计算字段</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 拼接字段</span></span><br><span class="line"><span class="keyword">select</span> concat(`col1`, <span class="string">&#x27;(&#x27;</span>,`col2`, <span class="string">&#x27;)&#x27;</span>) <span class="keyword">as</span> title <span class="keyword">from</span> `<span class="keyword">table</span>`;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 算术运算</span></span><br><span class="line"><span class="keyword">select</span> `price`, `num`, `price`<span class="operator">*</span>`num` <span class="keyword">as</span> total <span class="keyword">from</span> `<span class="keyword">table</span>`;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 函数处理</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">Upper</span>(`col1`) <span class="keyword">from</span> `<span class="keyword">table</span>`;</span><br></pre></td></tr></table></figure>
 
-<p>绘制的人无需关心具体逻辑，它只需要定义一个 setCommand 方法。<br>setCommand 函数负责往按钮上面安装命令。<br>可以肯定的是，点击按钮会执行某个 command 命令，执行命令的动作被约定为调用 command 对象的 execute()方法。</p>
-<p><strong>下面模拟传统的面向对象语言写一个命令模式</strong></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">setCommand</span> = (<span class="params">button, command</span>) =&gt; &#123;</span><br><span class="line">  btn.<span class="title function_">addEventListener</span>(<span class="string">&quot;click&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    command.<span class="title function_">execute</span>();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="聚集函数"><a href="#聚集函数" class="headerlink" title="聚集函数"></a>聚集函数</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 平均值</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">avg</span>(`col`) <span class="keyword">from</span> `<span class="keyword">table</span>`;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 计数</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> row_count <span class="keyword">from</span> `<span class="keyword">table</span>`;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 最大值</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">max</span>(`col`) <span class="keyword">as</span> max_col <span class="keyword">from</span> `<span class="keyword">table</span>`;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 最小值</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">min</span>(`col`) <span class="keyword">as</span> min_col <span class="keyword">from</span> `<span class="keyword">table</span>`;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 求和</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">sum</span>(`col`) <span class="keyword">as</span> sum_col <span class="keyword">from</span> `<span class="keyword">table</span>`;</span><br></pre></td></tr></table></figure>
 
-<p>最后，负责编写点击按钮具体行为的人完成了预定的功能：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">MenuBar</span> = &#123;</span><br><span class="line">  <span class="title function_">refresh</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;刷新菜单&quot;</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">SubMenu</span> = &#123;</span><br><span class="line">  <span class="title function_">add</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;增加子菜单&quot;</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">del</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;删除子菜单&quot;</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="分组"><a href="#分组" class="headerlink" title="分组"></a>分组</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建分组</span></span><br><span class="line"><span class="keyword">select</span> `col`, <span class="built_in">count</span>(`<span class="operator">*</span>`) <span class="keyword">as</span> group_count <span class="keyword">from</span> `<span class="keyword">table</span>` <span class="keyword">group</span> <span class="keyword">by</span> `col`;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 过滤分组</span></span><br><span class="line"><span class="keyword">select</span> `col`, <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> group_count <span class="keyword">from</span> `<span class="keyword">table</span>` <span class="keyword">group</span> <span class="keyword">by</span> `col` <span class="keyword">having</span> group_count <span class="operator">&gt;=</span> <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
 
-<p>然后，将行为封装在命令类中</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">RefreshMenuBarCommand</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">receiver</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">receiver</span> = receiver;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">execute</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">receiver</span>.<span class="title function_">refresh</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AddSubMenuCommand</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">receiver</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">receiver</span> = receiver;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">execute</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">receiver</span>.<span class="title function_">add</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DelSubMenuCommand</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">receiver</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">receiver</span> = receiver;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">execute</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">receiver</span>.<span class="title function_">del</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="GROUP-BY注意事项"><a href="#GROUP-BY注意事项" class="headerlink" title="GROUP BY注意事项"></a>GROUP BY注意事项</h4><ol>
+<li>可包含任意数目的列</li>
+<li>嵌套分组时数据在最后规定的分组上汇总</li>
+<li>每个列必须是检索列或有效的表达式</li>
+<li>SELECT中的列必须在GROUP BY中给出</li>
+<li>NULL值会作为一个分组返回</li>
+<li>必须出现在WHERE之后，ORDER BY之前</li>
+</ol>
+<h3 id="表联结"><a href="#表联结" class="headerlink" title="表联结"></a>表联结</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 内联结</span></span><br><span class="line"><span class="keyword">select</span> `vend_name`, `prod_name`, `prod_price` </span><br><span class="line"><span class="keyword">from</span> `vendors`, `products` </span><br><span class="line"><span class="keyword">where</span> products.vend_id <span class="operator">=</span> vendors.vend_id;</span><br></pre></td></tr></table></figure>
 
-<p>最后，将命令接收者传入到 command 中，并且将 command 对象安装到 button 上</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> refreshMenuBarCommand = <span class="keyword">new</span> <span class="title class_">RefreshMenuBarCommand</span>(<span class="title class_">MenuBar</span>);</span><br><span class="line"><span class="keyword">const</span> addSubMenuCommand = <span class="keyword">new</span> <span class="title class_">AddSubMenuCommand</span>(<span class="title class_">SubMenu</span>);</span><br><span class="line"><span class="keyword">const</span> delSubMenuCommand = <span class="keyword">new</span> <span class="title class_">DelSubMenuCommand</span>(<span class="title class_">SubMenu</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_">setCommand</span>(btn1, refreshMenuBarCommand);</span><br><span class="line"><span class="title function_">setCommand</span>(btn2, addSubMenuCommand);</span><br><span class="line"><span class="title function_">setCommand</span>(btn3, delSubMenuCommand);</span><br></pre></td></tr></table></figure>
+<h4 id="联结注意事项"><a href="#联结注意事项" class="headerlink" title="联结注意事项"></a>联结注意事项</h4><ol>
+<li>必须有WHERE子句，否则结果为笛卡尔积</li>
+<li>多表联结规则保持一致</li>
+<li>联结操作需要耗费资源</li>
+<li>联结表越多，性能下降越快</li>
+</ol>
+<h3 id="组合查询"><a href="#组合查询" class="headerlink" title="组合查询"></a>组合查询</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- UNION示例</span></span><br><span class="line"><span class="keyword">select</span> `vend_id`, `prod_id`, `prod_price` </span><br><span class="line"><span class="keyword">from</span> `products` </span><br><span class="line"><span class="keyword">where</span> `prod_price` <span class="operator">&lt;=</span> <span class="number">5</span> </span><br><span class="line"><span class="keyword">union</span></span><br><span class="line"><span class="keyword">select</span> `vend_id`, `prod_id`, `prod_price` </span><br><span class="line"><span class="keyword">from</span> `products` </span><br><span class="line"><span class="keyword">where</span> `vend_id` <span class="keyword">in</span> (<span class="number">1001</span>, <span class="number">1002</span>);</span><br></pre></td></tr></table></figure>
 
-<p><strong>js 中的命令模式</strong></p>
-<p>在 js 中，函数是一等公民。<br>我们完全可以不新增类</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">bindClick</span> = (<span class="params">button, func</span>) =&gt; &#123;</span><br><span class="line">  button.<span class="property">onclick</span> = func;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="title function_">bindClick</span>(btn1, <span class="title class_">MenuBar</span>.<span class="property">refresh</span>);</span><br><span class="line"><span class="title function_">bindClick</span>(btn2, <span class="title class_">SubMenu</span>.<span class="property">add</span>);</span><br><span class="line"><span class="title function_">bindClick</span>(btn3, <span class="title class_">SubMenu</span>.<span class="property">del</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="UNION规则"><a href="#UNION规则" class="headerlink" title="UNION规则"></a>UNION规则</h4><ol>
+<li>必须由两个或以上SELECT语句组成</li>
+<li>每个查询必须包含相同的列</li>
+<li>列数据类型必须兼容</li>
+</ol>
+<h3 id="全文本搜索"><a href="#全文本搜索" class="headerlink" title="全文本搜索"></a>全文本搜索</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建全文本搜索</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> productnotes (</span><br><span class="line">  note_id     <span class="type">int</span>       <span class="keyword">NOT</span> <span class="keyword">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  prod_id     <span class="type">char</span>(<span class="number">10</span>)  <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  note_date   datetime  <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  note_text   text      <span class="keyword">NULL</span>,</span><br><span class="line">  <span class="keyword">PRIMARY</span> KEY(note_id),</span><br><span class="line">  FULLTEXT(note_text)</span><br><span class="line">) ENGINE <span class="operator">=</span> MyISAM;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用全文本搜索</span></span><br><span class="line"><span class="keyword">select</span> `note_text` </span><br><span class="line"><span class="keyword">from</span> `productnotes` </span><br><span class="line"><span class="keyword">where</span> <span class="keyword">match</span>(`note_text`) against(<span class="string">&#x27;rabbit&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 布尔文本搜索</span></span><br><span class="line"><span class="keyword">select</span> `note_text` </span><br><span class="line"><span class="keyword">from</span> `productnotes` </span><br><span class="line"><span class="keyword">where</span> <span class="keyword">match</span>(`note_text`) against(<span class="string">&#x27;heavy&#x27;</span> <span class="keyword">in</span> <span class="type">boolean</span> mode);</span><br></pre></td></tr></table></figure>
 
-<p><strong>使用闭包实现命令模式</strong></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">setCommand</span> = (<span class="params">btn, command</span>) =&gt; &#123;</span><br><span class="line">  btn.<span class="property">onclick</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    command.<span class="title function_">execute</span>();</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">RefreshMenuBarCommand</span> = (<span class="params">receiver</span>) =&gt; &#123;</span><br><span class="line">  <span class="comment">// 返回对象是方便后续扩展撤销操作</span></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">execute</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      receiver.<span class="title function_">refresh</span>();</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> refreshMenuBarCommand = <span class="title class_">RefreshMenuBarCommand</span>(<span class="title class_">MenuBar</span>);</span><br><span class="line"><span class="title function_">setCommand</span>(btn1, refreshMenuBarCommand);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：导入数据时不要使用FULLTEXT</p>
+</blockquote>
+<h2 id="数据操作"><a href="#数据操作" class="headerlink" title="数据操作"></a>数据操作</h2><h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 插入单条数据</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `customers`(</span><br><span class="line">  `cust_name`,</span><br><span class="line">  `cust_address`,</span><br><span class="line">  `cust_city`,</span><br><span class="line">  `cust_state`,</span><br><span class="line">  `cust_zip`,</span><br><span class="line">  `cust_country`</span><br><span class="line">) <span class="keyword">values</span> (</span><br><span class="line">  <span class="string">&#x27;william&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;4544 50rd Streat&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Montana&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;AB&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;12345&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;USA&#x27;</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 插入多条数据</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> `customers`(</span><br><span class="line">  `cust_name`,</span><br><span class="line">  `cust_address`,</span><br><span class="line">  `cust_city`,</span><br><span class="line">  `cust_state`,</span><br><span class="line">  `cust_zip`,</span><br><span class="line">  `cust_country`</span><br><span class="line">) <span class="keyword">values</span> </span><br><span class="line">(<span class="string">&#x27;william&#x27;</span>, <span class="string">&#x27;4544 50rd Streat&#x27;</span>, <span class="string">&#x27;Montana&#x27;</span>, <span class="string">&#x27;AB&#x27;</span>, <span class="string">&#x27;12345&#x27;</span>, <span class="string">&#x27;USA&#x27;</span>),</span><br><span class="line">(<span class="string">&#x27;ohayo&#x27;</span>, <span class="string">&#x27;123 50rd Streat&#x27;</span>, <span class="string">&#x27;Beijing&#x27;</span>, <span class="string">&#x27;AB&#x27;</span>, <span class="string">&#x27;12345&#x27;</span>, <span class="string">&#x27;CN&#x27;</span>);</span><br></pre></td></tr></table></figure>
 
-<p><strong>命令队列</strong><br>队列在动画中非常常见，当有一组动画动作时，则需要按照顺序执行动作。那么我们可以通过发布订阅来实现命令队列</p>
-<p><strong>宏命令</strong><br>宏命令是一组命令的集合，通过执行宏命令，可一次执行一批命令。想象一下，家<br>里有一个万能遥控器，每天回家的时候，只要按一个特别的按钮，它就会帮我们关上房间门，顺<br>便打开电脑并登录 QQ。</p>
-<p>首先创建好 command</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> closeDoorCommand = &#123;</span><br><span class="line">  <span class="attr">execute</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;关门&quot;</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> openPcCommand = &#123;</span><br><span class="line">  <span class="attr">execute</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;开机&quot;</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> openQqCommand = &#123;</span><br><span class="line">  <span class="attr">execute</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;打开qq&quot;</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="更新和删除数据"><a href="#更新和删除数据" class="headerlink" title="更新和删除数据"></a>更新和删除数据</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 更新数据</span></span><br><span class="line"><span class="keyword">update</span> `customers` </span><br><span class="line"><span class="keyword">set</span> </span><br><span class="line">  `cust_name`<span class="operator">=</span><span class="string">&#x27;ohayo_update&#x27;</span>,</span><br><span class="line">  `cust_address`<span class="operator">=</span><span class="string">&#x27;123 50rd Streat_update&#x27;</span>,</span><br><span class="line">  `cust_city`<span class="operator">=</span><span class="string">&#x27;Beijing_update&#x27;</span>,</span><br><span class="line">  `cust_state`<span class="operator">=</span><span class="string">&#x27;AB_up&#x27;</span>,</span><br><span class="line">  `cust_zip`<span class="operator">=</span><span class="string">&#x27;1234&#x27;</span>,</span><br><span class="line">  `cust_country`<span class="operator">=</span><span class="string">&#x27;CN_update&#x27;</span> </span><br><span class="line"><span class="keyword">where</span> `cust_name`<span class="operator">=</span><span class="string">&#x27;ohayo&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除数据</span></span><br><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> `customers` <span class="keyword">where</span> `cust_name`<span class="operator">=</span><span class="string">&#x27;william&#x27;</span>;</span><br></pre></td></tr></table></figure>
 
-<p>然后定义宏任务 MacroCommand</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">MacroCommand</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">commandList</span>: [],</span><br><span class="line">    <span class="attr">add</span>: <span class="function">(<span class="params">command</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">commandList</span>.<span class="title function_">push</span>(command);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">execute</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, command; (command = <span class="variable language_">this</span>.<span class="property">commandsList</span>[i++]); ) &#123;</span><br><span class="line">        command.<span class="title function_">execute</span>();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> macroCommand = <span class="title class_">MacroCommand</span>();</span><br><span class="line">macroCommand.<span class="title function_">add</span>(closeDoorCommand);</span><br><span class="line">macroCommand.<span class="title function_">add</span>(openPcCommand);</span><br><span class="line">macroCommand.<span class="title function_">add</span>(openQQCommand);</span><br><span class="line">macroCommand.<span class="title function_">execute</span>();</span><br></pre></td></tr></table></figure>
+<h4 id="更新和删除的注意事项"><a href="#更新和删除的注意事项" class="headerlink" title="更新和删除的注意事项"></a>更新和删除的注意事项</h4><ol>
+<li>必须带WHERE子句，否则会更新&#x2F;删除所有行</li>
+<li>保证表有主键，并在WHERE中使用</li>
+<li>先用SELECT测试WHERE子句</li>
+<li>使用引用完整性防止误删除</li>
+</ol>
+<h2 id="表操作"><a href="#表操作" class="headerlink" title="表操作"></a>表操作</h2><h3 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> `customers_test` (</span><br><span class="line">  `cust_id`       <span class="type">int</span>           <span class="keyword">NOT</span> <span class="keyword">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  `cust_name`     <span class="type">char</span>(<span class="number">50</span>)      <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  `cust_address`  <span class="type">char</span>(<span class="number">50</span>)      <span class="keyword">NULL</span>,  </span><br><span class="line">  `cust_city`     <span class="type">char</span>(<span class="number">50</span>)      <span class="keyword">NULL</span>,</span><br><span class="line">  `cust_state`    <span class="type">char</span>(<span class="number">8</span>)       <span class="keyword">NULL</span>,</span><br><span class="line">  `cust_zip`      <span class="type">char</span>(<span class="number">8</span>)       <span class="keyword">NULL</span>,</span><br><span class="line">  `cust_country`  <span class="type">char</span>(<span class="number">50</span>)      <span class="keyword">NULL</span>,</span><br><span class="line">  `created_at`    <span class="type">timestamp</span>     <span class="keyword">DEFAULT</span> <span class="built_in">current_timestamp</span>,</span><br><span class="line">  `updated_at`    <span class="type">timestamp</span>,</span><br><span class="line">  <span class="keyword">primary</span> key(`cust_id`)</span><br><span class="line">) ENGINE<span class="operator">=</span>InnoDB;</span><br></pre></td></tr></table></figure>
 
-<p>宏命令是命令模式和组合模式的联合产物</p>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>JavaScript 可以用高阶函数非常方便地实现命令模式。命令模式在 JavaScript 语言中是一种隐形的模式。<br>即编写好一个函数后，通过回调的方式传给另一个函数，并作为 callback 回调来调用。</p>
+<h3 id="修改表"><a href="#修改表" class="headerlink" title="修改表"></a>修改表</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 添加列</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> `customers_test` <span class="keyword">add</span> `cust_phone` <span class="type">char</span>(<span class="number">20</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除列</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> `customers_test` <span class="keyword">drop</span> <span class="keyword">column</span> `cust_phone`;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 重命名表</span></span><br><span class="line">rename <span class="keyword">table</span> `customers_test` <span class="keyword">to</span> `customers_test1`;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除表</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> `customers_test`;</span><br></pre></td></tr></table></figure>
+
+<h2 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建视图</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">view</span> productcustomers <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> `cust_name`, `cust_contact`, `prod_id` </span><br><span class="line"><span class="keyword">from</span> `customers`, `orders`, `orderitems`</span><br><span class="line"><span class="keyword">where</span> customers.cust_id <span class="operator">=</span> orders.cust_id </span><br><span class="line"><span class="keyword">and</span> orderitems.order_num <span class="operator">=</span> orders.order_num;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看视图定义</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">create</span> <span class="keyword">view</span> `productcustomers`;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除视图</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">view</span> `productcustomers`;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用视图</span></span><br><span class="line"><span class="keyword">select</span> `cust_name`, `cust_contact` </span><br><span class="line"><span class="keyword">from</span> productcustomers </span><br><span class="line"><span class="keyword">where</span> prod_id <span class="operator">=</span> <span class="string">&#x27;TNT2&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="视图的用途"><a href="#视图的用途" class="headerlink" title="视图的用途"></a>视图的用途</h3><ul>
+<li>重用SQL语句</li>
+<li>简化复杂的SQL操作</li>
+<li>使用表的部分数据</li>
+<li>保护数据访问权限</li>
+<li>更改数据格式和表示</li>
+</ul>
+<h2 id="存储过程"><a href="#存储过程" class="headerlink" title="存储过程"></a>存储过程</h2><h3 id="存储过程的优势"><a href="#存储过程的优势" class="headerlink" title="存储过程的优势"></a>存储过程的优势</h3><ol>
+<li>简化复杂操作</li>
+<li>保证数据完整性</li>
+<li>防止错误</li>
+<li>简化变动管理</li>
+</ol>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><h3 id="串数据类型"><a href="#串数据类型" class="headerlink" title="串数据类型"></a>串数据类型</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CHAR</td>
+<td>1～255个字符的定长串</td>
+</tr>
+<tr>
+<td>VARCHAR</td>
+<td>长度可变，最多255字节</td>
+</tr>
+<tr>
+<td>TEXT</td>
+<td>最大64KB的变长文本</td>
+</tr>
+<tr>
+<td>TINYTEXT</td>
+<td>最大255字节</td>
+</tr>
+<tr>
+<td>MEDIUMTEXT</td>
+<td>最大16KB</td>
+</tr>
+<tr>
+<td>LONGTEXT</td>
+<td>最大4GB</td>
+</tr>
+<tr>
+<td>ENUM</td>
+<td>最多64K个串的集合</td>
+</tr>
+<tr>
+<td>SET</td>
+<td>最多64个串的集合</td>
+</tr>
+</tbody></table>
+<h3 id="数值数据类型"><a href="#数值数据类型" class="headerlink" title="数值数据类型"></a>数值数据类型</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BIT</td>
+<td>位字段，1～64位</td>
+</tr>
+<tr>
+<td>TINYINT</td>
+<td>-128～127</td>
+</tr>
+<tr>
+<td>SMALLINT</td>
+<td>-32768～32767</td>
+</tr>
+<tr>
+<td>MEDIUMINT</td>
+<td>-8388608～8388607</td>
+</tr>
+<tr>
+<td>INT</td>
+<td>-2147483648～2147483647</td>
+</tr>
+<tr>
+<td>BIGINT</td>
+<td>-9223372036854775808～9223372036854775807</td>
+</tr>
+<tr>
+<td>FLOAT</td>
+<td>单精度浮点</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>双精度浮点</td>
+</tr>
+<tr>
+<td>DECIMAL</td>
+<td>精度可变浮点</td>
+</tr>
+</tbody></table>
+<h3 id="日期和时间类型"><a href="#日期和时间类型" class="headerlink" title="日期和时间类型"></a>日期和时间类型</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DATE</td>
+<td>YYYY-MM-DD</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>HH:MM:SS</td>
+</tr>
+<tr>
+<td>DATETIME</td>
+<td>DATE和TIME的组合</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>功能同DATETIME</td>
+</tr>
+<tr>
+<td>YEAR</td>
+<td>2位或4位年份</td>
+</tr>
+</tbody></table>
+<h3 id="二进制数据类型"><a href="#二进制数据类型" class="headerlink" title="二进制数据类型"></a>二进制数据类型</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>最大长度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TINYBLOB</td>
+<td>255字节</td>
+</tr>
+<tr>
+<td>BLOB</td>
+<td>64KB</td>
+</tr>
+<tr>
+<td>MEDIUMBLOB</td>
+<td>16MB</td>
+</tr>
+<tr>
+<td>LONGBLOB</td>
+<td>4GB</td>
+</tr>
+</tbody></table>
 
       </div>
       <div class="post-tags-categories">
         
         <div class="tags">
           
-            <a href="/tags/JavaScript/" class="">
-              JavaScript
-            </a>
-          
-            <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="">
-              设计模式
+            <a href="/tags/MySQL/" class="">
+              MySQL
             </a>
           
         </div>
@@ -615,7 +815,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/2021/06/06/qian-duan/javascript/javascript-she-ji-mo-shi/6.ming-ling-mo-shi/" target="_blank" title="JavaScript设计模式 -- 6.命令模式">https://saebaryoo.github.io/2021/06/06/qian-duan/javascript/javascript-she-ji-mo-shi/6.ming-ling-mo-shi/</a>
+    <a href="/2023/04/01/hou-duan/shu-ju-ku/mysql/2.mysql-chang-jian-xie-fa/" target="_blank" title="MySQL常见基础写法">https://saebaryoo.github.io/2023/04/01/hou-duan/shu-ju-ku/mysql/2.mysql-chang-jian-xie-fa/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
@@ -637,20 +837,22 @@
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/6.jpg" class="lazyload placeholder" data-srcset="/medias/6.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/14.jpg" class="lazyload placeholder" data-srcset="/medias/14.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2021/06/06/qian-duan/javascript/javascript-she-ji-mo-shi/7.zu-he-mo-shi/" class="post-nav-link">
+    <a href="/2023/04/01/hou-duan/shu-ju-ku/mysql/1.mysql-ji-chu-yu-fa/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">JavaScript设计模式 -- 7.组合模式</div>
+        <div class="title-text">MySQL基础语法</div>
       </div>
       
       <!-- <div class="content">
-        定义
-用小的对象来构建更大的对象，而这些小的对象本身也可能是有更小的对象构成。
+        数据库基本概念
+数据库的英文单词：DataBase，简称：DB
+什么是数据库？
+用于存储和管理数据的仓库
 
-用途
-组合模式将对象组合成树形结构，以
+
+数据库的特
       </div> -->
     </a>
   </div>
@@ -661,18 +863,18 @@
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/13.jpg" class="lazyload placeholder" data-srcset="/medias/13.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/5.jpg" class="lazyload placeholder" data-srcset="/medias/5.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2021/06/06/qian-duan/javascript/javascript-she-ji-mo-shi/8.mo-ban-fang-fa-mo-shi/" class="post-nav-link">
+    <a href="/2023/03/30/gong-ju/shell/npm-ming-ling/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">JavaScript设计模式 -- 8.模板方法模式</div>
+        <div class="title-text">npm 配置</div>
       </div>
       <!-- <div class="content">
-        定义
-模板方式是一种只需要继承就可以实现的简单的模式
+        原文地址，本篇仅做记录学习npm install 安装模块
+基础语法
 
-模板由两个部分结构组成，第一个是抽象类，第二部分是具体的实现子类
+1234567891011npm install
       </div> -->
     </a>
   </div>
