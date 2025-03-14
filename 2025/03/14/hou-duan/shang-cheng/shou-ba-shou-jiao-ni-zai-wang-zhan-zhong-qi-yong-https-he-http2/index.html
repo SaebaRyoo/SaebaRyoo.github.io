@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>使用Docker + Jenkins + Nginx 实战前端自动化部署 | Ryo的小站</title>
+  <title>手把手教你在网站中启用https和http2 | Ryo的小站</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -522,21 +522,21 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('/medias/7.jpg')">
+  background-position: center center;position: relative;background-image:url('/medias/4.jpg')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        使用Docker + Jenkins + Nginx 实战前端自动化部署
+        手把手教你在网站中启用https和http2
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> 发表于：2025-02-20 |
+          <i class="fas fa-calendar"></i> 发表于：2025-03-14 |
         </span>
       
 
@@ -544,8 +544,8 @@
         <span class="post-detail-header_categories">
           <i class="iconfont iconbookmark1"></i> 分类：
           
-            <a href="/categories/%E8%BF%90%E7%BB%B4/" class="post-detail-header_category">
-              运维
+            <a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-detail-header_category">
+              后端
             </a>
           
         </span>
@@ -569,209 +569,152 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="1-docker-部署-nginx"><a href="#1-docker-部署-nginx" class="headerlink" title="1. docker 部署 nginx"></a>1. docker 部署 nginx</h1><h2 id="1-1-拉取镜像"><a href="#1-1-拉取镜像" class="headerlink" title="1.1. 拉取镜像"></a>1.1. 拉取镜像</h2><p><code>docker pull nginx</code></p>
-<h2 id="1-2-创建挂载目录"><a href="#1-2-创建挂载目录" class="headerlink" title="1.2. 创建挂载目录"></a>1.2. 创建挂载目录</h2><pre><code>mkdir -p /usr/local/docker-volumes/nginx/&#123;conf,log,html&#125;
+        <h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h1><p>在当今互联网时代，网站的安全性和加载速度成为用户体验中至关重要的两个因素。启用HTTPS可以通过加密通信保护数据的传输，防止敏感信息被窃取或篡改；而HTTP&#x2F;2则在提升网站加载速度和优化网络资源利用方面发挥了重要作用。这篇文章将手把手教你如何在网站中启用HTTPS和HTTP&#x2F;2，帮助你构建一个既安全又高效的网络环境。</p>
+<h1 id="2-前期准备"><a href="#2-前期准备" class="headerlink" title="2. 前期准备"></a>2. 前期准备</h1><h2 id="2-1-云服务"><a href="#2-1-云服务" class="headerlink" title="2.1. 云服务"></a>2.1. 云服务</h2><p>自己准备一个云服务器，或者按照这篇文章申请免费的<a target="_blank" rel="noopener" href="https://juejin.cn/post/7251914510436466725">亚马逊服务器</a></p>
+<h2 id="2-2-已经被备案的域名"><a href="#2-2-已经被备案的域名" class="headerlink" title="2.2. 已经被备案的域名"></a>2.2. 已经被备案的域名</h2><p>我这里已经准备了一个已经备案的 <a target="_blank" rel="noopener" href="https://ibuy.xin/">ibuy.xin</a> 域名</p>
+<h1 id="3-申请免费的ssl证书"><a href="#3-申请免费的ssl证书" class="headerlink" title="3. 申请免费的ssl证书"></a>3. 申请免费的ssl证书</h1><p>要配置<strong>https</strong>,，需要申请<strong>ssl</strong>证书，可以在阿里云，阿里云官网等网站申请免费的<strong>ssl</strong>证书。</p>
+<p>也可以通过这篇<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/174755007">文章</a>中提供的资料去查找</p>
+<p>本文以在阿里云申请为例。</p>
+<h2 id="3-1-登录阿里云"><a href="#3-1-登录阿里云" class="headerlink" title="3.1. 登录阿里云"></a>3.1. 登录阿里云</h2><p>登录阿里云后上<strong>搜索ssl</strong>,点击 <strong>数字证书管理服务</strong></p>
+<p><img src="/imgs/hou-duan/33.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/33.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h2 id="3-2-购买免费ssl证书"><a href="#3-2-购买免费ssl证书" class="headerlink" title="3.2. 购买免费ssl证书"></a>3.2. 购买免费ssl证书</h2><p>在<strong>ssl证书管理</strong>里面选择<strong>个人测试证书</strong> ，然后点击<strong>立即购买，</strong> 购买完成后点击<strong>创建证书</strong>，点击创建证书后下面列表会出现一个待申请状态的证书，点击<strong>证书申请</strong>，填写申请的信息。</p>
+<p><img src="/imgs/hou-duan/34.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/34.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<p>一般等个几分钟就可以了。</p>
+<h2 id="3-3-下载SSL证书"><a href="#3-3-下载SSL证书" class="headerlink" title="3.3. 下载SSL证书"></a>3.3. 下载SSL证书</h2><p>在审核通过后，在管理列表里会有对应的证书，点进去后<strong>切换到下载</strong>的tab页面，就会出现如下页面，我们使用的是nginx部署的，下载nginx那一列就行</p>
+<p><img src="/imgs/hou-duan/35.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/35.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h1 id="4-上传证书到服务器"><a href="#4-上传证书到服务器" class="headerlink" title="4. 上传证书到服务器"></a>4. 上传证书到服务器</h1><p>我们后面会用docker部署nginx，对应的volume目录是 <code>/usr/local/docker-volumes/nginx</code></p>
+<p>所以，需要先在服务器这个目录下创建一个<code>cert</code>，然后将下载下来的证书<code>&lt;cert-file-name&gt;.pem</code>和<code>&lt;cert-file-name&gt;.key</code>上传到该目录中。</p>
+<h1 id="5-docker部署nginx"><a href="#5-docker部署nginx" class="headerlink" title="5. docker部署nginx"></a>5. docker部署nginx</h1><p>在进入到服务器中后执行下面的操作</p>
+<h2 id="5-1-拉取镜像"><a href="#5-1-拉取镜像" class="headerlink" title="5.1. 拉取镜像"></a>5.1. 拉取镜像</h2><p><code>docker pull nginx</code></p>
+<h2 id="5-2-创建挂载目录"><a href="#5-2-创建挂载目录" class="headerlink" title="5.2. 创建挂载目录"></a>5.2. 创建挂载目录</h2><pre><code>mkdir -p /usr/local/docker-volumes/nginx/&#123;conf,log,html&#125;
 </code></pre>
-<h2 id="1-3-运行容器"><a href="#1-3-运行容器" class="headerlink" title="1.3. 运行容器"></a>1.3. 运行容器</h2><pre><code>docker run --name nginx -d -p 80:80 nginx
+<h2 id="5-3-运行容器"><a href="#5-3-运行容器" class="headerlink" title="5.3. 运行容器"></a>5.3. 运行容器</h2><pre><code>docker run --name nginx -d -p 80:80 nginx
 </code></pre>
-<h2 id="1-4-复制-nginx-默认配置"><a href="#1-4-复制-nginx-默认配置" class="headerlink" title="1.4. 复制 nginx 默认配置"></a>1.4. 复制 nginx 默认配置</h2><pre><code>docker cp nginx:/etc/nginx/nginx.conf /usr/local/docker-volumes/nginx
+<h2 id="5-4-复制nginx默认配置"><a href="#5-4-复制nginx默认配置" class="headerlink" title="5.4. 复制nginx默认配置"></a>5.4. 复制nginx默认配置</h2><p>配置volume</p>
+<pre><code>docker cp nginx:/etc/nginx/nginx.conf /usr/local/docker-volumes/nginx
 docker cp nginx:/etc/nginx/conf.d /usr/local/docker-volumes/nginx
 docker cp nginx:/usr/share/nginx/html /usr/local/docker-volumes/nginx
 docker rm -f nginx
 </code></pre>
-<h2 id="1-5-修改-default-conf-文件"><a href="#1-5-修改-default-conf-文件" class="headerlink" title="1.5. 修改 default.conf 文件"></a>1.5. 修改 default.conf 文件</h2><p>后续就是修改 default.conf 文件</p>
+<h2 id="5-5-修改default-conf文件"><a href="#5-5-修改default-conf文件" class="headerlink" title="5.5. 修改default.conf文件"></a>5.5. 修改default.conf文件</h2><p>编辑default.conf文件</p>
 <pre><code>vim /usr/local/docker-volumes/nginx/conf.d/default.conf
 </code></pre>
-<p>然后将 default.conf 改成如下</p>
+<p>我们会在nginx的配置文件中来完成对https和http2的支持，<strong>需要注意，里面各种路径对应的是容器内的路径。</strong></p>
+<p><strong>第一个server模块用来监听80端口的http请求，并将该请求跳转到第二个server模块所监听的https的请求</strong></p>
 <pre><code>server &#123;
-    listen       80;
-    server_name  localhost;
-​
-    #charset koi8-r;
-    access_log  /var/log/nginx/host.access.log  main;
-    error_log  /var/log/nginx/error.log  error;
-​
-    #location / &#123;
-    #    root   /usr/share/nginx/html;
-    #    index  index.html index.htm;
-    #&#125;
+    # 监听 80 端口（HTTP），支持 IPv4 和 IPv6
+    listen 80;
+    listen [::]:80;
 
-    静态资源目录
+    # 服务器名称（域名）
+    server_name ibuy.xin;
+
+    # 强制 HTTP 跳转到 HTTPS（301 永久重定向）
+    return 301 https://$host$request_uri;
+&#125;
+
+server &#123;
+    # 监听 443 端口（HTTPS），支持 HTTP/2
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+
+    # 服务器名称（域名）
+    server_name ibuy.xin;
+
+    # SSL 证书及密钥（请确保文件路径正确）
+    ssl_certificate /etc/nginx/cert/ibuy.xin.pem;
+    ssl_certificate_key /etc/nginx/cert/ibuy.xin.key;
+
+    # SSL 会话缓存和超时时间，优化性能
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+
+    # 自定义 TLS 协议和加密套件，增强安全性
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+    ssl_protocols TLSv1.2 TLSv1.3; # 仅允许安全的 TLS 版本
+    ssl_prefer_server_ciphers on; # 优先使用服务器端的加密算法
+
+    # 设置网站根目录（前端部署路径）
     root /usr/share/nginx/html/dist;
 
     location / &#123;
-        # 用于配合 browserHistory使用
+        # 用于 SPA 支持 browserHistory
         try_files $uri $uri/index.html /index.html;
-
-        # 如果有资源，建议使用 https + http2，配合按需加载可以获得更好的体验
-        # rewrite ^/(.*)$ https://preview.pro.ant.design/$1 permanent;
     &#125;
 
-    # 添加API代理配置
+    # 处理 500、502、503、504 错误，返回自定义错误页面
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html &#123;
+        root /usr/share/nginx/html;
+    &#125;
+
+    # 代理 API 请求到后端 NestJS 服务
     location /api/ &#123;
-        # 注意，这里的host写的是后端在docker中的服务名,因为我们的后端是用docker部署的
-        proxy_pass http://backend-nestjs:8001/;
+        proxy_pass http://ibuy-service-nestjs:8000/v1/; # 代理到后端服务（如果 NestJS 使用 HTTPS，需要改成 https）
+
+        # 设置请求头信息，传递客户端 IP 和协议
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-    &#125;
-​
-    #error_page  404              /404.html;
-​
-    # redirect server error pages to the static page /50x.html
-    #
-    error_page   500 502 503 504  /50x.html;
-    location = /50x.html &#123;
-        root   /usr/share/nginx/html;
+
     &#125;
 &#125;
 </code></pre>
-<h2 id="1-6-查看-docker-网络"><a href="#1-6-查看-docker-网络" class="headerlink" title="1.6. 查看 docker 网络"></a>1.6. 查看 docker 网络</h2><p>因为我的后端也是用的 docker 部署的，所以在运行 nginx 镜像前需要将两个容器放在相同的网络中。不然不同的 docker 容器无法相互连接。</p>
-<p>使用<code>docker network ls</code>查看后端部署的网络，我定了一个名为<code>ibuy-backend_ibuy_network</code>的网络。</p>
-<h2 id="1-7-重新运行-nginx-镜像"><a href="#1-7-重新运行-nginx-镜像" class="headerlink" title="1.7. 重新运行 nginx 镜像"></a>1.7. 重新运行 nginx 镜像</h2><p>在配置中加上<code>ibuy-backend_ibuy_network</code>网络</p>
-<pre><code>docker run --name nginx -m 200m -p 80:80 \
+<h2 id="5-6-重新运行nginx镜像"><a href="#5-6-重新运行nginx镜像" class="headerlink" title="5.6. 重新运行nginx镜像"></a>5.6. 重新运行nginx镜像</h2><p>在配置中加上<code>ibuy-portal-backend_default</code>网络</p>
+<pre><code>docker run --name nginx -m 200m -p 80:80 -p 443:443 \
 -v /usr/local/docker-volumes/nginx/nginx.conf:/etc/nginx/nginx.conf \
 -v /usr/local/docker-volumes/nginx/conf.d:/etc/nginx/conf.d \
+-v /usr/local/docker-volumes/nginx/cert:/etc/nginx/cert \
 -v /usr/local/docker-volumes/nginx/html:/usr/share/nginx/html \
 -v /usr/local/docker-volumes/nginx/log:/var/log/nginx \
 -e TZ=Asia/Shanghai \
 --restart=always \
---network ibuy-backend_ibuy_network \
+--network ibuy-portal-backend_default \
 --privileged=true -d nginx
 </code></pre>
-<p>到这里，nginx 相关配置基本完成</p>
-<h1 id="2-部署-Github-Action"><a href="#2-部署-Github-Action" class="headerlink" title="2. 部署 Github Action"></a>2. 部署 Github Action</h1><p>此前也用过 github action 。不过是用来发布 npm 包。这次使用 github action 部署前端自动化是因为在使用 jenkins 做自动部署时，我的服务器内存太小。只有 2GB。所以在服务器内部使用 jenkins 进行前端项目的 CI&#x2F;CD 时会占满内存。</p>
-<p>所以就想着吧 CI&#x2F;CD 这个步骤给移出去，这就想到了<a target="_blank" rel="noopener" href="https://docs.github.com/zh/actions">GitHub Actions</a></p>
-<h2 id="2-1-Github-Action-简介"><a href="#2-1-Github-Action-简介" class="headerlink" title="2.1. Github Action 简介"></a>2.1. Github Action 简介</h2><ul>
-<li><strong>GitHub Actions</strong> 部署文件通常以 <code>xxx.yml</code> 命名，路径为项目根目录下 <code>/.github/workflows/xxx.yml</code> 。</li>
-<li>Jobs 中使用的 Action 可以去 github 的<a target="_blank" rel="noopener" href="https://github.com/marketplace">macketplace</a>寻找</li>
-</ul>
-<p>一般的 workflow 流程如下</p>
 <ol>
-<li>Action<ol>
-<li>条件</li>
-<li>分支</li>
+<li>容器基础配置<br>--name nginx<br>为容器指定一个名称 nginx，便于后续管理（启动&#x2F;停止&#x2F;查看日志等）。</li>
 </ol>
-</li>
-<li>Jobs<ol>
-<li>运行环境<ol>
-<li>步骤一</li>
-<li>步骤二</li>
-<li>步骤 N</li>
-<li>发布到服务器</li>
+<p>-m 200m<br>限制容器内存使用上限为 200MB，防止容器占用过多资源。</p>
+<p>-d<br>以 后台守护进程模式 运行容器（detached mode），终端不阻塞。</p>
+<ol start="2">
+<li>网络与端口映射<br>-p 80:80<br>将宿主机的 80 端口 映射到容器的 80 端口，允许外部通过 HTTP 访问服务。</li>
 </ol>
-</li>
+<p>-p 443:443<br>将宿主机的 443 端口 映射到容器的 443 端口，允许外部通过 HTTPS 访问服务。</p>
+<p>--network ibuy-portal-backend_default<br>将容器连接到名为 ibuy-portal-backend_default 的 自定义 Docker 网络，实现与其他容器（如后端服务）的通信。</p>
+<ol start="3">
+<li>数据卷挂载（持久化配置与数据）<br>-v &#x2F;usr&#x2F;local&#x2F;docker-volumes&#x2F;nginx&#x2F;nginx.conf:&#x2F;etc&#x2F;nginx&#x2F;nginx.conf<br>将宿主机的 Nginx 主配置文件挂载到容器内，覆盖容器默认配置。</li>
 </ol>
-</li>
+<p>-v &#x2F;usr&#x2F;local&#x2F;docker-volumes&#x2F;nginx&#x2F;conf.d:&#x2F;etc&#x2F;nginx&#x2F;conf.d<br>挂载 Nginx 子配置目录，用于管理多站点配置（如你的 server 块配置）。</p>
+<p>-v &#x2F;usr&#x2F;local&#x2F;docker-volumes&#x2F;nginx&#x2F;cert:&#x2F;etc&#x2F;nginx&#x2F;cert<br>挂载 SSL 证书目录，容器内可通过 &#x2F;etc&#x2F;nginx&#x2F;cert 访问证书文件。</p>
+<p>-v &#x2F;usr&#x2F;local&#x2F;docker-volumes&#x2F;nginx&#x2F;html:&#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html<br>挂载网站静态文件目录，容器内 Nginx 可直接服务此目录下的内容（如你的 dist 前端文件）。</p>
+<p>-v &#x2F;usr&#x2F;local&#x2F;docker-volumes&#x2F;nginx&#x2F;log:&#x2F;var&#x2F;log&#x2F;nginx<br>挂载日志目录，持久化保存 Nginx 的访问日志和错误日志。</p>
+<ol start="4">
+<li>环境与权限控制<br>-e TZ&#x3D;Asia&#x2F;Shanghai<br>设置容器时区为 亚洲&#x2F;上海，确保日志时间与服务器本地时间一致。</li>
 </ol>
-<h2 id="2-2-创建-workflow"><a href="#2-2-创建-workflow" class="headerlink" title="2.2. 创建 workflow"></a>2.2. 创建 workflow</h2><p>根据上面的分析，我们可以在前端项目的根目录创建如下的 <strong>.github&#x2F;workflows&#x2F;web-deploy.yml</strong></p>
-<pre><code># 当前工作流的名称
-name: web-deploy
-on:
-  push: # 什么时候触发
-    branches:
-      - main # 哪个分支
-
-jobs: # 构建的任务，一个工作流有多个构建任务，
-  build-and-deploy:
-    runs-on: ubuntu-latest # 在什么服务器上面执行这些任务，这里使用最新版本的ubuntu
-
-    steps: # 构建任务的步骤，一个任务可分为多个步骤
-      # 切换分支
-      - name: Checkout
-        uses: actions/checkout@v4
-      # 步骤2 给当前服务器安装node
-      - name: use node
-        uses: actions/setup-node@v4.2.0
-        with:
-          node-version: 20
-          cache: &#39;yarn&#39;
-      # 步骤3 下载项目依赖
-      - name: install
-        # --production只会安装dependencies的依赖，
-        # 如果你构建时依赖devDependencies的包, 请谨慎使用该优化项
-        run: yarn install --production --no-progress
-      # 步骤4 打包node项目
-      - name: build
-        run: yarn build
-      # 步骤5 部署项目到服务器
-      - name: ssh deploy
-        uses: easingthemes/ssh-deploy@v5.1.0
-        with:
-          # Private key part of an SSH key pair
-          SSH_PRIVATE_KEY: $&#123;&#123; secrets.SSH_PRIVATE_KEY &#125;&#125;
-          # Remote host
-          REMOTE_HOST: $&#123;&#123; secrets.REMOTE_HOST &#125;&#125;
-          # Remote user
-          REMOTE_USER: $&#123;&#123; secrets.REMOTE_USER &#125;&#125;
-          # Source directory, path relative to `$GITHUB_WORKSPACE` root, eg: `dist/`
-          SOURCE: &#39;/dist/&#39;
-          # 在执行 rsync 前, 先创建静态资源目录
-          SCRIPT_BEFORE: |
-            mkdir -p /usr/local/docker-volumes/nginx/html/dist
-            rm -rf /usr/local/docker-volumes/nginx/html/dist/*
-          # 静态资源目标目录
-          TARGET: &#39;/usr/local/docker-volumes/nginx/html/dist&#39;
-</code></pre>
-<p>因为要部署到服务器端，所以要了解连接到服务器的方式，我们选择 ssh 连接，网上也用 sftp 连接连接的教程。</p>
-<p>我们用的 Action 是<a target="_blank" rel="noopener" href="https://github.com/marketplace/actions/ssh-deploy#configuration"><strong>ssh deploy</strong></a> ****，它相关的配置项可以点链接详细查看</p>
-<h2 id="2-3-在服务器配置秘钥"><a href="#2-3-在服务器配置秘钥" class="headerlink" title="2.3. 在服务器配置秘钥"></a>2.3. 在服务器配置秘钥</h2><ul>
-<li>登录我们的服务器，在 <code>root</code> 目录下输入，直接回车到底</li>
-</ul>
-<!---->
-
-<pre><code>ssh-keygen -m PEM -t rsa -b 4096
-</code></pre>
-<ul>
-<li>此时， <code>/root/.ssh/</code> 下生成了私钥文件 <code>id_dsa</code> 、公钥文件<code>id_dsa.pub</code> ，然后根据公钥文件生成<code>authorized_keys</code> ，</li>
-</ul>
-<!---->
-
-<pre><code>cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys
-</code></pre>
-<ul>
-<li>给以上三个文件分别设置权限。</li>
-</ul>
-<!---->
-
-<pre><code>chmod 600 ~/.ssh/id_rsa
-</code></pre>
-<!---->
-
-<pre><code>chmod 600 ~/.ssh/id_rsa.pub
-</code></pre>
-<!---->
-
-<pre><code>chmod 600 ~/.ssh/authorized_keys
-</code></pre>
-<h2 id="2-4-在-github-项目中设置仓库秘钥"><a href="#2-4-在-github-项目中设置仓库秘钥" class="headerlink" title="2.4. 在 github 项目中设置仓库秘钥"></a>2.4. 在 github 项目中设置仓库秘钥</h2><p>进入到你的 github 项目中，点击顶部导航栏的<strong>Setting。</strong> 然后点击 <strong>Secrets and variables -&gt; New repository secret</strong> 创建 workflow 中需要的三个变量，分别是</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/1659586d856641488d580b8394982d52~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639463&x-orig-sign=zGLWO7e8JhqZEnQ4weaV81KtMN8=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/1659586d856641488d580b8394982d52~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639463&x-orig-sign=zGLWO7e8JhqZEnQ4weaV81KtMN8=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
-<h3 id="2-4-1-REMOTE-HOST"><a href="#2-4-1-REMOTE-HOST" class="headerlink" title="2.4.1. REMOTE_HOST"></a>2.4.1. REMOTE_HOST</h3><p>你的服务器 ip</p>
-<h3 id="2-4-2-REMOTE-USER"><a href="#2-4-2-REMOTE-USER" class="headerlink" title="2.4.2. REMOTE_USER"></a>2.4.2. REMOTE_USER</h3><p>填写 root</p>
-<h3 id="2-4-3-SSH-PRIVATE-KEY"><a href="#2-4-3-SSH-PRIVATE-KEY" class="headerlink" title="2.4.3. SSH_PRIVATE_KEY"></a>2.4.3. SSH_PRIVATE_KEY</h3><p>用于连接服务器的秘钥，你需要在服务器中 <code>cat</code> 密钥，将所有内容复制到上图的 <strong>SSH_PRIVATE_KEY</strong> 中</p>
-<pre><code>cat ~/.ssh/id_rsa
-</code></pre>
-<h2 id="2-5-提交代码，并查看仓库的-Actions"><a href="#2-5-提交代码，并查看仓库的-Actions" class="headerlink" title="2.5. 提交代码，并查看仓库的 Actions"></a>2.5. 提交代码，并查看仓库的 Actions</h2><p>首先到前端项目中提交你的代码（要包含 workflow）。</p>
-<p>然后再到 github 上查看对应的仓库，点击 Actions 查看对应的工作流</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/929865602f414878b21ccb5afd730c0f~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639463&x-orig-sign=tJsnbmoakcXgIdldutod33G0cZU=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/929865602f414878b21ccb5afd730c0f~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639463&x-orig-sign=tJsnbmoakcXgIdldutod33G0cZU=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/ec539490a0d84b11b8fdb84950763144~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639463&x-orig-sign=sPiyGf1q1gyClOtjmVQYjrlWCpM=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/ec539490a0d84b11b8fdb84950763144~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639463&x-orig-sign=sPiyGf1q1gyClOtjmVQYjrlWCpM=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<p>--privileged&#x3D;true<br>赋予容器 特权模式，允许容器访问宿主机的敏感设备或内核功能（慎用！仅在需要时开启）。</p>
+<ol start="5">
+<li>容错与运维<br>--restart&#x3D;always<br>设置容器 自动重启策略：无论退出状态如何，容器意外停止时都会自动重启（适合生产环境）。</li>
+</ol>
+<h1 id="6-验证SSL证书是否配置成功"><a href="#6-验证SSL证书是否配置成功" class="headerlink" title="6. 验证SSL证书是否配置成功"></a>6. 验证SSL证书是否配置成功</h1><h2 id="6-1-验证https"><a href="#6-1-验证https" class="headerlink" title="6.1. 验证https"></a>6.1. 验证https</h2><p>证书安装完成后，您可通过访问证书绑定的域名验证该证书是否安装成功。</p>
+<p><a target="_blank" rel="noopener" href="https://ibuy.xin/">https://ibuy.xin/</a> 这里替换成你自己的网站域名</p>
+<p>访问网站看到有把小锁就表示https配置好了</p>
+<p><img src="/imgs/hou-duan/36.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/36.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h2 id="6-2-验证http2-0"><a href="#6-2-验证http2-0" class="headerlink" title="6.2. 验证http2.0"></a>6.2. 验证http2.0</h2><p>打开我们的浏览器的控制台，查看 protocal ，为h2则表示启用成功</p>
+<p><img src="/imgs/hou-duan/37.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/37.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 
       </div>
       <div class="post-tags-categories">
         
         <div class="tags">
           
-            <a href="/tags/Nginx/" class="">
-              Nginx
+            <a href="/tags/%E5%AE%89%E5%85%A8/" class="">
+              安全
             </a>
           
-            <a href="/tags/Docker/" class="">
-              Docker
-            </a>
-          
-            <a href="/tags/Git/" class="">
-              Git
+            <a href="/tags/Nest-js/" class="">
+              Nest.js
             </a>
           
         </div>
@@ -785,7 +728,7 @@ jobs: # 构建的任务，一个工作流有多个构建任务，
     </li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/2025/02/20/yun-wei/githubaction-zi-dong-hua-bu-shu-qian-duan-ying-yong/" target="_blank" title="使用Docker + Jenkins + Nginx 实战前端自动化部署">https://saebaryoo.github.io/2025/02/20/yun-wei/githubaction-zi-dong-hua-bu-shu-qian-duan-ying-yong/</a>
+    <a href="/2025/03/14/hou-duan/shang-cheng/shou-ba-shou-jiao-ni-zai-wang-zhan-zhong-qi-yong-https-he-http2/" target="_blank" title="手把手教你在网站中启用https和http2">https://saebaryoo.github.io/2025/03/14/hou-duan/shang-cheng/shou-ba-shou-jiao-ni-zai-wang-zhan-zhong-qi-yong-https-he-http2/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
@@ -807,16 +750,16 @@ jobs: # 构建的任务，一个工作流有多个构建任务，
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/3.jpg" class="lazyload placeholder" data-srcset="/medias/3.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/8.jpg" class="lazyload placeholder" data-srcset="/medias/8.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2025/02/23/yun-wei/shi-yong-github-actions-docker-zi-dong-hua-bu-shu-nestjs/" class="post-nav-link">
+    <a href="/2025/03/14/hou-duan/shang-cheng/shi-xian-shang-cheng-zhi-fu-gong-neng/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">使用Github Actions+Docker自动化部署Nestjs</div>
+        <div class="title-text">Nestjs+RabbitMQ+支付宝沙盒 实现电商支付功能</div>
       </div>
       
       <!-- <div class="content">
-        1. 如何安全部署在下面的部署工作中，我们会将 Linux 服务器的 SSH 私钥配置到 GitHub 的 Secret
+        1. 前言在电商系统中，支付功能是整个交易流程中最为关键的环节之一。一个完善的支付系统不仅要保证交易的安全性和可靠性，还
       </div> -->
     </a>
   </div>
@@ -827,21 +770,15 @@ jobs: # 构建的任务，一个工作流有多个构建任务，
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/7.jpg" class="lazyload placeholder" data-srcset="/medias/7.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2025/02/20/yun-wei/jenkins-qian-duan-zi-dong-hua-bu-shu/" class="post-nav-link">
+    <a href="/2025/03/13/hou-duan/shang-cheng/shi-yong-nestjs-elasticsearch-shi-xian-dian-shang-sou-suo-gong-neng/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">使用Docker + Jenkins + Nginx 实战前端自动化部署</div>
+        <div class="title-text">使用Nestjs+ElasticSearch实现电商搜索功能</div>
       </div>
       <!-- <div class="content">
-        
-本文用于学习和记录
-
-1. 前提条件
-安装 Docker 和 Docker Compose
-安装 Jenkins
-拥有
+        1. ElasticSearch简介ElasticSearch（简称ES）是一个开源的分布式搜索引擎，基于强大的搜索和分
       </div> -->
     </a>
   </div>

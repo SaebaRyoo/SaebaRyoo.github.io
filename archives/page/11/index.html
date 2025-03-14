@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>使用Docker + Jenkins + Nginx 实战前端自动化部署 | Ryo的小站</title>
+  <title>归档 | Ryo的小站</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -508,607 +508,122 @@
 </header>
 
         <!-- 内容区域 -->
-        
- <!-- prismjs 代码高亮 -->
- 
-
-
-<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
-
-
-  <!-- 文章详情页顶部图片和标题 -->
-
-
-
-
-<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('/medias/7.jpg')">
-  <div class="post-detail-header-mask"></div>
-  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
-  
-  <div class="post-detail-header_info-box">
-    <div class="title-box">
-      <span class="title">
-        使用Docker + Jenkins + Nginx 实战前端自动化部署
-      </span>
-    </div>
-    
-    
-      
-        <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> 发表于：2025-02-20 |
-        </span>
-      
-
-      
-        <span class="post-detail-header_categories">
-          <i class="iconfont iconbookmark1"></i> 分类：
-          
-            <a href="/categories/%E8%BF%90%E7%BB%B4/" class="post-detail-header_category">
-              运维
-            </a>
-          
-        </span>
-      
-
-      
-    
+        <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
+<div class="bg-light-floor-archive" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -3;"></div>
+<div class="archive-header" style="background-image:url('https://pic1.zhimg.com/80/v2-1414b3a4b205e19060db18a20d08723a_1440w.jpg?source=1940ef5c')">
+  <div class="archive-header-title">
+    archive
   </div>
+  <div class="archive-header-desc">
   
-  
-    <script src="/js/bubble/bubble.js"></script>
-  
-</div>
-
-
-
-
-
-<div class="post-detail-content row justify-position" 
-  style="padding-top: 0px;">
-  <div class="main-content">
-    <article class="post post-detail">
-      <div class="post-content">
-        <h1 id="1-docker-部署-nginx"><a href="#1-docker-部署-nginx" class="headerlink" title="1. docker 部署 nginx"></a>1. docker 部署 nginx</h1><h2 id="1-1-拉取镜像"><a href="#1-1-拉取镜像" class="headerlink" title="1.1. 拉取镜像"></a>1.1. 拉取镜像</h2><p><code>docker pull nginx</code></p>
-<h2 id="1-2-创建挂载目录"><a href="#1-2-创建挂载目录" class="headerlink" title="1.2. 创建挂载目录"></a>1.2. 创建挂载目录</h2><pre><code>mkdir -p /usr/local/docker-volumes/nginx/&#123;conf,log,html&#125;
-</code></pre>
-<h2 id="1-3-运行容器"><a href="#1-3-运行容器" class="headerlink" title="1.3. 运行容器"></a>1.3. 运行容器</h2><pre><code>docker run --name nginx -d -p 80:80 nginx
-</code></pre>
-<h2 id="1-4-复制-nginx-默认配置"><a href="#1-4-复制-nginx-默认配置" class="headerlink" title="1.4. 复制 nginx 默认配置"></a>1.4. 复制 nginx 默认配置</h2><pre><code>docker cp nginx:/etc/nginx/nginx.conf /usr/local/docker-volumes/nginx
-docker cp nginx:/etc/nginx/conf.d /usr/local/docker-volumes/nginx
-docker cp nginx:/usr/share/nginx/html /usr/local/docker-volumes/nginx
-docker rm -f nginx
-</code></pre>
-<h2 id="1-5-修改-default-conf-文件"><a href="#1-5-修改-default-conf-文件" class="headerlink" title="1.5. 修改 default.conf 文件"></a>1.5. 修改 default.conf 文件</h2><p>后续就是修改 default.conf 文件</p>
-<pre><code>vim /usr/local/docker-volumes/nginx/conf.d/default.conf
-</code></pre>
-<p>然后将 default.conf 改成如下</p>
-<pre><code>server &#123;
-    listen       80;
-    server_name  localhost;
-​
-    #charset koi8-r;
-    access_log  /var/log/nginx/host.access.log  main;
-    error_log  /var/log/nginx/error.log  error;
-​
-    #location / &#123;
-    #    root   /usr/share/nginx/html;
-    #    index  index.html index.htm;
-    #&#125;
-
-    静态资源目录
-    root /usr/share/nginx/html/dist;
-
-    location / &#123;
-        # 用于配合 browserHistory使用
-        try_files $uri $uri/index.html /index.html;
-
-        # 如果有资源，建议使用 https + http2，配合按需加载可以获得更好的体验
-        # rewrite ^/(.*)$ https://preview.pro.ant.design/$1 permanent;
-    &#125;
-
-    # 添加API代理配置
-    location /api/ &#123;
-        # 注意，这里的host写的是后端在docker中的服务名,因为我们的后端是用docker部署的
-        proxy_pass http://backend-nestjs:8001/;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    &#125;
-​
-    #error_page  404              /404.html;
-​
-    # redirect server error pages to the static page /50x.html
-    #
-    error_page   500 502 503 504  /50x.html;
-    location = /50x.html &#123;
-        root   /usr/share/nginx/html;
-    &#125;
-&#125;
-</code></pre>
-<h2 id="1-6-查看-docker-网络"><a href="#1-6-查看-docker-网络" class="headerlink" title="1.6. 查看 docker 网络"></a>1.6. 查看 docker 网络</h2><p>因为我的后端也是用的 docker 部署的，所以在运行 nginx 镜像前需要将两个容器放在相同的网络中。不然不同的 docker 容器无法相互连接。</p>
-<p>使用<code>docker network ls</code>查看后端部署的网络，我定了一个名为<code>ibuy-backend_ibuy_network</code>的网络。</p>
-<h2 id="1-7-重新运行-nginx-镜像"><a href="#1-7-重新运行-nginx-镜像" class="headerlink" title="1.7. 重新运行 nginx 镜像"></a>1.7. 重新运行 nginx 镜像</h2><p>在配置中加上<code>ibuy-backend_ibuy_network</code>网络</p>
-<pre><code>docker run --name nginx -m 200m -p 80:80 \
--v /usr/local/docker-volumes/nginx/nginx.conf:/etc/nginx/nginx.conf \
--v /usr/local/docker-volumes/nginx/conf.d:/etc/nginx/conf.d \
--v /usr/local/docker-volumes/nginx/html:/usr/share/nginx/html \
--v /usr/local/docker-volumes/nginx/log:/var/log/nginx \
--e TZ=Asia/Shanghai \
---restart=always \
---network ibuy-backend_ibuy_network \
---privileged=true -d nginx
-</code></pre>
-<p>到这里，nginx 相关配置基本完成</p>
-<h1 id="2-部署-Github-Action"><a href="#2-部署-Github-Action" class="headerlink" title="2. 部署 Github Action"></a>2. 部署 Github Action</h1><p>此前也用过 github action 。不过是用来发布 npm 包。这次使用 github action 部署前端自动化是因为在使用 jenkins 做自动部署时，我的服务器内存太小。只有 2GB。所以在服务器内部使用 jenkins 进行前端项目的 CI&#x2F;CD 时会占满内存。</p>
-<p>所以就想着吧 CI&#x2F;CD 这个步骤给移出去，这就想到了<a target="_blank" rel="noopener" href="https://docs.github.com/zh/actions">GitHub Actions</a></p>
-<h2 id="2-1-Github-Action-简介"><a href="#2-1-Github-Action-简介" class="headerlink" title="2.1. Github Action 简介"></a>2.1. Github Action 简介</h2><ul>
-<li><strong>GitHub Actions</strong> 部署文件通常以 <code>xxx.yml</code> 命名，路径为项目根目录下 <code>/.github/workflows/xxx.yml</code> 。</li>
-<li>Jobs 中使用的 Action 可以去 github 的<a target="_blank" rel="noopener" href="https://github.com/marketplace">macketplace</a>寻找</li>
-</ul>
-<p>一般的 workflow 流程如下</p>
-<ol>
-<li>Action<ol>
-<li>条件</li>
-<li>分支</li>
-</ol>
-</li>
-<li>Jobs<ol>
-<li>运行环境<ol>
-<li>步骤一</li>
-<li>步骤二</li>
-<li>步骤 N</li>
-<li>发布到服务器</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-<h2 id="2-2-创建-workflow"><a href="#2-2-创建-workflow" class="headerlink" title="2.2. 创建 workflow"></a>2.2. 创建 workflow</h2><p>根据上面的分析，我们可以在前端项目的根目录创建如下的 <strong>.github&#x2F;workflows&#x2F;web-deploy.yml</strong></p>
-<pre><code># 当前工作流的名称
-name: web-deploy
-on:
-  push: # 什么时候触发
-    branches:
-      - main # 哪个分支
-
-jobs: # 构建的任务，一个工作流有多个构建任务，
-  build-and-deploy:
-    runs-on: ubuntu-latest # 在什么服务器上面执行这些任务，这里使用最新版本的ubuntu
-
-    steps: # 构建任务的步骤，一个任务可分为多个步骤
-      # 切换分支
-      - name: Checkout
-        uses: actions/checkout@v4
-      # 步骤2 给当前服务器安装node
-      - name: use node
-        uses: actions/setup-node@v4.2.0
-        with:
-          node-version: 20
-          cache: &#39;yarn&#39;
-      # 步骤3 下载项目依赖
-      - name: install
-        # --production只会安装dependencies的依赖，
-        # 如果你构建时依赖devDependencies的包, 请谨慎使用该优化项
-        run: yarn install --production --no-progress
-      # 步骤4 打包node项目
-      - name: build
-        run: yarn build
-      # 步骤5 部署项目到服务器
-      - name: ssh deploy
-        uses: easingthemes/ssh-deploy@v5.1.0
-        with:
-          # Private key part of an SSH key pair
-          SSH_PRIVATE_KEY: $&#123;&#123; secrets.SSH_PRIVATE_KEY &#125;&#125;
-          # Remote host
-          REMOTE_HOST: $&#123;&#123; secrets.REMOTE_HOST &#125;&#125;
-          # Remote user
-          REMOTE_USER: $&#123;&#123; secrets.REMOTE_USER &#125;&#125;
-          # Source directory, path relative to `$GITHUB_WORKSPACE` root, eg: `dist/`
-          SOURCE: &#39;/dist/&#39;
-          # 在执行 rsync 前, 先创建静态资源目录
-          SCRIPT_BEFORE: |
-            mkdir -p /usr/local/docker-volumes/nginx/html/dist
-            rm -rf /usr/local/docker-volumes/nginx/html/dist/*
-          # 静态资源目标目录
-          TARGET: &#39;/usr/local/docker-volumes/nginx/html/dist&#39;
-</code></pre>
-<p>因为要部署到服务器端，所以要了解连接到服务器的方式，我们选择 ssh 连接，网上也用 sftp 连接连接的教程。</p>
-<p>我们用的 Action 是<a target="_blank" rel="noopener" href="https://github.com/marketplace/actions/ssh-deploy#configuration"><strong>ssh deploy</strong></a> ****，它相关的配置项可以点链接详细查看</p>
-<h2 id="2-3-在服务器配置秘钥"><a href="#2-3-在服务器配置秘钥" class="headerlink" title="2.3. 在服务器配置秘钥"></a>2.3. 在服务器配置秘钥</h2><ul>
-<li>登录我们的服务器，在 <code>root</code> 目录下输入，直接回车到底</li>
-</ul>
-<!---->
-
-<pre><code>ssh-keygen -m PEM -t rsa -b 4096
-</code></pre>
-<ul>
-<li>此时， <code>/root/.ssh/</code> 下生成了私钥文件 <code>id_dsa</code> 、公钥文件<code>id_dsa.pub</code> ，然后根据公钥文件生成<code>authorized_keys</code> ，</li>
-</ul>
-<!---->
-
-<pre><code>cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys
-</code></pre>
-<ul>
-<li>给以上三个文件分别设置权限。</li>
-</ul>
-<!---->
-
-<pre><code>chmod 600 ~/.ssh/id_rsa
-</code></pre>
-<!---->
-
-<pre><code>chmod 600 ~/.ssh/id_rsa.pub
-</code></pre>
-<!---->
-
-<pre><code>chmod 600 ~/.ssh/authorized_keys
-</code></pre>
-<h2 id="2-4-在-github-项目中设置仓库秘钥"><a href="#2-4-在-github-项目中设置仓库秘钥" class="headerlink" title="2.4. 在 github 项目中设置仓库秘钥"></a>2.4. 在 github 项目中设置仓库秘钥</h2><p>进入到你的 github 项目中，点击顶部导航栏的<strong>Setting。</strong> 然后点击 <strong>Secrets and variables -&gt; New repository secret</strong> 创建 workflow 中需要的三个变量，分别是</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/1659586d856641488d580b8394982d52~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639463&x-orig-sign=zGLWO7e8JhqZEnQ4weaV81KtMN8=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/1659586d856641488d580b8394982d52~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639463&x-orig-sign=zGLWO7e8JhqZEnQ4weaV81KtMN8=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
-<h3 id="2-4-1-REMOTE-HOST"><a href="#2-4-1-REMOTE-HOST" class="headerlink" title="2.4.1. REMOTE_HOST"></a>2.4.1. REMOTE_HOST</h3><p>你的服务器 ip</p>
-<h3 id="2-4-2-REMOTE-USER"><a href="#2-4-2-REMOTE-USER" class="headerlink" title="2.4.2. REMOTE_USER"></a>2.4.2. REMOTE_USER</h3><p>填写 root</p>
-<h3 id="2-4-3-SSH-PRIVATE-KEY"><a href="#2-4-3-SSH-PRIVATE-KEY" class="headerlink" title="2.4.3. SSH_PRIVATE_KEY"></a>2.4.3. SSH_PRIVATE_KEY</h3><p>用于连接服务器的秘钥，你需要在服务器中 <code>cat</code> 密钥，将所有内容复制到上图的 <strong>SSH_PRIVATE_KEY</strong> 中</p>
-<pre><code>cat ~/.ssh/id_rsa
-</code></pre>
-<h2 id="2-5-提交代码，并查看仓库的-Actions"><a href="#2-5-提交代码，并查看仓库的-Actions" class="headerlink" title="2.5. 提交代码，并查看仓库的 Actions"></a>2.5. 提交代码，并查看仓库的 Actions</h2><p>首先到前端项目中提交你的代码（要包含 workflow）。</p>
-<p>然后再到 github 上查看对应的仓库，点击 Actions 查看对应的工作流</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/929865602f414878b21ccb5afd730c0f~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639463&x-orig-sign=tJsnbmoakcXgIdldutod33G0cZU=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/929865602f414878b21ccb5afd730c0f~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639463&x-orig-sign=tJsnbmoakcXgIdldutod33G0cZU=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/ec539490a0d84b11b8fdb84950763144~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639463&x-orig-sign=sPiyGf1q1gyClOtjmVQYjrlWCpM=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/ec539490a0d84b11b8fdb84950763144~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639463&x-orig-sign=sPiyGf1q1gyClOtjmVQYjrlWCpM=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
-
-      </div>
-      <div class="post-tags-categories">
-        
-        <div class="tags">
-          
-            <a href="/tags/Nginx/" class="">
-              Nginx
-            </a>
-          
-            <a href="/tags/Docker/" class="">
-              Docker
-            </a>
-          
-            <a href="/tags/Git/" class="">
-              Git
-            </a>
-          
-        </div>
-        
-      </div>
-      
-        <div class="copyright">
-  <ul class="post-copyright">
-    <li class="post-copyright-author">
-    <strong>作者:  </strong>Ryo</a>
-    </li>
-    <li class="post-copyright-link">
-    <strong>文章链接:  </strong>
-    <a href="/2025/02/20/yun-wei/githubaction-zi-dong-hua-bu-shu-qian-duan-ying-yong/" target="_blank" title="使用Docker + Jenkins + Nginx 实战前端自动化部署">https://saebaryoo.github.io/2025/02/20/yun-wei/githubaction-zi-dong-hua-bu-shu-qian-duan-ying-yong/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>版权声明:   </strong>
-      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
-      许可协议。转载请注明出处!
-    </li>
-  </ul>
-<div>
-      
-    </article>
-    <!-- 上一篇文章和下一篇文章 -->
-    
-      <!-- 文章详情页的上一页和下一页 -->
-<div class="post-nav">
-
-
-
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/3.jpg" class="lazyload placeholder" data-srcset="/medias/3.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2025/02/23/yun-wei/shi-yong-github-actions-docker-zi-dong-hua-bu-shu-nestjs/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">使用Github Actions+Docker自动化部署Nestjs</div>
-      </div>
-      
-      <!-- <div class="content">
-        1. 如何安全部署在下面的部署工作中，我们会将 Linux 服务器的 SSH 私钥配置到 GitHub 的 Secret
-      </div> -->
-    </a>
-  </div>
-
-
-
-  
-  <div class="post-nav-next post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/7.jpg" class="lazyload placeholder" data-srcset="/medias/7.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
-    </div>
-    <a href="/2025/02/20/yun-wei/jenkins-qian-duan-zi-dong-hua-bu-shu/" class="post-nav-link">
-      <div class="title">
-        下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">使用Docker + Jenkins + Nginx 实战前端自动化部署</div>
-      </div>
-      <!-- <div class="content">
-        
-本文用于学习和记录
-
-1. 前提条件
-安装 Docker 和 Docker Compose
-安装 Jenkins
-拥有
-      </div> -->
-    </a>
-  </div>
-
-</div>
-
-    
-    
-
-    <!-- 打赏 -->
-    
-
-    <!-- 分享 -->
-    
-      <!-- https://github.com/overtrue/share.js -->
-<!-- 文章详情页的分享 -->
-<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-
-<script src="/js/shareJs/social-share.min.js"></script>
-</script>
-
-<style>
-  .social-share {
-    margin: 20px 0;
-  }
-</style>
-
-
-    
-    
-    <!-- 评论 -->
-    <!-- 评论 -->
-
-  <div id="myComment">
-    
-      <div id="gitment-container"></div>
-
-    
-  </div>
-
-<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
-
-
-  </div>
-
-  <!-- 目录 -->
-  <!-- 文章详情页右侧目录 -->
-
-  <div class="toc-aside">
-    <div class="toc-main">
-      <div class="toc-aside-title">
-        <i class="fas fa-list-ul" aria-hidden="true"></i><span>本文目录</span>
-        
-          <div class="toc-open-close">本文目录</div>
-        
-      </div>
-      <div class="toc-content">
-        <div class="toc"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 手机端目录按钮 -->
-  <div id="toc-mobile-btn">
-    <i class="fas fa-list-ul" aria-hidden="true"></i>
-  </div>
-
-
-<script>
-  function closeToc(init) {
-    $(".toc-aside").css({'width': 0, 'padding': 0, 'transition': init ?  'noe' : 'width 0.3s' });
-    $(".toc-content").css({'width': 0});
-    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'none'});
-    $(".main-content").css({'width': '75%', 'margin-left': 'auto', 'margin-right': 'auto',});
-  };
-  function openToc() {
-    $(".main-content").css({'width': '65%', 'margin-right': '10px', 'margin-left': 'calc(35% - 350px)'});
-    $(".toc-aside").css({'width': '300px', 'padding': '0 10px', 'transition': 'width 0.3s'});
-    $(".toc-content").css({'width': '300px'});
-    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'inline-block'});
-  }
-  function openBtnClickFn () {
-    let openOrCloseBtn = $('.toc-aside .toc-aside-title .toc-open-close');
-    let open = eval('' || 'true');
-    openOrCloseBtn.click(function() {
-      if (open) {
-        closeToc();
-        open = false;
-      } else {
-        openToc();
-        open = true;
-      }
-    });
-  };
-  openBtnClickFn();
-  initCloseTocWidth(true);
-
-  function initCloseTocWidth(init) {
-    if (window.innerWidth >= 992) {
-      let isClose = false;
-      isClose && closeToc(init)
-    }
-  }
-
-  document.addEventListener('pjax:complete', function () {
-    $(".toc-aside").css({'transition': 'no'});
-  })
-  document.addEventListener('pjax:complete', function () {
-    openBtnClickFn();
-  })
-  
-</script>
-
-  <!-- 图片放大 Wrap images with fancybox support -->
-  <script src="/js/wrapImage.js"></script>
-</div>
-
-<!-- 文章详情页背景图 -->
-<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
-	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
-	<transition-group tag="ul" :name="names">
-		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
-			<img :src="image" class="bg-swiper-img no-lazy">
-		</li>
-	</transition-group>
-</div>
-<script>
-	var vm = new Vue({
-		el: '#appBgSwiper',
-		data: {
-			names: '' || 'fade' || 'fade', // translate-fade fade
-			mark: 0,
-			img: [],
-			bgColor: '',
-			time: null
-		},
-		methods: {   //添加方法
-			change(i, m) {
-				if (i > m) {
-					// this.names = 'fade';
-				} else if (i < m) {
-					// this.names = 'fade';
-				} else {
-					return;
-				}
-				this.mark = i;
-			},
-			prev() {
-				// this.names = 'fade';
-				this.mark--;
-				if (this.mark === -1) {
-					this.mark = 3;
-					return
-				}
-			},
-			next() {
-				// this.names = 'fade';
-				this.mark++;
-				if (this.mark === this.img.length) {
-					this.mark = 0;
-					return
-				}
-			},
-			autoPlay() {
-				// this.names = 'fade';
-				this.mark++;
-				if (this.mark === this.img.length) {
-					this.mark = 0;
-					return
-				}
-			},
-			play() {
-				let bgImgDelay = '' || '180000'
-				let delay = parseInt(bgImgDelay) || 180000;
-				this.time = setInterval(this.autoPlay, delay);
-			},
-			enter() {
-				clearInterval(this.time);
-			},
-			leave() {
-				this.play();
-			}
-		},
-		created() {
-			this.play()
-		},
-		beforeDestroy() {
-			clearInterval(this.time);
-		},
-		mounted() {
-			let prop = '' || '';
-			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
-			if (isImg) {
-				let img = prop.split(',');
-				let configRoot = '/'
-				let arrImg = [];
-				img.forEach(el => {
-					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
-					var objExp = new RegExp(Expression);
-
-					if (objExp.test(el)) {
-						// http or https
-						arrImg.push(el);
-					} else {
-						// 非http or https开头
-						// 本地文件
-						let firstStr = el.charAt(0);
-						if (firstStr == '/') {
-							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
-						}
-						el = configRoot + el;
-						arrImg.push(el);
-					}
-				})
-				this.img = arrImg;
-			} else {
-				this.bgColor = prop;
-			}
-		}
-	})
-</script>
-
-<style>
-	.bg-swiper-box {
-		position: absolute;
-		display: block;
-		width: 100%;
-		height: 100%;
-	}
-
-	.bg-swiper-img {
-		object-fit: cover;
-		width: 100%;
-		height: 100%;
-	}
-</style>
-
-
-
-
+  <span class="title" id="archive-header-desc"></span>
   <script>
-  function loadMermaid() {
-    if (document.getElementsByClassName('mermaid').length) {
-      if (window.mermaidJsLoad) mermaid.init()
-      else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
-          window.mermaidJsLoad = true
-          mermaid.initialize({
-            theme: 'default',
-          })
-          if ('true') {
-            mermaid.init();
-          }
-        })
-      }
-    }
-  };
-  document.addEventListener("DOMContentLoaded", function () {
-    loadMermaid();
-  })
-
-  document.addEventListener('pjax:complete', function () {
-    loadMermaid();
-  })
-  
+  function typedFn() {
+    const el = '#archive-header-desc';
+    const type = 'archive';
+    let desc = '春有百花秋有月，夏有凉风冬有雪'
+    var typed = new Typed(el, {
+      strings: [desc],
+      startDelay: 100,
+      typeSpeed: 100,
+      loop: true,
+      backSpeed: 50,
+      showCursor: true
+    });
+  }
+  typedFn();
 </script>
+  
+  </div>
+  <div class="mask-box"></div>
+</div>
 
+<div class="archive-video">
+  <video class="full-video" autoplay loop muted>
+      <source style="width: 100%;height: 100vh;" src="/">
+  </video>
+  <div class="video-header-title">
+    archive
+  </div>
+  <div class="video-header-desc">
+  
+      <span class="title" id="archive-video-header-desc"></span>
+      <script>
+  function typedFn() {
+    const el = '#archive-video-header-desc';
+    const type = 'archive';
+    let desc = '春有百花秋有月，夏有凉风冬有雪'
+    var typed = new Typed(el, {
+      strings: [desc],
+      startDelay: 100,
+      typeSpeed: 100,
+      loop: true,
+      backSpeed: 50,
+      showCursor: true
+    });
+  }
+  typedFn();
+</script>
+      
+  </div>
+  <div class="mask-box"></div>
+</div>
+
+<!-- hash算法 -->
+
+
+<div class="archive-main">
+  <section class="archive">
+    <div class="archive-content">
+      <ul class="post-archive">
+        
+        
+          
+            
+            <div class="year" data-aos="zoom-in-up">
+                <div class="bullet"></div>
+                <a href="/archives/2019">2019</a>
+            </div>
+          
+          <li class="post-item" data-aos="fade-left">
+            
+            <div class="post-img-box">
+              <a href="/2019/01/11/kai-fa-wen-ti-ji-lu/ru-he-tong-guo-hexo-bu-shu-react-xiang-mu/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" src="/medias/2.jpg" class="lazyload placeholder" data-srcset="/medias/2.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                <span class="post-date">01-11</span>
+              </div>
+              <a class="post-title" href="/2019/01/11/kai-fa-wen-ti-ji-lu/ru-he-tong-guo-hexo-bu-shu-react-xiang-mu/">如何通过Hexo +  Github Pages部署react项目</a>
+            </div>
+          </li>
+        
+      </ul>
+    </div>
+  </section>
+  <div class="w-70">
+    
+  <!-- <nav class="page-nav">
+    <a class="extend prev" rel="prev" href="/archives/page/10/">上一页</a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/9/">9</a><a class="page-number" href="/archives/page/10/">10</a><span class="page-number current">11</span>
+  </nav> -->
+  <div class="page-nav">
+    
+      <a href="/archives/page/10/"
+         class="page-nav-pre">
+         <i class="fas fa-angle-left"></i><span class="ml-5">上一页</span>
+      </a>
+    
+    <div class="page-info">
+        <div class="page-info-text">11 / 11</div>
+    </div>
+    
+  </div>
+
+  </div>
+</div>
 
       </main>
     </div>
