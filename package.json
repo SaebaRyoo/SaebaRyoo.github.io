@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "g": "hexo generate",
     "c": "hexo clean",
+    "g": "hexo generate",
     "d": "hexo deploy",
     "server": "hexo server",
     "local": "hexo clean & hexo g & hexo s",
-    "gen": "hexo clean & hexo g & hexo d"
+    "gen": "hexo clean & hexo generate & hexo deploy"
   },
   "hexo": {
     "version": "6.3.0"

@@ -16,6 +16,8 @@ menu:
     icon: fas fa-tags
   Visual:
     url: /visualization-layout
+  Resume:
+      url: /about/resume
   # About:
   #   url: /about
   #   icon: fas fa-user
@@ -24,15 +26,15 @@ menu:
   # 更多: # 这是二级菜单的写法
   #  icon: fas fa-link
   #  children:
-  #   - name: 图库
-  #     url: /gallery
-  #     icon: fas fa-music
-  #   - name: 友情连接
-  #     url: /huoban
-  #     icon: fas fa-film
-  #   - name: 简历
-  #     url: /about/resume
-  #     icon: fas fa-film
+    # - name: 图库
+    #   url: /gallery
+    #   icon: fas fa-music
+    # - name: 友情连接
+    #   url: /huoban
+    #   icon: fas fa-film
+    # - name: 简历
+    #   url: /about/resume
+    #   icon: fas fa-film
 # github地址, 头部导航右上角的github链接
 Github:
   on: true
