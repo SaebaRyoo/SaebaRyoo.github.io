@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>分类: 商城 | Ryo的小站</title>
+  <title>使用Nestjs实现基于JWT + RBAC的认证授权系统 | Ryo的小站</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -509,112 +509,514 @@
 
         <!-- 内容区域 -->
         
+ <!-- prismjs 代码高亮 -->
+ 
 
-<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
-<div class="bg-light-floor-categoryDetail" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -3;"></div>
 
-<div class="category-header"  style="background-image:url('https://pic3.zhimg.com/80/v2-98dcd81cb0d1fee52a807c13cedb8338_1440w.jpg?source=1940ef5c')">
-  <div class="category-header-title">
-    category
-  </div>
-  <div class="category-header-desc">
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('/medias/12.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        使用Nestjs实现基于JWT + RBAC的认证授权系统
+      </span>
+    </div>
     
-      <span class="title" id="category-header-desc"></span>
-      <script>
-  function typedFn() {
-    const el = '#category-header-desc';
-    const type = 'categoryDetail';
-    let desc = '春有百花秋有月，夏有凉风冬有雪'
-    var typed = new Typed(el, {
-      strings: [desc],
-      startDelay: 100,
-      typeSpeed: 100,
-      loop: true,
-      backSpeed: 50,
-      showCursor: true
-    });
-  }
-  typedFn();
-</script>
+    
       
-  </div>
-  <div class="mask-box"></div>
-</div>
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2025-03-14 |
+        </span>
+      
 
-
-<div class="category">
-  <div class="category-name">
-    <div class="name" style="background-color: #E8F8F5;">商城 分类</div>
-  </div>
-  <!-- 每一篇文章卡片 -->
-  <!-- hash算法 -->
-
-<section class="posts">
-  
-    
-    <article class="post reveal" style="flex-direction: row-reverse;   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2025-03-03</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2025/03/03/shang-cheng/shi-yong-minio-he-nestjs-shi-xian-wen-jian-cun-chu/">使用Minio和Nestjs实现文件存储</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
-
-    <i class="iconfont icontag"></i>
-    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nest-js/" rel="tag">Nest.js</a></li></ul>
-
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E5%95%86%E5%9F%8E/">商城</a>
-</div>
-
-
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2025/03/03/shang-cheng/shi-yong-minio-he-nestjs-shi-xian-wen-jian-cun-chu/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-detail-header_category">
+              后端
             </a>
-          </div>
-          <div class="post-content">
-            
-本文详细介绍了如何在商城项目中使用 MinIO 和 Nest.js 实现文件存储功能。文章分为四个主要部分：
+          
+        </span>
+      
 
-使用 Docker 部署 MinIO 服务
-MinIO 的基础配置（创建 bucket 和 AccessKey）
-配置 Min
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2025/03/03/shang-cheng/shi-yong-minio-he-nestjs-shi-xian-wen-jian-cun-chu/">
-            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
-          </a>
-        </div>
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content row justify-position" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本系统实现了一个基于RBAC（Role-Based Access Control）的认证授权系统，主要包含以下功能：</p>
+<ul>
+<li>用户认证：实现用户登录、登出等基础认证功能</li>
+<li>权限控制：基于RBAC模型的细粒度权限控制</li>
+<li>JWT认证：使用JWT实现无状态的用户身份验证</li>
+</ul>
+<h2 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h2><h3 id="实体关系图"><a href="#实体关系图" class="headerlink" title="实体关系图"></a>实体关系图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">erDiagram</span><br><span class="line">    SysUsersEntity ||--o&#123; UsersRoleEntity : has</span><br><span class="line">    RoleEntity ||--o&#123; UsersRoleEntity : has</span><br><span class="line"></span><br><span class="line">    SysUsersEntity &#123;</span><br><span class="line">        number id PK</span><br><span class="line">        string loginName</span><br><span class="line">        string password</span><br><span class="line">        string status</span><br><span class="line">        number tokenVersion</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    RoleEntity &#123;</span><br><span class="line">        number id PK</span><br><span class="line">        string name</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    UsersRoleEntity &#123;</span><br><span class="line">        number admin_id PK</span><br><span class="line">        number role_id PK</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="表结构说明"><a href="#表结构说明" class="headerlink" title="表结构说明"></a>表结构说明</h3><h4 id="1-用户表-ibuy-admin"><a href="#1-用户表-ibuy-admin" class="headerlink" title="1. 用户表 (ibuy_admin)"></a>1. 用户表 (ibuy_admin)</h4><table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>说明</th>
+<th>约束</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>number</td>
+<td>用户ID</td>
+<td>主键</td>
+</tr>
+<tr>
+<td>login_name</td>
+<td>string</td>
+<td>登录名</td>
+<td>唯一，可空</td>
+</tr>
+<tr>
+<td>password</td>
+<td>string</td>
+<td>密码</td>
+<td>可空</td>
+</tr>
+<tr>
+<td>status</td>
+<td>string</td>
+<td>用户状态</td>
+<td>可空</td>
+</tr>
+<tr>
+<td>tokenVersion</td>
+<td>number</td>
+<td>token版本号</td>
+<td>默认值0</td>
+</tr>
+</tbody></table>
+<h4 id="2-角色表-ibuy-role"><a href="#2-角色表-ibuy-role" class="headerlink" title="2. 角色表 (ibuy_role)"></a>2. 角色表 (ibuy_role)</h4><table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>说明</th>
+<th>约束</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>number</td>
+<td>角色ID</td>
+<td>主键</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>角色名称</td>
+<td>唯一，可空</td>
+</tr>
+</tbody></table>
+<h4 id="3-用户角色关联表-ibuy-admin-role"><a href="#3-用户角色关联表-ibuy-admin-role" class="headerlink" title="3. 用户角色关联表 (ibuy_admin_role)"></a>3. 用户角色关联表 (ibuy_admin_role)</h4><table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>类型</th>
+<th>说明</th>
+<th>约束</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>admin_id</td>
+<td>number</td>
+<td>用户ID</td>
+<td>联合主键</td>
+</tr>
+<tr>
+<td>role_id</td>
+<td>number</td>
+<td>角色ID</td>
+<td>联合主键</td>
+</tr>
+</tbody></table>
+<h2 id="系统配置"><a href="#系统配置" class="headerlink" title="系统配置"></a>系统配置</h2><h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><p>需要在.env文件中配置以下环境变量：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JWT_SECRET=your_jwt_secret_key</span><br></pre></td></tr></table></figure>
+<h2 id="核心功能"><a href="#核心功能" class="headerlink" title="核心功能"></a>核心功能</h2><h3 id="1-认证流程"><a href="#1-认证流程" class="headerlink" title="1. 认证流程"></a>1. 认证流程</h3><h4 id="1-1-登录认证"><a href="#1-1-登录认证" class="headerlink" title="1.1 登录认证"></a>1.1 登录认证</h4><p>用户登录时，系统会：</p>
+<ol>
+<li>验证用户名和密码</li>
+<li>生成包含用户信息的JWT Token</li>
+<li>返回Token和用户信息</li>
+</ol>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// auth.controller.ts</span></span><br><span class="line"><span class="meta">@Public</span>()</span><br><span class="line"><span class="meta">@HttpCode</span>(<span class="title class_">HttpStatus</span>.<span class="property">OK</span>)</span><br><span class="line"><span class="meta">@Post</span>(<span class="string">&#x27;login&#x27;</span>)</span><br><span class="line"><span class="keyword">async</span> <span class="title function_">signIn</span>(<span class="params"><span class="meta">@Body</span>() user: Record&lt;<span class="built_in">string</span>, <span class="built_in">any</span>&gt;</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">authService</span>.<span class="title function_">signIn</span>(user.<span class="property">loginName</span>, user.<span class="property">password</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-JWT认证守卫"><a href="#1-2-JWT认证守卫" class="headerlink" title="1.2 JWT认证守卫"></a>1.2 JWT认证守卫</h4><p>系统使用全局AuthGuard进行Token验证：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// auth.guard.ts</span></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">AuthGuard</span> <span class="keyword">implements</span> <span class="title class_">CanActivate</span> &#123;</span><br><span class="line">  <span class="keyword">async</span> <span class="title function_">canActivate</span>(<span class="attr">context</span>: <span class="title class_">ExecutionContext</span>): <span class="title class_">Promise</span>&lt;<span class="built_in">boolean</span>&gt; &#123;</span><br><span class="line">    <span class="comment">// 检查是否是公开接口</span></span><br><span class="line">    <span class="keyword">const</span> isPublic = <span class="variable language_">this</span>.<span class="property">reflector</span>.<span class="property">getAllAndOverride</span>&lt;<span class="built_in">boolean</span>&gt;(<span class="variable constant_">IS_PUBLIC_KEY</span>, [</span><br><span class="line">      context.<span class="title function_">getHandler</span>(),</span><br><span class="line">      context.<span class="title function_">getClass</span>(),</span><br><span class="line">    ]);</span><br><span class="line">    <span class="keyword">if</span> (isPublic) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 验证Token</span></span><br><span class="line">    <span class="keyword">const</span> request = context.<span class="title function_">switchToHttp</span>().<span class="title function_">getRequest</span>();</span><br><span class="line">    <span class="keyword">const</span> token = <span class="variable language_">this</span>.<span class="title function_">extractTokenFromHeader</span>(request);</span><br><span class="line">    <span class="keyword">if</span> (!token) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">UnauthorizedException</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> payload = <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">jwtService</span>.<span class="title function_">verifyAsync</span>(token);</span><br><span class="line">      request.<span class="property">user</span> = payload;</span><br><span class="line">    &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">UnauthorizedException</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-RBAC权限控制"><a href="#2-RBAC权限控制" class="headerlink" title="2. RBAC权限控制"></a>2. RBAC权限控制</h3><h4 id="2-1-角色权限守卫"><a href="#2-1-角色权限守卫" class="headerlink" title="2.1 角色权限守卫"></a>2.1 角色权限守卫</h4><p>使用PermissionGuard实现基于角色的权限控制：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// permission.guard.ts</span></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">PermissionGuard</span> <span class="keyword">implements</span> <span class="title class_">CanActivate</span> &#123;</span><br><span class="line">  <span class="keyword">async</span> <span class="title function_">canActivate</span>(<span class="attr">context</span>: <span class="title class_">ExecutionContext</span>): <span class="title class_">Promise</span>&lt;<span class="built_in">boolean</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> request = context.<span class="title function_">switchToHttp</span>().<span class="title function_">getRequest</span>();</span><br><span class="line">    <span class="keyword">if</span> (!request.<span class="property">user</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取用户角色</span></span><br><span class="line">    <span class="keyword">const</span> roleIds = <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">usersRoleService</span>.<span class="title function_">findRolesIdByUserId</span>(request.<span class="property">user</span>.<span class="property">user_id</span>);</span><br><span class="line">    <span class="keyword">const</span> roles = <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">roleService</span>.<span class="title function_">findRolesByRoleIds</span>(roleIds.<span class="property">data</span>);</span><br><span class="line">    <span class="keyword">const</span> roleNames = roles.<span class="property">data</span>?.<span class="title function_">map</span>(<span class="function">(<span class="params">role</span>) =&gt;</span> role.<span class="property">name</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 检查权限</span></span><br><span class="line">    <span class="keyword">const</span> requiredRoles = <span class="variable language_">this</span>.<span class="property">reflector</span>.<span class="title function_">getAllAndOverride</span>(<span class="variable constant_">PERMISSION_KEY</span>, [</span><br><span class="line">      context.<span class="title function_">getClass</span>(),</span><br><span class="line">      context.<span class="title function_">getHandler</span>(),</span><br><span class="line">    ]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> requiredRoles?.<span class="title function_">some</span>(<span class="function">(<span class="params">role</span>) =&gt;</span> roleNames?.<span class="title function_">includes</span>(role)) ?? <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2-权限装饰器"><a href="#2-2-权限装饰器" class="headerlink" title="2.2 权限装饰器"></a>2.2 权限装饰器</h4><p>提供@Permission装饰器用于声明接口所需的角色权限：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// permission.decorator.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="variable constant_">PERMISSION_KEY</span> = <span class="string">&#x27;permission_by_roles&#x27;</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">Permission</span> = (<span class="params">...permissions: <span class="built_in">string</span>[]</span>) =&gt;</span><br><span class="line">  <span class="title class_">SetMetadata</span>(<span class="variable constant_">PERMISSION_KEY</span>, permissions);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-使用示例"><a href="#3-使用示例" class="headerlink" title="3. 使用示例"></a>3. 使用示例</h3><h4 id="3-1-接口权限控制"><a href="#3-1-接口权限控制" class="headerlink" title="3.1 接口权限控制"></a>3.1 接口权限控制</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// role.controller.ts</span></span><br><span class="line"><span class="meta">@Permission</span>(<span class="string">&#x27;admin&#x27;</span>)  <span class="comment">// 声明需要admin角色才能访问</span></span><br><span class="line"><span class="meta">@Controller</span>(<span class="string">&#x27;role&#x27;</span>)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">RoleController</span> &#123;</span><br><span class="line">  <span class="meta">@Post</span>()</span><br><span class="line">  <span class="title function_">createRole</span>(<span class="params"><span class="meta">@Body</span>() createRoleDto: CreateRoleDto</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">roleService</span>.<span class="title function_">createRole</span>(createRoleDto);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-全局配置"><a href="#3-2-全局配置" class="headerlink" title="3.2 全局配置"></a>3.2 全局配置</h4><p>在AppModule中注册全局守卫：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.module.ts</span></span><br><span class="line"><span class="meta">@Module</span>(&#123;</span><br><span class="line">  <span class="attr">providers</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">provide</span>: <span class="variable constant_">APP_GUARD</span>,</span><br><span class="line">      <span class="attr">useClass</span>: <span class="title class_">AuthGuard</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">provide</span>: <span class="variable constant_">APP_GUARD</span>,</span><br><span class="line">      <span class="attr">useClass</span>: <span class="title class_">PermissionGuard</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">AppModule</span> &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li>所有需要认证的接口都会自动经过AuthGuard验证</li>
+<li>使用@Public()装饰器可以将接口标记为公开接口</li>
+<li>使用@Permission()装饰器可以指定访问接口所需的角色</li>
+<li>角色验证基于RBAC模型，支持多角色</li>
+</ol>
+
       </div>
-      <div class="post-img">
-        <a href="/2025/03/03/shang-cheng/shi-yong-minio-he-nestjs-shi-xian-wen-jian-cun-chu/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-        </a>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/%E5%AE%89%E5%85%A8/" class="">
+              安全
+            </a>
+          
+            <a href="/tags/Nest-js/" class="">
+              Nest.js
+            </a>
+          
+        </div>
+        
       </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Ryo</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2025/03/14/hou-duan/shang-cheng/shi-yong-nestjs-shi-xian-ji-yu-jwt-rbac-de-ren-zheng-shou-quan-xi-tong/" target="_blank" title="使用Nestjs实现基于JWT + RBAC的认证授权系统">https://saebaryoo.github.io/2025/03/14/hou-duan/shang-cheng/shi-yong-nestjs-shi-xian-ji-yu-jwt-rbac-de-ren-zheng-shou-quan-xi-tong/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
     </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+
+
   
-</section>
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/8.jpg" class="lazyload placeholder" data-srcset="/medias/8.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2025/03/14/hou-duan/shang-cheng/shi-xian-shang-cheng-zhi-fu-gong-neng/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">Nestjs+RabbitMQ+支付宝沙盒 实现电商支付功能</div>
+      </div>
+      <!-- <div class="content">
+        1. 前言在电商系统中，支付功能是整个交易流程中最为关键的环节之一。一个完善的支付系统不仅要保证交易的安全性和可靠性，还
+      </div> -->
+    </a>
+  </div>
+
 </div>
-<div class="w-70">
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <!-- 文章详情页右侧目录 -->
+
+  <div class="toc-aside">
+    <div class="toc-main">
+      <div class="toc-aside-title">
+        <i class="fas fa-list-ul" aria-hidden="true"></i><span>本文目录</span>
+        
+          <div class="toc-open-close">本文目录</div>
+        
+      </div>
+      <div class="toc-content">
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 手机端目录按钮 -->
+  <div id="toc-mobile-btn">
+    <i class="fas fa-list-ul" aria-hidden="true"></i>
+  </div>
+
+
+<script>
+  function closeToc(init) {
+    $(".toc-aside").css({'width': 0, 'padding': 0, 'transition': init ?  'noe' : 'width 0.3s' });
+    $(".toc-content").css({'width': 0});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'none'});
+    $(".main-content").css({'width': '75%', 'margin-left': 'auto', 'margin-right': 'auto',});
+  };
+  function openToc() {
+    $(".main-content").css({'width': '65%', 'margin-right': '10px', 'margin-left': 'calc(35% - 350px)'});
+    $(".toc-aside").css({'width': '300px', 'padding': '0 10px', 'transition': 'width 0.3s'});
+    $(".toc-content").css({'width': '300px'});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'inline-block'});
+  }
+  function openBtnClickFn () {
+    let openOrCloseBtn = $('.toc-aside .toc-aside-title .toc-open-close');
+    let open = eval('' || 'true');
+    openOrCloseBtn.click(function() {
+      if (open) {
+        closeToc();
+        open = false;
+      } else {
+        openToc();
+        open = true;
+      }
+    });
+  };
+  openBtnClickFn();
+  initCloseTocWidth(true);
+
+  function initCloseTocWidth(init) {
+    if (window.innerWidth >= 992) {
+      let isClose = false;
+      isClose && closeToc(init)
+    }
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    $(".toc-aside").css({'transition': 'no'});
+  })
+  document.addEventListener('pjax:complete', function () {
+    openBtnClickFn();
+  })
   
+</script>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
 </div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
 
       </main>
     </div>
@@ -920,7 +1322,7 @@ MinIO 的基础配置（创建 bucket 和 AccessKey）
 <script src="/js/tocbot/tocbot.min.js"></script>
 
 <script>
-  var headerEl = 'h2, h3, h4',  //headers 
+  var headerEl = 'h1, h2, h3, h4, h5, h6',  //headers 
     content = '.post-detail',//文章容器
     idArr = {};  //标题数组以确定是否增加索引id
   //add #id
@@ -1285,8 +1687,8 @@ MinIO 的基础配置（创建 bucket 和 AccessKey）
 <!-- 鼠标点击特效 -->
 <!-- 爱心点击 -->
 
-   
-    <script src="/js/cursor/clicklove.js"></script> 
+  
+    <script src="/js/cursor/fireworks.js"></script>
   
 
 
