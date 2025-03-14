@@ -2,7 +2,7 @@
 title: 使用Minio和Nestjs实现文件存储
 date: 2025-03-03
 categories:
-  - 商城
+  - 后端
 tags:
   - Nest.js
   - Docker

@@ -2,7 +2,7 @@
 title: 万字好文！带你入门 redis
 date: 2025-02-20
 categories:
-  - 后端
+  - 数据库
 tags:
   - Redis
 ---

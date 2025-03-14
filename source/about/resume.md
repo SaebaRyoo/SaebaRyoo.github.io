@@ -72,7 +72,7 @@ onlyTitle: true
 
 {% title h3, 作品展示 %}
 <div class="gallery-group-main">
-    {% galleryGroup '商城项目' '基于React的全栈电商平台' 'https://ibuy.xin' https://ibuy.xin/ %}
+    {% galleryGroup '商城项目' '基于React的全栈电商平台' 'https://ibuy.xin' https://github.com/SaebaRyoo/SaebaRyoo.github.io/blob/main/about/imgs/ibuy-logo.svg %}
     {% galleryGroup '技术博客' '个人技术博客与知识沉淀' 'https://saebaryoo.github.io/' https://ibb.co/0X0Q3Z0 %}
 </div>
 

@@ -243,7 +243,7 @@ sharejs:
 # 鼠标点击特效
 cursor_effect:
   on: true
-  type: love  # fireworks: 礼花 | explosion: 爆炸 | love: 浮出爱心 | text: 浮出文字
+  type: fireworks  # fireworks: 礼花 | explosion: 爆炸 | love: 浮出爱心 | text: 浮出文字
 
 # 头部导航是否显示天气
 weather:
@@ -325,7 +325,7 @@ baiduPush: true
 # 文章目录
 toc:
   on: true # 是否显示
-  heading: h2, h3, h4
+  heading: h1, h2, h3, h4, h5, h6
   open: true # 是否展开，false则收缩
   showBtn: true # 是否显示展开收缩按钮
   showOrderNumber: false # 是否显示序号

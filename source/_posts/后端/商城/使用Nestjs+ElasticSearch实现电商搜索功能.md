@@ -876,17 +876,17 @@ GET /user/_search
 
 ### 5.2.1 左侧菜单选择Management
 
-![](./images/1.png)
+![](/imgs/hou-duan/1.png)
 
 ### 5.2.2 选择Kibana -> Data Views
 
-![](./images/2.png)
+![](/imgs/hou-duan/2.png)
 
 ### 5.2.3 创建data view
 
 点击右上角 `Create data view`按钮创建
 
-![](./images/3.png)
+![](/imgs/hou-duan/3.png)
 
 **比如我要创建一个索引** `blog1` **的视图**
 
@@ -899,9 +899,9 @@ GET /user/_search
 
 在菜单栏点击Discover后选择我们刚刚创建的视图名就可以看到了
 
-![](./images/4.png)
+![](/imgs/hou-duan/4.png)
 
-![](./images/5.png)
+![](/imgs/hou-duan/5.png)
 
 
 # 6. 商品搜索功能
