@@ -538,7 +538,7 @@
             <span class="post-time">2021-06-03</span>
           </div>
           <div class="post-title">
-            <a class="post-title-link" href="/2021/06/03/qian-duan/javascript/javascript-she-ji-mo-shi/2.ce-lue-mo-shi/">JavaScript设计模式 -- 2.策略模式</a>
+            <a class="post-title-link" href="/2021/06/03/qian-duan/javascript/javascript-she-ji-mo-shi/1.dan-li-mo-shi/">JavaScript设计模式 -- 1.单例模式</a>
           </div>
           <div class="post-meta">
             <div class="post-tags">
@@ -560,30 +560,37 @@
             </div>
           </div>
           <div class="post-img-mobile">
-            <a href="/2021/06/03/qian-duan/javascript/javascript-she-ji-mo-shi/2.ce-lue-mo-shi/" style="background-size: cover; 
+            <a href="/2021/06/03/qian-duan/javascript/javascript-she-ji-mo-shi/1.dan-li-mo-shi/" style="background-size: cover; 
               background-position: center center;">
-              <img class="lazyload lazyload placeholder" src="/medias/13.jpg" class="lazyload placeholder" data-srcset="/medias/13.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              <img class="lazyload lazyload placeholder" src="/medias/10.jpg" class="lazyload placeholder" data-srcset="/medias/10.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
             </a>
           </div>
           <div class="post-content">
             定义
-策略模式就是定义一系列的算法，将他们一个个封装起来。
+保证一个类只有一个实例，并提供一个访问它的全局访问点
 
-使用场景在实际开发中，我们需要将算法的含义扩大一些。
-比如，策略模式可以有效的拆分 业务逻辑，减少代码中的if .... else....这种分支
-假设我们有一个按钮。需要根据 
+常见场景
+线程池
+全局缓存
+浏览器中的 window 对象
+
+最简单的单例就是全局创建一个
+1var a = &#123;&#125;;
+
+使用类创建一个单例对象
+1234567
           </div>
         </div>
         <div class="post-more">
-          <a href="/2021/06/03/qian-duan/javascript/javascript-she-ji-mo-shi/2.ce-lue-mo-shi/">
+          <a href="/2021/06/03/qian-duan/javascript/javascript-she-ji-mo-shi/1.dan-li-mo-shi/">
             <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
           </a>
         </div>
       </div>
       <div class="post-img">
-        <a href="/2021/06/03/qian-duan/javascript/javascript-she-ji-mo-shi/2.ce-lue-mo-shi/" style="background-size: cover; 
+        <a href="/2021/06/03/qian-duan/javascript/javascript-she-ji-mo-shi/1.dan-li-mo-shi/" style="background-size: cover; 
           background-position: center center;">
-          <img class="lazyload lazyload placeholder" src="/medias/13.jpg" class="lazyload placeholder" data-srcset="/medias/13.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+          <img class="lazyload lazyload placeholder" src="/medias/10.jpg" class="lazyload placeholder" data-srcset="/medias/10.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
         </a>
       </div>
     </article>
@@ -1492,8 +1499,8 @@ let 有暂存
         <div class="webinfo-item">
           <div>最后活动时间：</div>
           
-            <div id="last-update" style="display: none;">Thu Mar 13 2025 23:53:46 GMT+0800 (中国标准时间)</div>
-            <div id="last-update-show">2025-03-13 日</div>
+            <div id="last-update" style="display: none;">Fri Mar 14 2025 10:41:15 GMT+0800 (中国标准时间)</div>
+            <div id="last-update-show">2025-03-14 日</div>
           
         </div>
         
@@ -1543,7 +1550,7 @@ let 有暂存
           try {
             document.getElementById('last-update-show').innerHTML = timeago(new Date(lastUpDate));
           } catch (error) {
-            document.getElementById('last-update-show').innerHTML = '2025-03-13 日';
+            document.getElementById('last-update-show').innerHTML = '2025-03-14 日';
           }
         </script>
         
