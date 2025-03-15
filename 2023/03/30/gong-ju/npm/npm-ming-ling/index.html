@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>如何锁定项目的node版本 | Ryo的小站</title>
+  <title>npm 配置 | Ryo的小站</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -522,21 +522,21 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('/medias/14.jpg')">
+  background-position: center center;position: relative;background-image:url('/medias/5.jpg')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        如何锁定项目的node版本
+        npm 配置
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> 发表于：2020-09-03 |
+          <i class="fas fa-calendar"></i> 发表于：2023-03-30 |
         </span>
       
 
@@ -544,8 +544,8 @@
         <span class="post-detail-header_categories">
           <i class="iconfont iconbookmark1"></i> 分类：
           
-            <a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-detail-header_category">
-              后端
+            <a href="/categories/%E5%B7%A5%E5%85%B7/" class="post-detail-header_category">
+              工具
             </a>
           
         </span>
@@ -569,25 +569,137 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <p>在一个项目中,随着时间的推移，一些依赖库可能只能工作于当时安装时所采用的 node 版本。这时再使用新版本 node 时就无法保证项目在一个稳定的环境中运行，甚至是无法运行。为了稳定，通常我们需要在开始时就选定一个兼容性强的 node LTS 版本，并且在项目中锁定版本。</p>
-<h3 id="nvmrc"><a href="#nvmrc" class="headerlink" title=".nvmrc"></a>.nvmrc</h3><p>如果项目中使用了 nvm 来进行版本控制，需要在根目录创建一个<code>[.nvmrc](https://github.com/nvm-sh/nvm#nvmrc)</code>文件来指定 node 版本，内容如下：</p>
-<p>.nvmrc</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v14.19.1</span><br></pre></td></tr></table></figure>
+        <h1 id="原文地址，本篇仅做记录学习"><a href="#原文地址，本篇仅做记录学习" class="headerlink" title="原文地址，本篇仅做记录学习"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/PeunZhang/p/5553574.html">原文地址，本篇仅做记录学习</a></h1><h3 id="npm-install-安装模块"><a href="#npm-install-安装模块" class="headerlink" title="npm install 安装模块"></a>npm install 安装模块</h3><ol>
+<li>基础语法</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">npm install (with no args, in package dir)</span><br><span class="line">npm install [&lt;@scope&gt;/]&lt;name&gt;</span><br><span class="line">npm install [&lt;@scope&gt;/]&lt;name&gt;@&lt;tag&gt;</span><br><span class="line">npm install [&lt;@scope&gt;/]&lt;name&gt;@&lt;version&gt;</span><br><span class="line">npm install [&lt;@scope&gt;/]&lt;name&gt;@&lt;version range&gt;</span><br><span class="line">npm install &lt;tarball file&gt;</span><br><span class="line">npm install &lt;tarball url&gt;</span><br><span class="line">npm install &lt;folder&gt;</span><br><span class="line"></span><br><span class="line">alias: npm i</span><br><span class="line">common options: [-S|--save|-D|--save-dev|-O|--save-optional] [-E|--save-exact] [--dry-run]</span><br></pre></td></tr></table></figure>
 
-<h3 id="package-json"><a href="#package-json" class="headerlink" title="package.json"></a>package.json</h3><p>我们可以通过在<code>package.json</code>中设置<code>engines</code>属性来指定版本范围。<a target="_blank" rel="noopener" href="https://docs.npmjs.com/cli/v9/configuring-npm/package-json">npm-package 文档</a></p>
-<p>指定 node 版本的范围</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;engines&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;node&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&gt;=14.19.1 &lt;=17.9.0&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>安装包，默认会安装最新的版本<br><code>npm install gulp</code></p>
+</li>
+<li><p>安装指定版本<br><code>npm install gulp@1.1.1</code></p>
+</li>
+</ol>
+<ul>
+<li>项目对模块的依赖可以使用下面的 3 种方法来表示（假设当前版本号是 1.1.0 ）：</li>
+</ul>
+<p>兼容模块新发布的补丁版本：~1.1.0、1.1.x、1.1<br>兼容模块新发布的小版本、补丁版本：^1.1.0、1.x、1<br>兼容模块新发布的大版本、小版本、补丁版本：*、x</p>
+<ul>
+<li><strong>-S, –save 安装包信息将加入到 dependencies（生产阶段的依赖）</strong></li>
+</ul>
+<p><code>npm install gulp --save 或 npm install gulp -S</code></p>
+<p>package.json 文件的 dependencies 字段：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;dependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;gulp&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^3.9.1&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 
-<p>固定为指定版本</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;engines&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;node&quot;</span><span class="punctuation">:</span> <span class="string">&quot;~14.19.1&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>-D, –save-dev 安装包信息将加入到 devDependencies（开发阶段的依赖），所以开发阶段一般使用它</strong></li>
+</ul>
+<p><code>npm install gulp --save-dev 或 npm install gulp -D</code></p>
+<p>package.json 文件的 devDependencies 字段：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;devDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;gulp&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^3.9.1&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="npmrc"><a href="#npmrc" class="headerlink" title=".npmrc"></a>.npmrc</h3><p>前面我们说了在 package.json 中指定<code>engines</code>属性来限制 node 版本，这个在<code>yarn</code>和<code>pnpm</code>中时有效的。<br>在配置了 engines 后,再使用 nvm 将 node 版本变为 v12.8.3 之后再使用<code>yarn</code>来安装依赖，就会报错<br><a target="_blank" rel="noopener" href="https://postimg.cc/3yqYdf3B"><img src="https://i.postimg.cc/RFSFp28j/image.png" class="lazyload placeholder" data-srcset="https://i.postimg.cc/RFSFp28j/image.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image.png"></a></p>
-<p><code>pnpm i</code>也是相似的报错</p>
-<p>但是使用<code>npm i</code>并不会按照<code>engines</code>的属性来报错，这是因为在 npm 中设置了<a target="_blank" rel="noopener" href="https://docs.npmjs.com/cli/v7/using-npm/config#engine-strict">engine-strict</a>默认为 false。因此，我们需要创建<code>.npmrc</code>来显式的定义为 true，如下</p>
-<p>.npmrc</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">engine-strict=true</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>-O, –save-optional 安装包信息将加入到 optionalDependencies（可选阶段的依赖）</strong></li>
+</ul>
+<p><code>npm install gulp --save-optional 或 npm install gulp -O</code></p>
+<p>package.json 文件的 optionalDependencies 字段：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;optionalDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;gulp&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^3.9.1&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 
-<p>这样当 node 未满足版本要求时，就无法运行<code>npm install</code>了</p>
+<ul>
+<li><strong>-E, –save-exact 精确安装指定模块版本</strong></li>
+</ul>
+<p><code>npm install gulp --save-exact 或 npm install gulp -E</code></p>
+<p>输入命令<strong>npm install gulp -ES</strong>，留意 package.json 文件的 dependencies 字段，以看出版本号中的^消失了</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;dependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;gulp&quot;</span><span class="punctuation">:</span> <span class="string">&quot;3.9.1&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>模块的依赖都被写入了 package.json 文件后，他人打开项目的根目录（项目开源、内部团队合作），使用 npm install 命令可以根据 dependencies 配置安装所有的依赖包</p>
+<ul>
+<li><p>本地安装 <code>npm install gulp</code></p>
+</li>
+<li><p>全局安装 <code>npm install gulp -g</code></p>
+</li>
+</ul>
+<h3 id="npm-uninstall-卸载模块"><a href="#npm-uninstall-卸载模块" class="headerlink" title="npm uninstall 卸载模块"></a>npm uninstall 卸载模块</h3><ol>
+<li>基础语法</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall [&lt;@scope&gt;/]&lt;pkg&gt;[@&lt;version&gt;]... [-S|--save|-D|--save-dev|-O|--save-optional]</span><br><span class="line"></span><br><span class="line">aliases: remove, rm, r, un, unlink</span><br></pre></td></tr></table></figure>
+
+<h3 id="npm-update-更新模块"><a href="#npm-update-更新模块" class="headerlink" title="npm update 更新模块"></a>npm update 更新模块</h3><pre><code>npm update [-g] [&lt;pkg&gt;...]
+</code></pre>
+<h3 id="npm-outdated-检查模块是否已经过时"><a href="#npm-outdated-检查模块是否已经过时" class="headerlink" title="npm outdated 检查模块是否已经过时"></a>npm outdated 检查模块是否已经过时</h3><pre><code>npm outdated [[&lt;@scope&gt;/]&lt;pkg&gt; ...]
+</code></pre>
+<h3 id="npm-ls-查看安装的模块"><a href="#npm-ls-查看安装的模块" class="headerlink" title="npm ls 查看安装的模块"></a>npm ls 查看安装的模块</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm ls [[&lt;@scope&gt;/]&lt;pkg&gt; ...]</span><br><span class="line"></span><br><span class="line">aliases: list, la, ll</span><br></pre></td></tr></table></figure>
+
+<h3 id="npm-help-查看某条命令的详细帮助"><a href="#npm-help-查看某条命令的详细帮助" class="headerlink" title="npm help 查看某条命令的详细帮助"></a>npm help 查看某条命令的详细帮助</h3><ol>
+<li><p>基础语法<br><code>npm help &lt;term&gt; [&lt;terms..&gt;]</code></p>
+</li>
+<li><p>例如输入 npm help install，系统在默认的浏览器或者默认的编辑器中打开本地 nodejs 安装包的文件&#x2F;nodejs&#x2F;node_modules&#x2F;npm&#x2F;html&#x2F;doc&#x2F;cli&#x2F;npm-install.html</p>
+</li>
+</ol>
+<p><code>npm help install</code></p>
+<h3 id="npm-root-查看包的安装路径"><a href="#npm-root-查看包的安装路径" class="headerlink" title="npm root 查看包的安装路径"></a>npm root 查看包的安装路径</h3><pre><code>输出 node_modules的路径
+
+npm root [-g]
+</code></pre>
+<h3 id="npm-config-管理-npm-的配置路径"><a href="#npm-config-管理-npm-的配置路径" class="headerlink" title="npm config 管理 npm 的配置路径"></a>npm config 管理 npm 的配置路径</h3><pre><code>npm config set &lt;key&gt; &lt;value&gt; [-g|--global]
+npm config get &lt;key&gt;
+npm config delete &lt;key&gt;
+npm config list
+npm config edit
+npm get &lt;key&gt;
+npm set &lt;key&gt; &lt;value&gt; [-g|--global]
+</code></pre>
+<p>对于 config 这块用得最多应该是设置代理，解决 npm 安装一些模块失败的问题</p>
+<p>例如我在公司内网，因为公司的防火墙原因，无法完成任何模块的安装，这个时候设置代理可以解决<br>npm config set proxy&#x3D;<a target="_blank" rel="noopener" href="http://xxx.com:8080/">http://xxx.com:8080</a></p>
+<p>又如国内的网络环境问题，某官方的 IP 可能被和谐了，幸好国内有好心人，搭建了镜像，此时我们简单设置镜像</p>
+<pre><code>npm config set registry=&quot;http://r.cnpmjs.org&quot;
+</code></pre>
+<p>也可以临时配置，如安装淘宝镜像</p>
+<pre><code>npm install -g cnpm --registry=https://registry.npm.taobao.org
+</code></pre>
+<h3 id="npm-cache-管理模块的缓存"><a href="#npm-cache-管理模块的缓存" class="headerlink" title="npm cache 管理模块的缓存"></a>npm cache 管理模块的缓存</h3><pre><code>npm cache add &lt;tarball file&gt;
+npm cache add &lt;folder&gt;
+npm cache add &lt;tarball url&gt;
+npm cache add &lt;name&gt;@&lt;version&gt;
+
+npm cache ls [&lt;path&gt;]
+
+npm cache clean [&lt;path&gt;]
+</code></pre>
+<p>最常用命令无非清除 npm 本地缓存</p>
+<pre><code>npm cache clean
+</code></pre>
+<h3 id="npm-view-查看模块的注册信息"><a href="#npm-view-查看模块的注册信息" class="headerlink" title="npm view 查看模块的注册信息"></a>npm view 查看模块的注册信息</h3><pre><code>npm view [&lt;@scope&gt;/]&lt;name&gt;[@&lt;version&gt;] [&lt;field&gt;[.&lt;subfield&gt;]...]
+
+aliases: info, show, v
+</code></pre>
+<p>查看模块的依赖关系</p>
+<pre><code>npm view gulp dependencies
+</code></pre>
+<p>查看模块的源文件地址</p>
+<pre><code>npm view gulp repository.url
+</code></pre>
+<p>查看模块的贡献者，包含邮箱地址</p>
+<pre><code>npm view npm contributors
+</code></pre>
+<h3 id="npm-adduser-用户登录"><a href="#npm-adduser-用户登录" class="headerlink" title="npm adduser 用户登录"></a>npm adduser 用户登录</h3><pre><code>npm adduser [--registry=url] [--scope=@orgname] [--always-auth]
+</code></pre>
+<h3 id="npm-publish-发布模块"><a href="#npm-publish-发布模块" class="headerlink" title="npm publish 发布模块"></a>npm publish 发布模块</h3><pre><code>npm publish [&lt;tarball&gt;|&lt;folder&gt;] [--tag &lt;tag&gt;] [--access &lt;public|restricted&gt;]
+
+Publishes &#39;.&#39; if no argument supplied
+Sets tag &#39;latest&#39; if no --tag specified
+</code></pre>
+<h3 id="npm-access-在发布的包上设置访问级别"><a href="#npm-access-在发布的包上设置访问级别" class="headerlink" title="npm access 在发布的包上设置访问级别"></a>npm access 在发布的包上设置访问级别</h3><pre><code>npm access public [&lt;package&gt;]
+npm access restricted [&lt;package&gt;]
+
+npm access grant &lt;read-only|read-write&gt; &lt;scope:team&gt; [&lt;package&gt;]
+npm access revoke &lt;scope:team&gt; [&lt;package&gt;]
+
+npm access ls-packages [&lt;user&gt;|&lt;scope&gt;|&lt;scope:team&gt;]
+npm access ls-collaborators [&lt;package&gt; [&lt;user&gt;]]
+npm access edit [&lt;package&gt;]
+</code></pre>
+<h3 id="npm-package-json-的语法"><a href="#npm-package-json-的语法" class="headerlink" title="npm package.json 的语法"></a>npm package.json 的语法</h3><p><a target="_blank" rel="noopener" href="https://github.com/ericdum/mujiang.info/issues/6/">https://github.com/ericdum/mujiang.info/issues/6/</a></p>
 
       </div>
       <div class="post-tags-categories">
@@ -596,6 +708,10 @@
           
             <a href="/tags/Node/" class="">
               Node
+            </a>
+          
+            <a href="/tags/NPM/" class="">
+              NPM
             </a>
           
         </div>
@@ -609,7 +725,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/2020/09/03/hou-duan/node/ru-he-suo-ding-xiang-mu-de-node-ban-ben/" target="_blank" title="如何锁定项目的node版本">https://saebaryoo.github.io/2020/09/03/hou-duan/node/ru-he-suo-ding-xiang-mu-de-node-ban-ben/</a>
+    <a href="/2023/03/30/gong-ju/npm/npm-ming-ling/" target="_blank" title="npm 配置">https://saebaryoo.github.io/2023/03/30/gong-ju/npm/npm-ming-ling/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
@@ -631,17 +747,16 @@
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/12.jpg" class="lazyload placeholder" data-srcset="/medias/12.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2020/09/03/qian-duan/react/reactrouter/" class="post-nav-link">
+    <a href="/2023/04/01/hou-duan/shu-ju-ku/mysql/2.mysql-chang-jian-xie-fa/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">React Router中HashRouter和BrowserRouter的区别</div>
+        <div class="title-text">MySQL常见基础写法</div>
       </div>
       
       <!-- <div class="content">
-        传参方式HashRouter
-通过在url中增加查询字符串。如 &lt;Link to=&#123;&#123;path
+        本文档旨在为开发者提供一份全面且实用的MySQL常用操作指南。随着Docker容器化技术的普及，在容器环境下使用MySQ
       </div> -->
     </a>
   </div>
@@ -652,18 +767,18 @@
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/7.jpg" class="lazyload placeholder" data-srcset="/medias/7.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/8.jpg" class="lazyload placeholder" data-srcset="/medias/8.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2020/08/01/qian-duan/javascript/var-let-const-qu-bie-he-yuan-li/" class="post-nav-link">
+    <a href="/2023/03/29/gong-ju/git/git-ming-ling/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">var、let、const原理</div>
+        <div class="title-text">git 命令大全</div>
       </div>
       <!-- <div class="content">
-        var、let、const 的作用和区别var
-会在当前执行环境中进行变量提升
-可重复声明，可以修改
-如果未使用 var
+        Update
+此项为博主了解的时间为基础，并非 git 实际更新时间
+
+2022.10.01 更新github 在更新后
       </div> -->
     </a>
   </div>

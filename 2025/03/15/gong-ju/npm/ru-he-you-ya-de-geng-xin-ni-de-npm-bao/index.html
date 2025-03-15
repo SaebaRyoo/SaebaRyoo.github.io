@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>JavaScript设计模式 -- 设计原则 | Ryo的小站</title>
+  <title>如何优雅的更新你的npm包 | Ryo的小站</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -522,21 +522,21 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('/medias/2.jpg')">
+  background-position: center center;position: relative;background-image:url('/medias/13.jpg')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        JavaScript设计模式 -- 设计原则
+        如何优雅的更新你的npm包
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> 发表于：2021-06-03 |
+          <i class="fas fa-calendar"></i> 发表于：2025-03-15 |
         </span>
       
 
@@ -544,8 +544,8 @@
         <span class="post-detail-header_categories">
           <i class="iconfont iconbookmark1"></i> 分类：
           
-            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-detail-header_category">
-              前端
+            <a href="/categories/%E5%B7%A5%E5%85%B7/" class="post-detail-header_category">
+              工具
             </a>
           
         </span>
@@ -569,22 +569,106 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h3 id="单一职责原则（SRP）"><a href="#单一职责原则（SRP）" class="headerlink" title="单一职责原则（SRP）"></a>单一职责原则（SRP）</h3><p>就一个类而言，应该仅有一个引起它变化的原因。在 js 中，需要用到类的场景不多。单一职责更多的被运用到对象或者方法级别上。</p>
-<p>单一职责原则（SRP）被定义为“引起变化的原因”。如果我们有两个动机去改写一个方法，那么这个方法就有两个职责。<br>每个职责都是变化的一个轴线，<strong>如果一个方法承担了过多的职责，那么在需求变迁的过程中，需要改写这个方法的可能性就越大</strong></p>
-<p>此时，这个方法通常就是一个不稳定的方法，修改代码总是危险的。<strong>特别是当两个或者更多的职责耦合在一起时，一个职责的变化可能会影响到其他职责的实现，造成意想不到的破坏</strong>，<br>这种耦合性得到的是低内聚和脆弱的设计。</p>
-<p><strong>因此，SRP 原则提现在：一个方法只做一件事</strong></p>
-<h3 id="最少知识原则（LKP）"><a href="#最少知识原则（LKP）" class="headerlink" title="最少知识原则（LKP）"></a>最少知识原则（LKP）</h3>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在现代软件开发中，无论是前端应用、还是node服务 保持项目依赖的更新都是一项重要但具有挑战性的任务。过时的依赖可能会带来安全隐患、性能问题，以及与新特性的不兼容。然而，盲目地更新依赖也可能引入意外的破坏性变更，导致项目出现问题。</p>
+<p>为了安全、高效地管理依赖更新，我们需要一个可靠的工具和系统的更新策略。本文将介绍 <code>npm-check-updates</code> 这个强大的工具，它不仅可以帮助我们检查和更新依赖，还能让我们对更新过程有更细粒度的控制。</p>
+<p>在开始之前，让我们先了解一些重要的概念：</p>
+<ol>
+<li><p><strong>语义化版本（Semantic Versioning）</strong>：</p>
+<ul>
+<li>主版本号（Major）：做了不兼容的 API 修改</li>
+<li>次版本号（Minor）：做了向下兼容的功能性新增</li>
+<li>修订号（Patch）：做了向下兼容的问题修正</li>
+</ul>
+</li>
+<li><p><strong>版本号前缀的含义</strong>：</p>
+<ul>
+<li><code>^</code>：允许次版本号和修订号更新（例如：^1.2.3 可以更新到 1.x.x）</li>
+<li><code>~</code>：只允许修订号更新（例如：~1.2.3 可以更新到 1.2.x）</li>
+<li><code>*</code>：允许所有更新（不推荐使用）</li>
+</ul>
+</li>
+</ol>
+<h1 id="1-安装npm-check-updates"><a href="#1-安装npm-check-updates" class="headerlink" title="1. 安装npm-check-updates"></a>1. <strong>安装npm-check-updates</strong></h1><p>全局安装以使用 <code>npm-check-updates</code> 或更短的 <code>ncu</code>：</p>
+<p><code>npm install -g npm-check-updates</code></p>
+<p>或者使用<code>npx</code>安装</p>
+<p><code>npx npm-check-updates</code></p>
+<h1 id="2-使用"><a href="#2-使用" class="headerlink" title="2. 使用"></a>2. <strong>使用</strong></h1><h2 id="2-1-检查所有项目依赖项的最新版本"><a href="#2-1-检查所有项目依赖项的最新版本" class="headerlink" title="2.1. 检查所有项目依赖项的最新版本"></a>2.1. <strong>检查所有项目依赖项的最新版本</strong></h2><p><strong>直接子在命令行输入</strong><code>ncu</code>，就会显示需要更新</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[====================] 49/49 100%</span><br><span class="line"></span><br><span class="line"> @elastic/elasticsearch             ^8.15.0  →   ^8.17.0</span><br><span class="line"> @nestjs/cli                        ^10.0.0  →   ^11.0.4</span><br><span class="line"> @nestjs/common                     ^10.0.0  →  ^11.0.10</span><br><span class="line"> @nestjs/config                      ^3.2.2  →    ^4.0.0</span><br><span class="line"> @nestjs/core                       ^10.0.0  →  ^11.0.10</span><br><span class="line"> @nestjs/elasticsearch              ^10.0.1  →   ^11.0.0</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-全部更新"><a href="#2-2-全部更新" class="headerlink" title="2.2. 全部更新"></a>2.2. <strong>全部更新</strong></h2><p><strong>这个命令会更新所有可以更新的包，慎用！</strong></p>
+<p><code>ncu -u</code></p>
+<h2 id="2-3-交互模式"><a href="#2-3-交互模式" class="headerlink" title="2.3. 交互模式"></a>2.3. <strong>交互模式</strong></h2><p><strong>使用以下命令基于交互模式来选择需要更新的包</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ncu --interactive</span><br><span class="line">ncu -i</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-4-按照指定的规则更新"><a href="#2-4-按照指定的规则更新" class="headerlink" title="2.4. 按照指定的规则更新"></a>2.4. <strong>按照指定的规则更新</strong></h2><h3 id="2-4-1-只更新-nestjs-开头的"><a href="#2-4-1-只更新-nestjs-开头的" class="headerlink" title="2.4.1. 只更新 @nestjs/开头的"></a>2.4.1. 只更新 <code>@nestjs/</code>开头的</h3><h4 id="2-4-1-1-检查可更新的-nestjs-开头的依赖"><a href="#2-4-1-1-检查可更新的-nestjs-开头的依赖" class="headerlink" title="2.4.1.1. 检查可更新的 @nestjs&#x2F; 开头的依赖"></a>2.4.1.1. <strong>检查可更新的 @nestjs&#x2F; 开头的依赖</strong></h4><p><strong>在项目根目录下运行以下命令，查看 @nestjs&#x2F; 开头的依赖项有哪些可用的更新：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ncu -f <span class="string">&#x27;@nestjs/*&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>此命令会列出 package.json 文件中所有 @nestjs&#x2F; 开头且可更新的依赖项，同时显示它们当前的版本和最新的版本。</strong></p>
+<h4 id="2-4-1-2-更新-package-json-文件"><a href="#2-4-1-2-更新-package-json-文件" class="headerlink" title="2.4.1.2. 更新 package.json 文件"></a>2.4.1.2. <strong>更新 package.json 文件</strong></h4><p><strong>若你想把 package.json 文件里 @nestjs&#x2F; 开头的依赖项都更新到最新版本，可运行以下命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ncu -u -f <span class="string">&#x27;@nestjs/*&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>该命令会修改 package.json 文件，将 @nestjs&#x2F; 开头的依赖项的版本号更新为最新的可用版本。</strong></p>
+<h4 id="2-4-1-3-安装更新后的依赖"><a href="#2-4-1-3-安装更新后的依赖" class="headerlink" title="2.4.1.3. 安装更新后的依赖"></a>2.4.1.3. <strong>安装更新后的依赖</strong></h4><p><strong>package.json 文件更新完成后，运行以下命令来安装更新后的依赖项：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install </span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">yarn install</span><br><span class="line"><span class="comment"># 等等</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-5-其他"><a href="#2-5-其他" class="headerlink" title="2.5. 其他"></a>2.5. <strong>其他</strong></h2><h1 id="3-最佳实践和注意事项"><a href="#3-最佳实践和注意事项" class="headerlink" title="3. 最佳实践和注意事项"></a>3. <strong>最佳实践和注意事项</strong></h1><h2 id="3-1-更新前的准备工作"><a href="#3-1-更新前的准备工作" class="headerlink" title="3.1. 更新前的准备工作"></a>3.1. <strong>更新前的准备工作</strong></h2><ol>
+<li><p><strong>备份项目</strong>：</p>
+<ul>
+<li>确保项目代码已提交到版本控制系统</li>
+<li>创建一个新的分支进行依赖更新</li>
+</ul>
+</li>
+<li><p><strong>记录当前状态</strong>：</p>
+<ul>
+<li>保存 package.json 和 package-lock.json 的副本</li>
+<li>记录项目的主要功能点，以便后续验证</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-2-自动化更新策略"><a href="#3-2-自动化更新策略" class="headerlink" title="3.2. 自动化更新策略"></a>3.2. <strong>自动化更新策略</strong></h2><ol>
+<li><p><strong>持续集成中的依赖更新</strong>：</p>
+<ul>
+<li>配置自动化工具（如 Dependabot）定期检查依赖更新</li>
+<li>设置自动创建更新 PR，方便代码审查</li>
+</ul>
+</li>
+<li><p><strong>更新测试流程</strong>：</p>
+<ul>
+<li>在更新后运行完整的测试套件</li>
+<li>进行关键功能的手动测试</li>
+<li>在开发环境中进行充分验证</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-3-处理依赖冲突"><a href="#3-3-处理依赖冲突" class="headerlink" title="3.3. 处理依赖冲突"></a>3.3. <strong>处理依赖冲突</strong></h2><ol>
+<li><p><strong>版本冲突解决</strong>：</p>
+<ul>
+<li>使用 <code>npm ls &lt;package-name&gt;</code> 查看依赖树</li>
+<li>检查 package-lock.json 中的依赖关系</li>
+<li>必要时使用 <code>npm dedupe</code> 优化依赖树</li>
+</ul>
+</li>
+<li><p><strong>降级策略</strong>：</p>
+<ul>
+<li>如果更新后出现问题，使用 <code>npm install &lt;package-name&gt;@&lt;version&gt;</code> 回退到稳定版本</li>
+<li>在 package.json 中锁定关键依赖的版本</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-4-更多资源"><a href="#3-4-更多资源" class="headerlink" title="3.4. 更多资源"></a>3.4. <strong>更多资源</strong></h2><p><strong>更多的命令和最佳实践请参考官方文档：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/npm-check-updates">https://www.npmjs.com/package/npm-check-updates</a></p>
+
       </div>
       <div class="post-tags-categories">
         
         <div class="tags">
           
-            <a href="/tags/JavaScript/" class="">
-              JavaScript
+            <a href="/tags/Node/" class="">
+              Node
             </a>
           
-            <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="">
-              设计模式
+            <a href="/tags/NPM/" class="">
+              NPM
             </a>
           
         </div>
@@ -598,7 +682,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/2021/06/03/qian-duan/javascript/javascript-she-ji-mo-shi/0.she-ji-yuan-ze/" target="_blank" title="JavaScript设计模式 -- 设计原则">https://saebaryoo.github.io/2021/06/03/qian-duan/javascript/javascript-she-ji-mo-shi/0.she-ji-yuan-ze/</a>
+    <a href="/2025/03/15/gong-ju/npm/ru-he-you-ya-de-geng-xin-ni-de-npm-bao/" target="_blank" title="如何优雅的更新你的npm包">https://saebaryoo.github.io/2025/03/15/gong-ju/npm/ru-he-you-ya-de-geng-xin-ni-de-npm-bao/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
@@ -616,46 +700,21 @@
 
 
 
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/12.jpg" class="lazyload placeholder" data-srcset="/medias/12.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2021/06/06/qian-duan/javascript/javascript-she-ji-mo-shi/5.fa-bu-ding-yue-mo-shi/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">JavaScript设计模式 -- 5.发布订阅模式</div>
-      </div>
-      
-      <!-- <div class="content">
-        定义
-发布订阅模式又叫观察者模式。它定义对象间的一对多的依赖关系，当一个对象的状态发生变化时，所有订阅它的对象都将收到通
-      </div> -->
-    </a>
-  </div>
-
 
 
   
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/10.jpg" class="lazyload placeholder" data-srcset="/medias/10.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/12.jpg" class="lazyload placeholder" data-srcset="/medias/12.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2021/06/03/qian-duan/javascript/javascript-she-ji-mo-shi/1.dan-li-mo-shi/" class="post-nav-link">
+    <a href="/2025/03/14/hou-duan/shang-cheng/shi-yong-nestjs-shi-xian-ji-yu-jwt-rbac-de-ren-zheng-shou-quan-xi-tong/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">JavaScript设计模式 -- 1.单例模式</div>
+        <div class="title-text">使用Nestjs实现基于JWT + RBAC的认证授权系统</div>
       </div>
       <!-- <div class="content">
-        定义
-保证一个类只有一个实例，并提供一个访问它的全局访问点
-
-常见场景
-线程池
-全局缓存
-浏览器中的 window 对象
+        前言这篇文章使用Nestjs实现了一个基于JWT+RBAC（Role-Based Access Control）的认证授
       </div> -->
     </a>
   </div>
