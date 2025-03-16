@@ -44,8 +44,8 @@
             }
         }
     </style>
-    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
 
     
 
@@ -511,6 +511,21 @@
         
  <!-- prismjs 代码高亮 -->
  
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
 
 
 <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
@@ -571,10 +586,11 @@
       <div class="post-content">
         <h2 id="DOCTYPE-文档类型-的作用是什么"><a href="#DOCTYPE-文档类型-的作用是什么" class="headerlink" title="DOCTYPE(文档类型)的作用是什么?"></a>DOCTYPE(文档类型)的作用是什么?</h2><p>DTD(document type definition, 文档类型定义) 是一系列的语法规则，用来定义 XML 或者(X)HTML 的文件类型。浏览器通过它来判断文档类型,并执行文件合法性的检验，并决定使用何种协议来解析，以及切换浏览器模式(标准模式或者混杂模式)</p>
 <h2 id="文档的混杂模式-quirks-mode-和标准模式-standards-mode"><a href="#文档的混杂模式-quirks-mode-和标准模式-standards-mode" class="headerlink" title="文档的混杂模式(quirks mode)和标准模式(standards mode)"></a><a target="_blank" rel="noopener" href="https://github.com/lxnxbnq/blog/issues/16">文档的混杂模式(quirks mode)和标准模式(standards mode)</a></h2><h2 id="使用-data-属性的好处是什么？"><a href="#使用-data-属性的好处是什么？" class="headerlink" title="使用 data- 属性的好处是什么？"></a>使用 data- 属性的好处是什么？</h2><p>可以存储一些不需要显示在浏览器上的额外信息，比如一片文章，并且你想要的存储一些额外的信息。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">article</span> <span class="attr">id</span>=<span class="string">&quot;electriccars&quot;</span> <span class="attr">data-columns</span>=<span class="string">&quot;3&quot;</span>&gt;</span>...<span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>article</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>electriccars<span class="token punctuation">"</span></span> <span class="token attr-name">data-columns</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>3<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>...<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>article</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>并且可以通过 dataset 来获取一个元素中的所有 data-信息</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var article = document.querySelector(&#x27;#electriccars&#x27;);</span><br><span class="line">article.dataset.columns // 3</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">var article &#x3D; document.querySelector(&#39;#electriccars&#39;);
+article.dataset.columns &#x2F;&#x2F; 3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <h2 id="如果将-HTML5-看做一个开放平台，那它的构建模块有哪些？"><a href="#如果将-HTML5-看做一个开放平台，那它的构建模块有哪些？" class="headerlink" title="如果将 HTML5 看做一个开放平台，那它的构建模块有哪些？"></a>如果将 HTML5 看做一个开放平台，那它的构建模块有哪些？</h2><p>标签及属性、地理位置(Geolocation)、画布(canvas)、视频(video)、音频(audio)、拖放(drag)、<a target="_blank" rel="noopener" href="https://www.zhangxinxu.com/wordpress/2011/12/html5%E6%89%A9%E5%B1%95-%E5%BE%AE%E6%95%B0%E6%8D%AE-%E4%B8%B0%E5%AF%8C%E7%BD%91%E9%A1%B5%E6%91%98%E8%A6%81/#comments">微数据</a>、<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Using_the_application_cache">应用缓存</a>、Web 存储、web workers、<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Server-sent_events/Using_server-sent_events">服务器发送事件</a></p>
 <h2 id="cookie、sessionStorage、localStorage、indexedDB-的区别"><a href="#cookie、sessionStorage、localStorage、indexedDB-的区别" class="headerlink" title="cookie、sessionStorage、localStorage、indexedDB 的区别"></a>cookie、sessionStorage、localStorage、indexedDB 的区别</h2><table>
@@ -612,14 +628,14 @@
 </tr>
 </tbody></table>
 <p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/indexedDB">indexedDB</a></p>
-<h2 id="、-、-的区别"><a href="#、-、-的区别" class="headerlink" title="&lt;script&gt;、&lt;script defer&gt; 、&lt;script async &gt; 的区别"></a><code>&lt;script&gt;</code>、<code>&lt;script defer&gt;</code> 、<code>&lt;script async &gt;</code> 的区别</h2><p><img src="/../../assets/script%E6%A0%87%E7%AD%BE%E5%8C%BA%E5%88%AB.png" class="lazyload placeholder" data-srcset="/../../assets/script%E6%A0%87%E7%AD%BE%E5%8C%BA%E5%88%AB.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h2 id="lt-script-gt-、-lt-script-defer-gt-、-lt-script-async-gt-的区别"><a href="#lt-script-gt-、-lt-script-defer-gt-、-lt-script-async-gt-的区别" class="headerlink" title="&lt;script&gt;、&lt;script defer&gt; 、&lt;script async &gt; 的区别"></a><code>&lt;script&gt;</code>、<code>&lt;script defer&gt;</code> 、<code>&lt;script async &gt;</code> 的区别</h2><p><img src="/../../assets/script%E6%A0%87%E7%AD%BE%E5%8C%BA%E5%88%AB.png" class="lazyload placeholder" data-srcset="/../../assets/script%E6%A0%87%E7%AD%BE%E5%8C%BA%E5%88%AB.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 <p>通过上图可知，在解析 HTML 时遇上 script 标签</p>
 <ol>
 <li>当为 <strong><code>&lt;script/&gt;</code></strong> 时，渲染进程会停止 html 解析并下载 script 标签的 content 然后执行，在这个过程中阻塞解析</li>
 <li>当为 <strong><code>&lt;script defer/&gt;</code></strong> 时，渲染进程不会停止 html 解析，而是并行下载 script，然后等到 html 解析完成后，<strong>DOMContentLoaded</strong> 事件触发之前执行</li>
 <li>当为 <strong><code>&lt;script async/&gt;</code></strong> 时，并行下载 script，然后执行 script 脚本，并阻塞 html 解析</li>
 </ol>
-<h2 id="为什么通常推荐将-CSS-放置在-之间，而将-JS-放置在-之前？你知道有哪些例外吗？"><a href="#为什么通常推荐将-CSS-放置在-之间，而将-JS-放置在-之前？你知道有哪些例外吗？" class="headerlink" title="为什么通常推荐将 CSS &lt;link&gt; 放置在 &lt;head&gt;&lt;/head&gt; 之间，而将 JS &lt;script&gt; 放置在 &lt;/body&gt; 之前？你知道有哪些例外吗？"></a>为什么通常推荐将 CSS <code>&lt;link&gt;</code> 放置在 <code>&lt;head&gt;&lt;/head&gt;</code> 之间，而将 JS <code>&lt;script&gt;</code> 放置在 <code>&lt;/body&gt;</code> 之前？你知道有哪些例外吗？</h2><p>把 <strong><code>&lt;link&gt;</code></strong> 标签放在 <strong><code>&lt;head&gt;&lt;/head&gt;</code></strong> 之间是规范要求的内容。<br>此外，这种做法可以让页面逐步呈现，提高了用户体验。<br>将样式表放在文档底部附近，会使许多浏览器（包括 IE）不能逐步呈现页面。<br>一些浏览器会阻止渲染，以避免在页面样式发生变化时，重新绘制页面中的元素。这种做法可以防止呈现给用户空白的页面或没有样式的内容。</p>
+<h2 id="为什么通常推荐将-CSS-lt-link-gt-放置在-lt-head-gt-lt-head-gt-之间，而将-JS-lt-script-gt-放置在-lt-body-gt-之前？你知道有哪些例外吗？"><a href="#为什么通常推荐将-CSS-lt-link-gt-放置在-lt-head-gt-lt-head-gt-之间，而将-JS-lt-script-gt-放置在-lt-body-gt-之前？你知道有哪些例外吗？" class="headerlink" title="为什么通常推荐将 CSS &lt;link&gt; 放置在 &lt;head&gt;&lt;/head&gt; 之间，而将 JS &lt;script&gt; 放置在 &lt;/body&gt; 之前？你知道有哪些例外吗？"></a>为什么通常推荐将 CSS <code>&lt;link&gt;</code> 放置在 <code>&lt;head&gt;&lt;/head&gt;</code> 之间，而将 JS <code>&lt;script&gt;</code> 放置在 <code>&lt;/body&gt;</code> 之前？你知道有哪些例外吗？</h2><p>把 <strong><code>&lt;link&gt;</code></strong> 标签放在 <strong><code>&lt;head&gt;&lt;/head&gt;</code></strong> 之间是规范要求的内容。<br>此外，这种做法可以让页面逐步呈现，提高了用户体验。<br>将样式表放在文档底部附近，会使许多浏览器（包括 IE）不能逐步呈现页面。<br>一些浏览器会阻止渲染，以避免在页面样式发生变化时，重新绘制页面中的元素。这种做法可以防止呈现给用户空白的页面或没有样式的内容。</p>
 <p>把 <strong><code>&lt;script&gt;</code></strong> 标签恰好放在 <strong><code>&lt;/body&gt;</code></strong> 之前</p>
 <p>脚本在下载和执行期间会阻止 HTML 解析。把 <strong><code>&lt;script&gt;</code></strong> 标签放在底部，保证 HTML 首先完成解析，将页面尽早呈现给用户。</p>
 <p>例外情况是当你的脚本里包含<code>document.write()</code>时。但是现在，<code>document.write()</code>不推荐使用。<br>同时，将 <strong><code>&lt;script&gt;</code></strong> 标签放在底部，意味着浏览器不能开始下载脚本，直到整个文档（document）被解析。<br>比较好的做法是，<code>&lt;script&gt;</code> 使用 <strong>defer</strong> 属性，放在 <strong><code>&lt;head&gt;</code></strong> 中</p>
@@ -679,20 +695,16 @@
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/5.jpg" class="lazyload placeholder" data-srcset="/medias/5.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2020/07/14/qian-duan/css/1.css-ji-chu/" class="post-nav-link">
+    <a href="/2020/07/14/qian-duan/css/2.flex-ji-chu/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">css基础</div>
+        <div class="title-text">flex基础属性</div>
       </div>
       
       <!-- <div class="content">
-        盒模型在 css 中，有两种盒模型：
-
-标准盒模型(box-sizing: content-box)：
-
-这是我们熟悉的
+        以下所有代码的示例都在仓库基本概念flex 是弹性布局，任何一个容器都可以指定为 flex 布局。只需要设置displa
       </div> -->
     </a>
   </div>
@@ -959,7 +971,7 @@ Setup首先需要安装 nestjs 的命令行工具npm i
     if (document.getElementsByClassName('mermaid').length) {
       if (window.mermaidJsLoad) mermaid.init()
       else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
           window.mermaidJsLoad = true
           mermaid.initialize({
             theme: 'default',

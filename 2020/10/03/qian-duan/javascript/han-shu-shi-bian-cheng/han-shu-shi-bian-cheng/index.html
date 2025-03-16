@@ -44,8 +44,8 @@
             }
         }
     </style>
-    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
 
     
 
@@ -511,6 +511,21 @@
         
  <!-- prismjs 代码高亮 -->
  
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
 
 
 <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
@@ -569,9 +584,7 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">flowchart TB</span><br><span class="line">  A(&quot;CO2 cycle&quot;) --&gt; B(&quot;Photosynthesis&quot;)</span><br><span class="line">  B --&gt; E(&quot;Organic carbon&quot;) &amp; n3(&quot;Decay organism&quot;)</span><br><span class="line">  n1(&quot;Sunlight&quot;) --&gt; B</span><br><span class="line">  n3 --&gt; nb(&quot;Dead organisms and waste product&quot;)</span><br><span class="line">  nb --&gt; n5(&quot;Root respiration&quot;) &amp; ng(&quot;Fossil fuels&quot;)</span><br><span class="line">  n5 --&gt; nl(&quot;Factory emission&quot;)</span><br><span class="line">  nl --&gt; A</span><br><span class="line">  nn(&quot;Animal respiration&quot;) --&gt; A</span><br><span class="line">  style A stroke:#000000,fill:#E1F0D4</span><br><span class="line">  style B stroke:#000000,fill:#C3EFE0</span><br><span class="line">  style E stroke:#000000,fill:#F6ACD8</span><br><span class="line">  style n3 stroke:#000000,fill:#C2C4B3</span><br><span class="line">  style n1 stroke:#000000,fill:#F2F7D2</span><br><span class="line">  style nb stroke:#000000,fill:#E9A3B2</span><br><span class="line">  style n5 stroke:#000000,fill:#DBCDF8</span><br><span class="line">  style ng stroke:#000000,fill:#BEF6AC</span><br><span class="line">  style nl stroke:#000000,fill:#A3E9CC</span><br><span class="line">  style nn stroke:#000000,fill:#D4EFF0</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://www.processon.com/v/63d60c1284787d177a985053">具体思维导图在 processon 中</a></p>
+        <p><a target="_blank" rel="noopener" href="https://www.processon.com/v/63d60c1284787d177a985053">具体思维导图在 processon 中</a></p>
 <p>以下是 png</p>
 <p><img src="https://i.postimg.cc/LXw319qf/image.png" class="lazyload placeholder" data-srcset="https://i.postimg.cc/LXw319qf/image.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 
@@ -909,7 +922,7 @@
     if (document.getElementsByClassName('mermaid').length) {
       if (window.mermaidJsLoad) mermaid.init()
       else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
           window.mermaidJsLoad = true
           mermaid.initialize({
             theme: 'default',

@@ -44,8 +44,8 @@
             }
         }
     </style>
-    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
 
     
 
@@ -511,6 +511,21 @@
         
  <!-- prismjs 代码高亮 -->
  
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
 
 
 <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
@@ -576,16 +591,24 @@
 <li>column：主轴为垂直方向，起点在上沿。</li>
 <li>column-reverse：主轴为垂直方向，起点在下沿。</li>
 </ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">flex-direction</span>: row | row-reverse | column | column-reverse;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">flex-direction</span><span class="token punctuation">:</span> row | row-reverse | column | column-reverse<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="2-flex-wrap-设置项目是否换行"><a href="#2-flex-wrap-设置项目是否换行" class="headerlink" title="2. flex-wrap 设置项目是否换行"></a>2. flex-wrap 设置项目是否换行</h3><ul>
 <li>nowrap(默认值): 不换行</li>
 <li>wrap: 换行</li>
 <li>wrap-reverse: 换行，第一行在下方</li>
 </ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">flex-wrap</span>: nowrap | wrap | wrap-reverse;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">flex-wrap</span><span class="token punctuation">:</span> nowrap | wrap | wrap-reverse<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="3-flex-flow-以上两个的简写"><a href="#3-flex-flow-以上两个的简写" class="headerlink" title="3. flex-flow 以上两个的简写"></a>3. flex-flow 以上两个的简写</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">flex-flow</span>属性是<span class="attribute">flex-direction</span>属性和<span class="attribute">flex-wrap</span>属性的简写形式，默认值为row</span><br><span class="line">  nowrap。</span><br><span class="line">  <span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">flex-flow</span>: &lt;flex-direction&gt; || &lt;flex-wrap&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-flex-flow-以上两个的简写"><a href="#3-flex-flow-以上两个的简写" class="headerlink" title="3. flex-flow 以上两个的简写"></a>3. flex-flow 以上两个的简写</h3><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">flex-flow属性是flex-direction属性和flex-wrap属性的简写形式，默认值为row
+  nowrap。
+  .container</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">flex-flow</span><span class="token punctuation">:</span> &lt;flex-direction> || &lt;flex-wrap><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="4-justify-content-设置项目在主轴上的对齐方式"><a href="#4-justify-content-设置项目在主轴上的对齐方式" class="headerlink" title="4. justify-content 设置项目在主轴上的对齐方式"></a>4. justify-content 设置项目在主轴上的对齐方式</h3><ul>
 <li>flex-start: 在主轴的开始位置按顺序排序</li>
@@ -594,7 +617,9 @@
 <li>space-between: 两边对齐，项目之间的间隔相等</li>
 <li>space-around: 每个项目两侧的间隔相等，所以，项目和项目之间的间隔比项目与边框的间隔大一倍</li>
 </ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">justify-content</span>: flex-start | flex-end | center | space-between | space-around;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">justify-content</span><span class="token punctuation">:</span> flex-start | flex-end | center | space-between | space-around<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="5-align-items-设置所有项目在交叉轴上的位置"><a href="#5-align-items-设置所有项目在交叉轴上的位置" class="headerlink" title="5. align-items 设置所有项目在交叉轴上的位置"></a>5. align-items 设置所有项目在交叉轴上的位置</h3><ul>
 <li>stretch（默认值）：如果项目未设置高度或设为 auto，将占满整个容器的高度。</li>
@@ -603,7 +628,9 @@
 <li>center：交叉轴的中点对齐。</li>
 <li>baseline: 项目的第一行文字的基线对齐。</li>
 </ul>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">align-items</span>: flex-start | flex-end | center | baseline | stretch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">align-items</span><span class="token punctuation">:</span> flex-start | flex-end | center | baseline | stretch<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="6-align-content-用来分配交叉轴方向的剩余空间-表现行为和-justify-content-属性一致，除了多出一个-stretch"><a href="#6-align-content-用来分配交叉轴方向的剩余空间-表现行为和-justify-content-属性一致，除了多出一个-stretch" class="headerlink" title="6. align-content 用来分配交叉轴方向的剩余空间 表现行为和 justify-content 属性一致，除了多出一个 stretch."></a>6. align-content 用来分配交叉轴方向的剩余空间 表现行为和 justify-content 属性一致，除了多出一个 stretch.</h3><ul>
 <li>stretch（默认值）：轴线占满整个交叉轴。</li>
@@ -614,23 +641,41 @@
 <li>space-around：每根轴线两侧的间隔都相等。所以，轴线之间的间隔比轴线与边框的间隔大一倍。</li>
 </ul>
 <p><strong>如果 flex 项目未显式设置<code>height</code>或<code>block-size</code>时，除了设置 stretch 属性会拉伸 flex 项目，设置为其他属性时会改变 flex 项目的高度为内容最大高度</strong></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">align-content</span>: flex-start | flex-end | center | space-between | space-around |</span><br><span class="line">    stretch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">align-content</span><span class="token punctuation">:</span> flex-start | flex-end | center | space-between | space-around |
+    stretch<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="应用在项目上的属性"><a href="#应用在项目上的属性" class="headerlink" title="应用在项目上的属性"></a>应用在项目上的属性</h2><h3 id="1-order-属性-定义项目的排列顺序，数值越小，月考勤，默认为-0（不推荐使用，性能损耗大）"><a href="#1-order-属性-定义项目的排列顺序，数值越小，月考勤，默认为-0（不推荐使用，性能损耗大）" class="headerlink" title="1. order 属性 定义项目的排列顺序，数值越小，月考勤，默认为 0（不推荐使用，性能损耗大）"></a>1. order 属性 定义项目的排列顺序，数值越小，月考勤，默认为 0（不推荐使用，性能损耗大）</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">order</span>: &lt;number&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="应用在项目上的属性"><a href="#应用在项目上的属性" class="headerlink" title="应用在项目上的属性"></a>应用在项目上的属性</h2><h3 id="1-order-属性-定义项目的排列顺序，数值越小，月考勤，默认为-0（不推荐使用，性能损耗大）"><a href="#1-order-属性-定义项目的排列顺序，数值越小，月考勤，默认为-0（不推荐使用，性能损耗大）" class="headerlink" title="1. order 属性 定义项目的排列顺序，数值越小，月考勤，默认为 0（不推荐使用，性能损耗大）"></a>1. order 属性 定义项目的排列顺序，数值越小，月考勤，默认为 0（不推荐使用，性能损耗大）</h3><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">order</span><span class="token punctuation">:</span> &lt;number><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="2-flex-grow-定义项目的放大比例，默认为-0。即存在剩余空间也不放大。"><a href="#2-flex-grow-定义项目的放大比例，默认为-0。即存在剩余空间也不放大。" class="headerlink" title="2. flex-grow 定义项目的放大比例，默认为 0。即存在剩余空间也不放大。"></a>2. flex-grow 定义项目的放大比例，默认为 0。即存在剩余空间也不放大。</h3><p>在一个 flex 容器内，如果给项目设置了 flex-grow,那么会每个设置了 flex-grow 的项目都会多分到: <strong>(剩余空间宽度&#x2F;flex-grow 总数) * 当前项目 flex-grow 数</strong><br>假设容器宽度为 600px,有三个项目 width 都为 100px, 后两个分别设置了以下属性，那么最后计算出来的宽度就是<br>item1: 100px,item2:200px, item3: 300px;</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item2</span> &#123;</span><br><span class="line">  <span class="attribute">flex-grow</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.item3</span> &#123;</span><br><span class="line">  <span class="attribute">flex-grow</span>: <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item2</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">flex-grow</span><span class="token punctuation">:</span> 1<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token selector">.item3</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">flex-grow</span><span class="token punctuation">:</span> 2<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="3-flex-shrink"><a href="#3-flex-shrink" class="headerlink" title="3. flex-shrink"></a>3. flex-shrink</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex-shrink</span>: &lt;number&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-flex-shrink"><a href="#3-flex-shrink" class="headerlink" title="3. flex-shrink"></a>3. flex-shrink</h3><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">flex-shrink</span><span class="token punctuation">:</span> &lt;number><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>定义项目的缩小比例，默认为 1，即如果容器空间不足，容器内的项目缩小。<br>但是 flex-shrink 会组织 flex 项目缩小为 0。所以继续缩小会按照<code>min-content</code>的大小计算。<br>这就是为什么显式设置<code>flex:1</code>不一定能让所有 flex 项目宽度相等的主要原因之一。所以有一个小技巧就是<br>要实现等分列布局效果时，显示的在 flex 项目上设置<code>min-width:0</code>，避免内容不等长，造成列不等分</p>
-<h3 id="4-flex-basis"><a href="#4-flex-basis" class="headerlink" title="4. flex-basis"></a>4. flex-basis</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex-basis</span>: &lt;length&gt; | auto; <span class="comment">/* default auto */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-flex-basis"><a href="#4-flex-basis" class="headerlink" title="4. flex-basis"></a>4. flex-basis</h3><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">flex-basis</span><span class="token punctuation">:</span> &lt;length> | auto<span class="token punctuation">;</span> <span class="token comment">/* default auto */</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>默认值时 auto ，用于给项目设置一个初始化的尺寸(理想的尺寸)。之所以说是理想的尺寸，是因为根据浏览器会<br>根据 <code>content ➜ width ➜ flex-basis</code> 来决定用哪个值来初始化 Flex 项目的假设主尺寸。如果 Flex 项目显式设置了 <code>flex-basis</code> 属性，则会忽略 <code>width</code> 和 <code>content</code> 。但最终浏览器计算出来的 Flex 项目主尺寸（计算后的 flex-basis 属性的值）会受到 CSS 的 <code>min-*</code> 和 <code>max-*</code> 属性值的限制，其中 <code>min-*</code> 用来设置 Flex 项目的下限值，<code>max-*</code>用来设置 Flex 项目的上限值 。</p>
-<h3 id="5-flex-建议优先使用-flex-属性，而不是单独写三个分离的属性-该属性是-flex-grow-flex-shrink-flex-basis-的简写，默认值是0-1-auto，后两个属性可选"><a href="#5-flex-建议优先使用-flex-属性，而不是单独写三个分离的属性-该属性是-flex-grow-flex-shrink-flex-basis-的简写，默认值是0-1-auto，后两个属性可选" class="headerlink" title="5. flex(建议优先使用 flex 属性，而不是单独写三个分离的属性) 该属性是 flex-grow, flex-shrink, flex-basis 的简写，默认值是0 1 auto，后两个属性可选"></a>5. flex(建议优先使用 flex 属性，而不是单独写三个分离的属性) 该属性是 flex-grow, flex-shrink, flex-basis 的简写，默认值是<code>0 1 auto</code>，后两个属性可选</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex</span>: none | [ &lt; <span class="string">&quot;flex-grow&quot;</span> &gt; &lt; <span class="string">&quot;flex-shrink&quot;</span> &gt;? || &lt; <span class="string">&quot;flex-basis&quot;</span> &gt;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-flex-建议优先使用-flex-属性，而不是单独写三个分离的属性-该属性是-flex-grow-flex-shrink-flex-basis-的简写，默认值是0-1-auto，后两个属性可选"><a href="#5-flex-建议优先使用-flex-属性，而不是单独写三个分离的属性-该属性是-flex-grow-flex-shrink-flex-basis-的简写，默认值是0-1-auto，后两个属性可选" class="headerlink" title="5. flex(建议优先使用 flex 属性，而不是单独写三个分离的属性) 该属性是 flex-grow, flex-shrink, flex-basis 的简写，默认值是0 1 auto，后两个属性可选"></a>5. flex(建议优先使用 flex 属性，而不是单独写三个分离的属性) 该属性是 flex-grow, flex-shrink, flex-basis 的简写，默认值是<code>0 1 auto</code>，后两个属性可选</h3><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">flex</span><span class="token punctuation">:</span> none | [ &lt; <span class="token string">"flex-grow"</span> > &lt; <span class="token string">"flex-shrink"</span> >? || &lt; <span class="token string">"flex-basis"</span> >]<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="6-align-self"><a href="#6-align-self" class="headerlink" title="6. align-self"></a>6. align-self</h3><p>该属性可用于设置单个项目与其他项目不同的对齐方式，会覆盖 align-items 属性，默认值为 auto(继承容器的 align-items 属性，如果父元素没设值则为 stretch)</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">align-self</span>: auto | flex-start | flex-end | center | baseline | stretch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">align-self</span><span class="token punctuation">:</span> auto | flex-start | flex-end | center | baseline | stretch<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
       </div>
       <div class="post-tags-categories">
@@ -674,17 +719,20 @@
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/15.jpg" class="lazyload placeholder" data-srcset="/medias/15.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2020/07/19/qian-duan/css/3.flex-shi-xian-ji-chong-jing-dian-bu-ju/" class="post-nav-link">
+    <a href="/2020/07/14/qian-duan/css/1.css-ji-chu/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">flex实现几种经典布局</div>
+        <div class="title-text">css基础</div>
       </div>
       
       <!-- <div class="content">
-        水平垂直居中使用以下的核心代码，控制多行(多列)、单行(单列)的元素水平垂直居中
-12345.container &#1
+        盒模型在 css 中，有两种盒模型：
+
+标准盒模型(box-sizing: content-box)：
+
+这是我们熟悉的
       </div> -->
     </a>
   </div>
@@ -695,19 +743,15 @@
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2020/07/14/qian-duan/css/1.css-ji-chu/" class="post-nav-link">
+    <a href="/2020/07/11/qian-duan/html/1.ji-chu/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">css基础</div>
+        <div class="title-text">html基础</div>
       </div>
       <!-- <div class="content">
-        盒模型在 css 中，有两种盒模型：
-
-标准盒模型(box-sizing: content-box)：
-
-这是我们熟悉的
+        DOCTYPE(文档类型)的作用是什么?DTD(document type definition, 文档类型定义) 是一
       </div> -->
     </a>
   </div>
@@ -953,7 +997,7 @@
     if (document.getElementsByClassName('mermaid').length) {
       if (window.mermaidJsLoad) mermaid.init()
       else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
           window.mermaidJsLoad = true
           mermaid.initialize({
             theme: 'default',

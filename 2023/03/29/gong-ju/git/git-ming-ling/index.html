@@ -44,8 +44,8 @@
             }
         }
     </style>
-    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
 
     
 
@@ -511,6 +511,21 @@
         
  <!-- prismjs 代码高亮 -->
  
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
 
 
 <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
@@ -576,68 +591,496 @@
 <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><blockquote>
 <p>更改设置。可以是版本库的设置，也可以是系统的或全局的</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示当前的Git配置</span></span><br><span class="line">git config --list</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">编辑Git配置文件</span></span><br><span class="line">git config -e [--global]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">输出、设置基本的全局变量</span></span><br><span class="line">git config --global user.email</span><br><span class="line">git config --global user.name</span><br><span class="line"></span><br><span class="line">git config --global user.email &quot;MyEmail@gmail.com&quot;</span><br><span class="line"></span><br><span class="line">git config --global user.name &quot;My Name&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">定义当前用户所有提交使用的作者邮箱。</span></span><br><span class="line">git config --global alias.&lt;alias-name&gt; &lt;git-command&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">为Git命令创建一个快捷方式（别名）。</span></span><br><span class="line">git config --system core.editor &lt;editor&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">
+<span class="token comment"># 显示当前的Git配置</span>
+<span class="token function">git</span> config <span class="token parameter variable">--list</span>
 
-<h2 id="帮助"><a href="#帮助" class="headerlink" title="帮助"></a>帮助</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查找可用命令</span></span><br><span class="line">git help</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查找所有可用命令</span></span><br><span class="line">git help -a</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在文档当中查找特定的命令</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git <span class="built_in">help</span> &lt;命令&gt;</span></span><br><span class="line">git help add</span><br><span class="line">git help commit</span><br><span class="line">git help init</span><br></pre></td></tr></table></figure>
+<span class="token comment"># 编辑Git配置文件</span>
+<span class="token function">git</span> config <span class="token parameter variable">-e</span> <span class="token punctuation">[</span>--global<span class="token punctuation">]</span>
 
-<h2 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示分支，未跟踪文件，更改和其他不同</span></span><br><span class="line">git status</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看其他的git status的用法</span></span><br><span class="line">git help status</span><br></pre></td></tr></table></figure>
+<span class="token comment"># 输出、设置基本的全局变量</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> user.email
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> user.name
+
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> user.email <span class="token string">"MyEmail@gmail.com"</span>
+
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> user.name <span class="token string">"My Name"</span>
+
+
+<span class="token comment"># 定义当前用户所有提交使用的作者邮箱。</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> alias.<span class="token operator">&lt;</span>alias-name<span class="token operator">></span> <span class="token operator">&lt;</span>git-command<span class="token operator">></span>
+
+<span class="token comment"># 为Git命令创建一个快捷方式（别名）。</span>
+<span class="token function">git</span> config <span class="token parameter variable">--system</span> core.editor <span class="token operator">&lt;</span>editor<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="帮助"><a href="#帮助" class="headerlink" title="帮助"></a>帮助</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查找可用命令</span>
+<span class="token function">git</span> <span class="token builtin class-name">help</span>
+
+<span class="token comment"># 查找所有可用命令</span>
+<span class="token function">git</span> <span class="token builtin class-name">help</span> <span class="token parameter variable">-a</span>
+
+<span class="token comment"># 在文档当中查找特定的命令</span>
+<span class="token comment"># git help &lt;命令></span>
+<span class="token function">git</span> <span class="token builtin class-name">help</span> <span class="token function">add</span>
+<span class="token function">git</span> <span class="token builtin class-name">help</span> commit
+<span class="token function">git</span> <span class="token builtin class-name">help</span> init<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 显示分支，未跟踪文件，更改和其他不同</span>
+<span class="token function">git</span> status
+
+<span class="token comment"># 查看其他的git status的用法</span>
+<span class="token function">git</span> <span class="token builtin class-name">help</span> status<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="信息"><a href="#信息" class="headerlink" title="信息"></a>信息</h2><blockquote>
 <p>获取某些文件，某些分支，某次提交等 git 信息</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示commit历史，以及每次commit发生变更的文件</span></span><br><span class="line">git log --stat</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">搜索提交历史，根据关键词</span></span><br><span class="line">git log -S [keyword]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示某个commit之后的所有变动，每个commit占据一行</span></span><br><span class="line">git log [tag] HEAD --pretty=format:%s</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示某个commit之后的所有变动，其<span class="string">&quot;提交说明&quot;</span>必须符合搜索条件</span></span><br><span class="line">git log [tag] HEAD --grep feature</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示某个文件的版本历史，包括文件改名</span></span><br><span class="line">git log --follow [file]</span><br><span class="line">git whatchanged [file]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示指定文件相关的每一次diff</span></span><br><span class="line">git log -p [file]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示过去5次提交</span></span><br><span class="line">git log -5 --pretty --oneline</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示所有提交过的用户，按提交次数排序</span></span><br><span class="line">git shortlog -sn</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示指定文件是什么人在什么时间修改过</span></span><br><span class="line">git blame [file]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示暂存区和工作区的差异</span></span><br><span class="line">git diff</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示暂存区和上一个commit的差异</span></span><br><span class="line">git diff --cached [file]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示工作区与当前分支最新commit之间的差异</span></span><br><span class="line">git diff HEAD</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示两次提交之间的差异</span></span><br><span class="line">git diff [first-branch]...[second-branch]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示今天你写了多少行代码</span></span><br><span class="line">git diff --shortstat &quot;@&#123;0 day ago&#125;&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">比较暂存区和版本库差异</span></span><br><span class="line">git diff --staged</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">比较暂存区和版本库差异</span></span><br><span class="line">git diff --cached</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">仅仅比较统计信息</span></span><br><span class="line">git diff --stat</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示某次提交的元数据和内容变化</span></span><br><span class="line">git show [commit]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示某次提交发生变化的文件</span></span><br><span class="line">git show --name-only [commit]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示某次提交时，某个文件的内容</span></span><br><span class="line">git show [commit]:[filename]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示当前分支的最近几次提交</span></span><br><span class="line">git reflog</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看远程分支</span></span><br><span class="line">git br -r</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建新的分支</span></span><br><span class="line">git br &lt;new_branch&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看各个分支最后提交信息</span></span><br><span class="line">git br -v</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看已经被合并到当前分支的分支</span></span><br><span class="line">git br --merged</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看尚未被合并到当前分支的分支</span></span><br><span class="line">git br --no-merged</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 显示commit历史，以及每次commit发生变更的文件</span>
+<span class="token function">git</span> log <span class="token parameter variable">--stat</span>
+
+<span class="token comment"># 搜索提交历史，根据关键词</span>
+<span class="token function">git</span> log <span class="token parameter variable">-S</span> <span class="token punctuation">[</span>keyword<span class="token punctuation">]</span>
+
+<span class="token comment"># 显示某个commit之后的所有变动，每个commit占据一行</span>
+<span class="token function">git</span> log <span class="token punctuation">[</span>tag<span class="token punctuation">]</span> HEAD <span class="token parameter variable">--pretty</span><span class="token operator">=</span>format:%s
+
+<span class="token comment"># 显示某个commit之后的所有变动，其"提交说明"必须符合搜索条件</span>
+<span class="token function">git</span> log <span class="token punctuation">[</span>tag<span class="token punctuation">]</span> HEAD <span class="token parameter variable">--grep</span> feature
+
+<span class="token comment"># 显示某个文件的版本历史，包括文件改名</span>
+<span class="token function">git</span> log <span class="token parameter variable">--follow</span> <span class="token punctuation">[</span>file<span class="token punctuation">]</span>
+<span class="token function">git</span> whatchanged <span class="token punctuation">[</span>file<span class="token punctuation">]</span>
+
+<span class="token comment"># 显示指定文件相关的每一次diff</span>
+<span class="token function">git</span> log <span class="token parameter variable">-p</span> <span class="token punctuation">[</span>file<span class="token punctuation">]</span>
+
+<span class="token comment"># 显示过去5次提交</span>
+<span class="token function">git</span> log <span class="token parameter variable">-5</span> <span class="token parameter variable">--pretty</span> <span class="token parameter variable">--oneline</span>
+
+<span class="token comment"># 显示所有提交过的用户，按提交次数排序</span>
+<span class="token function">git</span> shortlog <span class="token parameter variable">-sn</span>
+
+<span class="token comment"># 显示指定文件是什么人在什么时间修改过</span>
+<span class="token function">git</span> blame <span class="token punctuation">[</span>file<span class="token punctuation">]</span>
+
+<span class="token comment"># 显示暂存区和工作区的差异</span>
+<span class="token function">git</span> <span class="token function">diff</span>
+
+<span class="token comment"># 显示暂存区和上一个commit的差异</span>
+<span class="token function">git</span> <span class="token function">diff</span> <span class="token parameter variable">--cached</span> <span class="token punctuation">[</span>file<span class="token punctuation">]</span>
+
+<span class="token comment"># 显示工作区与当前分支最新commit之间的差异</span>
+<span class="token function">git</span> <span class="token function">diff</span> HEAD
+
+<span class="token comment"># 显示两次提交之间的差异</span>
+<span class="token function">git</span> <span class="token function">diff</span> <span class="token punctuation">[</span>first-branch<span class="token punctuation">]</span><span class="token punctuation">..</span>.<span class="token punctuation">[</span>second-branch<span class="token punctuation">]</span>
+
+<span class="token comment"># 显示今天你写了多少行代码</span>
+<span class="token function">git</span> <span class="token function">diff</span> <span class="token parameter variable">--shortstat</span> <span class="token string">"@&#123;0 day ago&#125;"</span>
+
+<span class="token comment"># 比较暂存区和版本库差异</span>
+<span class="token function">git</span> <span class="token function">diff</span> <span class="token parameter variable">--staged</span>
+
+<span class="token comment"># 比较暂存区和版本库差异</span>
+<span class="token function">git</span> <span class="token function">diff</span> <span class="token parameter variable">--cached</span>
+
+<span class="token comment"># 仅仅比较统计信息</span>
+<span class="token function">git</span> <span class="token function">diff</span> <span class="token parameter variable">--stat</span>
+
+<span class="token comment"># 显示某次提交的元数据和内容变化</span>
+<span class="token function">git</span> show <span class="token punctuation">[</span>commit<span class="token punctuation">]</span>
+
+<span class="token comment"># 显示某次提交发生变化的文件</span>
+<span class="token function">git</span> show --name-only <span class="token punctuation">[</span>commit<span class="token punctuation">]</span>
+
+<span class="token comment"># 显示某次提交时，某个文件的内容</span>
+<span class="token function">git</span> show <span class="token punctuation">[</span>commit<span class="token punctuation">]</span>:<span class="token punctuation">[</span>filename<span class="token punctuation">]</span>
+
+<span class="token comment"># 显示当前分支的最近几次提交</span>
+<span class="token function">git</span> reflog
+
+<span class="token comment"># 查看远程分支</span>
+<span class="token function">git</span> br <span class="token parameter variable">-r</span>
+
+<span class="token comment"># 创建新的分支</span>
+<span class="token function">git</span> br <span class="token operator">&lt;</span>new_branch<span class="token operator">></span>
+
+<span class="token comment"># 查看各个分支最后提交信息</span>
+<span class="token function">git</span> br <span class="token parameter variable">-v</span>
+
+<span class="token comment"># 查看已经被合并到当前分支的分支</span>
+<span class="token function">git</span> br <span class="token parameter variable">--merged</span>
+
+<span class="token comment"># 查看尚未被合并到当前分支的分支</span>
+<span class="token function">git</span> br --no-merged<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="添加"><a href="#添加" class="headerlink" title="添加"></a>添加</h2><blockquote>
 <p>添加文件到当前工作空间中。如果你不使用 git add 将文件添加进去，那么这些文件也不会添加到之后的提交之中</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加一个文件</span></span><br><span class="line">git add test.js</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加一个子目录中的文件</span></span><br><span class="line">git add /path/to/file/test.js</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">支持正则表达式</span></span><br><span class="line">git add ./*.js</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加指定文件到暂存区</span></span><br><span class="line">git add [file1] [file2] ...</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加指定目录到暂存区，包括子目录</span></span><br><span class="line">git add [dir]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加当前目录的所有文件到暂存区</span></span><br><span class="line">git add .</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加每个变化前，都会要求确认</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">对于同一个文件的多处变化，可以实现分次提交</span></span><br><span class="line">git add -p</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 添加一个文件</span>
+<span class="token function">git</span> <span class="token function">add</span> test.js
 
-<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">移除 HelloWorld.js</span></span><br><span class="line">git rm HelloWorld.js</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">移除子目录中的文件</span></span><br><span class="line">git rm /pather/to/the/file/HelloWorld.js</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除工作区文件，并且将这次删除放入暂存区</span></span><br><span class="line">git rm [file1] [file2] ...</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">停止追踪指定文件，但该文件会保留在工作区</span></span><br><span class="line">git rm --cached [file]</span><br></pre></td></tr></table></figure>
+<span class="token comment"># 添加一个子目录中的文件</span>
+<span class="token function">git</span> <span class="token function">add</span> /path/to/file/test.js
 
-<h2 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看所有的分支和远程分支</span></span><br><span class="line">git branch -a</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建一个新的分支</span></span><br><span class="line">git branch [branch-name]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重命名分支</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git branch -m &lt;旧名称&gt; &lt;新名称&gt;</span></span><br><span class="line">git branch -m [branch-name] [new-branch-name]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">编辑分支的介绍</span></span><br><span class="line">git branch [branch-name] --edit-description</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">列出所有本地分支</span></span><br><span class="line">git branch</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">列出所有远程分支</span></span><br><span class="line">git branch -r</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">新建一个分支，但依然停留在当前分支</span></span><br><span class="line">git branch [branch-name]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">新建一个分支，并切换到该分支</span></span><br><span class="line">git checkout -b [branch]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">新建一个分支，指向指定commit</span></span><br><span class="line">git branch [branch] [commit]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">新建一个分支，与指定的远程分支建立追踪关系</span></span><br><span class="line">git branch --track [branch] [remote-branch]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">切换到指定分支，并更新工作区</span></span><br><span class="line">git checkout [branch-name]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">切换到上一个分支</span></span><br><span class="line">git checkout -</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">建立追踪关系，在现有分支与指定的远程分支之间</span></span><br><span class="line">git branch --set-upstream [branch] [remote-branch]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">合并指定分支到当前分支</span></span><br><span class="line">git merge [branch]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">选择一个commit，合并进当前分支</span></span><br><span class="line">git cherry-pick [commit]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除分支</span></span><br><span class="line">git branch -d [branch-name]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除远程分支</span></span><br><span class="line">git push origin --delete [branch-name]</span><br><span class="line">git branch -dr [remote/branch]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">切换到某个分支</span></span><br><span class="line">git co &lt;branch&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建新的分支，并且切换过去</span></span><br><span class="line">git co -b &lt;new_branch&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">基于branch创建新的new_branch</span></span><br><span class="line">git co -b &lt;new_branch&gt; &lt;branch&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">把某次历史提交记录checkout出来，但无分支信息，切换到其他分支会自动删除</span></span><br><span class="line">git co $id</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">把某次历史提交记录checkout出来，创建成一个分支</span></span><br><span class="line">git co $id -b &lt;new_branch&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除某个分支</span></span><br><span class="line">git br -d &lt;branch&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">强制删除某个分支 (未被合并的分支被删除的时候需要强制)</span></span><br><span class="line">git br -D &lt;branch&gt;</span><br></pre></td></tr></table></figure>
+<span class="token comment"># 支持正则表达式</span>
+<span class="token function">git</span> <span class="token function">add</span> ./*.js
 
-<h2 id="检出"><a href="#检出" class="headerlink" title="检出"></a>检出</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检出一个版本库，默认将更新到master分支</span></span><br><span class="line">git checkout</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检出到一个特定的分支</span></span><br><span class="line">git checkout branchName</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">新建一个分支，并且切换过去，相当于<span class="string">&quot;git branch &lt;名字&gt;; git checkout &lt;名字&gt;&quot;</span></span></span><br><span class="line">git checkout -b newBranch</span><br></pre></td></tr></table></figure>
+<span class="token comment"># 添加指定文件到暂存区</span>
+<span class="token function">git</span> <span class="token function">add</span> <span class="token punctuation">[</span>file1<span class="token punctuation">]</span> <span class="token punctuation">[</span>file2<span class="token punctuation">]</span> <span class="token punctuation">..</span>.
 
-<h2 id="远程同步"><a href="#远程同步" class="headerlink" title="远程同步"></a>远程同步</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">下载远程仓库的所有变动</span></span><br><span class="line">git fetch [remote]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示所有远程仓库</span></span><br><span class="line">git remote -v</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示某个远程仓库的信息</span></span><br><span class="line">git remote show [remote]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">增加一个新的远程仓库，并命名</span></span><br><span class="line">git remote add [shortname] [url]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看远程服务器地址和仓库名称</span></span><br><span class="line">git remote -v</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加远程仓库地址</span></span><br><span class="line">git remote add origin git@ github:xxx/xxx.git</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置远程仓库地址(用于修改远程仓库地址)</span></span><br><span class="line">git remote set-url origin git@ github.com:xxx/xxx.git</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除远程仓库</span></span><br><span class="line">git remote rm &lt;repository&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">上传本地指定分支到远程仓库</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">把本地的分支更新到远端origin的master分支上</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git push &lt;远端&gt; &lt;分支&gt;</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git push 相当于 git push origin master</span></span><br><span class="line">git push [remote] [branch]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">强行推送当前分支到远程仓库，即使有冲突</span></span><br><span class="line">git push [remote] --force</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">推送所有分支到远程仓库</span></span><br><span class="line">git push [remote] --all</span><br></pre></td></tr></table></figure>
+<span class="token comment"># 添加指定目录到暂存区，包括子目录</span>
+<span class="token function">git</span> <span class="token function">add</span> <span class="token punctuation">[</span>dir<span class="token punctuation">]</span>
 
-<h2 id="撤销"><a href="#撤销" class="headerlink" title="撤销"></a>撤销</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">恢复暂存区的指定文件到工作区</span></span><br><span class="line">git checkout [file]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">恢复某个commit的指定文件到暂存区和工作区</span></span><br><span class="line">git checkout [commit] [file]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">恢复暂存区的所有文件到工作区</span></span><br><span class="line">git checkout .</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重置暂存区的指定文件，与上一次commit保持一致，但工作区不变</span></span><br><span class="line">git reset [file]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重置暂存区与工作区，与上一次commit保持一致</span></span><br><span class="line">git reset --hard</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重置当前分支的指针为指定commit，同时重置暂存区，但工作区不变</span></span><br><span class="line">git reset [commit]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重置当前分支的HEAD为指定commit，同时重置暂存区和工作区，与指定commit一致</span></span><br><span class="line">git reset --hard [commit]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重置当前HEAD为指定commit，但保持暂存区和工作区不变</span></span><br><span class="line">git reset --keep [commit]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">新建一个commit，用来撤销指定commit</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">后者的所有变化都将被前者抵消，并且应用到当前分支</span></span><br><span class="line">git revert [commit]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">恢复最后一次提交的状态</span></span><br><span class="line">git revert HEAD</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">暂时将未提交的变化移除，稍后再移入</span></span><br><span class="line">git stash</span><br><span class="line">git stash pop</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">列所有stash</span></span><br><span class="line">git stash list</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">恢复暂存的内容</span></span><br><span class="line">git stash apply</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除暂存区</span></span><br><span class="line">git stash drop</span><br></pre></td></tr></table></figure>
+<span class="token comment"># 添加当前目录的所有文件到暂存区</span>
+<span class="token function">git</span> <span class="token function">add</span> <span class="token builtin class-name">.</span>
 
-<h2 id="commit"><a href="#commit" class="headerlink" title="commit"></a>commit</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">提交暂存区到仓库区附带提交信息</span></span><br><span class="line">git commit -m [message]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">提交暂存区的指定文件到仓库区</span></span><br><span class="line">git commit [file1] [file2] ... -m [message]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">提交工作区自上次commit之后的变化，直接到仓库区</span></span><br><span class="line">git commit -a</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">提交时显示所有diff信息</span></span><br><span class="line">git commit -v</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">使用一次新的commit，替代上一次提交</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果代码没有任何新变化，则用来改写上一次commit的提交信息</span></span><br><span class="line">git commit --amend -m [message]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重做上一次commit，并包括指定文件的新变化</span></span><br><span class="line">git commit --amend [file1] [file2] ...</span><br></pre></td></tr></table></figure>
+<span class="token comment"># 添加每个变化前，都会要求确认</span>
+<span class="token comment"># 对于同一个文件的多处变化，可以实现分次提交</span>
+<span class="token function">git</span> <span class="token function">add</span> <span class="token parameter variable">-p</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 移除 HelloWorld.js</span>
+<span class="token function">git</span> <span class="token function">rm</span> HelloWorld.js
+
+<span class="token comment"># 移除子目录中的文件</span>
+<span class="token function">git</span> <span class="token function">rm</span> /pather/to/the/file/HelloWorld.js
+
+<span class="token comment"># 删除工作区文件，并且将这次删除放入暂存区</span>
+<span class="token function">git</span> <span class="token function">rm</span> <span class="token punctuation">[</span>file1<span class="token punctuation">]</span> <span class="token punctuation">[</span>file2<span class="token punctuation">]</span> <span class="token punctuation">..</span>.
+
+<span class="token comment"># 停止追踪指定文件，但该文件会保留在工作区</span>
+<span class="token function">git</span> <span class="token function">rm</span> <span class="token parameter variable">--cached</span> <span class="token punctuation">[</span>file<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看所有的分支和远程分支</span>
+<span class="token function">git</span> branch <span class="token parameter variable">-a</span>
+
+<span class="token comment"># 创建一个新的分支</span>
+<span class="token function">git</span> branch <span class="token punctuation">[</span>branch-name<span class="token punctuation">]</span>
+
+<span class="token comment"># 重命名分支</span>
+<span class="token comment"># git branch -m &lt;旧名称> &lt;新名称></span>
+<span class="token function">git</span> branch <span class="token parameter variable">-m</span> <span class="token punctuation">[</span>branch-name<span class="token punctuation">]</span> <span class="token punctuation">[</span>new-branch-name<span class="token punctuation">]</span>
+
+<span class="token comment"># 编辑分支的介绍</span>
+<span class="token function">git</span> branch <span class="token punctuation">[</span>branch-name<span class="token punctuation">]</span> --edit-description
+
+<span class="token comment"># 列出所有本地分支</span>
+<span class="token function">git</span> branch
+
+<span class="token comment"># 列出所有远程分支</span>
+<span class="token function">git</span> branch <span class="token parameter variable">-r</span>
+
+<span class="token comment"># 新建一个分支，但依然停留在当前分支</span>
+<span class="token function">git</span> branch <span class="token punctuation">[</span>branch-name<span class="token punctuation">]</span>
+
+<span class="token comment"># 新建一个分支，并切换到该分支</span>
+<span class="token function">git</span> checkout <span class="token parameter variable">-b</span> <span class="token punctuation">[</span>branch<span class="token punctuation">]</span>
+
+<span class="token comment"># 新建一个分支，指向指定commit</span>
+<span class="token function">git</span> branch <span class="token punctuation">[</span>branch<span class="token punctuation">]</span> <span class="token punctuation">[</span>commit<span class="token punctuation">]</span>
+
+<span class="token comment"># 新建一个分支，与指定的远程分支建立追踪关系</span>
+<span class="token function">git</span> branch <span class="token parameter variable">--track</span> <span class="token punctuation">[</span>branch<span class="token punctuation">]</span> <span class="token punctuation">[</span>remote-branch<span class="token punctuation">]</span>
+
+<span class="token comment"># 切换到指定分支，并更新工作区</span>
+<span class="token function">git</span> checkout <span class="token punctuation">[</span>branch-name<span class="token punctuation">]</span>
+
+<span class="token comment"># 切换到上一个分支</span>
+<span class="token function">git</span> checkout -
+
+<span class="token comment"># 建立追踪关系，在现有分支与指定的远程分支之间</span>
+<span class="token function">git</span> branch --set-upstream <span class="token punctuation">[</span>branch<span class="token punctuation">]</span> <span class="token punctuation">[</span>remote-branch<span class="token punctuation">]</span>
+
+<span class="token comment"># 合并指定分支到当前分支</span>
+<span class="token function">git</span> merge <span class="token punctuation">[</span>branch<span class="token punctuation">]</span>
+
+<span class="token comment"># 选择一个commit，合并进当前分支</span>
+<span class="token function">git</span> cherry-pick <span class="token punctuation">[</span>commit<span class="token punctuation">]</span>
+
+<span class="token comment"># 删除分支</span>
+<span class="token function">git</span> branch <span class="token parameter variable">-d</span> <span class="token punctuation">[</span>branch-name<span class="token punctuation">]</span>
+
+<span class="token comment"># 删除远程分支</span>
+<span class="token function">git</span> push origin <span class="token parameter variable">--delete</span> <span class="token punctuation">[</span>branch-name<span class="token punctuation">]</span>
+<span class="token function">git</span> branch <span class="token parameter variable">-dr</span> <span class="token punctuation">[</span>remote/branch<span class="token punctuation">]</span>
+
+<span class="token comment"># 切换到某个分支</span>
+<span class="token function">git</span> co <span class="token operator">&lt;</span>branch<span class="token operator">></span>
+
+<span class="token comment"># 创建新的分支，并且切换过去</span>
+<span class="token function">git</span> co <span class="token parameter variable">-b</span> <span class="token operator">&lt;</span>new_branch<span class="token operator">></span>
+
+<span class="token comment"># 基于branch创建新的new_branch</span>
+<span class="token function">git</span> co <span class="token parameter variable">-b</span> <span class="token operator">&lt;</span>new_branch<span class="token operator">></span> <span class="token operator">&lt;</span>branch<span class="token operator">></span>
+
+<span class="token comment"># 把某次历史提交记录checkout出来，但无分支信息，切换到其他分支会自动删除</span>
+<span class="token function">git</span> co <span class="token variable">$id</span>
+
+<span class="token comment"># 把某次历史提交记录checkout出来，创建成一个分支</span>
+<span class="token function">git</span> co <span class="token variable">$id</span> <span class="token parameter variable">-b</span> <span class="token operator">&lt;</span>new_branch<span class="token operator">></span>
+
+<span class="token comment"># 删除某个分支</span>
+<span class="token function">git</span> br <span class="token parameter variable">-d</span> <span class="token operator">&lt;</span>branch<span class="token operator">></span>
+
+<span class="token comment"># 强制删除某个分支 (未被合并的分支被删除的时候需要强制)</span>
+<span class="token function">git</span> br <span class="token parameter variable">-D</span> <span class="token operator">&lt;</span>branch<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="检出"><a href="#检出" class="headerlink" title="检出"></a>检出</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 检出一个版本库，默认将更新到master分支</span>
+<span class="token function">git</span> checkout
+<span class="token comment"># 检出到一个特定的分支</span>
+<span class="token function">git</span> checkout branchName
+<span class="token comment"># 新建一个分支，并且切换过去，相当于"git branch &lt;名字>; git checkout &lt;名字>"</span>
+<span class="token function">git</span> checkout <span class="token parameter variable">-b</span> newBranch<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="远程同步"><a href="#远程同步" class="headerlink" title="远程同步"></a>远程同步</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 下载远程仓库的所有变动</span>
+<span class="token function">git</span> fetch <span class="token punctuation">[</span>remote<span class="token punctuation">]</span>
+
+<span class="token comment"># 显示所有远程仓库</span>
+<span class="token function">git</span> remote <span class="token parameter variable">-v</span>
+
+<span class="token comment"># 显示某个远程仓库的信息</span>
+<span class="token function">git</span> remote show <span class="token punctuation">[</span>remote<span class="token punctuation">]</span>
+
+<span class="token comment"># 增加一个新的远程仓库，并命名</span>
+<span class="token function">git</span> remote <span class="token function">add</span> <span class="token punctuation">[</span>shortname<span class="token punctuation">]</span> <span class="token punctuation">[</span>url<span class="token punctuation">]</span>
+
+<span class="token comment"># 查看远程服务器地址和仓库名称</span>
+<span class="token function">git</span> remote <span class="token parameter variable">-v</span>
+
+<span class="token comment"># 添加远程仓库地址</span>
+<span class="token function">git</span> remote <span class="token function">add</span> origin git@ github:xxx/xxx.git
+
+<span class="token comment"># 设置远程仓库地址(用于修改远程仓库地址)</span>
+<span class="token function">git</span> remote set-url origin git@ github.com:xxx/xxx.git
+
+<span class="token comment"># 删除远程仓库</span>
+<span class="token function">git</span> remote <span class="token function">rm</span> <span class="token operator">&lt;</span>repository<span class="token operator">></span>
+
+<span class="token comment"># 上传本地指定分支到远程仓库</span>
+<span class="token comment"># 把本地的分支更新到远端origin的master分支上</span>
+<span class="token comment"># git push &lt;远端> &lt;分支></span>
+<span class="token comment"># git push 相当于 git push origin master</span>
+<span class="token function">git</span> push <span class="token punctuation">[</span>remote<span class="token punctuation">]</span> <span class="token punctuation">[</span>branch<span class="token punctuation">]</span>
+
+<span class="token comment"># 强行推送当前分支到远程仓库，即使有冲突</span>
+<span class="token function">git</span> push <span class="token punctuation">[</span>remote<span class="token punctuation">]</span> <span class="token parameter variable">--force</span>
+
+<span class="token comment"># 推送所有分支到远程仓库</span>
+<span class="token function">git</span> push <span class="token punctuation">[</span>remote<span class="token punctuation">]</span> <span class="token parameter variable">--all</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="撤销"><a href="#撤销" class="headerlink" title="撤销"></a>撤销</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 恢复暂存区的指定文件到工作区</span>
+<span class="token function">git</span> checkout <span class="token punctuation">[</span>file<span class="token punctuation">]</span>
+
+<span class="token comment"># 恢复某个commit的指定文件到暂存区和工作区</span>
+<span class="token function">git</span> checkout <span class="token punctuation">[</span>commit<span class="token punctuation">]</span> <span class="token punctuation">[</span>file<span class="token punctuation">]</span>
+
+<span class="token comment"># 恢复暂存区的所有文件到工作区</span>
+<span class="token function">git</span> checkout <span class="token builtin class-name">.</span>
+
+<span class="token comment"># 重置暂存区的指定文件，与上一次commit保持一致，但工作区不变</span>
+<span class="token function">git</span> reset <span class="token punctuation">[</span>file<span class="token punctuation">]</span>
+
+<span class="token comment"># 重置暂存区与工作区，与上一次commit保持一致</span>
+<span class="token function">git</span> reset <span class="token parameter variable">--hard</span>
+
+<span class="token comment"># 重置当前分支的指针为指定commit，同时重置暂存区，但工作区不变</span>
+<span class="token function">git</span> reset <span class="token punctuation">[</span>commit<span class="token punctuation">]</span>
+
+<span class="token comment"># 重置当前分支的HEAD为指定commit，同时重置暂存区和工作区，与指定commit一致</span>
+<span class="token function">git</span> reset <span class="token parameter variable">--hard</span> <span class="token punctuation">[</span>commit<span class="token punctuation">]</span>
+
+<span class="token comment"># 重置当前HEAD为指定commit，但保持暂存区和工作区不变</span>
+<span class="token function">git</span> reset <span class="token parameter variable">--keep</span> <span class="token punctuation">[</span>commit<span class="token punctuation">]</span>
+
+<span class="token comment"># 新建一个commit，用来撤销指定commit</span>
+<span class="token comment"># 后者的所有变化都将被前者抵消，并且应用到当前分支</span>
+<span class="token function">git</span> revert <span class="token punctuation">[</span>commit<span class="token punctuation">]</span>
+
+<span class="token comment"># 恢复最后一次提交的状态</span>
+<span class="token function">git</span> revert HEAD
+
+<span class="token comment"># 暂时将未提交的变化移除，稍后再移入</span>
+<span class="token function">git</span> stash
+<span class="token function">git</span> stash pop
+
+<span class="token comment"># 列所有stash</span>
+<span class="token function">git</span> stash list
+
+<span class="token comment"># 恢复暂存的内容</span>
+<span class="token function">git</span> stash apply
+
+<span class="token comment"># 删除暂存区</span>
+<span class="token function">git</span> stash drop<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="commit"><a href="#commit" class="headerlink" title="commit"></a>commit</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 提交暂存区到仓库区附带提交信息</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token punctuation">[</span>message<span class="token punctuation">]</span>
+
+<span class="token comment"># 提交暂存区的指定文件到仓库区</span>
+<span class="token function">git</span> commit <span class="token punctuation">[</span>file1<span class="token punctuation">]</span> <span class="token punctuation">[</span>file2<span class="token punctuation">]</span> <span class="token punctuation">..</span>. <span class="token parameter variable">-m</span> <span class="token punctuation">[</span>message<span class="token punctuation">]</span>
+
+<span class="token comment"># 提交工作区自上次commit之后的变化，直接到仓库区</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-a</span>
+
+<span class="token comment"># 提交时显示所有diff信息</span>
+<span class="token function">git</span> commit <span class="token parameter variable">-v</span>
+
+<span class="token comment"># 使用一次新的commit，替代上一次提交</span>
+<span class="token comment"># 如果代码没有任何新变化，则用来改写上一次commit的提交信息</span>
+<span class="token function">git</span> commit <span class="token parameter variable">--amend</span> <span class="token parameter variable">-m</span> <span class="token punctuation">[</span>message<span class="token punctuation">]</span>
+
+<span class="token comment"># 重做上一次commit，并包括指定文件的新变化</span>
+<span class="token function">git</span> commit <span class="token parameter variable">--amend</span> <span class="token punctuation">[</span>file1<span class="token punctuation">]</span> <span class="token punctuation">[</span>file2<span class="token punctuation">]</span> <span class="token punctuation">..</span>.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h2><blockquote>
 <p>显示当前工空间和提交版本的不同</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示工作目录和索引的不同</span></span><br><span class="line">git diff</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示索引和最近一次提交的不同</span></span><br><span class="line">git diff --cached</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示工作目录和最近一次提交的不同</span></span><br><span class="line">git diff HEAD</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 显示工作目录和索引的不同</span>
+<span class="token function">git</span> <span class="token function">diff</span>
+
+<span class="token comment"># 显示索引和最近一次提交的不同</span>
+<span class="token function">git</span> <span class="token function">diff</span> <span class="token parameter variable">--cached</span>
+
+<span class="token comment"># 显示工作目录和最近一次提交的不同</span>
+<span class="token function">git</span> <span class="token function">diff</span> HEAD<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h2><blockquote>
 <p>可以在版本库中快速查找</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">可选配置：</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">感谢Travis Jeffery提供的以下用法：</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在搜索结果中显示行号</span></span><br><span class="line">git config --global grep.lineNumber true</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">是搜索结果可读性更好</span></span><br><span class="line">git config --global alias.g &quot;grep --break --heading --line-number&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在所有的java中查找variableName</span></span><br><span class="line">git grep &#x27;variableName&#x27; -- &#x27;*.java&#x27;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">搜索包含 <span class="string">&quot;arrayListName&quot;</span> 和, <span class="string">&quot;add&quot;</span> 或 <span class="string">&quot;remove&quot;</span> 的所有行</span></span><br><span class="line">git grep -e &#x27;arrayListName&#x27; --and \( -e add -e remove \)</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 可选配置：</span>
+<span class="token comment"># 感谢Travis Jeffery提供的以下用法：</span>
+<span class="token comment"># 在搜索结果中显示行号</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> grep.lineNumber <span class="token boolean">true</span>
+
+<span class="token comment"># 是搜索结果可读性更好</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> alias.g <span class="token string">"grep --break --heading --line-number"</span>
+<span class="token comment"># 在所有的java中查找variableName</span>
+<span class="token function">git</span> <span class="token function">grep</span> <span class="token string">'variableName'</span> -- <span class="token string">'*.java'</span>
+
+<span class="token comment"># 搜索包含 "arrayListName" 和, "add" 或 "remove" 的所有行</span>
+<span class="token function">git</span> <span class="token function">grep</span> <span class="token parameter variable">-e</span> <span class="token string">'arrayListName'</span> <span class="token parameter variable">--and</span> <span class="token punctuation">\</span><span class="token punctuation">(</span> <span class="token parameter variable">-e</span> <span class="token function">add</span> <span class="token parameter variable">-e</span> remove <span class="token punctuation">\</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="log"><a href="#log" class="headerlink" title="log"></a>log</h2><blockquote>
 <p>显示这个版本库的所有提交</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示所有提交</span></span><br><span class="line">git log</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示某几条提交信息</span></span><br><span class="line">git log -n 10</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">仅显示合并提交</span></span><br><span class="line">git log --merges</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看该文件每次提交记录</span></span><br><span class="line">git log &lt;file&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看每次详细修改内容的diff</span></span><br><span class="line">git log -p &lt;file&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看最近两次详细修改内容的diff</span></span><br><span class="line">git log -p -2</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看提交统计信息</span></span><br><span class="line">git log --stat</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 显示所有提交</span>
+<span class="token function">git</span> log
 
-<h2 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将其他分支合并到当前分支</span></span><br><span class="line">git merge branchName</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在合并时创建一个新的合并后的提交</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">不要 Fast-Foward 合并，这样可以生成 merge 提交</span></span><br><span class="line">git merge --no-ff branchName</span><br></pre></td></tr></table></figure>
+<span class="token comment"># 显示某几条提交信息</span>
+<span class="token function">git</span> log <span class="token parameter variable">-n</span> <span class="token number">10</span>
 
-<h2 id="mv"><a href="#mv" class="headerlink" title="mv"></a>mv</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重命名</span></span><br><span class="line">git mv test.js test2.js</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">移动</span></span><br><span class="line">git mv test.js ./new/path/test.js</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">改名文件，并且将这个改名放入暂存区</span></span><br><span class="line">git mv [file-original] [file-renamed]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">强制重命名或移动</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">这个文件已经存在，将要覆盖掉</span></span><br><span class="line">git mv -f myFile existingFile</span><br></pre></td></tr></table></figure>
+<span class="token comment"># 仅显示合并提交</span>
+<span class="token function">git</span> log <span class="token parameter variable">--merges</span>
 
-<h2 id="tag"><a href="#tag" class="headerlink" title="tag"></a>tag</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">列出所有tag</span></span><br><span class="line">git tag</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">新建一个tag在当前commit</span></span><br><span class="line">git tag [tag]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">新建一个tag在指定commit</span></span><br><span class="line">git tag [tag] [commit]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除本地tag</span></span><br><span class="line">git tag -d [tag]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除远程tag</span></span><br><span class="line">git push origin :refs/tags/[tagName]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看tag信息</span></span><br><span class="line">git show [tag]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">提交指定tag</span></span><br><span class="line">git push [remote] [tag]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">提交所有tag</span></span><br><span class="line">git push [remote] --tags</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">新建一个分支，指向某个tag</span></span><br><span class="line">git checkout -b [branch] [tag]</span><br></pre></td></tr></table></figure>
+<span class="token comment"># 查看该文件每次提交记录</span>
+<span class="token function">git</span> log <span class="token operator">&lt;</span>file<span class="token operator">></span>
+
+<span class="token comment"># 查看每次详细修改内容的diff</span>
+<span class="token function">git</span> log <span class="token parameter variable">-p</span> <span class="token operator">&lt;</span>file<span class="token operator">></span>
+
+<span class="token comment"># 查看最近两次详细修改内容的diff</span>
+<span class="token function">git</span> log <span class="token parameter variable">-p</span> <span class="token parameter variable">-2</span>
+
+<span class="token comment">#查看提交统计信息</span>
+<span class="token function">git</span> log <span class="token parameter variable">--stat</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 将其他分支合并到当前分支</span>
+<span class="token function">git</span> merge branchName
+
+<span class="token comment"># 在合并时创建一个新的合并后的提交</span>
+<span class="token comment"># 不要 Fast-Foward 合并，这样可以生成 merge 提交</span>
+<span class="token function">git</span> merge --no-ff branchName<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="mv"><a href="#mv" class="headerlink" title="mv"></a>mv</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 重命名</span>
+<span class="token function">git</span> <span class="token function">mv</span> test.js test2.js
+
+<span class="token comment"># 移动</span>
+<span class="token function">git</span> <span class="token function">mv</span> test.js ./new/path/test.js
+
+<span class="token comment"># 改名文件，并且将这个改名放入暂存区</span>
+<span class="token function">git</span> <span class="token function">mv</span> <span class="token punctuation">[</span>file-original<span class="token punctuation">]</span> <span class="token punctuation">[</span>file-renamed<span class="token punctuation">]</span>
+
+<span class="token comment"># 强制重命名或移动</span>
+<span class="token comment"># 这个文件已经存在，将要覆盖掉</span>
+<span class="token function">git</span> <span class="token function">mv</span> <span class="token parameter variable">-f</span> myFile existingFile<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="tag"><a href="#tag" class="headerlink" title="tag"></a>tag</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 列出所有tag</span>
+<span class="token function">git</span> tag
+
+<span class="token comment"># 新建一个tag在当前commit</span>
+<span class="token function">git</span> tag <span class="token punctuation">[</span>tag<span class="token punctuation">]</span>
+
+<span class="token comment"># 新建一个tag在指定commit</span>
+<span class="token function">git</span> tag <span class="token punctuation">[</span>tag<span class="token punctuation">]</span> <span class="token punctuation">[</span>commit<span class="token punctuation">]</span>
+
+<span class="token comment"># 删除本地tag</span>
+<span class="token function">git</span> tag <span class="token parameter variable">-d</span> <span class="token punctuation">[</span>tag<span class="token punctuation">]</span>
+
+<span class="token comment"># 删除远程tag</span>
+<span class="token function">git</span> push origin :refs/tags/<span class="token punctuation">[</span>tagName<span class="token punctuation">]</span>
+
+<span class="token comment"># 查看tag信息</span>
+<span class="token function">git</span> show <span class="token punctuation">[</span>tag<span class="token punctuation">]</span>
+
+<span class="token comment"># 提交指定tag</span>
+<span class="token function">git</span> push <span class="token punctuation">[</span>remote<span class="token punctuation">]</span> <span class="token punctuation">[</span>tag<span class="token punctuation">]</span>
+
+<span class="token comment"># 提交所有tag</span>
+<span class="token function">git</span> push <span class="token punctuation">[</span>remote<span class="token punctuation">]</span> <span class="token parameter variable">--tags</span>
+
+<span class="token comment"># 新建一个分支，指向某个tag</span>
+<span class="token function">git</span> checkout <span class="token parameter variable">-b</span> <span class="token punctuation">[</span>branch<span class="token punctuation">]</span> <span class="token punctuation">[</span>tag<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="pull"><a href="#pull" class="headerlink" title="pull"></a>pull</h2><blockquote>
 <p>从远端版本库合并到当前分支</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">从远端origin的master分支更新版本库</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git pull &lt;远端&gt; &lt;分支&gt;</span></span><br><span class="line">git pull origin master</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">抓取远程仓库所有分支更新并合并到本地，不要快进合并</span></span><br><span class="line">git pull --no-ff</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 从远端origin的master分支更新版本库</span>
+<span class="token comment"># git pull &lt;远端> &lt;分支></span>
+<span class="token function">git</span> pull origin master
 
-<h2 id="ci"><a href="#ci" class="headerlink" title="ci"></a>ci</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git ci &lt;file&gt;</span><br><span class="line">git ci .</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将git add, git <span class="built_in">rm</span>和git ci等操作都合并在一起做</span></span><br><span class="line">git ci -a</span><br><span class="line">git ci -am &quot;some comments&quot;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改最后一次提交记录</span></span><br><span class="line">git ci --amend</span><br></pre></td></tr></table></figure>
+<span class="token comment"># 抓取远程仓库所有分支更新并合并到本地，不要快进合并</span>
+<span class="token function">git</span> pull --no-ff<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="ci"><a href="#ci" class="headerlink" title="ci"></a>ci</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> ci <span class="token operator">&lt;</span>file<span class="token operator">></span>
+<span class="token function">git</span> ci <span class="token builtin class-name">.</span>
+<span class="token comment"># 将git add, git rm和git ci等操作都合并在一起做</span>
+<span class="token function">git</span> ci <span class="token parameter variable">-a</span>
+<span class="token function">git</span> ci <span class="token parameter variable">-am</span> <span class="token string">"some comments"</span>
+<span class="token comment"># 修改最后一次提交记录</span>
+<span class="token function">git</span> ci <span class="token parameter variable">--amend</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="rebase"><a href="#rebase" class="headerlink" title="rebase"></a>rebase</h2><blockquote>
 <p>将一个分支上所有的提交历史都应用到另一个分支上不要在一个已经公开的远端分支上使用 rebase.</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将experimentBranch应用到master上面</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">git rebase &lt;basebranch&gt; &lt;topicbranch&gt;</span></span><br><span class="line">git rebase master experimentBranch</span><br><span class="line">reset (谨慎使用)</span><br><span class="line">将当前的头指针复位到一个特定的状态。这样可以使你撤销 merge、pull、commits、add 等 这是个很强大的命令，但是在使用时一定要清楚其所产生的后果</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">使 staging 区域恢复到上次提交时的状态，不改变现在的工作目录</span></span><br><span class="line">git reset</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">使 staging 区域恢复到上次提交时的状态，覆盖现在的工作目录</span></span><br><span class="line">git reset --hard</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将当前分支恢复到某次提交，不改变现在的工作目录</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在工作目录中所有的改变仍然存在</span></span><br><span class="line">git reset dha78as</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将当前分支恢复到某次提交，覆盖现在的工作目录</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">并且删除所有未提交的改变和指定提交之后的所有提交</span></span><br><span class="line">git reset --hard dha78as</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 将experimentBranch应用到master上面</span>
+<span class="token comment"># git rebase &lt;basebranch> &lt;topicbranch></span>
+<span class="token function">git</span> rebase master experimentBranch
+reset <span class="token punctuation">(</span>谨慎使用<span class="token punctuation">)</span>
+将当前的头指针复位到一个特定的状态。这样可以使你撤销 merge、pull、commits、add 等 这是个很强大的命令，但是在使用时一定要清楚其所产生的后果
+<span class="token comment"># 使 staging 区域恢复到上次提交时的状态，不改变现在的工作目录</span>
+<span class="token function">git</span> reset
 
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">生成一个可供发布的压缩包</span></span><br><span class="line">git archive</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">打补丁</span></span><br><span class="line">git apply ../sync.patch</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">测试补丁能否成功</span></span><br><span class="line">git apply --check ../sync.patch</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看Git的版本</span></span><br><span class="line">git --version</span><br></pre></td></tr></table></figure>
+<span class="token comment"># 使 staging 区域恢复到上次提交时的状态，覆盖现在的工作目录</span>
+<span class="token function">git</span> reset <span class="token parameter variable">--hard</span>
+
+<span class="token comment"># 将当前分支恢复到某次提交，不改变现在的工作目录</span>
+<span class="token comment"># 在工作目录中所有的改变仍然存在</span>
+<span class="token function">git</span> reset dha78as
+
+<span class="token comment"># 将当前分支恢复到某次提交，覆盖现在的工作目录</span>
+<span class="token comment"># 并且删除所有未提交的改变和指定提交之后的所有提交</span>
+<span class="token function">git</span> reset <span class="token parameter variable">--hard</span> dha78as<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 生成一个可供发布的压缩包</span>
+<span class="token function">git</span> archive
+
+<span class="token comment"># 打补丁</span>
+<span class="token function">git</span> apply <span class="token punctuation">..</span>/sync.patch
+
+<span class="token comment"># 测试补丁能否成功</span>
+<span class="token function">git</span> apply <span class="token parameter variable">--check</span> <span class="token punctuation">..</span>/sync.patch
+
+<span class="token comment"># 查看Git的版本</span>
+<span class="token function">git</span> <span class="token parameter variable">--version</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
       </div>
       <div class="post-tags-categories">
@@ -693,7 +1136,7 @@
         原文地址，本篇仅做记录学习npm install 安装模块
 基础语法
 
-1234567891011npm install
+npm install (with no arg
       </div> -->
     </a>
   </div>
@@ -713,7 +1156,10 @@
       </div>
       <!-- <div class="content">
         我们可以使用 Node 来实现一个区块链，它的格式如下:
-123456789101112131415161718[  &
+[
+  &#123;
+    index: 0, // 索引
+
       </div> -->
     </a>
   </div>
@@ -959,7 +1405,7 @@
     if (document.getElementsByClassName('mermaid').length) {
       if (window.mermaidJsLoad) mermaid.init()
       else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
           window.mermaidJsLoad = true
           mermaid.initialize({
             theme: 'default',

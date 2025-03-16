@@ -44,8 +44,8 @@
             }
         }
     </style>
-    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
 
     
 
@@ -511,6 +511,21 @@
         
  <!-- prismjs 代码高亮 -->
  
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
 
 
 <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
@@ -572,17 +587,58 @@
         <p>在数据库开发中，约束和数据库设计是确保数据完整性和系统性能的关键要素。MySQL约束通过限制数据的输入和修改，保证数据的准确性和一致性；而良好的数据库设计则能够减少数据冗余、提高查询效率，为应用系统提供可靠的数据基础。</p>
 <p>本文将系统地介绍MySQL的约束类型（主键、非空、唯一、外键约束）以及数据库设计的核心概念。从基础的DQL查询开始，逐步深入到数据库设计范式和多表关系的处理，最后还包含了实用的数据库维护知识。无论你是数据库初学者，还是想要提升数据库设计能力的开发者，都能在本文中找到有价值的内容。</p>
 <p>建议读者在学习本文时，结合实际案例进行练习，特别是在理解数据库设计范式和多表关系时，动手实践是加深理解的最好方式。</p>
-<h2 id="基础查询（DQL）"><a href="#基础查询（DQL）" class="headerlink" title="基础查询（DQL）"></a>基础查询（DQL）</h2><h3 id="排序查询"><a href="#排序查询" class="headerlink" title="排序查询"></a>排序查询</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 语法：ORDER BY 子句</span></span><br><span class="line"><span class="comment">-- ORDER BY 排序字段1 排序方式1, 排序字段2 排序方式2...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 排序方式：</span></span><br><span class="line"><span class="comment">-- ASC：升序（默认）</span></span><br><span class="line"><span class="comment">-- DESC：降序</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 注意：如果有多个排序条件，则当前边的条件值一样时，才会判断第二条件</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> student <span class="keyword">ORDER</span> <span class="keyword">BY</span> math <span class="keyword">DESC</span>, english <span class="keyword">ASC</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="基础查询（DQL）"><a href="#基础查询（DQL）" class="headerlink" title="基础查询（DQL）"></a>基础查询（DQL）</h2><h3 id="排序查询"><a href="#排序查询" class="headerlink" title="排序查询"></a>排序查询</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 语法：ORDER BY 子句</span>
+<span class="token comment">-- ORDER BY 排序字段1 排序方式1, 排序字段2 排序方式2...</span>
+
+<span class="token comment">-- 排序方式：</span>
+<span class="token comment">-- ASC：升序（默认）</span>
+<span class="token comment">-- DESC：降序</span>
+
+<span class="token comment">-- 注意：如果有多个排序条件，则当前边的条件值一样时，才会判断第二条件</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> student <span class="token keyword">ORDER</span> <span class="token keyword">BY</span> math <span class="token keyword">DESC</span><span class="token punctuation">,</span> english <span class="token keyword">ASC</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h3><p>将一列数据作为一个整体，进行纵向计算。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 计算个数</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(id) <span class="keyword">FROM</span> student;  <span class="comment">-- 一般选择非空的列：主键</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>) <span class="keyword">FROM</span> student;   <span class="comment">-- 计算所有行数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 计算最大值</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">MAX</span>(math) <span class="keyword">FROM</span> student;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 计算最小值</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">MIN</span>(math) <span class="keyword">FROM</span> student;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 计算和</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">SUM</span>(math) <span class="keyword">FROM</span> student;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 计算平均值</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">AVG</span>(math) <span class="keyword">FROM</span> student;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 计算个数</span>
+<span class="token keyword">SELECT</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span> <span class="token keyword">FROM</span> student<span class="token punctuation">;</span>  <span class="token comment">-- 一般选择非空的列：主键</span>
+<span class="token keyword">SELECT</span> <span class="token function">COUNT</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> student<span class="token punctuation">;</span>   <span class="token comment">-- 计算所有行数</span>
+
+<span class="token comment">-- 计算最大值</span>
+<span class="token keyword">SELECT</span> <span class="token function">MAX</span><span class="token punctuation">(</span>math<span class="token punctuation">)</span> <span class="token keyword">FROM</span> student<span class="token punctuation">;</span>
+
+<span class="token comment">-- 计算最小值</span>
+<span class="token keyword">SELECT</span> <span class="token function">MIN</span><span class="token punctuation">(</span>math<span class="token punctuation">)</span> <span class="token keyword">FROM</span> student<span class="token punctuation">;</span>
+
+<span class="token comment">-- 计算和</span>
+<span class="token keyword">SELECT</span> <span class="token function">SUM</span><span class="token punctuation">(</span>math<span class="token punctuation">)</span> <span class="token keyword">FROM</span> student<span class="token punctuation">;</span>
+
+<span class="token comment">-- 计算平均值</span>
+<span class="token keyword">SELECT</span> <span class="token function">AVG</span><span class="token punctuation">(</span>math<span class="token punctuation">)</span> <span class="token keyword">FROM</span> student<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>注意：聚合函数的计算会排除NULL值。解决方案：</p>
 <ol>
 <li>选择不包含NULL的列进行计算</li>
 <li>使用IFNULL函数处理NULL值</li>
 </ol>
-<h3 id="分组查询"><a href="#分组查询" class="headerlink" title="分组查询"></a>分组查询</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 语法：GROUP BY 分组字段</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 按照性别分组，查询男女同学的平均分</span></span><br><span class="line"><span class="keyword">SELECT</span> sex, <span class="built_in">AVG</span>(math) <span class="keyword">FROM</span> student <span class="keyword">GROUP</span> <span class="keyword">BY</span> sex;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 按照性别分组，查询男女同学的平均分和人数</span></span><br><span class="line"><span class="keyword">SELECT</span> sex, <span class="built_in">AVG</span>(math), <span class="built_in">COUNT</span>(id) <span class="keyword">FROM</span> student <span class="keyword">GROUP</span> <span class="keyword">BY</span> sex;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 分数低于70分的不参与分组</span></span><br><span class="line"><span class="keyword">SELECT</span> sex, <span class="built_in">AVG</span>(math), <span class="built_in">COUNT</span>(id) </span><br><span class="line"><span class="keyword">FROM</span> student </span><br><span class="line"><span class="keyword">WHERE</span> math <span class="operator">&gt;</span> <span class="number">70</span> </span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> sex;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 分组后人数大于2的才显示</span></span><br><span class="line"><span class="keyword">SELECT</span> sex, <span class="built_in">AVG</span>(math), <span class="built_in">COUNT</span>(id) <span class="keyword">as</span> 人数</span><br><span class="line"><span class="keyword">FROM</span> student </span><br><span class="line"><span class="keyword">WHERE</span> math <span class="operator">&gt;</span> <span class="number">70</span> </span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> sex </span><br><span class="line"><span class="keyword">HAVING</span> 人数 <span class="operator">&gt;</span> <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="分组查询"><a href="#分组查询" class="headerlink" title="分组查询"></a>分组查询</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 语法：GROUP BY 分组字段</span>
+
+<span class="token comment">-- 按照性别分组，查询男女同学的平均分</span>
+<span class="token keyword">SELECT</span> sex<span class="token punctuation">,</span> <span class="token function">AVG</span><span class="token punctuation">(</span>math<span class="token punctuation">)</span> <span class="token keyword">FROM</span> student <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> sex<span class="token punctuation">;</span>
+
+<span class="token comment">-- 按照性别分组，查询男女同学的平均分和人数</span>
+<span class="token keyword">SELECT</span> sex<span class="token punctuation">,</span> <span class="token function">AVG</span><span class="token punctuation">(</span>math<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span> <span class="token keyword">FROM</span> student <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> sex<span class="token punctuation">;</span>
+
+<span class="token comment">-- 分数低于70分的不参与分组</span>
+<span class="token keyword">SELECT</span> sex<span class="token punctuation">,</span> <span class="token function">AVG</span><span class="token punctuation">(</span>math<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span> 
+<span class="token keyword">FROM</span> student 
+<span class="token keyword">WHERE</span> math <span class="token operator">></span> <span class="token number">70</span> 
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> sex<span class="token punctuation">;</span>
+
+<span class="token comment">-- 分组后人数大于2的才显示</span>
+<span class="token keyword">SELECT</span> sex<span class="token punctuation">,</span> <span class="token function">AVG</span><span class="token punctuation">(</span>math<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span> <span class="token keyword">as</span> 人数
+<span class="token keyword">FROM</span> student 
+<span class="token keyword">WHERE</span> math <span class="token operator">></span> <span class="token number">70</span> 
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> sex 
+<span class="token keyword">HAVING</span> 人数 <span class="token operator">></span> <span class="token number">2</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>注意：</p>
 <ol>
@@ -594,7 +650,13 @@
 </ul>
 </li>
 </ol>
-<h3 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 语法：LIMIT 开始的索引,每页查询的条数</span></span><br><span class="line"><span class="comment">-- 公式：开始的索引 = (当前页码 - 1) * 每页显示的条数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 每页显示3条记录</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> student LIMIT <span class="number">0</span>,<span class="number">3</span>;  <span class="comment">-- 第1页</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> student LIMIT <span class="number">3</span>,<span class="number">3</span>;  <span class="comment">-- 第2页</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> student LIMIT <span class="number">6</span>,<span class="number">3</span>;  <span class="comment">-- 第3页</span></span><br></pre></td></tr></table></figure>
+<h3 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 语法：LIMIT 开始的索引,每页查询的条数</span>
+<span class="token comment">-- 公式：开始的索引 = (当前页码 - 1) * 每页显示的条数</span>
+
+<span class="token comment">-- 每页显示3条记录</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> student <span class="token keyword">LIMIT</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">;</span>  <span class="token comment">-- 第1页</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> student <span class="token keyword">LIMIT</span> <span class="token number">3</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">;</span>  <span class="token comment">-- 第2页</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> student <span class="token keyword">LIMIT</span> <span class="token number">6</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">;</span>  <span class="token comment">-- 第3页</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>注意：LIMIT是MySQL的特有语法。</p>
 <h2 id="约束（Constraints）"><a href="#约束（Constraints）" class="headerlink" title="约束（Constraints）"></a>约束（Constraints）</h2><p>约束是对表中的数据进行限定，保证数据的正确性、有效性和完整性。</p>
@@ -604,12 +666,54 @@
 <li>唯一约束：UNIQUE</li>
 <li>外键约束：FOREIGN KEY</li>
 </ol>
-<h3 id="非空约束（NOT-NULL）"><a href="#非空约束（NOT-NULL）" class="headerlink" title="非空约束（NOT NULL）"></a>非空约束（NOT NULL）</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建表时添加非空约束</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> stu(</span><br><span class="line">    id <span class="type">INT</span>,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>  <span class="comment">-- name不能为空</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建表后添加非空约束</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu MODIFY name <span class="type">VARCHAR</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除非空约束</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu MODIFY name <span class="type">VARCHAR</span>(<span class="number">20</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="非空约束（NOT-NULL）"><a href="#非空约束（NOT-NULL）" class="headerlink" title="非空约束（NOT NULL）"></a>非空约束（NOT NULL）</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 创建表时添加非空约束</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> stu<span class="token punctuation">(</span>
+    id <span class="token keyword">INT</span><span class="token punctuation">,</span>
+    name <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>  <span class="token comment">-- name不能为空</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<h3 id="唯一约束（UNIQUE）"><a href="#唯一约束（UNIQUE）" class="headerlink" title="唯一约束（UNIQUE）"></a>唯一约束（UNIQUE）</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建表时添加唯一约束</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> stu(</span><br><span class="line">    id <span class="type">INT</span>,</span><br><span class="line">    phone_number <span class="type">VARCHAR</span>(<span class="number">20</span>) <span class="keyword">UNIQUE</span>  <span class="comment">-- 手机号不能重复</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建表后添加唯一约束</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu MODIFY phone_number <span class="type">VARCHAR</span>(<span class="number">20</span>) <span class="keyword">UNIQUE</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除唯一约束</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu <span class="keyword">DROP</span> INDEX phone_number;</span><br></pre></td></tr></table></figure>
+<span class="token comment">-- 创建表后添加非空约束</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> stu <span class="token keyword">MODIFY</span> name <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 删除非空约束</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> stu <span class="token keyword">MODIFY</span> name <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="唯一约束（UNIQUE）"><a href="#唯一约束（UNIQUE）" class="headerlink" title="唯一约束（UNIQUE）"></a>唯一约束（UNIQUE）</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 创建表时添加唯一约束</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> stu<span class="token punctuation">(</span>
+    id <span class="token keyword">INT</span><span class="token punctuation">,</span>
+    phone_number <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span> <span class="token keyword">UNIQUE</span>  <span class="token comment">-- 手机号不能重复</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 创建表后添加唯一约束</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> stu <span class="token keyword">MODIFY</span> phone_number <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span> <span class="token keyword">UNIQUE</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 删除唯一约束</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> stu <span class="token keyword">DROP</span> <span class="token keyword">INDEX</span> phone_number<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>注意：唯一约束可以有NULL值，但只能有一条记录为NULL。</p>
-<h3 id="主键约束（PRIMARY-KEY）"><a href="#主键约束（PRIMARY-KEY）" class="headerlink" title="主键约束（PRIMARY KEY）"></a>主键约束（PRIMARY KEY）</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建表时添加主键约束</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> stu(</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY,  <span class="comment">-- 给id添加主键约束</span></span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">20</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建表后添加主键约束</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu MODIFY id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除主键约束</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu <span class="keyword">DROP</span> <span class="keyword">PRIMARY</span> KEY;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 自动增长</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> stu(</span><br><span class="line">    id <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,  <span class="comment">-- 主键自增</span></span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">20</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除自动增长</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu MODIFY id <span class="type">INT</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 添加自动增长</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> stu MODIFY id <span class="type">INT</span> AUTO_INCREMENT;</span><br></pre></td></tr></table></figure>
+<h3 id="主键约束（PRIMARY-KEY）"><a href="#主键约束（PRIMARY-KEY）" class="headerlink" title="主键约束（PRIMARY KEY）"></a>主键约束（PRIMARY KEY）</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 创建表时添加主键约束</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> stu<span class="token punctuation">(</span>
+    id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>  <span class="token comment">-- 给id添加主键约束</span>
+    name <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 创建表后添加主键约束</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> stu <span class="token keyword">MODIFY</span> id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 删除主键约束</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> stu <span class="token keyword">DROP</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 自动增长</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> stu<span class="token punctuation">(</span>
+    id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token keyword">AUTO_INCREMENT</span><span class="token punctuation">,</span>  <span class="token comment">-- 主键自增</span>
+    name <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 删除自动增长</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> stu <span class="token keyword">MODIFY</span> id <span class="token keyword">INT</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 添加自动增长</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> stu <span class="token keyword">MODIFY</span> id <span class="token keyword">INT</span> <span class="token keyword">AUTO_INCREMENT</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>注意：</p>
 <ol>
@@ -617,7 +721,28 @@
 <li>一张表只能有一个字段为主键</li>
 <li>主键就是表中记录的唯一标识</li>
 </ol>
-<h3 id="外键约束（FOREIGN-KEY）"><a href="#外键约束（FOREIGN-KEY）" class="headerlink" title="外键约束（FOREIGN KEY）"></a>外键约束（FOREIGN KEY）</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建表时添加外键</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> 表名(</span><br><span class="line">    ...</span><br><span class="line">    外键列</span><br><span class="line">    <span class="keyword">CONSTRAINT</span> 外键名称 <span class="keyword">FOREIGN</span> KEY (外键列名称) <span class="keyword">REFERENCES</span> 主表名称(主表列名称)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建表后添加外键</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> 表名 </span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span> 外键名称 </span><br><span class="line"><span class="keyword">FOREIGN</span> KEY (外键字段名称) <span class="keyword">REFERENCES</span> 主表名称(主表列名称);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除外键</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> 表名 <span class="keyword">DROP</span> <span class="keyword">FOREIGN</span> KEY 外键名称;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 添加级联操作</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> 表名 </span><br><span class="line"><span class="keyword">ADD</span> <span class="keyword">CONSTRAINT</span> 外键名称 </span><br><span class="line"><span class="keyword">FOREIGN</span> KEY (外键字段名称) </span><br><span class="line"><span class="keyword">REFERENCES</span> 主表名称(主表列名称) </span><br><span class="line"><span class="keyword">ON</span> <span class="keyword">UPDATE</span> CASCADE </span><br><span class="line"><span class="keyword">ON</span> <span class="keyword">DELETE</span> CASCADE;</span><br></pre></td></tr></table></figure>
+<h3 id="外键约束（FOREIGN-KEY）"><a href="#外键约束（FOREIGN-KEY）" class="headerlink" title="外键约束（FOREIGN KEY）"></a>外键约束（FOREIGN KEY）</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 创建表时添加外键</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> 表名<span class="token punctuation">(</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    外键列
+    <span class="token keyword">CONSTRAINT</span> 外键名称 <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>外键列名称<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> 主表名称<span class="token punctuation">(</span>主表列名称<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 创建表后添加外键</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> 表名 
+<span class="token keyword">ADD</span> <span class="token keyword">CONSTRAINT</span> 外键名称 
+<span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>外键字段名称<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> 主表名称<span class="token punctuation">(</span>主表列名称<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 删除外键</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> 表名 <span class="token keyword">DROP</span> <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> 外键名称<span class="token punctuation">;</span>
+
+<span class="token comment">-- 添加级联操作</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> 表名 
+<span class="token keyword">ADD</span> <span class="token keyword">CONSTRAINT</span> 外键名称 
+<span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>外键字段名称<span class="token punctuation">)</span> 
+<span class="token keyword">REFERENCES</span> 主表名称<span class="token punctuation">(</span>主表列名称<span class="token punctuation">)</span> 
+<span class="token keyword">ON</span> <span class="token keyword">UPDATE</span> <span class="token keyword">CASCADE</span> 
+<span class="token keyword">ON</span> <span class="token keyword">DELETE</span> <span class="token keyword">CASCADE</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>级联操作类型：</p>
 <ol>
@@ -636,7 +761,43 @@
 <li>示例：学生和课程</li>
 <li>实现：需要借助中间表，中间表至少包含两个外键，分别指向两张表的主键</li>
 </ul>
-<h3 id="实际案例"><a href="#实际案例" class="headerlink" title="实际案例"></a>实际案例</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 旅游线路分类表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> tab_category (</span><br><span class="line">    cid <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,</span><br><span class="line">    cname <span class="type">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">UNIQUE</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 旅游线路表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> tab_route(</span><br><span class="line">    rid <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,</span><br><span class="line">    rname <span class="type">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">UNIQUE</span>,</span><br><span class="line">    price <span class="keyword">DOUBLE</span>,</span><br><span class="line">    rdate <span class="type">DATE</span>,</span><br><span class="line">    cid <span class="type">INT</span>,</span><br><span class="line">    <span class="keyword">FOREIGN</span> KEY (cid) <span class="keyword">REFERENCES</span> tab_category(cid)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 用户表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> tab_user (</span><br><span class="line">    uid <span class="type">INT</span> <span class="keyword">PRIMARY</span> KEY AUTO_INCREMENT,</span><br><span class="line">    username <span class="type">VARCHAR</span>(<span class="number">100</span>) <span class="keyword">UNIQUE</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    password <span class="type">VARCHAR</span>(<span class="number">30</span>) <span class="keyword">NOT</span> <span class="keyword">NULL</span>,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">100</span>),</span><br><span class="line">    birthday <span class="type">DATE</span>,</span><br><span class="line">    sex <span class="type">CHAR</span>(<span class="number">1</span>) <span class="keyword">DEFAULT</span> <span class="string">&#x27;男&#x27;</span>,</span><br><span class="line">    telephone <span class="type">VARCHAR</span>(<span class="number">11</span>),</span><br><span class="line">    email <span class="type">VARCHAR</span>(<span class="number">100</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 收藏表（多对多关系）</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> tab_favorite (</span><br><span class="line">    rid <span class="type">INT</span>,           <span class="comment">-- 线路id</span></span><br><span class="line">    <span class="type">date</span> DATETIME,     <span class="comment">-- 收藏时间</span></span><br><span class="line">    uid <span class="type">INT</span>,           <span class="comment">-- 用户id</span></span><br><span class="line">    <span class="keyword">PRIMARY</span> KEY(rid,uid),  <span class="comment">-- 联合主键</span></span><br><span class="line">    <span class="keyword">FOREIGN</span> KEY (rid) <span class="keyword">REFERENCES</span> tab_route(rid),</span><br><span class="line">    <span class="keyword">FOREIGN</span> KEY(uid) <span class="keyword">REFERENCES</span> tab_user(uid)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h3 id="实际案例"><a href="#实际案例" class="headerlink" title="实际案例"></a>实际案例</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 旅游线路分类表</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> tab_category <span class="token punctuation">(</span>
+    cid <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token keyword">AUTO_INCREMENT</span><span class="token punctuation">,</span>
+    cname <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">UNIQUE</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 旅游线路表</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> tab_route<span class="token punctuation">(</span>
+    rid <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token keyword">AUTO_INCREMENT</span><span class="token punctuation">,</span>
+    rname <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">UNIQUE</span><span class="token punctuation">,</span>
+    price <span class="token keyword">DOUBLE</span><span class="token punctuation">,</span>
+    rdate <span class="token keyword">DATE</span><span class="token punctuation">,</span>
+    cid <span class="token keyword">INT</span><span class="token punctuation">,</span>
+    <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>cid<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> tab_category<span class="token punctuation">(</span>cid<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 用户表</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> tab_user <span class="token punctuation">(</span>
+    uid <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token keyword">AUTO_INCREMENT</span><span class="token punctuation">,</span>
+    username <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token keyword">UNIQUE</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    password <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    name <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    birthday <span class="token keyword">DATE</span><span class="token punctuation">,</span>
+    sex <span class="token keyword">CHAR</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token string">'男'</span><span class="token punctuation">,</span>
+    telephone <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    email <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 收藏表（多对多关系）</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> tab_favorite <span class="token punctuation">(</span>
+    rid <span class="token keyword">INT</span><span class="token punctuation">,</span>           <span class="token comment">-- 线路id</span>
+    <span class="token keyword">date</span> <span class="token keyword">DATETIME</span><span class="token punctuation">,</span>     <span class="token comment">-- 收藏时间</span>
+    uid <span class="token keyword">INT</span><span class="token punctuation">,</span>           <span class="token comment">-- 用户id</span>
+    <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">(</span>rid<span class="token punctuation">,</span>uid<span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token comment">-- 联合主键</span>
+    <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>rid<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> tab_route<span class="token punctuation">(</span>rid<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span><span class="token punctuation">(</span>uid<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> tab_user<span class="token punctuation">(</span>uid<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="数据库设计范式"><a href="#数据库设计范式" class="headerlink" title="数据库设计范式"></a>数据库设计范式</h3><h4 id="第一范式（1NF）"><a href="#第一范式（1NF）" class="headerlink" title="第一范式（1NF）"></a>第一范式（1NF）</h4><p>要求属性具有原子性，不可再分解。</p>
 <p>示例：</p>
@@ -665,9 +826,31 @@
 </ul>
 </li>
 </ul>
-<h2 id="数据库维护"><a href="#数据库维护" class="headerlink" title="数据库维护"></a>数据库维护</h2><h3 id="数据库备份与还原"><a href="#数据库备份与还原" class="headerlink" title="数据库备份与还原"></a>数据库备份与还原</h3><h4 id="命令行方式"><a href="#命令行方式" class="headerlink" title="命令行方式"></a>命令行方式</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 备份</span></span><br><span class="line">mysqldump -u用户名 -p密码 数据库名称 &gt; 保存的路径</span><br><span class="line"></span><br><span class="line"><span class="comment"># 还原</span></span><br><span class="line"><span class="comment"># 1. 登录数据库</span></span><br><span class="line"><span class="comment"># 2. 创建数据库</span></span><br><span class="line"><span class="comment"># 3. 使用数据库</span></span><br><span class="line"><span class="comment"># 4. 执行文件</span></span><br><span class="line"><span class="built_in">source</span> 文件路径</span><br></pre></td></tr></table></figure>
+<h2 id="数据库维护"><a href="#数据库维护" class="headerlink" title="数据库维护"></a>数据库维护</h2><h3 id="数据库备份与还原"><a href="#数据库备份与还原" class="headerlink" title="数据库备份与还原"></a>数据库备份与还原</h3><h4 id="命令行方式"><a href="#命令行方式" class="headerlink" title="命令行方式"></a>命令行方式</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 备份</span>
+mysqldump -u用户名 -p密码 数据库名称 <span class="token operator">></span> 保存的路径
 
-<h4 id="Docker容器方式"><a href="#Docker容器方式" class="headerlink" title="Docker容器方式"></a>Docker容器方式</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从Docker容器中备份数据库</span></span><br><span class="line">docker <span class="built_in">exec</span> mysql容器名称 mysqldump -u用户名 -p密码 数据库名称 &gt; 宿主机保存路径</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：备份test数据库</span></span><br><span class="line">docker <span class="built_in">exec</span> mysql8 mysqldump -uroot -ppassword <span class="built_in">test</span> &gt; /home/backup/test.sql</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将备份文件还原到Docker容器中的MySQL</span></span><br><span class="line"><span class="comment"># 1. 将备份文件复制到容器内</span></span><br><span class="line">docker <span class="built_in">cp</span> 备份文件路径 mysql容器名称:/tmp/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 在容器中执行还原命令</span></span><br><span class="line">docker <span class="built_in">exec</span> -i mysql容器名称 mysql -u用户名 -p密码 数据库名称 &lt; 备份文件路径</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例：还原test数据库</span></span><br><span class="line">docker <span class="built_in">exec</span> -i mysql8 mysql -uroot -ppassword <span class="built_in">test</span> &lt; /home/backup/test.sql</span><br></pre></td></tr></table></figure>
+<span class="token comment"># 还原</span>
+<span class="token comment"># 1. 登录数据库</span>
+<span class="token comment"># 2. 创建数据库</span>
+<span class="token comment"># 3. 使用数据库</span>
+<span class="token comment"># 4. 执行文件</span>
+<span class="token builtin class-name">source</span> 文件路径<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="Docker容器方式"><a href="#Docker容器方式" class="headerlink" title="Docker容器方式"></a>Docker容器方式</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 从Docker容器中备份数据库</span>
+<span class="token function">docker</span> <span class="token builtin class-name">exec</span> mysql容器名称 mysqldump -u用户名 -p密码 数据库名称 <span class="token operator">></span> 宿主机保存路径
+
+<span class="token comment"># 示例：备份test数据库</span>
+<span class="token function">docker</span> <span class="token builtin class-name">exec</span> mysql8 mysqldump <span class="token parameter variable">-uroot</span> <span class="token parameter variable">-ppassword</span> <span class="token builtin class-name">test</span> <span class="token operator">></span> /home/backup/test.sql
+
+<span class="token comment"># 将备份文件还原到Docker容器中的MySQL</span>
+<span class="token comment"># 1. 将备份文件复制到容器内</span>
+<span class="token function">docker</span> <span class="token function">cp</span> 备份文件路径 mysql容器名称:/tmp/
+
+<span class="token comment"># 2. 在容器中执行还原命令</span>
+<span class="token function">docker</span> <span class="token builtin class-name">exec</span> <span class="token parameter variable">-i</span> mysql容器名称 mysql -u用户名 -p密码 数据库名称 <span class="token operator">&lt;</span> 备份文件路径
+
+<span class="token comment"># 示例：还原test数据库</span>
+<span class="token function">docker</span> <span class="token builtin class-name">exec</span> <span class="token parameter variable">-i</span> mysql8 mysql <span class="token parameter variable">-uroot</span> <span class="token parameter variable">-ppassword</span> <span class="token builtin class-name">test</span> <span class="token operator">&lt;</span> /home/backup/test.sql<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>注意事项：</p>
 <ol>
@@ -993,7 +1176,7 @@
     if (document.getElementsByClassName('mermaid').length) {
       if (window.mermaidJsLoad) mermaid.init()
       else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
           window.mermaidJsLoad = true
           mermaid.initialize({
             theme: 'default',

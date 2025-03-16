@@ -44,8 +44,8 @@
             }
         }
     </style>
-    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
 
     
 
@@ -511,6 +511,21 @@
         
  <!-- prismjs 代码高亮 -->
  
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
 
 
 <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
@@ -577,20 +592,38 @@
 <h2 id="Script-元素"><a href="#Script-元素" class="headerlink" title="Script 元素"></a>Script 元素</h2><h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><ol>
 <li>如果 DOM 树解析到外联**<script>**时会阻塞住，在它加载并且执行完之前，不会往下解析 DOM 树。</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// test2.js</span><br><span class="line">const num = 100000 * 50000;</span><br><span class="line">for (let i = 0; i &lt; num ;i++) &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; test2.js
+const num &#x3D; 100000 * 50000;
+for (let i &#x3D; 0; i &lt; num ;i++) &#123;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;./test2.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;div&gt;我会在外部js脚本加载完成后执行&lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">&lt;script src&#x3D;&quot;.&#x2F;test2.js&quot;&gt;&lt;&#x2F;script&gt;
+&lt;body&gt;
+    &lt;div&gt;我会在外部js脚本加载完成后执行&lt;&#x2F;div&gt;
+&lt;&#x2F;body&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ol start="2">
 <li>给外部脚本添加上<strong>defer</strong>，则会延迟脚本执行。</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;./test2.js&quot; defer&gt;&lt;/script&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;div&gt;我会在外部js脚本加载前执行&lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">&lt;script src&#x3D;&quot;.&#x2F;test2.js&quot; defer&gt;&lt;&#x2F;script&gt;
+&lt;body&gt;
+    &lt;div&gt;我会在外部js脚本加载前执行&lt;&#x2F;div&gt;
+&lt;&#x2F;body&gt;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ol start="3">
 <li>js 引擎执行完毕。控制权交还给渲染引擎，恢复解析 DOM。</li>
 <li>内联 script 中的 js 代码阻塞页面的渲染。</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;div&gt;我会在内联script执行完后再渲染&lt;/div&gt;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">        const num = 100000 * 50000;</span><br><span class="line">        for (let i = 0; i &lt; num ;i++) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;/script&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">&lt;body&gt;
+    &lt;div&gt;我会在内联script执行完后再渲染&lt;&#x2F;div&gt;
+    &lt;script&gt;
+        const num &#x3D; 100000 * 50000;
+        for (let i &#x3D; 0; i &lt; num ;i++) &#123;
+        &#125;
+    &lt;&#x2F;script&gt;
+&lt;&#x2F;body&gt;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="如何减少重排和重绘"><a href="#如何减少重排和重绘" class="headerlink" title="如何减少重排和重绘"></a>如何减少重排和重绘</h3><blockquote>
 <p>首先要了解的是什么是重排或者叫回流，什么是重绘；</p>
@@ -603,23 +636,57 @@
 <li>读写分离<br>以下的代码会造成 4 次重排和 4 次重绘，因为在 console 中你请求的这几个样式信息，无论何时浏览器都会立即执行渲染队列的任务，即使该值与你操作中修改的值没关联。</li>
 </ol>
 <p><strong>因为队列中，可能会有影响到这些值的操作，为了给我们最精确的值，浏览器会立即重排+重绘</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">div.style.left = &#x27;10px&#x27;;</span><br><span class="line">console.log(div.offsetLeft);</span><br><span class="line">div.style.top = &#x27;10px&#x27;;</span><br><span class="line">console.log(div.offsetTop);</span><br><span class="line">div.style.width = &#x27;20px&#x27;;</span><br><span class="line">console.log(div.offsetWidth);</span><br><span class="line">div.style.height = &#x27;20px&#x27;;</span><br><span class="line">console.log(div.offsetHeight);</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">div.style.left &#x3D; &#39;10px&#39;;
+console.log(div.offsetLeft);
+div.style.top &#x3D; &#39;10px&#39;;
+console.log(div.offsetTop);
+div.style.width &#x3D; &#39;20px&#39;;
+console.log(div.offsetWidth);
+div.style.height &#x3D; &#39;20px&#39;;
+console.log(div.offsetHeight);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>将代码改成如下，则只会造成一次重排。因为在第一个 console 的时候，浏览器把之前上面四个写操作的渲染队列都给清空了。剩下的 console，因为渲染队列本来就是空的，所以并没有触发重排，仅仅拿值而已。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">div.style.left = &#x27;10px&#x27;;</span><br><span class="line">div.style.top = &#x27;10px&#x27;;</span><br><span class="line">div.style.width = &#x27;20px&#x27;;</span><br><span class="line">div.style.height = &#x27;20px&#x27;;</span><br><span class="line">console.log(div.offsetLeft);</span><br><span class="line">console.log(div.offsetTop);</span><br><span class="line">console.log(div.offsetWidth);</span><br><span class="line">console.log(div.offsetHeight);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">div.style.left &#x3D; &#39;10px&#39;;
+div.style.top &#x3D; &#39;10px&#39;;
+div.style.width &#x3D; &#39;20px&#39;;
+div.style.height &#x3D; &#39;20px&#39;;
+console.log(div.offsetLeft);
+console.log(div.offsetTop);
+console.log(div.offsetWidth);
+console.log(div.offsetHeight);
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ol start="2">
 <li>样式集中改变</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">div.style.left = &#x27;10px&#x27;;</span><br><span class="line">div.style.top = &#x27;10px&#x27;;</span><br><span class="line">div.style.width = &#x27;20px&#x27;;</span><br><span class="line">div.style.height = &#x27;20px&#x27;;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">div.style.left &#x3D; &#39;10px&#39;;
+div.style.top &#x3D; &#39;10px&#39;;
+div.style.width &#x3D; &#39;20px&#39;;
+div.style.height &#x3D; &#39;20px&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>虽然现在大部分浏览器有渲染队列优化，不排除有些浏览器以及老版本的浏览器效率仍然低下：<br>建议通过改变 class 或者 csstext 属性集中改变样式</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// bad</span><br><span class="line">var left = 10;</span><br><span class="line">var top = 10;</span><br><span class="line">el.style.left = left + &quot;px&quot;;</span><br><span class="line">el.style.top  = top  + &quot;px&quot;;</span><br><span class="line">// good</span><br><span class="line">el.className += &quot; theclassname&quot;;</span><br><span class="line">// good</span><br><span class="line">el.style.cssText += &quot;; left: &quot; + left + &quot;px; top: &quot; + top + &quot;px;&quot;;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; bad
+var left &#x3D; 10;
+var top &#x3D; 10;
+el.style.left &#x3D; left + &quot;px&quot;;
+el.style.top  &#x3D; top  + &quot;px&quot;;
+&#x2F;&#x2F; good
+el.className +&#x3D; &quot; theclassname&quot;;
+&#x2F;&#x2F; good
+el.style.cssText +&#x3D; &quot;; left: &quot; + left + &quot;px; top: &quot; + top + &quot;px;&quot;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ol start="3">
 <li>缓存布局信息</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// bad 强制刷新 触发两次重排</span><br><span class="line">div.style.left = div.offsetLeft + 1 + &#x27;px&#x27;;</span><br><span class="line">div.style.top = div.offsetTop + 1 + &#x27;px&#x27;;</span><br><span class="line"></span><br><span class="line">// good 缓存布局信息 相当于读写分离</span><br><span class="line">var curLeft = div.offsetLeft;</span><br><span class="line">var curTop = div.offsetTop;</span><br><span class="line">div.style.left = curLeft + 1 + &#x27;px&#x27;;</span><br><span class="line">div.style.top = curTop + 1 + &#x27;px&#x27;;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; bad 强制刷新 触发两次重排
+div.style.left &#x3D; div.offsetLeft + 1 + &#39;px&#39;;
+div.style.top &#x3D; div.offsetTop + 1 + &#39;px&#39;;
+
+&#x2F;&#x2F; good 缓存布局信息 相当于读写分离
+var curLeft &#x3D; div.offsetLeft;
+var curTop &#x3D; div.offsetTop;
+div.style.left &#x3D; curLeft + 1 + &#39;px&#39;;
+div.style.top &#x3D; curTop + 1 + &#39;px&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ol start="4">
 <li><p>离线改变 dom</p>
@@ -639,7 +706,15 @@
 </ol>
 <p>可以把动画效果应用到 position 属性为 absolute 或 fixed 的元素上，这样对其他元素影响较小<br>动画效果还应牺牲一些平滑，来换取速度，这中间的度自己衡量：<br>比如实现一个动画，以 1 个像素为单位移动这样最平滑，但是 reflow 就会过于频繁，大量消耗 CPU 资源，如果以 3 个像素为单位移动则会好很多。</p>
 <p>启用 GPPU 加速<br>此部分来自优化 CSS 重排重绘与浏览器性能<br>GPU(图像加速器)：<br>GPU 硬件加速是指应用 GPU 的图形性能对浏览器中的一些图形操作交给 GPU 来完成，因为 GPU 是专门为处理图形而设计，所以它在速度和能耗上更有效率。<br>GPU 加速通常包括以下几个部分：Canvas2D，布局合成, CSS3 转换（transitions），CSS3 3D 变换（transforms），WebGL 和视频(video)。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * 根据上面的结论</span><br><span class="line"> * 将 2d transform 换成 3d</span><br><span class="line"> * 就可以强制开启 GPU 加速</span><br><span class="line"> * 提高动画性能</span><br><span class="line"> */</span><br><span class="line">div &#123;</span><br><span class="line">  transform: translate3d(10px, 10px, 0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;*
+ * 根据上面的结论
+ * 将 2d transform 换成 3d
+ * 就可以强制开启 GPU 加速
+ * 提高动画性能
+ *&#x2F;
+div &#123;
+  transform: translate3d(10px, 10px, 0);
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h3><p>V8 中，将堆内存分为<strong>新生代（副垃圾回收器）</strong>，<strong>老生代（主垃圾回收器）</strong>。<strong>新生代</strong>组要存储一些存活时间短的对象，<strong>老生代</strong>存储存活时间长的对象。</p>
 <h4 id="工作机制"><a href="#工作机制" class="headerlink" title="工作机制"></a>工作机制</h4><ol>
@@ -981,7 +1056,7 @@ TODO: 步
     if (document.getElementsByClassName('mermaid').length) {
       if (window.mermaidJsLoad) mermaid.init()
       else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
           window.mermaidJsLoad = true
           mermaid.initialize({
             theme: 'default',

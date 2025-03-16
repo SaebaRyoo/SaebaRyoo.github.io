@@ -44,8 +44,8 @@
             }
         }
     </style>
-    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
 
     
 
@@ -511,6 +511,21 @@
         
  <!-- prismjs 代码高亮 -->
  
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
 
 
 <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
@@ -572,20 +587,28 @@
         <p>在一个项目中,随着时间的推移，一些依赖库可能只能工作于当时安装时所采用的 node 版本。这时再使用新版本 node 时就无法保证项目在一个稳定的环境中运行，甚至是无法运行。为了稳定，通常我们需要在开始时就选定一个兼容性强的 node LTS 版本，并且在项目中锁定版本。</p>
 <h3 id="nvmrc"><a href="#nvmrc" class="headerlink" title=".nvmrc"></a>.nvmrc</h3><p>如果项目中使用了 nvm 来进行版本控制，需要在根目录创建一个<code>[.nvmrc](https://github.com/nvm-sh/nvm#nvmrc)</code>文件来指定 node 版本，内容如下：</p>
 <p>.nvmrc</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v14.19.1</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">v14.19.1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h3 id="package-json"><a href="#package-json" class="headerlink" title="package.json"></a>package.json</h3><p>我们可以通过在<code>package.json</code>中设置<code>engines</code>属性来指定版本范围。<a target="_blank" rel="noopener" href="https://docs.npmjs.com/cli/v9/configuring-npm/package-json">npm-package 文档</a></p>
 <p>指定 node 版本的范围</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;engines&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;node&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&gt;=14.19.1 &lt;=17.9.0&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"engines"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"node"</span><span class="token operator">:</span> <span class="token string">">=14.19.1 &lt;=17.9.0"</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>固定为指定版本</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;engines&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;node&quot;</span><span class="punctuation">:</span> <span class="string">&quot;~14.19.1&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"engines"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"node"</span><span class="token operator">:</span> <span class="token string">"~14.19.1"</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="npmrc"><a href="#npmrc" class="headerlink" title=".npmrc"></a>.npmrc</h3><p>前面我们说了在 package.json 中指定<code>engines</code>属性来限制 node 版本，这个在<code>yarn</code>和<code>pnpm</code>中时有效的。<br>在配置了 engines 后,再使用 nvm 将 node 版本变为 v12.8.3 之后再使用<code>yarn</code>来安装依赖，就会报错<br><a target="_blank" rel="noopener" href="https://postimg.cc/3yqYdf3B"><img src="https://i.postimg.cc/RFSFp28j/image.png" class="lazyload placeholder" data-srcset="https://i.postimg.cc/RFSFp28j/image.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image.png"></a></p>
 <p><code>pnpm i</code>也是相似的报错</p>
 <p>但是使用<code>npm i</code>并不会按照<code>engines</code>的属性来报错，这是因为在 npm 中设置了<a target="_blank" rel="noopener" href="https://docs.npmjs.com/cli/v7/using-npm/config#engine-strict">engine-strict</a>默认为 false。因此，我们需要创建<code>.npmrc</code>来显式的定义为 true，如下</p>
 <p>.npmrc</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">engine-strict=true</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">engine-strict&#x3D;true<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这样当 node 未满足版本要求时，就无法运行<code>npm install</code>了</p>
 
@@ -913,7 +936,7 @@
     if (document.getElementsByClassName('mermaid').length) {
       if (window.mermaidJsLoad) mermaid.init()
       else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
           window.mermaidJsLoad = true
           mermaid.initialize({
             theme: 'default',

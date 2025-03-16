@@ -44,8 +44,8 @@
             }
         }
     </style>
-    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
 
     
 
@@ -511,6 +511,21 @@
         
  <!-- prismjs 代码高亮 -->
  
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
 
 
 <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
@@ -579,19 +594,19 @@
 <ol>
 <li>在所有需要进行 cookie 共享的页面中设置：</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">document.domain = &quot;example.com&quot;;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">document.domain &#x3D; &quot;example.com&quot;;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这样就使得所有子域名和主域名的  <code>document.domain</code>  都相同，从而实现了跨域共享 cookie。</p>
 <ol start="2">
 <li>在任意一个子域名中创建一个 cookie，例如：</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">document.cookie = &quot;mycookie=myvalue; domain=example.com; expires=Fri, 31 Jul 2022 23:59:59 GMT; path=/&quot;;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">document.cookie &#x3D; &quot;mycookie&#x3D;myvalue; domain&#x3D;example.com; expires&#x3D;Fri, 31 Jul 2022 23:59:59 GMT; path&#x3D;&#x2F;&quot;;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>在上面的代码中，使用了  <code>domain</code>  参数来指定 cookie 的父域名为  <code>example.com</code>。</p>
 <ol start="3">
 <li>在其他子域名的页面中可以读取这个 cookie，并进行相关操作，例如：</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(document.cookie); // 输出：&quot;mycookie=myvalue&quot;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">console.log(document.cookie); &#x2F;&#x2F; 输出：&quot;mycookie&#x3D;myvalue&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>需要注意的是，通过设置  <code>document.domain</code>  属性来实现 cookie 共享需要满足以下条件：</p>
 <ul>
@@ -602,10 +617,10 @@
 <p>如果不满足以上条件的话，将无法完成 cookie 共享。</p>
 <h3 id="子域名是否可以访问主域名的-cookie？"><a href="#子域名是否可以访问主域名的-cookie？" class="headerlink" title="子域名是否可以访问主域名的 cookie？"></a>子域名是否可以访问主域名的 cookie？</h3><p>子域名可以访问父域名下的 cookie，因为在同一个主域名下，子域名和父域名共享同一个 cookie 存储机制。也就是说，当在  <code>example.com</code>  域名下创建一个 cookie 时，其子域名  <code>www.example.com</code>  和  <code>api.example.com</code>  也能够通过 JavaScript 对其进行读取或修改，只要这些子域名没有设置自己的 cookie。</p>
 <p>这是因为在同一个主域名下，所有的子域名都属于同一个域，浏览器会默认将 cookie 的域名设置为主域名，未指定的子域名会自动与主域名进行共享。例如，在主域名  <code>example.com</code>  中设置了一个名为  <code>mycookie</code>  的 cookie：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">document.cookie = &quot;mycookie=test; domain=example.com&quot;;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">document.cookie &#x3D; &quot;mycookie&#x3D;test; domain&#x3D;example.com&quot;;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>那么在  <code>www.example.com</code>  和  <code>api.example.com</code>  下直接访问时，都可以通过 JavaScript 读取到该 cookie：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(document.cookie);  // 输出：&quot;mycookie=test&quot;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">console.log(document.cookie);  &#x2F;&#x2F; 输出：&quot;mycookie&#x3D;test&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>需要注意的是，<strong>在不同主域名下的子域名之间是不能共享 cookie 的，因为主域名不同，它们的域也不同，不受同源策略限制</strong>。为了解决这个问题，可以使用<strong>跨域通信技术</strong>，如 CORS、JSONP、postMessage 等。</p>
 <h3 id="cookie-与-web-安全"><a href="#cookie-与-web-安全" class="headerlink" title="cookie 与 web 安全"></a>cookie 与 web 安全</h3><h4 id="cookie-如何应对-XSS-漏洞"><a href="#cookie-如何应对-XSS-漏洞" class="headerlink" title="cookie 如何应对 XSS 漏洞"></a>cookie 如何应对 XSS 漏洞</h4><p>XSS 漏洞的原理是，由于未对用户提交的表单数据或者 url 参数等数据做处理就显示在了页面上，导致用户提交的内容在页面上被做为 html 解析执行。</p>
@@ -969,7 +984,7 @@
     if (document.getElementsByClassName('mermaid').length) {
       if (window.mermaidJsLoad) mermaid.init()
       else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
           window.mermaidJsLoad = true
           mermaid.initialize({
             theme: 'default',

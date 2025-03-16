@@ -44,8 +44,8 @@
             }
         }
     </style>
-    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
 
     
 
@@ -511,6 +511,21 @@
         
  <!-- prismjs 代码高亮 -->
  
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
 
 
 <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
@@ -572,7 +587,7 @@
         <h1 id="PostgreSQL-数据库备份与恢复操作"><a href="#PostgreSQL-数据库备份与恢复操作" class="headerlink" title="PostgreSQL 数据库备份与恢复操作"></a>PostgreSQL 数据库备份与恢复操作</h1><p>在使用 PostgreSQL 数据库时，<code>pg_dump</code> 是一个常用的工具，用于备份数据库的内容。备份和恢复数据库是数据库管理中的重要环节，可以确保数据的安全性和可恢复性。以下是关于如何使用 <code>pg_dump</code> 备份和恢复数据库的具体步骤。</p>
 <h2 id="一、pg-dump-备份数据库"><a href="#一、pg-dump-备份数据库" class="headerlink" title="一、pg_dump 备份数据库"></a>一、pg_dump 备份数据库</h2><h3 id="1-打开命令行工具"><a href="#1-打开命令行工具" class="headerlink" title="1. 打开命令行工具"></a>1. 打开命令行工具</h3><p>按照 mac 为例，如果你没将 postgre 相关的命令行加到环境变量中，那么你需要找到 postgre 的安装位置。比如我没有通过 homebrew 安装，我的安装位置在<code>/Library/PostgreSQL/15</code>。然后<code>cd /bin</code>。</p>
 <h3 id="2-执行-pg-dump-命令"><a href="#2-执行-pg-dump-命令" class="headerlink" title="2. 执行 pg_dump 命令"></a>2. 执行 <code>pg_dump</code> 命令</h3><p>在命令行中，使用 <code>pg_dump</code> 命令来备份数据库。命令的基本格式如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./pg_dump -U postgres -h localhost -p 5432 mall &gt; ~/Desktop/sql/mall_backup.sql</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./pg_dump <span class="token parameter variable">-U</span> postgres <span class="token parameter variable">-h</span> localhost <span class="token parameter variable">-p</span> <span class="token number">5432</span> mall <span class="token operator">></span> ~/Desktop/sql/mall_backup.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <ul>
 <li><p><code>-U</code>：指定连接数据库的用户名。</p>
@@ -587,13 +602,13 @@
 </li>
 </ul>
 <h3 id="3-备份特定表"><a href="#3-备份特定表" class="headerlink" title="3.备份特定表"></a>3.备份特定表</h3><p>如果只需要备份特定的表或模式，可以使用 <code>-t</code>（表）或 <code>-n</code>（模式）选项。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./pg_dump -U postgres -h localhost -p 5432 -t <span class="built_in">users</span> mall &gt; ~/Desktop/sql/users.sql</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./pg_dump <span class="token parameter variable">-U</span> postgres <span class="token parameter variable">-h</span> localhost <span class="token parameter variable">-p</span> <span class="token number">5432</span> <span class="token parameter variable">-t</span> <span class="token function">users</span> mall <span class="token operator">></span> ~/Desktop/sql/users.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h2 id="二、恢复数据库"><a href="#二、恢复数据库" class="headerlink" title="二、恢复数据库"></a>二、恢复数据库</h2><h3 id="1-创建目标数据库（如果尚未存在）"><a href="#1-创建目标数据库（如果尚未存在）" class="headerlink" title="1. 创建目标数据库（如果尚未存在）"></a>1. 创建目标数据库（如果尚未存在）</h3><p>在恢复数据之前，需要确保目标数据库已经存在。如果还没有目标数据库，可以使用 <code>createdb</code> 命令或 <code>CREATE DATABASE</code> SQL 语句来创建它。</p>
-<h4 id="示例：使用-createdb-创建目标数据库"><a href="#示例：使用-createdb-创建目标数据库" class="headerlink" title="示例：使用 createdb 创建目标数据库"></a>示例：使用 <code>createdb</code> 创建目标数据库</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./createdb -U postgres -h localhost -p 5432 mall_test</span><br></pre></td></tr></table></figure>
+<h4 id="示例：使用-createdb-创建目标数据库"><a href="#示例：使用-createdb-创建目标数据库" class="headerlink" title="示例：使用 createdb 创建目标数据库"></a>示例：使用 <code>createdb</code> 创建目标数据库</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./createdb <span class="token parameter variable">-U</span> postgres <span class="token parameter variable">-h</span> localhost <span class="token parameter variable">-p</span> <span class="token number">5432</span> mall_test<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h3 id="2-使用-psql-恢复数据库"><a href="#2-使用-psql-恢复数据库" class="headerlink" title="2. 使用 psql 恢复数据库"></a>2. 使用 <code>psql</code> 恢复数据库</h3><p>使用 <code>psql</code> 命令将备份的 SQL 文件导入到目标数据库中。命令的基本格式如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">psql -U 用户名 -h 主机名 -p 端口号 -d 目标数据库名 &lt; 备份文件名.sql</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">psql <span class="token parameter variable">-U</span> 用户名 <span class="token parameter variable">-h</span> 主机名 <span class="token parameter variable">-p</span> 端口号 <span class="token parameter variable">-d</span> 目标数据库名 <span class="token operator">&lt;</span> 备份文件名.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <ul>
 <li><code>-U</code>：指定连接数据库的用户名。</li>
@@ -602,10 +617,10 @@
 <li><code>-d</code>：指定要恢复数据的目标数据库名。</li>
 <li><code>&lt; 备份文件名.sql</code>：指定备份文件的名称和路径。</li>
 </ul>
-<h4 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./psql -U postgres -h localhost -p 5432 mall_test &lt; ~/Desktop/sql/mall_backup.sql</span><br></pre></td></tr></table></figure>
+<h4 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./psql <span class="token parameter variable">-U</span> postgres <span class="token parameter variable">-h</span> localhost <span class="token parameter variable">-p</span> <span class="token number">5432</span> mall_test <span class="token operator">&lt;</span> ~/Desktop/sql/mall_backup.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h3 id="3-使用-psql-恢复特定表"><a href="#3-使用-psql-恢复特定表" class="headerlink" title="3. 使用 psql 恢复特定表"></a>3. 使用 psql 恢复特定表</h3><p>如果备份文件是以自定义格式（<code>-Fc</code>）或目录格式（<code>-Fd</code>）创建的，则需要使用 <code>pg_restore</code> 命令来恢复数据。</p>
-<h4 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./psql -U postgres -h localhost -p 5432 -d mall_test &lt; ~/Desktop/sql/users.sql</span><br></pre></td></tr></table></figure>
+<h4 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./psql <span class="token parameter variable">-U</span> postgres <span class="token parameter variable">-h</span> localhost <span class="token parameter variable">-p</span> <span class="token number">5432</span> <span class="token parameter variable">-d</span> mall_test <span class="token operator">&lt;</span> ~/Desktop/sql/users.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
       </div>
       <div class="post-tags-categories">
@@ -649,17 +664,18 @@
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/12.jpg" class="lazyload placeholder" data-srcset="/medias/12.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/10.jpg" class="lazyload placeholder" data-srcset="/medias/10.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2025/02/20/qian-duan/react/qian-duan-ri-chang-ji-yu-rbac-he-react-router-v6-de-quan-xian-kong-zhi/" class="post-nav-link">
+    <a href="/2025/02/20/hou-duan/shu-ju-ku/redis/wan-zi-chang-wen-jie-xi-redis/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">前端日常-基于RBAC和React-Router(V6)的权限控制</div>
+        <div class="title-text">万字好文！带你入门 redis</div>
       </div>
       
       <!-- <div class="content">
-        
-theme: channing-cyan在一个后台管理系统中，安全是很重要的。不光后端需要做权限校验，前端也需要做权限
+        请看原文点击查看原文
+以下内容只用作记录
+
       </div> -->
     </a>
   </div>
@@ -670,17 +686,15 @@ theme: channing-cyan在一个后台管理系统中，安全是很重要的。不
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/10.jpg" class="lazyload placeholder" data-srcset="/medias/10.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2025/02/20/hou-duan/shu-ju-ku/redis/wan-zi-chang-wen-jie-xi-redis/" class="post-nav-link">
+    <a href="/2023/09/18/wang-luo/webworker-he-serviceworker/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">万字好文！带你入门 redis</div>
+        <div class="title-text">Web Worker和Service Worker</div>
       </div>
       <!-- <div class="content">
-        请看原文点击查看原文
-以下内容只用作记录
-
+        WebWorker 介绍什么是 Web Worker？为 JS 创造多线程的环境，允许主线程创建 Worker 线程，将
       </div> -->
     </a>
   </div>
@@ -926,7 +940,7 @@ theme: channing-cyan在一个后台管理系统中，安全是很重要的。不
     if (document.getElementsByClassName('mermaid').length) {
       if (window.mermaidJsLoad) mermaid.init()
       else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
           window.mermaidJsLoad = true
           mermaid.initialize({
             theme: 'default',

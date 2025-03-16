@@ -44,8 +44,8 @@
             }
         }
     </style>
-    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
 
     
 
@@ -511,6 +511,21 @@
         
  <!-- prismjs 代码高亮 -->
  
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
 
 
 <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
@@ -575,7 +590,29 @@
 <li>权限控制：基于RBAC模型的细粒度权限控制</li>
 <li>JWT认证：使用JWT实现无状态的用户身份验证</li>
 </ul>
-<h2 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h2><h3 id="实体关系图"><a href="#实体关系图" class="headerlink" title="实体关系图"></a>实体关系图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">erDiagram</span><br><span class="line">    SysUsersEntity ||--o&#123; UsersRoleEntity : has</span><br><span class="line">    RoleEntity ||--o&#123; UsersRoleEntity : has</span><br><span class="line"></span><br><span class="line">    SysUsersEntity &#123;</span><br><span class="line">        number id PK</span><br><span class="line">        string loginName</span><br><span class="line">        string password</span><br><span class="line">        string status</span><br><span class="line">        number tokenVersion</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    RoleEntity &#123;</span><br><span class="line">        number id PK</span><br><span class="line">        string name</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    UsersRoleEntity &#123;</span><br><span class="line">        number admin_id PK</span><br><span class="line">        number role_id PK</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h2><h3 id="实体关系图"><a href="#实体关系图" class="headerlink" title="实体关系图"></a>实体关系图</h3><pre class="mermaid">
+erDiagram
+    SysUsersEntity ||--o{ UsersRoleEntity : has
+    RoleEntity ||--o{ UsersRoleEntity : has
+
+    SysUsersEntity {
+        number id PK
+        string loginName
+        string password
+        string status
+        number tokenVersion
+    }
+
+    RoleEntity {
+        number id PK
+        string name
+    }
+
+    UsersRoleEntity {
+        number admin_id PK
+        number role_id PK
+    }
+</pre>
 
 <h3 id="表结构说明"><a href="#表结构说明" class="headerlink" title="表结构说明"></a>表结构说明</h3><h4 id="1-用户表-ibuy-admin"><a href="#1-用户表-ibuy-admin" class="headerlink" title="1. 用户表 (ibuy_admin)"></a>1. 用户表 (ibuy_admin)</h4><table>
 <thead>
@@ -662,28 +699,104 @@
 </tr>
 </tbody></table>
 <h2 id="系统配置"><a href="#系统配置" class="headerlink" title="系统配置"></a>系统配置</h2><h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><p>需要在.env文件中配置以下环境变量：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JWT_SECRET=your_jwt_secret_key</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-env" data-language="env"><code class="language-env">JWT_SECRET&#x3D;your_jwt_secret_key<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h2 id="核心功能"><a href="#核心功能" class="headerlink" title="核心功能"></a>核心功能</h2><h3 id="1-认证流程"><a href="#1-认证流程" class="headerlink" title="1. 认证流程"></a>1. 认证流程</h3><h4 id="1-1-登录认证"><a href="#1-1-登录认证" class="headerlink" title="1.1 登录认证"></a>1.1 登录认证</h4><p>用户登录时，系统会：</p>
 <ol>
 <li>验证用户名和密码</li>
 <li>生成包含用户信息的JWT Token</li>
 <li>返回Token和用户信息</li>
 </ol>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// auth.controller.ts</span></span><br><span class="line"><span class="meta">@Public</span>()</span><br><span class="line"><span class="meta">@HttpCode</span>(<span class="title class_">HttpStatus</span>.<span class="property">OK</span>)</span><br><span class="line"><span class="meta">@Post</span>(<span class="string">&#x27;login&#x27;</span>)</span><br><span class="line"><span class="keyword">async</span> <span class="title function_">signIn</span>(<span class="params"><span class="meta">@Body</span>() user: Record&lt;<span class="built_in">string</span>, <span class="built_in">any</span>&gt;</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">authService</span>.<span class="title function_">signIn</span>(user.<span class="property">loginName</span>, user.<span class="property">password</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// auth.controller.ts</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Public</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">HttpCode</span></span><span class="token punctuation">(</span>HttpStatus<span class="token punctuation">.</span><span class="token constant">OK</span><span class="token punctuation">)</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Post</span></span><span class="token punctuation">(</span><span class="token string">'login'</span><span class="token punctuation">)</span>
+<span class="token keyword">async</span> <span class="token function">signIn</span><span class="token punctuation">(</span><span class="token decorator"><span class="token at operator">@</span><span class="token function">Body</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> user<span class="token operator">:</span> Record<span class="token operator">&lt;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">any</span><span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>authService<span class="token punctuation">.</span><span class="token function">signIn</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span>loginName<span class="token punctuation">,</span> user<span class="token punctuation">.</span>password<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="1-2-JWT认证守卫"><a href="#1-2-JWT认证守卫" class="headerlink" title="1.2 JWT认证守卫"></a>1.2 JWT认证守卫</h4><p>系统使用全局AuthGuard进行Token验证：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// auth.guard.ts</span></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">AuthGuard</span> <span class="keyword">implements</span> <span class="title class_">CanActivate</span> &#123;</span><br><span class="line">  <span class="keyword">async</span> <span class="title function_">canActivate</span>(<span class="attr">context</span>: <span class="title class_">ExecutionContext</span>): <span class="title class_">Promise</span>&lt;<span class="built_in">boolean</span>&gt; &#123;</span><br><span class="line">    <span class="comment">// 检查是否是公开接口</span></span><br><span class="line">    <span class="keyword">const</span> isPublic = <span class="variable language_">this</span>.<span class="property">reflector</span>.<span class="property">getAllAndOverride</span>&lt;<span class="built_in">boolean</span>&gt;(<span class="variable constant_">IS_PUBLIC_KEY</span>, [</span><br><span class="line">      context.<span class="title function_">getHandler</span>(),</span><br><span class="line">      context.<span class="title function_">getClass</span>(),</span><br><span class="line">    ]);</span><br><span class="line">    <span class="keyword">if</span> (isPublic) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 验证Token</span></span><br><span class="line">    <span class="keyword">const</span> request = context.<span class="title function_">switchToHttp</span>().<span class="title function_">getRequest</span>();</span><br><span class="line">    <span class="keyword">const</span> token = <span class="variable language_">this</span>.<span class="title function_">extractTokenFromHeader</span>(request);</span><br><span class="line">    <span class="keyword">if</span> (!token) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">UnauthorizedException</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> payload = <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">jwtService</span>.<span class="title function_">verifyAsync</span>(token);</span><br><span class="line">      request.<span class="property">user</span> = payload;</span><br><span class="line">    &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">UnauthorizedException</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// auth.guard.ts</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Injectable</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">AuthGuard</span> <span class="token keyword">implements</span> <span class="token class-name">CanActivate</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">async</span> <span class="token function">canActivate</span><span class="token punctuation">(</span>context<span class="token operator">:</span> ExecutionContext<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span><span class="token builtin">boolean</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 检查是否是公开接口</span>
+    <span class="token keyword">const</span> isPublic <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>reflector<span class="token punctuation">.</span><span class="token generic-function"><span class="token function">getAllAndOverride</span><span class="token generic class-name"><span class="token operator">&lt;</span><span class="token builtin">boolean</span><span class="token operator">></span></span></span><span class="token punctuation">(</span><span class="token constant">IS_PUBLIC_KEY</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>
+      context<span class="token punctuation">.</span><span class="token function">getHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      context<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>isPublic<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 验证Token</span>
+    <span class="token keyword">const</span> request <span class="token operator">=</span> context<span class="token punctuation">.</span><span class="token function">switchToHttp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> token <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">extractTokenFromHeader</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>token<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">UnauthorizedException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">const</span> payload <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>jwtService<span class="token punctuation">.</span><span class="token function">verifyAsync</span><span class="token punctuation">(</span>token<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      request<span class="token punctuation">.</span>user <span class="token operator">=</span> payload<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">UnauthorizedException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="2-RBAC权限控制"><a href="#2-RBAC权限控制" class="headerlink" title="2. RBAC权限控制"></a>2. RBAC权限控制</h3><h4 id="2-1-角色权限守卫"><a href="#2-1-角色权限守卫" class="headerlink" title="2.1 角色权限守卫"></a>2.1 角色权限守卫</h4><p>使用PermissionGuard实现基于角色的权限控制：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// permission.guard.ts</span></span><br><span class="line"><span class="meta">@Injectable</span>()</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">PermissionGuard</span> <span class="keyword">implements</span> <span class="title class_">CanActivate</span> &#123;</span><br><span class="line">  <span class="keyword">async</span> <span class="title function_">canActivate</span>(<span class="attr">context</span>: <span class="title class_">ExecutionContext</span>): <span class="title class_">Promise</span>&lt;<span class="built_in">boolean</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> request = context.<span class="title function_">switchToHttp</span>().<span class="title function_">getRequest</span>();</span><br><span class="line">    <span class="keyword">if</span> (!request.<span class="property">user</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取用户角色</span></span><br><span class="line">    <span class="keyword">const</span> roleIds = <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">usersRoleService</span>.<span class="title function_">findRolesIdByUserId</span>(request.<span class="property">user</span>.<span class="property">user_id</span>);</span><br><span class="line">    <span class="keyword">const</span> roles = <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">roleService</span>.<span class="title function_">findRolesByRoleIds</span>(roleIds.<span class="property">data</span>);</span><br><span class="line">    <span class="keyword">const</span> roleNames = roles.<span class="property">data</span>?.<span class="title function_">map</span>(<span class="function">(<span class="params">role</span>) =&gt;</span> role.<span class="property">name</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 检查权限</span></span><br><span class="line">    <span class="keyword">const</span> requiredRoles = <span class="variable language_">this</span>.<span class="property">reflector</span>.<span class="title function_">getAllAndOverride</span>(<span class="variable constant_">PERMISSION_KEY</span>, [</span><br><span class="line">      context.<span class="title function_">getClass</span>(),</span><br><span class="line">      context.<span class="title function_">getHandler</span>(),</span><br><span class="line">    ]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> requiredRoles?.<span class="title function_">some</span>(<span class="function">(<span class="params">role</span>) =&gt;</span> roleNames?.<span class="title function_">includes</span>(role)) ?? <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// permission.guard.ts</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Injectable</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">PermissionGuard</span> <span class="token keyword">implements</span> <span class="token class-name">CanActivate</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">async</span> <span class="token function">canActivate</span><span class="token punctuation">(</span>context<span class="token operator">:</span> ExecutionContext<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span><span class="token builtin">boolean</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">const</span> request <span class="token operator">=</span> context<span class="token punctuation">.</span><span class="token function">switchToHttp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>request<span class="token punctuation">.</span>user<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 获取用户角色</span>
+    <span class="token keyword">const</span> roleIds <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>usersRoleService<span class="token punctuation">.</span><span class="token function">findRolesIdByUserId</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span>user<span class="token punctuation">.</span>user_id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> roles <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>roleService<span class="token punctuation">.</span><span class="token function">findRolesByRoleIds</span><span class="token punctuation">(</span>roleIds<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> roleNames <span class="token operator">=</span> roles<span class="token punctuation">.</span>data<span class="token operator">?.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span>role<span class="token punctuation">)</span> <span class="token operator">=></span> role<span class="token punctuation">.</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 检查权限</span>
+    <span class="token keyword">const</span> requiredRoles <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>reflector<span class="token punctuation">.</span><span class="token function">getAllAndOverride</span><span class="token punctuation">(</span><span class="token constant">PERMISSION_KEY</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>
+      context<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      context<span class="token punctuation">.</span><span class="token function">getHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> requiredRoles<span class="token operator">?.</span><span class="token function">some</span><span class="token punctuation">(</span><span class="token punctuation">(</span>role<span class="token punctuation">)</span> <span class="token operator">=></span> roleNames<span class="token operator">?.</span><span class="token function">includes</span><span class="token punctuation">(</span>role<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">??</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="2-2-权限装饰器"><a href="#2-2-权限装饰器" class="headerlink" title="2.2 权限装饰器"></a>2.2 权限装饰器</h4><p>提供@Permission装饰器用于声明接口所需的角色权限：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// permission.decorator.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="variable constant_">PERMISSION_KEY</span> = <span class="string">&#x27;permission_by_roles&#x27;</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">Permission</span> = (<span class="params">...permissions: <span class="built_in">string</span>[]</span>) =&gt;</span><br><span class="line">  <span class="title class_">SetMetadata</span>(<span class="variable constant_">PERMISSION_KEY</span>, permissions);</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// permission.decorator.ts</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token constant">PERMISSION_KEY</span> <span class="token operator">=</span> <span class="token string">'permission_by_roles'</span><span class="token punctuation">;</span>
+<span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">Permission</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">...</span>permissions<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">=></span>
+  <span class="token function">SetMetadata</span><span class="token punctuation">(</span><span class="token constant">PERMISSION_KEY</span><span class="token punctuation">,</span> permissions<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="3-使用示例"><a href="#3-使用示例" class="headerlink" title="3. 使用示例"></a>3. 使用示例</h3><h4 id="3-1-接口权限控制"><a href="#3-1-接口权限控制" class="headerlink" title="3.1 接口权限控制"></a>3.1 接口权限控制</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// role.controller.ts</span></span><br><span class="line"><span class="meta">@Permission</span>(<span class="string">&#x27;admin&#x27;</span>)  <span class="comment">// 声明需要admin角色才能访问</span></span><br><span class="line"><span class="meta">@Controller</span>(<span class="string">&#x27;role&#x27;</span>)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">RoleController</span> &#123;</span><br><span class="line">  <span class="meta">@Post</span>()</span><br><span class="line">  <span class="title function_">createRole</span>(<span class="params"><span class="meta">@Body</span>() createRoleDto: CreateRoleDto</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">roleService</span>.<span class="title function_">createRole</span>(createRoleDto);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-使用示例"><a href="#3-使用示例" class="headerlink" title="3. 使用示例"></a>3. 使用示例</h3><h4 id="3-1-接口权限控制"><a href="#3-1-接口权限控制" class="headerlink" title="3.1 接口权限控制"></a>3.1 接口权限控制</h4><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// role.controller.ts</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Permission</span></span><span class="token punctuation">(</span><span class="token string">'admin'</span><span class="token punctuation">)</span>  <span class="token comment">// 声明需要admin角色才能访问</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Controller</span></span><span class="token punctuation">(</span><span class="token string">'role'</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">RoleController</span> <span class="token punctuation">&#123;</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Post</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token function">createRole</span><span class="token punctuation">(</span><span class="token decorator"><span class="token at operator">@</span><span class="token function">Body</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> createRoleDto<span class="token operator">:</span> CreateRoleDto<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>roleService<span class="token punctuation">.</span><span class="token function">createRole</span><span class="token punctuation">(</span>createRoleDto<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="3-2-全局配置"><a href="#3-2-全局配置" class="headerlink" title="3.2 全局配置"></a>3.2 全局配置</h4><p>在AppModule中注册全局守卫：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.module.ts</span></span><br><span class="line"><span class="meta">@Module</span>(&#123;</span><br><span class="line">  <span class="attr">providers</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">provide</span>: <span class="variable constant_">APP_GUARD</span>,</span><br><span class="line">      <span class="attr">useClass</span>: <span class="title class_">AuthGuard</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">provide</span>: <span class="variable constant_">APP_GUARD</span>,</span><br><span class="line">      <span class="attr">useClass</span>: <span class="title class_">PermissionGuard</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">AppModule</span> &#123;&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// app.module.ts</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Module</span></span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  providers<span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">&#123;</span>
+      provide<span class="token operator">:</span> <span class="token constant">APP_GUARD</span><span class="token punctuation">,</span>
+      useClass<span class="token operator">:</span> AuthGuard<span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#123;</span>
+      provide<span class="token operator">:</span> <span class="token constant">APP_GUARD</span><span class="token punctuation">,</span>
+      useClass<span class="token operator">:</span> PermissionGuard<span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">AppModule</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 <h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
@@ -759,15 +872,15 @@
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/8.jpg" class="lazyload placeholder" data-srcset="/medias/8.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2025/03/14/hou-duan/shang-cheng/shi-xian-shang-cheng-zhi-fu-gong-neng/" class="post-nav-link">
+    <a href="/2025/03/14/hou-duan/shang-cheng/shou-ba-shou-jiao-ni-zai-wang-zhan-zhong-qi-yong-https-he-http2/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">Nestjs+RabbitMQ+支付宝沙盒 实现电商支付功能</div>
+        <div class="title-text">手把手教你在网站中启用https和http2</div>
       </div>
       <!-- <div class="content">
-        1. 前言在电商系统中，支付功能是整个交易流程中最为关键的环节之一。一个完善的支付系统不仅要保证交易的安全性和可靠性，还
+        1. 前言在当今互联网时代，网站的安全性和加载速度成为用户体验中至关重要的两个因素。启用HTTPS可以通过加密通信保护数
       </div> -->
     </a>
   </div>
@@ -1013,7 +1126,7 @@
     if (document.getElementsByClassName('mermaid').length) {
       if (window.mermaidJsLoad) mermaid.init()
       else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
           window.mermaidJsLoad = true
           mermaid.initialize({
             theme: 'default',

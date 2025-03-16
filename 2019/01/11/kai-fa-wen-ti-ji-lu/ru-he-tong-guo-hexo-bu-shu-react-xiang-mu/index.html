@@ -44,8 +44,8 @@
             }
         }
     </style>
-    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
 
     
 
@@ -511,6 +511,21 @@
         
  <!-- prismjs 代码高亮 -->
  
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
 
 
 <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
@@ -573,7 +588,8 @@
 <h2 id="配置修改"><a href="#配置修改" class="headerlink" title="配置修改"></a>配置修改</h2><p>hexo 也给我们提供了一个参数<code>skip_render</code>, 用于跳过指定文件的编译，直接复制到 public 中。</p>
 <p>那么，我们需要做的就是在<code>source</code>目录下创建一个新项目<code>source/your-project</code></p>
 <p>然后在根目录的<code>_config.yml</code>中有一个<code>skip_render</code>字段，我们只需要按照以下来配置即可</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">skip_render:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">your-project/**/*</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">skip_render</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> your<span class="token punctuation">-</span>project/<span class="token important">**/*</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>然后就可以将打包的项目放入到<code>source/your-project</code>中去，我们以打包一个 react 项目为例，可能包含以下的文件</p>
 <ul>
@@ -598,7 +614,15 @@
 <p>这里需要注意的是，如果你没有在你的构建工具中去做设置的话，一般情况下打包出来的<code>index.html</code>里面对应的资源文件的引用都是绝对路径，比如<code>&lt;script type=&quot;module&quot; crossorigin src=&quot;/assets/index-e60f790f.js&quot;&gt;&lt;/script&gt;</code></p>
 <p>但是部署到 github pages 中需要相对路径，所以需要改成这样<code>&lt;script type=&quot;module&quot; crossorigin src=&quot;./assets/index-e60f790f.js&quot;&gt;&lt;/script&gt;</code></p>
 <h2 id="项目路由修改"><a href="#项目路由修改" class="headerlink" title="项目路由修改"></a>项目路由修改</h2><p>正常到这里就结束了，但是如果项目中使用了路由管理，那么就需要修改项目中对应的路由前缀，我们以<code>react-router</code>为例,需要添加上你在<code>source</code>目录下创建的项目的目录名。</p>
-<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">path</span>: <span class="string">&#x27;/your-project&#x27;</span>,</span><br><span class="line">  <span class="attr">element</span>: <span class="language-xml"><span class="tag">&lt;<span class="name">App</span> /&gt;</span></span>,</span><br><span class="line">&#125;,</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">path</span>: <span class="string">&#x27;/your-project/preview&#x27;</span>,</span><br><span class="line">  <span class="attr">element</span>: <span class="language-xml"><span class="tag">&lt;<span class="name">Preview</span> /&gt;</span></span>,</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx">
+<span class="token punctuation">&#123;</span>
+  path<span class="token operator">:</span> <span class="token string">'/your-project'</span><span class="token punctuation">,</span>
+  element<span class="token operator">:</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">App</span></span> <span class="token punctuation">/></span></span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#123;</span>
+  path<span class="token operator">:</span> <span class="token string">'/your-project/preview'</span><span class="token punctuation">,</span>
+  element<span class="token operator">:</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Preview</span></span> <span class="token punctuation">/></span></span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>因为 github pages 中是按照你创建的那个目录为路由的。所以最终到线上的访问地址就是<code>xxx.github.io/your-project</code>。但是如果不在<code>react-router</code>中给路由加上前缀，你到线上访问<code>xxx.github.io/your-project</code>就会因为无法找到对应的资源而报 404。</p>
 <p>最后我们直接运行<code>hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</code>就可以完成发布了，然后就可以到线上访问你的 react 项目了</p>
@@ -904,7 +928,7 @@
     if (document.getElementsByClassName('mermaid').length) {
       if (window.mermaidJsLoad) mermaid.init()
       else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
           window.mermaidJsLoad = true
           mermaid.initialize({
             theme: 'default',

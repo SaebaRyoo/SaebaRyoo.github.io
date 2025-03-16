@@ -44,8 +44,8 @@
             }
         }
     </style>
-    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
 
     
 
@@ -511,6 +511,21 @@
         
  <!-- prismjs 代码高亮 -->
  
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
 
 
 <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
@@ -572,7 +587,17 @@
         <h1 id="原文地址，本篇仅做记录学习"><a href="#原文地址，本篇仅做记录学习" class="headerlink" title="原文地址，本篇仅做记录学习"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/PeunZhang/p/5553574.html">原文地址，本篇仅做记录学习</a></h1><h3 id="npm-install-安装模块"><a href="#npm-install-安装模块" class="headerlink" title="npm install 安装模块"></a>npm install 安装模块</h3><ol>
 <li>基础语法</li>
 </ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">npm install (with no args, in package dir)</span><br><span class="line">npm install [&lt;@scope&gt;/]&lt;name&gt;</span><br><span class="line">npm install [&lt;@scope&gt;/]&lt;name&gt;@&lt;tag&gt;</span><br><span class="line">npm install [&lt;@scope&gt;/]&lt;name&gt;@&lt;version&gt;</span><br><span class="line">npm install [&lt;@scope&gt;/]&lt;name&gt;@&lt;version range&gt;</span><br><span class="line">npm install &lt;tarball file&gt;</span><br><span class="line">npm install &lt;tarball url&gt;</span><br><span class="line">npm install &lt;folder&gt;</span><br><span class="line"></span><br><span class="line">alias: npm i</span><br><span class="line">common options: [-S|--save|-D|--save-dev|-O|--save-optional] [-E|--save-exact] [--dry-run]</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> <span class="token punctuation">(</span>with no args, <span class="token keyword">in</span> package <span class="token function">dir</span><span class="token punctuation">)</span>
+<span class="token function">npm</span> <span class="token function">install</span> <span class="token punctuation">[</span><span class="token operator">&lt;</span>@scope<span class="token operator">></span>/<span class="token punctuation">]</span><span class="token operator">&lt;</span>name<span class="token operator">></span>
+<span class="token function">npm</span> <span class="token function">install</span> <span class="token punctuation">[</span><span class="token operator">&lt;</span>@scope<span class="token operator">></span>/<span class="token punctuation">]</span><span class="token operator">&lt;</span>name<span class="token operator">></span>@<span class="token operator">&lt;</span>tag<span class="token operator">></span>
+<span class="token function">npm</span> <span class="token function">install</span> <span class="token punctuation">[</span><span class="token operator">&lt;</span>@scope<span class="token operator">></span>/<span class="token punctuation">]</span><span class="token operator">&lt;</span>name<span class="token operator">></span>@<span class="token operator">&lt;</span>version<span class="token operator">></span>
+<span class="token function">npm</span> <span class="token function">install</span> <span class="token punctuation">[</span><span class="token operator">&lt;</span>@scope<span class="token operator">></span>/<span class="token punctuation">]</span><span class="token operator">&lt;</span>name<span class="token operator">></span>@<span class="token operator">&lt;</span>version range<span class="token operator">></span>
+<span class="token function">npm</span> <span class="token function">install</span> <span class="token operator">&lt;</span>tarball file<span class="token operator">></span>
+<span class="token function">npm</span> <span class="token function">install</span> <span class="token operator">&lt;</span>tarball url<span class="token operator">></span>
+<span class="token function">npm</span> <span class="token function">install</span> <span class="token operator">&lt;</span>folder<span class="token operator">></span>
+
+alias: <span class="token function">npm</span> i
+common options: <span class="token punctuation">[</span>-S<span class="token operator">|</span>--save<span class="token operator">|</span>-D<span class="token operator">|</span>--save-dev<span class="token operator">|</span>-O<span class="token operator">|</span>--save-optional<span class="token punctuation">]</span> <span class="token punctuation">[</span>-E<span class="token operator">|</span>--save-exact<span class="token punctuation">]</span> <span class="token punctuation">[</span>--dry-run<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ol start="2">
 <li><p>安装包，默认会安装最新的版本<br><code>npm install gulp</code></p>
@@ -589,28 +614,36 @@
 </ul>
 <p><code>npm install gulp --save 或 npm install gulp -S</code></p>
 <p>package.json 文件的 dependencies 字段：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;dependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;gulp&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^3.9.1&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"gulp"</span><span class="token operator">:</span> <span class="token string">"^3.9.1"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li><strong>-D, –save-dev 安装包信息将加入到 devDependencies（开发阶段的依赖），所以开发阶段一般使用它</strong></li>
 </ul>
 <p><code>npm install gulp --save-dev 或 npm install gulp -D</code></p>
 <p>package.json 文件的 devDependencies 字段：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;devDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;gulp&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^3.9.1&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"gulp"</span><span class="token operator">:</span> <span class="token string">"^3.9.1"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li><strong>-O, –save-optional 安装包信息将加入到 optionalDependencies（可选阶段的依赖）</strong></li>
 </ul>
 <p><code>npm install gulp --save-optional 或 npm install gulp -O</code></p>
 <p>package.json 文件的 optionalDependencies 字段：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;optionalDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;gulp&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^3.9.1&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"optionalDependencies"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"gulp"</span><span class="token operator">:</span> <span class="token string">"^3.9.1"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li><strong>-E, –save-exact 精确安装指定模块版本</strong></li>
 </ul>
 <p><code>npm install gulp --save-exact 或 npm install gulp -E</code></p>
 <p>输入命令<strong>npm install gulp -ES</strong>，留意 package.json 文件的 dependencies 字段，以看出版本号中的^消失了</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;dependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;gulp&quot;</span><span class="punctuation">:</span> <span class="string">&quot;3.9.1&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"gulp"</span><span class="token operator">:</span> <span class="token string">"3.9.1"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>模块的依赖都被写入了 package.json 文件后，他人打开项目的根目录（项目开源、内部团队合作），使用 npm install 命令可以根据 dependencies 配置安装所有的依赖包</p>
 <ul>
@@ -622,13 +655,17 @@
 <h3 id="npm-uninstall-卸载模块"><a href="#npm-uninstall-卸载模块" class="headerlink" title="npm uninstall 卸载模块"></a>npm uninstall 卸载模块</h3><ol>
 <li>基础语法</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall [&lt;@scope&gt;/]&lt;pkg&gt;[@&lt;version&gt;]... [-S|--save|-D|--save-dev|-O|--save-optional]</span><br><span class="line"></span><br><span class="line">aliases: remove, rm, r, un, unlink</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">npm uninstall [&lt;@scope&gt;&#x2F;]&lt;pkg&gt;[@&lt;version&gt;]... [-S|--save|-D|--save-dev|-O|--save-optional]
+
+aliases: remove, rm, r, un, unlink<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="npm-update-更新模块"><a href="#npm-update-更新模块" class="headerlink" title="npm update 更新模块"></a>npm update 更新模块</h3><pre><code>npm update [-g] [&lt;pkg&gt;...]
 </code></pre>
 <h3 id="npm-outdated-检查模块是否已经过时"><a href="#npm-outdated-检查模块是否已经过时" class="headerlink" title="npm outdated 检查模块是否已经过时"></a>npm outdated 检查模块是否已经过时</h3><pre><code>npm outdated [[&lt;@scope&gt;/]&lt;pkg&gt; ...]
 </code></pre>
-<h3 id="npm-ls-查看安装的模块"><a href="#npm-ls-查看安装的模块" class="headerlink" title="npm ls 查看安装的模块"></a>npm ls 查看安装的模块</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm ls [[&lt;@scope&gt;/]&lt;pkg&gt; ...]</span><br><span class="line"></span><br><span class="line">aliases: list, la, ll</span><br></pre></td></tr></table></figure>
+<h3 id="npm-ls-查看安装的模块"><a href="#npm-ls-查看安装的模块" class="headerlink" title="npm ls 查看安装的模块"></a>npm ls 查看安装的模块</h3><pre class="line-numbers language-none"><code class="language-none">npm ls [[&lt;@scope&gt;&#x2F;]&lt;pkg&gt; ...]
+
+aliases: list, la, ll<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="npm-help-查看某条命令的详细帮助"><a href="#npm-help-查看某条命令的详细帮助" class="headerlink" title="npm help 查看某条命令的详细帮助"></a>npm help 查看某条命令的详细帮助</h3><ol>
 <li><p>基础语法<br><code>npm help &lt;term&gt; [&lt;terms..&gt;]</code></p>
@@ -1024,7 +1061,7 @@ npm access edit [&lt;package&gt;]
     if (document.getElementsByClassName('mermaid').length) {
       if (window.mermaidJsLoad) mermaid.init()
       else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
           window.mermaidJsLoad = true
           mermaid.initialize({
             theme: 'default',

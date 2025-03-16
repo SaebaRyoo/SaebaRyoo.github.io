@@ -44,8 +44,8 @@
             }
         }
     </style>
-    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
 
     
 
@@ -511,6 +511,21 @@
         
  <!-- prismjs 代码高亮 -->
  
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
 
 
 <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
@@ -638,7 +653,7 @@
 <li>跨索引搜索</li>
 </ul>
 <p>创建别名示例：</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PUT /logs<span class="number">-2023</span>/_alias/logs_current</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">PUT /logs<span class="token number">-2023</span>/_alias/logs_current<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h3 id="2-2-3-字段（Field）"><a href="#2-2-3-字段（Field）" class="headerlink" title="2.2.3 字段（Field）"></a>2.2.3 字段（Field）</h3><p>字段是文档中的数据属性，相当于关系型数据库中的字段。</p>
 <h3 id="2-2-4-映射（Mapping）"><a href="#2-2-4-映射（Mapping）" class="headerlink" title="2.2.4 映射（Mapping）"></a>2.2.4 映射（Mapping）</h3><p>映射定义了数据处理规则，包括：</p>
@@ -683,10 +698,23 @@
 </ul>
 </li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">+------------------+</span><br><span class="line">|     Cluster      |</span><br><span class="line">|   +---------+    |</span><br><span class="line">|   | Master  |    |</span><br><span class="line">|   | Node    |    |</span><br><span class="line">|   +----+----+    |</span><br><span class="line">|        |         |</span><br><span class="line">| +------+------+  |</span><br><span class="line">| |             |  |</span><br><span class="line">| v             v  |</span><br><span class="line">+------+    +------+</span><br><span class="line">| Data |    | Data |</span><br><span class="line">| Node |    | Node |</span><br><span class="line">+------+    +------+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-ascii" data-language="ascii"><code class="language-ascii">+------------------+
+|     Cluster      |
+|   +---------+    |
+|   | Master  |    |
+|   | Node    |    |
+|   +----+----+    |
+|        |         |
+| +------+------+  |
+| |             |  |
+| v             v  |
++------+    +------+
+| Data |    | Data |
+| Node |    | Node |
++------+    +------+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>这个ASCII图展示了一个简单的ElasticSearch集群架构，包含一个主节点和两个数据节点。</p>
-<h3 id="2-2-9-分片和副本（Shards-Replicas）"><a href="#2-2-9-分片和副本（Shards-Replicas）" class="headerlink" title="2.2.9 分片和副本（Shards &amp; Replicas）"></a>2.2.9 分片和副本（Shards &amp; Replicas）</h3><p><strong>分片</strong>的主要作用：</p>
+<h3 id="2-2-9-分片和副本（Shards-amp-Replicas）"><a href="#2-2-9-分片和副本（Shards-amp-Replicas）" class="headerlink" title="2.2.9 分片和副本（Shards &amp; Replicas）"></a>2.2.9 分片和副本（Shards &amp; Replicas）</h3><p><strong>分片</strong>的主要作用：</p>
 <ul>
 <li>水平分割&#x2F;扩展内容容量</li>
 <li>分布式并行操作，提高性能</li>
@@ -705,51 +733,79 @@
 <h1 id="3-使用Docker安装ElasticSearch-8-14-2-非安全"><a href="#3-使用Docker安装ElasticSearch-8-14-2-非安全" class="headerlink" title="3. 使用Docker安装ElasticSearch 8.14.2 (非安全)"></a>3. 使用Docker安装ElasticSearch 8.14.2 (非安全)</h1><p>注意：以下安装说明仅适用于开发环境。在生产环境中，需要启用SSL加密并配置适当的安全策略。</p>
 <h2 id="3-1-环境准备"><a href="#3-1-环境准备" class="headerlink" title="3.1 环境准备"></a>3.1 环境准备</h2><ol>
 <li><p>设置环境变量</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim ~/.bash_profile 将下面两个变量添加到系统环境变量中</span></span><br><span class="line"><span class="built_in">export</span> ELASTIC_PASSWORD=<span class="string">&quot;123456&quot;</span>  <span class="comment"># elastic用户密码</span></span><br><span class="line"><span class="built_in">export</span> KIBANA_PASSWORD=<span class="string">&quot;123456&quot;</span>   <span class="comment"># Kibana系统用户密码</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># vim ~/.bash_profile 将下面两个变量添加到系统环境变量中</span>
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">ELASTIC_PASSWORD</span><span class="token operator">=</span><span class="token string">"123456"</span>  <span class="token comment"># elastic用户密码</span>
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">KIBANA_PASSWORD</span><span class="token operator">=</span><span class="token string">"123456"</span>   <span class="token comment"># Kibana系统用户密码</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>然后运行 <code>source ~/.bash_profile</code> 使配置生效</p>
 </li>
 <li><p>创建Docker网络</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network create es-net</span><br></pre></td></tr></table></figure></li>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> network create es-net<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 </ol>
-<h2 id="3-2-运行ElasticSearch"><a href="#3-2-运行ElasticSearch" class="headerlink" title="3.2 运行ElasticSearch"></a>3.2 运行ElasticSearch</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name es-dev \</span><br><span class="line">  -p 127.0.0.1:9200:9200 \</span><br><span class="line">  --network es-net \</span><br><span class="line">  -v es-data:/usr/share/elasticsearch/data \</span><br><span class="line">  -e ELASTIC_PASSWORD=<span class="variable">$ELASTIC_PASSWORD</span> \</span><br><span class="line">  -e <span class="string">&quot;discovery.type=single-node&quot;</span> \</span><br><span class="line">  -e <span class="string">&quot;xpack.security.http.ssl.enabled=false&quot;</span> \</span><br><span class="line">  -e <span class="string">&quot;xpack.license.self_generated.type=basic&quot;</span> \</span><br><span class="line">  elasticsearch:8.14.2</span><br></pre></td></tr></table></figure>
+<h2 id="3-2-运行ElasticSearch"><a href="#3-2-运行ElasticSearch" class="headerlink" title="3.2 运行ElasticSearch"></a>3.2 运行ElasticSearch</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">--name</span> es-dev <span class="token punctuation">\</span>
+  <span class="token parameter variable">-p</span> <span class="token number">127.0</span>.0.1:9200:9200 <span class="token punctuation">\</span>
+  <span class="token parameter variable">--network</span> es-net <span class="token punctuation">\</span>
+  <span class="token parameter variable">-v</span> es-data:/usr/share/elasticsearch/data <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token assign-left variable">ELASTIC_PASSWORD</span><span class="token operator">=</span><span class="token variable">$ELASTIC_PASSWORD</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token string">"discovery.type=single-node"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token string">"xpack.security.http.ssl.enabled=false"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token string">"xpack.license.self_generated.type=basic"</span> <span class="token punctuation">\</span>
+  elasticsearch:8.14.2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="3-3-运行Kibana（可选）"><a href="#3-3-运行Kibana（可选）" class="headerlink" title="3.3 运行Kibana（可选）"></a>3.3 运行Kibana（可选）</h2><ol>
 <li><p>设置kibana_system用户密码</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> -X POST \</span><br><span class="line">  http://localhost:9200/_security/user/kibana_system/_password \</span><br><span class="line">  -H <span class="string">&#x27;Content-Type: application/json&#x27;</span> \</span><br><span class="line">  -d <span class="string">&#x27;&#123;&quot;password&quot;:&quot;&#x27;</span><span class="variable">$KIBANA_PASSWORD</span><span class="string">&#x27;&quot;&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">curl</span> <span class="token parameter variable">-u</span> elastic:<span class="token variable">$ELASTIC_PASSWORD</span> <span class="token parameter variable">-X</span> POST <span class="token punctuation">\</span>
+  http://localhost:9200/_security/user/kibana_system/_password <span class="token punctuation">\</span>
+  <span class="token parameter variable">-H</span> <span class="token string">'Content-Type: application/json'</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-d</span> <span class="token string">'&#123;"password":"'</span><span class="token variable">$KIBANA_PASSWORD</span><span class="token string">'"&#125;'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>启动Kibana容器</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name kibana-dev \</span><br><span class="line">  -p 127.0.0.1:5601:5601 \</span><br><span class="line">  --network es-net \</span><br><span class="line">  -e ELASTICSEARCH_HOSTS=http://es-dev:9200 \</span><br><span class="line">  -e ELASTICSEARCH_USERNAME=kibana_system \</span><br><span class="line">  -e ELASTICSEARCH_PASSWORD=<span class="variable">$KIBANA_PASSWORD</span> \</span><br><span class="line">  -e <span class="string">&quot;xpack.security.enabled=false&quot;</span> \</span><br><span class="line">  kibana:8.14.2</span><br></pre></td></tr></table></figure></li>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">--name</span> kibana-dev <span class="token punctuation">\</span>
+  <span class="token parameter variable">-p</span> <span class="token number">127.0</span>.0.1:5601:5601 <span class="token punctuation">\</span>
+  <span class="token parameter variable">--network</span> es-net <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token assign-left variable">ELASTICSEARCH_HOSTS</span><span class="token operator">=</span>http://es-dev:9200 <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token assign-left variable">ELASTICSEARCH_USERNAME</span><span class="token operator">=</span>kibana_system <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token assign-left variable">ELASTICSEARCH_PASSWORD</span><span class="token operator">=</span><span class="token variable">$KIBANA_PASSWORD</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token string">"xpack.security.enabled=false"</span> <span class="token punctuation">\</span>
+  kibana:8.14.2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 </ol>
 <h2 id="3-4-许可证配置"><a href="#3-4-许可证配置" class="headerlink" title="3.4 许可证配置"></a>3.4 许可证配置</h2><ol>
 <li><p>检查许可证状态</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> -X GET <span class="string">&quot;http://localhost:9200/_license&quot;</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">curl</span> <span class="token parameter variable">-u</span> elastic:<span class="token variable">$ELASTIC_PASSWORD</span> <span class="token parameter variable">-X</span> GET <span class="token string">"http://localhost:9200/_license"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 <li><p>激活基础许可证</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -u elastic:<span class="variable">$ELASTIC_PASSWORD</span> -X POST <span class="string">&quot;http://localhost:9200/_license/start_basic?acknowledge=true&quot;</span></span><br></pre></td></tr></table></figure></li>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">curl</span> <span class="token parameter variable">-u</span> elastic:<span class="token variable">$ELASTIC_PASSWORD</span> <span class="token parameter variable">-X</span> POST <span class="token string">"http://localhost:9200/_license/start_basic?acknowledge=true"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
 </ol>
 <h2 id="3-5-安装IK分词器"><a href="#3-5-安装IK分词器" class="headerlink" title="3.5 安装IK分词器"></a>3.5 安装IK分词器</h2><ol>
 <li><p>进入容器</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it es-dev bash</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> <span class="token builtin class-name">exec</span> <span class="token parameter variable">-it</span> es-dev <span class="token function">bash</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 <li><p>安装分词器</p>
 </li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/elasticsearch-plugin install https://get.infini.cloud/elasticsearch/analysis-ik/8.14.2</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">.&#x2F;bin&#x2F;elasticsearch-plugin install https:&#x2F;&#x2F;get.infini.cloud&#x2F;elasticsearch&#x2F;analysis-ik&#x2F;8.14.2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <ol start="3">
 <li>重启容器</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart es-dev</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">docker restart es-dev<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h2 id="3-6-验证安装"><a href="#3-6-验证安装" class="headerlink" title="3.6 验证安装"></a>3.6 验证安装</h2><ol>
 <li>使用curl验证</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl -u elastic:$ELASTIC_PASSWORD -X GET &quot;http://localhost:9200/_analyze&quot; -H &#x27;Content-Type: application/json&#x27; -d &#x27;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;ik_max_word&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;中国足球真是太烂了&quot;</span><br><span class="line">&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">curl -u elastic:$ELASTIC_PASSWORD -X GET &quot;http:&#x2F;&#x2F;localhost:9200&#x2F;_analyze&quot; -H &#39;Content-Type: application&#x2F;json&#39; -d &#39;
+&#123;
+  &quot;analyzer&quot;: &quot;ik_max_word&quot;,
+  &quot;text&quot;: &quot;中国足球真是太烂了&quot;
+&#125;&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <ol start="2">
 <li>使用Kibana Dev Tools验证</li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET /_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;ik_max_word&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;中国足球真是太烂了&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">GET &#x2F;_analyze
+&#123;
+  &quot;analyzer&quot;: &quot;ik_max_word&quot;,
+  &quot;text&quot;: &quot;中国足球真是太烂了&quot;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>注意：9300端口用于节点间通信，9200端口用于HTTP API访问。</p>
 <h1 id="4-生产环境安装-Elasticsearch（启用ssl）"><a href="#4-生产环境安装-Elasticsearch（启用ssl）" class="headerlink" title="4. 生产环境安装 Elasticsearch（启用ssl）"></a>4. 生产环境安装 Elasticsearch（启用ssl）</h1><p>这部分可以参考官网的文档</p>
@@ -759,7 +815,23 @@
 <h4 id="2-请求一个REST-API，确保更够通过ca访问elastic"><a href="#2-请求一个REST-API，确保更够通过ca访问elastic" class="headerlink" title="2. 请求一个REST API，确保更够通过ca访问elastic"></a>2. 请求一个REST API，确保更够通过ca访问elastic</h4><p><code>curl --cacert ca.crt -u elastic:[ELASTIC_PASSWORD] https://localhost:9200</code></p>
 <p><strong>这里的</strong> <strong>[ELASTIC_PASSWORD]要替换成你自己.env文件中设置的密码</strong></p>
 <p>如果一切正常，你会看到如下内容:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;name&quot; : &quot;es01&quot;,</span><br><span class="line">  &quot;cluster_name&quot; : &quot;docker-cluster&quot;,</span><br><span class="line">  &quot;cluster_uuid&quot; : &quot;t5DlPYalRAm_tceqPUo7gw&quot;,</span><br><span class="line">  &quot;version&quot; : &#123;</span><br><span class="line">    &quot;number&quot; : &quot;8.14.2&quot;,</span><br><span class="line">    &quot;build_flavor&quot; : &quot;default&quot;,</span><br><span class="line">    &quot;build_type&quot; : &quot;docker&quot;,</span><br><span class="line">    &quot;build_hash&quot; : &quot;2afe7caceec8a26ff53817e5ed88235e90592a1b&quot;,</span><br><span class="line">    &quot;build_date&quot; : &quot;2024-07-01T22:06:58.515911606Z&quot;,</span><br><span class="line">    &quot;build_snapshot&quot; : false,</span><br><span class="line">    &quot;lucene_version&quot; : &quot;9.10.0&quot;,</span><br><span class="line">    &quot;minimum_wire_compatibility_version&quot; : &quot;7.17.0&quot;,</span><br><span class="line">    &quot;minimum_index_compatibility_version&quot; : &quot;7.0.0&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;tagline&quot; : &quot;You Know, for Search&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">&#123;
+  &quot;name&quot; : &quot;es01&quot;,
+  &quot;cluster_name&quot; : &quot;docker-cluster&quot;,
+  &quot;cluster_uuid&quot; : &quot;t5DlPYalRAm_tceqPUo7gw&quot;,
+  &quot;version&quot; : &#123;
+    &quot;number&quot; : &quot;8.14.2&quot;,
+    &quot;build_flavor&quot; : &quot;default&quot;,
+    &quot;build_type&quot; : &quot;docker&quot;,
+    &quot;build_hash&quot; : &quot;2afe7caceec8a26ff53817e5ed88235e90592a1b&quot;,
+    &quot;build_date&quot; : &quot;2024-07-01T22:06:58.515911606Z&quot;,
+    &quot;build_snapshot&quot; : false,
+    &quot;lucene_version&quot; : &quot;9.10.0&quot;,
+    &quot;minimum_wire_compatibility_version&quot; : &quot;7.17.0&quot;,
+    &quot;minimum_index_compatibility_version&quot; : &quot;7.0.0&quot;
+  &#125;,
+  &quot;tagline&quot; : &quot;You Know, for Search&quot;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h1 id="5-基于Kibana掌握DSL语句"><a href="#5-基于Kibana掌握DSL语句" class="headerlink" title="5. 基于Kibana掌握DSL语句"></a>5. 基于Kibana掌握DSL语句</h1><p>Kibana 是一款开源的数据分析和可视化平台，它是 Elastic Stack 成员之一，设计用于和 Elasticsearch 协作。您可以使用 Kibana 对 Elasticsearch 索引中的数据进行搜索、查看、交互操作。您可以很方便的利用图表、表格及地图对数据进行多元化的分析和呈现。</p>
 <p>Kibana 可以使大数据通俗易懂。它很简单，基于浏览器的界面便于您快速创建和分享动态数据仪表板来追踪 Elasticsearch 的实时数据变化。</p>
@@ -780,86 +852,340 @@
 <h3 id="5-1-2-基础使用"><a href="#5-1-2-基础使用" class="headerlink" title="5.1.2 基础使用"></a>5.1.2 基础使用</h3><h4 id="5-1-2-1-基本索引操作"><a href="#5-1-2-1-基本索引操作" class="headerlink" title="5.1.2.1 基本索引操作"></a>5.1.2.1 基本索引操作</h4><ol>
 <li><strong>查询所有索引</strong></li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /_cat/indices?v</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">GET &#x2F;_cat&#x2F;indices?v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <ol start="2">
 <li><strong>删除某个索引</strong></li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE /user</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">DELETE &#x2F;user<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <ol start="3">
 <li><strong>新增索引</strong></li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PUT /user</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">PUT &#x2F;user<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <ol start="4">
 <li><strong>创建映射</strong></li>
 </ol>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">PUT /user/_mapping</span><br><span class="line">&#123;</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;name&quot;:&#123;</span><br><span class="line">      &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">      &quot;analyzer&quot;: &quot;ik_smart&quot;,</span><br><span class="line">      &quot;search_analyzer&quot;: &quot;ik_smart&quot;,</span><br><span class="line">      &quot;store&quot;: false</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;city&quot;:&#123;</span><br><span class="line">      &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">      &quot;analyzer&quot;: &quot;ik_smart&quot;,</span><br><span class="line">      &quot;search_analyzer&quot;: &quot;ik_smart&quot;,</span><br><span class="line">      &quot;store&quot;: false</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;age&quot;:&#123;</span><br><span class="line">      &quot;type&quot;: &quot;long&quot;,</span><br><span class="line">      &quot;store&quot;: false</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;description&quot;:&#123;</span><br><span class="line">      &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">      &quot;analyzer&quot;: &quot;ik_smart&quot;,</span><br><span class="line">      &quot;search_analyzer&quot;: &quot;ik_smart&quot;,</span><br><span class="line">      &quot;store&quot;: false</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">PUT &#x2F;user&#x2F;_mapping
+&#123;
+  &quot;properties&quot;: &#123;
+    &quot;name&quot;:&#123;
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;analyzer&quot;: &quot;ik_smart&quot;,
+      &quot;search_analyzer&quot;: &quot;ik_smart&quot;,
+      &quot;store&quot;: false
+    &#125;,
+    &quot;city&quot;:&#123;
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;analyzer&quot;: &quot;ik_smart&quot;,
+      &quot;search_analyzer&quot;: &quot;ik_smart&quot;,
+      &quot;store&quot;: false
+    &#125;,
+    &quot;age&quot;:&#123;
+      &quot;type&quot;: &quot;long&quot;,
+      &quot;store&quot;: false
+    &#125;,
+    &quot;description&quot;:&#123;
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;analyzer&quot;: &quot;ik_smart&quot;,
+      &quot;search_analyzer&quot;: &quot;ik_smart&quot;,
+      &quot;store&quot;: false
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h4 id="5-1-2-2-文档操作"><a href="#5-1-2-2-文档操作" class="headerlink" title="5.1.2.2 文档操作"></a>5.1.2.2 文档操作</h4><h5 id="5-1-2-2-1-新增文档"><a href="#5-1-2-2-1-新增文档" class="headerlink" title="5.1.2.2.1 新增文档"></a>5.1.2.2.1 新增文档</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"># 手动指定id用put方法</span><br><span class="line">PUT /user/_doc/1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;李四&quot;,</span><br><span class="line">  &quot;age&quot;:22,</span><br><span class="line">  &quot;city&quot;:&quot;深圳&quot;,</span><br><span class="line">  &quot;description&quot;:&quot;李四来自湖北武汉！&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 自生成id用POST</span><br><span class="line">POST /user/_doc</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;李四&quot;,</span><br><span class="line">  &quot;age&quot;:22,</span><br><span class="line">  &quot;city&quot;:&quot;深圳&quot;,</span><br><span class="line">  &quot;description&quot;:&quot;李四来自湖北武汉！&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#新增文档数据 id=2</span><br><span class="line">PUT /user/_doc/2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;王五&quot;,</span><br><span class="line">  &quot;age&quot;:35,</span><br><span class="line">  &quot;city&quot;:&quot;深圳&quot;,</span><br><span class="line">  &quot;description&quot;:&quot;王五家住在深圳！&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#新增文档数据 id=3</span><br><span class="line">PUT /user/_doc/3</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;张三&quot;,</span><br><span class="line">  &quot;age&quot;:19,</span><br><span class="line">  &quot;city&quot;:&quot;深圳&quot;,</span><br><span class="line">  &quot;description&quot;:&quot;在深圳打工，来自湖北武汉&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#新增文档数据 id=4</span><br><span class="line">PUT /user/_doc/4</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;张三丰&quot;,</span><br><span class="line">  &quot;age&quot;:66,</span><br><span class="line">  &quot;city&quot;:&quot;武汉&quot;,</span><br><span class="line">  &quot;description&quot;:&quot;在武汉读书，家在武汉！&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#新增文档数据 id=5</span><br><span class="line">PUT /user/_doc/5</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;赵子龙&quot;,</span><br><span class="line">  &quot;age&quot;:77,</span><br><span class="line">  &quot;city&quot;:&quot;广州&quot;,</span><br><span class="line">  &quot;description&quot;:&quot;赵子龙来自深圳宝安，但是在广州工作！&quot;,</span><br><span class="line">  &quot;address&quot;:&quot;广东省茂名市&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#新增文档数据 id=6</span><br><span class="line">PUT /user/_doc/6</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;赵毅&quot;,</span><br><span class="line">  &quot;age&quot;:55,</span><br><span class="line">  &quot;city&quot;:&quot;广州&quot;,</span><br><span class="line">  &quot;description&quot;:&quot;赵毅来自广州白云区，从事电子商务8年！&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#新增文档数据 id=7</span><br><span class="line">PUT /user/_doc/7</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;赵哈哈&quot;,</span><br><span class="line">  &quot;age&quot;:57,</span><br><span class="line">  &quot;city&quot;:&quot;武汉&quot;,</span><br><span class="line">  &quot;description&quot;:&quot;武汉赵哈哈，在深圳打工已有半年了，月薪7500！&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="5-1-2-2-文档操作"><a href="#5-1-2-2-文档操作" class="headerlink" title="5.1.2.2 文档操作"></a>5.1.2.2 文档操作</h4><h5 id="5-1-2-2-1-新增文档"><a href="#5-1-2-2-1-新增文档" class="headerlink" title="5.1.2.2.1 新增文档"></a>5.1.2.2.1 新增文档</h5><pre class="line-numbers language-none"><code class="language-none"># 手动指定id用put方法
+PUT &#x2F;user&#x2F;_doc&#x2F;1
+&#123;
+  &quot;name&quot;:&quot;李四&quot;,
+  &quot;age&quot;:22,
+  &quot;city&quot;:&quot;深圳&quot;,
+  &quot;description&quot;:&quot;李四来自湖北武汉！&quot;
+&#125;
+
+# 自生成id用POST
+POST &#x2F;user&#x2F;_doc
+&#123;
+  &quot;name&quot;:&quot;李四&quot;,
+  &quot;age&quot;:22,
+  &quot;city&quot;:&quot;深圳&quot;,
+  &quot;description&quot;:&quot;李四来自湖北武汉！&quot;
+&#125;
+
+#新增文档数据 id&#x3D;2
+PUT &#x2F;user&#x2F;_doc&#x2F;2
+&#123;
+  &quot;name&quot;:&quot;王五&quot;,
+  &quot;age&quot;:35,
+  &quot;city&quot;:&quot;深圳&quot;,
+  &quot;description&quot;:&quot;王五家住在深圳！&quot;
+&#125;
+
+#新增文档数据 id&#x3D;3
+PUT &#x2F;user&#x2F;_doc&#x2F;3
+&#123;
+  &quot;name&quot;:&quot;张三&quot;,
+  &quot;age&quot;:19,
+  &quot;city&quot;:&quot;深圳&quot;,
+  &quot;description&quot;:&quot;在深圳打工，来自湖北武汉&quot;
+&#125;
+
+#新增文档数据 id&#x3D;4
+PUT &#x2F;user&#x2F;_doc&#x2F;4
+&#123;
+  &quot;name&quot;:&quot;张三丰&quot;,
+  &quot;age&quot;:66,
+  &quot;city&quot;:&quot;武汉&quot;,
+  &quot;description&quot;:&quot;在武汉读书，家在武汉！&quot;
+&#125;
+
+#新增文档数据 id&#x3D;5
+PUT &#x2F;user&#x2F;_doc&#x2F;5
+&#123;
+  &quot;name&quot;:&quot;赵子龙&quot;,
+  &quot;age&quot;:77,
+  &quot;city&quot;:&quot;广州&quot;,
+  &quot;description&quot;:&quot;赵子龙来自深圳宝安，但是在广州工作！&quot;,
+  &quot;address&quot;:&quot;广东省茂名市&quot;
+&#125;
+
+#新增文档数据 id&#x3D;6
+PUT &#x2F;user&#x2F;_doc&#x2F;6
+&#123;
+  &quot;name&quot;:&quot;赵毅&quot;,
+  &quot;age&quot;:55,
+  &quot;city&quot;:&quot;广州&quot;,
+  &quot;description&quot;:&quot;赵毅来自广州白云区，从事电子商务8年！&quot;
+&#125;
+
+#新增文档数据 id&#x3D;7
+PUT &#x2F;user&#x2F;_doc&#x2F;7
+&#123;
+  &quot;name&quot;:&quot;赵哈哈&quot;,
+  &quot;age&quot;:57,
+  &quot;city&quot;:&quot;武汉&quot;,
+  &quot;description&quot;:&quot;武汉赵哈哈，在深圳打工已有半年了，月薪7500！&quot;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h5 id="5-1-2-2-2-修改文档"><a href="#5-1-2-2-2-修改文档" class="headerlink" title="5.1.2.2.2 修改文档"></a>5.1.2.2.2 修改文档</h5><h6 id="5-1-2-2-2-1-替换操作"><a href="#5-1-2-2-2-1-替换操作" class="headerlink" title="5.1.2.2.2.1 替换操作"></a>5.1.2.2.2.1 替换操作</h6><p>使用GET命令查看：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#查询user索引下所有的文档</span><br><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#查询user索引下所有的文档
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;match_all&quot;: &#123;&#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>更新数据可以使用之前的增加操作,这种操作会将整个数据替换掉，代码如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#替换id=4的数据</span><br><span class="line">PUT /user/_doc/4</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;张三丰&quot;,</span><br><span class="line">  &quot;description&quot;:&quot;在武汉读书，家在武汉！在深圳工作！&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#替换id&#x3D;4的数据
+PUT &#x2F;user&#x2F;_doc&#x2F;4
+&#123;
+  &quot;name&quot;:&quot;张三丰&quot;,
+  &quot;description&quot;:&quot;在武汉读书，家在武汉！在深圳工作！&quot;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>然后再查询数据</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#查询id为4的数据</span><br><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;term&quot;: &#123;</span><br><span class="line">      &quot;_id&quot;: &quot;4&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#查询id为4的数据
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;term&quot;: &#123;
+      &quot;_id&quot;: &quot;4&quot;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h6 id="5-1-2-2-2-2-更新操作"><a href="#5-1-2-2-2-2-更新操作" class="headerlink" title="5.1.2.2.2.2 更新操作"></a>5.1.2.2.2.2 更新操作</h6><p>我们先使用下面命令恢复数据：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#恢复文档数据 id=4</span><br><span class="line">PUT /user/_doc/4</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;:&quot;张三丰&quot;,</span><br><span class="line">  &quot;age&quot;:66,</span><br><span class="line">  &quot;city&quot;:&quot;武汉&quot;,</span><br><span class="line">  &quot;description&quot;:&quot;在武汉读书，家在武汉！&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#恢复文档数据 id&#x3D;4
+PUT &#x2F;user&#x2F;_doc&#x2F;4
+&#123;
+  &quot;name&quot;:&quot;张三丰&quot;,
+  &quot;age&quot;:66,
+  &quot;city&quot;:&quot;武汉&quot;,
+  &quot;description&quot;:&quot;在武汉读书，家在武汉！&quot;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>使用POST更新某个列的数据</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#使用POST更新某个域的数据</span><br><span class="line">POST /user/_update/4</span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;:&#123;</span><br><span class="line">    &quot;name&quot;:&quot;张三丰&quot;,</span><br><span class="line">    &quot;description&quot;:&quot;在武汉读书，家在武汉！在深圳工作！&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#使用POST更新某个域的数据
+POST &#x2F;user&#x2F;_update&#x2F;4
+&#123;
+  &quot;doc&quot;:&#123;
+    &quot;name&quot;:&quot;张三丰&quot;,
+    &quot;description&quot;:&quot;在武汉读书，家在武汉！在深圳工作！&quot;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>在使用GET命令验证一下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#根据ID查询</span><br><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;term&quot;: &#123;</span><br><span class="line">      &quot;_id&quot;: &quot;4&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#根据ID查询
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;term&quot;: &#123;
+      &quot;_id&quot;: &quot;4&quot;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h5 id="5-1-2-2-3-删除文档"><a href="#5-1-2-2-3-删除文档" class="headerlink" title="5.1.2.2.3 删除文档"></a>5.1.2.2.3 删除文档</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#删除数据</span><br><span class="line">DELETE user/_doc/7</span><br></pre></td></tr></table></figure>
+<h5 id="5-1-2-2-3-删除文档"><a href="#5-1-2-2-3-删除文档" class="headerlink" title="5.1.2.2.3 删除文档"></a>5.1.2.2.3 删除文档</h5><pre class="line-numbers language-none"><code class="language-none">#删除数据
+DELETE user&#x2F;_doc&#x2F;7<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h3 id="5-1-3-数据查询"><a href="#5-1-3-数据查询" class="headerlink" title="5.1.3 数据查询"></a>5.1.3 数据查询</h3><h4 id="5-1-3-1-查询所有数据"><a href="#5-1-3-1-查询所有数据" class="headerlink" title="5.1.3.1 查询所有数据"></a>5.1.3.1 查询所有数据</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#查询所有</span><br><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-1-3-数据查询"><a href="#5-1-3-数据查询" class="headerlink" title="5.1.3 数据查询"></a>5.1.3 数据查询</h3><h4 id="5-1-3-1-查询所有数据"><a href="#5-1-3-1-查询所有数据" class="headerlink" title="5.1.3.1 查询所有数据"></a>5.1.3.1 查询所有数据</h4><pre class="line-numbers language-none"><code class="language-none">#查询所有
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;match_all&quot;: &#123;&#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h4 id="5-1-3-2-根据ID查询"><a href="#5-1-3-2-根据ID查询" class="headerlink" title="5.1.3.2 根据ID查询"></a>5.1.3.2 根据ID查询</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#根据ID查询</span><br><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;term&quot;: &#123;</span><br><span class="line">      &quot;_id&quot;: &quot;4&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="5-1-3-2-根据ID查询"><a href="#5-1-3-2-根据ID查询" class="headerlink" title="5.1.3.2 根据ID查询"></a>5.1.3.2 根据ID查询</h4><pre class="line-numbers language-none"><code class="language-none">#根据ID查询
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;term&quot;: &#123;
+      &quot;_id&quot;: &quot;4&quot;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h4 id="5-1-3-3-排序查询"><a href="#5-1-3-3-排序查询" class="headerlink" title="5.1.3.3 排序查询"></a>5.1.3.3 排序查询</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#搜索排序</span><br><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;:&#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;:&#123;</span><br><span class="line">    &quot;age&quot;:&#123;</span><br><span class="line">      &quot;order&quot;:&quot;desc&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="5-1-3-3-排序查询"><a href="#5-1-3-3-排序查询" class="headerlink" title="5.1.3.3 排序查询"></a>5.1.3.3 排序查询</h4><pre class="line-numbers language-none"><code class="language-none">#搜索排序
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;:&#123;
+    &quot;match_all&quot;: &#123;&#125;
+  &#125;,
+  &quot;sort&quot;:&#123;
+    &quot;age&quot;:&#123;
+      &quot;order&quot;:&quot;desc&quot;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h4 id="5-1-3-4-分页查询"><a href="#5-1-3-4-分页查询" class="headerlink" title="5.1.3.4 分页查询"></a>5.1.3.4 分页查询</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#分页实现</span><br><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;:&#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;:&#123;</span><br><span class="line">    &quot;age&quot;:&#123;</span><br><span class="line">      &quot;order&quot;:&quot;desc&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;from&quot;: 0,</span><br><span class="line">  &quot;size&quot;: 2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="5-1-3-4-分页查询"><a href="#5-1-3-4-分页查询" class="headerlink" title="5.1.3.4 分页查询"></a>5.1.3.4 分页查询</h4><pre class="line-numbers language-none"><code class="language-none">#分页实现
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;:&#123;
+    &quot;match_all&quot;: &#123;&#125;
+  &#125;,
+  &quot;sort&quot;:&#123;
+    &quot;age&quot;:&#123;
+      &quot;order&quot;:&quot;desc&quot;
+    &#125;
+  &#125;,
+  &quot;from&quot;: 0,
+  &quot;size&quot;: 2
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>解释：<br>from:从下N的记录开始查询<br>size:每页显示条数</p>
 <h3 id="5-1-4-过滤查询"><a href="#5-1-4-过滤查询" class="headerlink" title="5.1.4 过滤查询"></a>5.1.4 过滤查询</h3><h4 id="5-1-4-1-简单term过滤"><a href="#5-1-4-1-简单term过滤" class="headerlink" title="5.1.4.1 简单term过滤"></a>5.1.4.1 简单term过滤</h4><p>term主要用于分词精确匹配，如字符串、数值、日期等<br>会计算相关性评分<br>以下情况不适用：<br>1.列中除英文字符外有其它值<br>2.字符串值中有冒号或中文<br>3.系统自带属性如_version</p>
 <p>如下案例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#过滤查询-term</span><br><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">      &quot;term&quot;: &#123;</span><br><span class="line">        &quot;city&quot;: &quot;深圳&quot;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#过滤查询-term
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+      &quot;term&quot;: &#123;
+        &quot;city&quot;: &quot;深圳&quot;
+      &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="5-1-4-2-简单terms过滤"><a href="#5-1-4-2-简单terms过滤" class="headerlink" title="5.1.4.2 简单terms过滤"></a>5.1.4.2 简单terms过滤</h4><p>terms 跟 term 有点类似，但 terms 允许指定多个匹配条件。 如果某个字段指定了多个值，那么文档需要一起去做匹配 。</p>
 <p>案例如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#过滤查询-terms 允许多个Term</span><br><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;:&#123;</span><br><span class="line">    &quot;terms&quot;:&#123;</span><br><span class="line">      &quot;city&quot;:</span><br><span class="line">        [</span><br><span class="line">          &quot;武汉&quot;,</span><br><span class="line">          &quot;广州&quot;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#过滤查询-terms 允许多个Term
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;:&#123;
+    &quot;terms&quot;:&#123;
+      &quot;city&quot;:
+        [
+          &quot;武汉&quot;,
+          &quot;广州&quot;
+        ]
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="5-1-4-3-range过滤"><a href="#5-1-4-3-range过滤" class="headerlink" title="5.1.4.3 range过滤"></a>5.1.4.3 range过滤</h4><p>range过滤允许我们按照指定范围查找一批数据。例如我们查询年龄范围</p>
 <p>案例如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#过滤-range 范围过滤</span><br><span class="line">#gt表示&gt; gte表示=&gt;</span><br><span class="line">#lt表示&lt; lte表示&lt;=</span><br><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;:&#123;</span><br><span class="line">    &quot;range&quot;: &#123;</span><br><span class="line">      &quot;age&quot;: &#123;</span><br><span class="line">        &quot;gte&quot;: 30,</span><br><span class="line">        &quot;lte&quot;: 57</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#过滤-range 范围过滤
+#gt表示&gt; gte表示&#x3D;&gt;
+#lt表示&lt; lte表示&lt;&#x3D;
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;:&#123;
+    &quot;range&quot;: &#123;
+      &quot;age&quot;: &#123;
+        &quot;gte&quot;: 30,
+        &quot;lte&quot;: 57
+      &#125;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="5-1-4-4-exists过滤"><a href="#5-1-4-4-exists过滤" class="headerlink" title="5.1.4.4 exists过滤"></a>5.1.4.4 exists过滤</h4><p>exists 过滤可以用于查找拥有某个域的数据</p>
 <p>案例如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#过滤搜索 exists：是指包含某个域的数据检索</span><br><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;exists&quot;:&#123;</span><br><span class="line">      &quot;field&quot;:&quot;address&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#过滤搜索 exists：是指包含某个域的数据检索
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;exists&quot;:&#123;
+      &quot;field&quot;:&quot;address&quot;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="5-1-4-5-match-all查询"><a href="#5-1-4-5-match-all查询" class="headerlink" title="5.1.4.5 match_all查询"></a>5.1.4.5 match_all查询</h4><p>可以查询到所有文档，是没有查询条件下的默认语句。</p>
 <p>案例如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#查询所有 match_all</span><br><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match_all&quot;: &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#查询所有 match_all
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;match_all&quot;: &#123;&#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="5-1-4-6-match查询"><a href="#5-1-4-6-match查询" class="headerlink" title="5.1.4.6 match查询"></a>5.1.4.6 match查询</h4><p>match查询是一个标准查询，不管你需要全文本查询还是精确查询基本上都要用到它。</p>
 <p>如果你使用 match 查询一个全文本字段，它会在真正查询之前用分析器先分析match一下查询字符：</p>
 <p>案例如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#字符串匹配</span><br><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;description&quot;: &quot;武汉&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#字符串匹配
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;match&quot;: &#123;
+      &quot;description&quot;: &quot;武汉&quot;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="5-1-4-7-prefix查询"><a href="#5-1-4-7-prefix查询" class="headerlink" title="5.1.4.7 prefix查询"></a>5.1.4.7 prefix查询</h4><p>以什么字符开头的，可以更简单地用 prefix ,例如查询所有以张开始的用户描述</p>
 <p>案例如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#前缀匹配 prefix</span><br><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;prefix&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &#123;</span><br><span class="line">        &quot;value&quot;: &quot;赵&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#前缀匹配 prefix
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;prefix&quot;: &#123;
+      &quot;name&quot;: &#123;
+        &quot;value&quot;: &quot;赵&quot;
+      &#125;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="5-1-4-8-multi-match查询"><a href="#5-1-4-8-multi-match查询" class="headerlink" title="5.1.4.8 multi_match查询"></a>5.1.4.8 multi_match查询</h4><p>multi_match查询允许你做match查询的基础上同时搜索多个字段，在多个字段中同时查一个</p>
 <p>案例如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#多个域匹配搜索</span><br><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;multi_match&quot;: &#123;</span><br><span class="line">      &quot;query&quot;: &quot;深圳&quot;,</span><br><span class="line">      &quot;fields&quot;: [</span><br><span class="line">        &quot;city&quot;,</span><br><span class="line">        &quot;description&quot;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#多个域匹配搜索
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;multi_match&quot;: &#123;
+      &quot;query&quot;: &quot;深圳&quot;,
+      &quot;fields&quot;: [
+        &quot;city&quot;,
+        &quot;description&quot;
+      ]
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="5-1-4-9-bool过滤"><a href="#5-1-4-9-bool过滤" class="headerlink" title="5.1.4.9 bool过滤"></a>5.1.4.9 bool过滤</h4><p>bool 过滤可以用来合并多个过滤条件查询结果的布尔逻辑，它包含一下操作符：</p>
 <ul>
@@ -870,7 +1196,34 @@
 </ul>
 <p>这些参数可以分别继承一个过滤条件或者一个过滤条件的数组：</p>
 <p>案例如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">#过滤搜索 bool </span><br><span class="line">#must : 多个查询条件的完全匹配,相当于 and。</span><br><span class="line">#must_not : 多个查询条件的相反匹配，相当于 not。</span><br><span class="line">#should : 至少有一个查询条件匹配, 相当于 or。</span><br><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;term&quot;: &#123;</span><br><span class="line">            &quot;city&quot;: &#123;</span><br><span class="line">              &quot;value&quot;: &quot;深圳&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;range&quot;:&#123;</span><br><span class="line">            &quot;age&quot;:&#123;</span><br><span class="line">              &quot;gte&quot;:20,</span><br><span class="line">              &quot;lte&quot;:99</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">#过滤搜索 bool 
+#must : 多个查询条件的完全匹配,相当于 and。
+#must_not : 多个查询条件的相反匹配，相当于 not。
+#should : 至少有一个查询条件匹配, 相当于 or。
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;bool&quot;: &#123;
+      &quot;must&quot;: [
+        &#123;
+          &quot;term&quot;: &#123;
+            &quot;city&quot;: &#123;
+              &quot;value&quot;: &quot;深圳&quot;
+            &#125;
+          &#125;
+        &#125;,
+        &#123;
+          &quot;range&quot;:&#123;
+            &quot;age&quot;:&#123;
+              &quot;gte&quot;:20,
+              &quot;lte&quot;:99
+            &#125;
+          &#125;
+        &#125;
+      ]
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="5-1-4-10-bool-filter过滤"><a href="#5-1-4-10-bool-filter过滤" class="headerlink" title="5.1.4.10 bool.filter过滤"></a>5.1.4.10 bool.filter过滤</h4><ul>
 <li>作用：filter 子句也要求查询条件 必须 匹配，但与 must 不同，filter 不会影响文档的相关性评分。它仅仅是一个过滤器，用于限制符合条件的文档，而不会对文档进行评分计算。</li>
@@ -878,11 +1231,34 @@
 <li>适用场景：在你只需要过滤出符合某些条件的文档，而不关心它们的相关性评分时使用</li>
 </ul>
 <p>在这个例子中，文档必须有 city 为 “深圳”，并且 price 在 100 到 200 之间。由于使用了 filter，查询不会对文档进行打分计算，而是直接返回匹配的文档。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">GET /user/_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;filter&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;term&quot;: &#123;</span><br><span class="line">            &quot;city&quot;: &#123;</span><br><span class="line">              &quot;value&quot;: &quot;深圳&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;range&quot;:&#123;</span><br><span class="line">            &quot;age&quot;:&#123;</span><br><span class="line">              &quot;gte&quot;:20,</span><br><span class="line">              &quot;lte&quot;:99</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;bool&quot;: &#123;
+      &quot;filter&quot;: [
+        &#123;
+          &quot;term&quot;: &#123;
+            &quot;city&quot;: &#123;
+              &quot;value&quot;: &quot;深圳&quot;
+            &#125;
+          &#125;
+        &#125;,
+        &#123;
+          &quot;range&quot;:&#123;
+            &quot;age&quot;:&#123;
+              &quot;gte&quot;:20,
+              &quot;lte&quot;:99
+            &#125;
+          &#125;
+        &#125;
+      ]
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="5-2-配置Data-View-可选"><a href="#5-2-配置Data-View-可选" class="headerlink" title="5.2 配置Data View (可选)"></a>5.2 配置Data View (可选)</h2><p>后续当我们需要通过Kibana进行可视化分析时（如监控商品访问量、分析用户搜索热词），才需配置Data View。</p>
 <h3 id="5-2-1-左侧菜单选择Management"><a href="#5-2-1-左侧菜单选择Management" class="headerlink" title="5.2.1 左侧菜单选择Management"></a>5.2.1 左侧菜单选择Management</h3><p><img src="/imgs/hou-duan/1.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/1.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
-<h3 id="5-2-2-选择Kibana-Data-Views"><a href="#5-2-2-选择Kibana-Data-Views" class="headerlink" title="5.2.2 选择Kibana -&gt; Data Views"></a>5.2.2 选择Kibana -&gt; Data Views</h3><p><img src="/imgs/hou-duan/2.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/2.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h3 id="5-2-2-选择Kibana-gt-Data-Views"><a href="#5-2-2-选择Kibana-gt-Data-Views" class="headerlink" title="5.2.2 选择Kibana -&gt; Data Views"></a>5.2.2 选择Kibana -&gt; Data Views</h3><p><img src="/imgs/hou-duan/2.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/2.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 <h3 id="5-2-3-创建data-view"><a href="#5-2-3-创建data-view" class="headerlink" title="5.2.3 创建data view"></a>5.2.3 创建data view</h3><p>点击右上角 <code>Create data view</code>按钮创建</p>
 <p><img src="/imgs/hou-duan/3.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/3.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 <p><strong>比如我要创建一个索引</strong> <code>blog1</code> <strong>的视图</strong></p>
@@ -905,50 +1281,208 @@
 <li><code>common/utils/Result</code>: 统一响应结果处理工具</li>
 </ul>
 <h2 id="6-3-功能实现"><a href="#6-3-功能实现" class="headerlink" title="6.3 功能实现"></a>6.3 功能实现</h2><h3 id="6-3-1-数据同步机制"><a href="#6-3-1-数据同步机制" class="headerlink" title="6.3.1 数据同步机制"></a>6.3.1 数据同步机制</h3><h4 id="6-3-1-1-自动同步"><a href="#6-3-1-1-自动同步" class="headerlink" title="6.3.1.1 自动同步"></a>6.3.1.1 自动同步</h4><p>使用<code>@nestjs/schedule</code>的<code>@Cron</code>装饰器实现每天凌晨2点的自动同步：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Cron</span>(<span class="string">&#x27;0 0 2 * * *&#x27;</span>)</span><br><span class="line"><span class="keyword">async</span> <span class="title function_">syncSkuData</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">logger</span>.<span class="title function_">log</span>(<span class="string">&#x27;info&#x27;</span>, <span class="string">&#x27;开始同步SKU数据到Elasticsearch...&#x27;</span>);</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="title function_">importSku</span>();</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">logger</span>.<span class="title function_">log</span>(<span class="string">&#x27;info&#x27;</span>, <span class="string">&#x27;SKU数据同步完成&#x27;</span>);</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">logger</span>.<span class="title function_">error</span>(<span class="string">&#x27;SKU数据同步失败:&#x27;</span>, error);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token decorator"><span class="token at operator">@</span><span class="token function">Cron</span></span><span class="token punctuation">(</span><span class="token string">'0 0 2 * * *'</span><span class="token punctuation">)</span>
+<span class="token keyword">async</span> <span class="token function">syncSkuData</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'info'</span><span class="token punctuation">,</span> <span class="token string">'开始同步SKU数据到Elasticsearch...'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">importSku</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'info'</span><span class="token punctuation">,</span> <span class="token string">'SKU数据同步完成'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'SKU数据同步失败:'</span><span class="token punctuation">,</span> error<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="6-3-1-2-分批导入"><a href="#6-3-1-2-分批导入" class="headerlink" title="6.3.1.2 分批导入"></a>6.3.1.2 分批导入</h4><p>为了提高数据导入的可靠性和性能，实现了分批处理机制：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="title function_">importSku</span>(): <span class="title class_">Promise</span>&lt;<span class="built_in">void</span>&gt; &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 1. 检查索引是否存在，不存在则创建</span></span><br><span class="line">    <span class="keyword">const</span> indexExists = <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">elasticsearchService</span>.<span class="property">indices</span>.<span class="title function_">exists</span>(&#123;</span><br><span class="line">      <span class="attr">index</span>: <span class="variable language_">this</span>.<span class="property">ES_INDEX</span>,</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!indexExists) &#123;</span><br><span class="line">      <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="title function_">createSkuIndex</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 获取所有SKU数据</span></span><br><span class="line">    <span class="keyword">const</span> result = <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">skuService</span>.<span class="title function_">findAll</span>();</span><br><span class="line">    <span class="keyword">const</span> skuInfos = result.<span class="property">data</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 分批处理数据</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; skuInfos.<span class="property">length</span>; i += <span class="variable language_">this</span>.<span class="property">BATCH_SIZE</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> batch = skuInfos.<span class="title function_">slice</span>(i, i + <span class="variable language_">this</span>.<span class="property">BATCH_SIZE</span>);</span><br><span class="line">      <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="title function_">processBatch</span>(batch, <span class="number">0</span>);</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">logger</span>.<span class="title function_">log</span>(</span><br><span class="line">        <span class="string">&#x27;info&#x27;</span>,</span><br><span class="line">        <span class="string">`已处理 <span class="subst">$&#123;i + batch.length&#125;</span>/<span class="subst">$&#123;skuInfos.length&#125;</span> 条数据`</span>,</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">logger</span>.<span class="title function_">error</span>(<span class="string">&#x27;导入SKU数据失败:&#x27;</span>, error);</span><br><span class="line">    <span class="keyword">throw</span> error;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">async</span> <span class="token function">importSku</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span><span class="token keyword">void</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 1. 检查索引是否存在，不存在则创建</span>
+    <span class="token keyword">const</span> indexExists <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>elasticsearchService<span class="token punctuation">.</span>indices<span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+      index<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">ES_INDEX</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>indexExists<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">createSkuIndex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">// 2. 获取所有SKU数据</span>
+    <span class="token keyword">const</span> result <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>skuService<span class="token punctuation">.</span><span class="token function">findAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> skuInfos <span class="token operator">=</span> result<span class="token punctuation">.</span>data<span class="token punctuation">;</span>
+
+    <span class="token comment">// 3. 分批处理数据</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> skuInfos<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i <span class="token operator">+=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">BATCH_SIZE</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">const</span> batch <span class="token operator">=</span> skuInfos<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> i <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">BATCH_SIZE</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">processBatch</span><span class="token punctuation">(</span>batch<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>
+        <span class="token string">'info'</span><span class="token punctuation">,</span>
+        <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">已处理 </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>i <span class="token operator">+</span> batch<span class="token punctuation">.</span>length<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>skuInfos<span class="token punctuation">.</span>length<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string"> 条数据</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'导入SKU数据失败:'</span><span class="token punctuation">,</span> error<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">throw</span> error<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="6-3-1-3-重试机制"><a href="#6-3-1-3-重试机制" class="headerlink" title="6.3.1.3 重试机制"></a>6.3.1.3 重试机制</h4><p>实现了带有指数退避的重试机制，最大重试次数为3次：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">async</span> <span class="title function_">processBatch</span>(</span><br><span class="line">  <span class="attr">batch</span>: <span class="title class_">SkuEntity</span>[],</span><br><span class="line">  <span class="attr">retryCount</span>: <span class="built_in">number</span>,</span><br><span class="line">): <span class="title class_">Promise</span>&lt;<span class="built_in">void</span>&gt; &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> operations = batch.<span class="title function_">flatMap</span>(<span class="function">(<span class="params">skuInfo</span>) =&gt;</span> [</span><br><span class="line">      &#123; <span class="attr">index</span>: &#123; <span class="attr">_index</span>: <span class="variable language_">this</span>.<span class="property">ES_INDEX</span>, <span class="attr">_id</span>: skuInfo.<span class="property">id</span> &#125; &#125;,</span><br><span class="line">      skuInfo,</span><br><span class="line">    ]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> &#123; errors, items &#125; = <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="property">elasticsearchService</span>.<span class="title function_">bulk</span>(&#123;</span><br><span class="line">      operations,</span><br><span class="line">      <span class="attr">refresh</span>: <span class="literal">true</span>,</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (errors) &#123;</span><br><span class="line">      <span class="comment">// 收集失败的项</span></span><br><span class="line">      <span class="keyword">const</span> failedItems = items</span><br><span class="line">        .<span class="title function_">filter</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item.<span class="property">index</span>?.<span class="property">error</span>)</span><br><span class="line">        .<span class="title function_">map</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> (&#123;</span><br><span class="line">          <span class="attr">id</span>: item.<span class="property">index</span>?.<span class="property">_id</span>,</span><br><span class="line">          <span class="attr">error</span>: item.<span class="property">index</span>?.<span class="property">error</span>,</span><br><span class="line">        &#125;));</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (failedItems.<span class="property">length</span> &gt; <span class="number">0</span> &amp;&amp; retryCount &lt; <span class="variable language_">this</span>.<span class="property">MAX_RETRIES</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> failedSkus = batch.<span class="title function_">filter</span>(<span class="function">(<span class="params">sku</span>) =&gt;</span></span><br><span class="line">          failedItems.<span class="title function_">some</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item.<span class="property">id</span> === sku.<span class="property">id</span>.<span class="title function_">toString</span>()),</span><br><span class="line">        );</span><br><span class="line">        <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="title function_">processBatch</span>(failedSkus, retryCount + <span class="number">1</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="keyword">if</span> (retryCount &lt; <span class="variable language_">this</span>.<span class="property">MAX_RETRIES</span>) &#123;</span><br><span class="line">      <span class="keyword">await</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span></span><br><span class="line">        <span class="built_in">setTimeout</span>(resolve, <span class="number">1000</span> * (retryCount + <span class="number">1</span>)),</span><br><span class="line">      );</span><br><span class="line">      <span class="keyword">await</span> <span class="variable language_">this</span>.<span class="title function_">processBatch</span>(batch, retryCount + <span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">throw</span> error;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">private</span> <span class="token keyword">async</span> <span class="token function">processBatch</span><span class="token punctuation">(</span>
+  batch<span class="token operator">:</span> SkuEntity<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  retryCount<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span><span class="token keyword">void</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">const</span> operations <span class="token operator">=</span> batch<span class="token punctuation">.</span><span class="token function">flatMap</span><span class="token punctuation">(</span><span class="token punctuation">(</span>skuInfo<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">[</span>
+      <span class="token punctuation">&#123;</span> index<span class="token operator">:</span> <span class="token punctuation">&#123;</span> _index<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">ES_INDEX</span><span class="token punctuation">,</span> _id<span class="token operator">:</span> skuInfo<span class="token punctuation">.</span>id <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      skuInfo<span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<h3 id="6-3-2-索引结构"><a href="#6-3-2-索引结构" class="headerlink" title="6.3.2 索引结构"></a>6.3.2 索引结构</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mappings</span>: &#123;</span><br><span class="line">  <span class="attr">properties</span>: &#123;</span><br><span class="line">    <span class="attr">name</span>: &#123; <span class="attr">type</span>: <span class="string">&#x27;text&#x27;</span>, <span class="attr">analyzer</span>: <span class="string">&#x27;ik_max_word&#x27;</span> &#125;,</span><br><span class="line">    <span class="attr">price</span>: &#123; <span class="attr">type</span>: <span class="string">&#x27;double&#x27;</span> &#125;,</span><br><span class="line">    <span class="attr">categoryName</span>: &#123; <span class="attr">type</span>: <span class="string">&#x27;keyword&#x27;</span> &#125;,</span><br><span class="line">    <span class="attr">brandName</span>: &#123; <span class="attr">type</span>: <span class="string">&#x27;keyword&#x27;</span> &#125;,</span><br><span class="line">    <span class="attr">spec</span>: &#123; <span class="attr">type</span>: <span class="string">&#x27;keyword&#x27;</span> &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <span class="token keyword">const</span> <span class="token punctuation">&#123;</span> errors<span class="token punctuation">,</span> items <span class="token punctuation">&#125;</span> <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>elasticsearchService<span class="token punctuation">.</span><span class="token function">bulk</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+      operations<span class="token punctuation">,</span>
+      refresh<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<h3 id="6-3-3-搜索功能"><a href="#6-3-3-搜索功能" class="headerlink" title="6.3.3 搜索功能"></a>6.3.3 搜索功能</h3><h4 id="6-3-3-1-关键词搜索"><a href="#6-3-3-1-关键词搜索" class="headerlink" title="6.3.3.1 关键词搜索"></a>6.3.3.1 关键词搜索</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 关键字查询</span></span><br><span class="line"><span class="keyword">if</span> (keywords) &#123;</span><br><span class="line">  boolQuery.<span class="property">bool</span>.<span class="property">must</span>.<span class="title function_">push</span>(&#123;</span><br><span class="line">    <span class="attr">match</span>: &#123;</span><br><span class="line">      <span class="attr">name</span>: keywords,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>errors<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token comment">// 收集失败的项</span>
+      <span class="token keyword">const</span> failedItems <span class="token operator">=</span> items
+        <span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span> <span class="token operator">=></span> item<span class="token punctuation">.</span>index<span class="token operator">?.</span>error<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+          id<span class="token operator">:</span> item<span class="token punctuation">.</span>index<span class="token operator">?.</span>_id<span class="token punctuation">,</span>
+          error<span class="token operator">:</span> item<span class="token punctuation">.</span>index<span class="token operator">?.</span>error<span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>failedItems<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> retryCount <span class="token operator">&lt;</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">MAX_RETRIES</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">const</span> failedSkus <span class="token operator">=</span> batch<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token punctuation">(</span>sku<span class="token punctuation">)</span> <span class="token operator">=></span>
+          failedItems<span class="token punctuation">.</span><span class="token function">some</span><span class="token punctuation">(</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span> <span class="token operator">=></span> item<span class="token punctuation">.</span>id <span class="token operator">===</span> sku<span class="token punctuation">.</span>id<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">processBatch</span><span class="token punctuation">(</span>failedSkus<span class="token punctuation">,</span> retryCount <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>retryCount <span class="token operator">&lt;</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">MAX_RETRIES</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">await</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token builtin">Promise</span></span><span class="token punctuation">(</span><span class="token punctuation">(</span>resolve<span class="token punctuation">)</span> <span class="token operator">=></span>
+        <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> <span class="token number">1000</span> <span class="token operator">*</span> <span class="token punctuation">(</span>retryCount <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">processBatch</span><span class="token punctuation">(</span>batch<span class="token punctuation">,</span> retryCount <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">throw</span> error<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="6-3-2-索引结构"><a href="#6-3-2-索引结构" class="headerlink" title="6.3.2 索引结构"></a>6.3.2 索引结构</h3><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">mappings<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+  properties<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    name<span class="token operator">:</span> <span class="token punctuation">&#123;</span> type<span class="token operator">:</span> <span class="token string">'text'</span><span class="token punctuation">,</span> analyzer<span class="token operator">:</span> <span class="token string">'ik_max_word'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    price<span class="token operator">:</span> <span class="token punctuation">&#123;</span> type<span class="token operator">:</span> <span class="token string">'double'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    categoryName<span class="token operator">:</span> <span class="token punctuation">&#123;</span> type<span class="token operator">:</span> <span class="token string">'keyword'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    brandName<span class="token operator">:</span> <span class="token punctuation">&#123;</span> type<span class="token operator">:</span> <span class="token string">'keyword'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    spec<span class="token operator">:</span> <span class="token punctuation">&#123;</span> type<span class="token operator">:</span> <span class="token string">'keyword'</span> <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="6-3-3-搜索功能"><a href="#6-3-3-搜索功能" class="headerlink" title="6.3.3 搜索功能"></a>6.3.3 搜索功能</h3><h4 id="6-3-3-1-关键词搜索"><a href="#6-3-3-1-关键词搜索" class="headerlink" title="6.3.3.1 关键词搜索"></a>6.3.3.1 关键词搜索</h4><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// 关键字查询</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>keywords<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  boolQuery<span class="token punctuation">.</span>bool<span class="token punctuation">.</span>must<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+    match<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      name<span class="token operator">:</span> keywords<span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="6-3-3-2-过滤条件"><a href="#6-3-3-2-过滤条件" class="headerlink" title="6.3.3.2 过滤条件"></a>6.3.3.2 过滤条件</h4><p>支持多种过滤条件：</p>
 <ul>
 <li><p>分类过滤</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (searchMap[<span class="variable language_">this</span>.<span class="property">SEARCH_CATEGORY</span>]) &#123;</span><br><span class="line">  boolQuery.<span class="property">bool</span>.<span class="property">filter</span>.<span class="title function_">push</span>(&#123;</span><br><span class="line">    <span class="attr">term</span>: &#123;</span><br><span class="line">      [<span class="string">`<span class="subst">$&#123;<span class="variable language_">this</span>.SEARCH_CATEGORY&#125;</span>.keyword`</span>]: searchMap[<span class="variable language_">this</span>.<span class="property">SEARCH_CATEGORY</span>],</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">if</span> <span class="token punctuation">(</span>searchMap<span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_CATEGORY</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  boolQuery<span class="token punctuation">.</span>bool<span class="token punctuation">.</span>filter<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+    term<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token punctuation">[</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_CATEGORY</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">.keyword</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">]</span><span class="token operator">:</span> searchMap<span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_CATEGORY</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>品牌过滤</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (searchMap[<span class="variable language_">this</span>.<span class="property">SEARCH_BRAND</span>]) &#123;</span><br><span class="line">  boolQuery.<span class="property">bool</span>.<span class="property">filter</span>.<span class="title function_">push</span>(&#123;</span><br><span class="line">    <span class="attr">term</span>: &#123;</span><br><span class="line">      [<span class="string">`<span class="subst">$&#123;<span class="variable language_">this</span>.SEARCH_BRAND&#125;</span>.keyword`</span>]: searchMap[<span class="variable language_">this</span>.<span class="property">SEARCH_BRAND</span>],</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">if</span> <span class="token punctuation">(</span>searchMap<span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_BRAND</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  boolQuery<span class="token punctuation">.</span>bool<span class="token punctuation">.</span>filter<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+    term<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token punctuation">[</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_BRAND</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">.keyword</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">]</span><span class="token operator">:</span> searchMap<span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_BRAND</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>规格过滤</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Object</span>.<span class="title function_">keys</span>(searchMap).<span class="title function_">forEach</span>(<span class="function">(<span class="params">key</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (key.<span class="title function_">startsWith</span>(<span class="string">&#x27;spec_&#x27;</span>)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> searchMap[key] === <span class="string">&#x27;string&#x27;</span>) &#123;</span><br><span class="line">      boolQuery.<span class="property">bool</span>.<span class="property">filter</span>.<span class="title function_">push</span>(&#123;</span><br><span class="line">        <span class="attr">term</span>: &#123;</span><br><span class="line">          [<span class="string">`spec.<span class="subst">$&#123;key.substring(<span class="number">5</span>)&#125;</span>.keyword`</span>]: searchMap[key],</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="title class_">Array</span>.<span class="title function_">isArray</span>(searchMap[key])) &#123;</span><br><span class="line">      boolQuery.<span class="property">bool</span>.<span class="property">filter</span>.<span class="title function_">push</span>(&#123;</span><br><span class="line">        <span class="attr">terms</span>: &#123;</span><br><span class="line">          [<span class="string">`spec.<span class="subst">$&#123;key.substring(<span class="number">5</span>)&#125;</span>.keyword`</span>]: searchMap[key],</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>searchMap<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>key<span class="token punctuation">.</span><span class="token function">startsWith</span><span class="token punctuation">(</span><span class="token string">'spec_'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> searchMap<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">===</span> <span class="token string">'string'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      boolQuery<span class="token punctuation">.</span>bool<span class="token punctuation">.</span>filter<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        term<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+          <span class="token punctuation">[</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">spec.</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>key<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">.keyword</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">]</span><span class="token operator">:</span> searchMap<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token builtin">Array</span><span class="token punctuation">.</span><span class="token function">isArray</span><span class="token punctuation">(</span>searchMap<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      boolQuery<span class="token punctuation">.</span>bool<span class="token punctuation">.</span>filter<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        terms<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+          <span class="token punctuation">[</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">spec.</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>key<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">.keyword</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">]</span><span class="token operator">:</span> searchMap<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>价格区间过滤</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> price = searchMap[<span class="variable language_">this</span>.<span class="property">SEARCH_PRICE</span>];</span><br><span class="line"><span class="keyword">if</span> (price) &#123;</span><br><span class="line">  <span class="keyword">const</span> [minPrice, maxPrice] = price.<span class="title function_">split</span>(<span class="string">&#x27;-&#x27;</span>);</span><br><span class="line">  <span class="keyword">if</span> (maxPrice !== <span class="string">&#x27;*&#x27;</span>) &#123;</span><br><span class="line">    boolQuery.<span class="property">bool</span>.<span class="property">filter</span>.<span class="title function_">push</span>(&#123;</span><br><span class="line">      <span class="attr">range</span>: &#123;</span><br><span class="line">        <span class="attr">price</span>: &#123; <span class="attr">gte</span>: minPrice, <span class="attr">lte</span>: maxPrice &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    boolQuery.<span class="property">bool</span>.<span class="property">filter</span>.<span class="title function_">push</span>(&#123;</span><br><span class="line">      <span class="attr">range</span>: &#123;</span><br><span class="line">        <span class="attr">price</span>: &#123; <span class="attr">gte</span>: minPrice &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">const</span> price <span class="token operator">=</span> searchMap<span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_PRICE</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>price<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>minPrice<span class="token punctuation">,</span> maxPrice<span class="token punctuation">]</span> <span class="token operator">=</span> price<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">'-'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>maxPrice <span class="token operator">!==</span> <span class="token string">'*'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    boolQuery<span class="token punctuation">.</span>bool<span class="token punctuation">.</span>filter<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+      range<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        price<span class="token operator">:</span> <span class="token punctuation">&#123;</span> gte<span class="token operator">:</span> minPrice<span class="token punctuation">,</span> lte<span class="token operator">:</span> maxPrice <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+    boolQuery<span class="token punctuation">.</span>bool<span class="token punctuation">.</span>filter<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+      range<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        price<span class="token operator">:</span> <span class="token punctuation">&#123;</span> gte<span class="token operator">:</span> minPrice <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 </ul>
 <h4 id="6-3-3-3-排序"><a href="#6-3-3-3-排序" class="headerlink" title="6.3.3.3 排序"></a>6.3.3.3 排序</h4><p>支持自定义字段排序：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sortField = searchMap[<span class="string">&#x27;sortField&#x27;</span>];</span><br><span class="line"><span class="keyword">const</span> sortRule = searchMap[<span class="string">&#x27;sortRule&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span> (sortField &amp;&amp; sortRule) &#123;</span><br><span class="line">  searchRequest.<span class="property">sort</span>.<span class="title function_">push</span>(&#123;</span><br><span class="line">    [sortField]: &#123;</span><br><span class="line">      <span class="attr">order</span>: sortRule.<span class="title function_">toLowerCase</span>() === <span class="string">&#x27;desc&#x27;</span> ? <span class="string">&#x27;desc&#x27;</span> : <span class="string">&#x27;asc&#x27;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">const</span> sortField <span class="token operator">=</span> searchMap<span class="token punctuation">[</span><span class="token string">'sortField'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> sortRule <span class="token operator">=</span> searchMap<span class="token punctuation">[</span><span class="token string">'sortRule'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>sortField <span class="token operator">&amp;&amp;</span> sortRule<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  searchRequest<span class="token punctuation">.</span>sort<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+    <span class="token punctuation">[</span>sortField<span class="token punctuation">]</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      order<span class="token operator">:</span> sortRule<span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">'desc'</span> <span class="token operator">?</span> <span class="token string">'desc'</span> <span class="token operator">:</span> <span class="token string">'asc'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="6-3-3-4-聚合"><a href="#6-3-3-4-聚合" class="headerlink" title="6.3.3.4 聚合"></a>6.3.3.4 聚合</h4><p>支持分类、品牌和规格的聚合统计：</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">searchRequest.<span class="property">aggregations</span> = &#123;</span><br><span class="line">  <span class="comment">// 分类聚合</span></span><br><span class="line">  [<span class="variable language_">this</span>.<span class="property">ES_CATEGORY_AGR</span>]: &#123;</span><br><span class="line">    <span class="attr">terms</span>: &#123; <span class="attr">field</span>: <span class="string">`<span class="subst">$&#123;<span class="variable language_">this</span>.SEARCH_CATEGORY&#125;</span>.keyword`</span>, <span class="attr">size</span>: <span class="number">50</span> &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 品牌聚合</span></span><br><span class="line">  [<span class="variable language_">this</span>.<span class="property">ES_BRAND_AGR</span>]: &#123;</span><br><span class="line">    <span class="attr">terms</span>: &#123; <span class="attr">field</span>: <span class="string">`<span class="subst">$&#123;<span class="variable language_">this</span>.SEARCH_BRAND&#125;</span>.keyword`</span>, <span class="attr">size</span>: <span class="number">50</span> &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 商品规格聚合</span></span><br><span class="line">  [<span class="variable language_">this</span>.<span class="property">ES_SPEC_MAP_AGR</span>]: &#123;</span><br><span class="line">    <span class="attr">terms</span>: &#123; <span class="attr">field</span>: <span class="string">&#x27;spec.keyword&#x27;</span>, <span class="attr">size</span>: <span class="number">10000</span> &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">searchRequest<span class="token punctuation">.</span>aggregations <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">// 分类聚合</span>
+  <span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">ES_CATEGORY_AGR</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    terms<span class="token operator">:</span> <span class="token punctuation">&#123;</span> field<span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_CATEGORY</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">.keyword</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span> size<span class="token operator">:</span> <span class="token number">50</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token comment">// 品牌聚合</span>
+  <span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">ES_BRAND_AGR</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    terms<span class="token operator">:</span> <span class="token punctuation">&#123;</span> field<span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_BRAND</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">.keyword</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span> size<span class="token operator">:</span> <span class="token number">50</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token comment">// 商品规格聚合</span>
+  <span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">ES_SPEC_MAP_AGR</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    terms<span class="token operator">:</span> <span class="token punctuation">&#123;</span> field<span class="token operator">:</span> <span class="token string">'spec.keyword'</span><span class="token punctuation">,</span> size<span class="token operator">:</span> <span class="token number">10000</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 <h2 id="6-4-完整代码实现"><a href="#6-4-完整代码实现" class="headerlink" title="6.4 完整代码实现"></a>6.4 完整代码实现</h2><p>完整的搜索服务实现请参考 该<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/ibuy-admin-backend">仓库</a> 的<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/ibuy-portal-backend/blob/main/src/mall-service/mall-service-search/search.service.ts">search.service.ts</a> 文件。</p>
 <blockquote>
 <p>正常是导入逻辑和搜索逻辑分在不同的项目，这里为了方便演示，将导入逻辑和搜索逻辑放在了同一个项目中。<br>搜索逻辑也可以在<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/ibuy-portal-backend">portal</a> 项目中查看</p>
 </blockquote>
-<h2 id="6-5-API使用示例"><a href="#6-5-API使用示例" class="headerlink" title="6.5 API使用示例"></a>6.5 API使用示例</h2><h3 id="6-5-1-基础搜索"><a href="#6-5-1-基础搜索" class="headerlink" title="6.5.1 基础搜索"></a>6.5.1 基础搜索</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /search/query?keywords=手机</span><br></pre></td></tr></table></figure>
+<h2 id="6-5-API使用示例"><a href="#6-5-API使用示例" class="headerlink" title="6.5 API使用示例"></a>6.5 API使用示例</h2><h3 id="6-5-1-基础搜索"><a href="#6-5-1-基础搜索" class="headerlink" title="6.5.1 基础搜索"></a>6.5.1 基础搜索</h3><pre class="line-numbers language-none"><code class="language-none">GET &#x2F;search&#x2F;query?keywords&#x3D;手机<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="6-5-2-带过滤的搜索"><a href="#6-5-2-带过滤的搜索" class="headerlink" title="6.5.2 带过滤的搜索"></a>6.5.2 带过滤的搜索</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /search/query?keywords=手机&amp;categoryName=智能手机&amp;price=1000-2000</span><br></pre></td></tr></table></figure>
+<h3 id="6-5-2-带过滤的搜索"><a href="#6-5-2-带过滤的搜索" class="headerlink" title="6.5.2 带过滤的搜索"></a>6.5.2 带过滤的搜索</h3><pre class="line-numbers language-none"><code class="language-none">GET &#x2F;search&#x2F;query?keywords&#x3D;手机&amp;categoryName&#x3D;智能手机&amp;price&#x3D;1000-2000<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="6-5-3-带排序的搜索"><a href="#6-5-3-带排序的搜索" class="headerlink" title="6.5.3 带排序的搜索"></a>6.5.3 带排序的搜索</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /search/query?keywords=手机&amp;sortField=price&amp;sortRule=desc</span><br></pre></td></tr></table></figure>
+<h3 id="6-5-3-带排序的搜索"><a href="#6-5-3-带排序的搜索" class="headerlink" title="6.5.3 带排序的搜索"></a>6.5.3 带排序的搜索</h3><pre class="line-numbers language-none"><code class="language-none">GET &#x2F;search&#x2F;query?keywords&#x3D;手机&amp;sortField&#x3D;price&amp;sortRule&#x3D;desc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="6-5-4-带规格过滤的搜索"><a href="#6-5-4-带规格过滤的搜索" class="headerlink" title="6.5.4 带规格过滤的搜索"></a>6.5.4 带规格过滤的搜索</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET /search/query?keywords=手机&amp;spec_颜色=黑色&amp;spec_内存=8GB</span><br></pre></td></tr></table></figure>
+<h3 id="6-5-4-带规格过滤的搜索"><a href="#6-5-4-带规格过滤的搜索" class="headerlink" title="6.5.4 带规格过滤的搜索"></a>6.5.4 带规格过滤的搜索</h3><pre class="line-numbers language-none"><code class="language-none">GET &#x2F;search&#x2F;query?keywords&#x3D;手机&amp;spec_颜色&#x3D;黑色&amp;spec_内存&#x3D;8GB<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
       </div>
       <div class="post-tags-categories">
@@ -996,16 +1530,16 @@
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/8.jpg" class="lazyload placeholder" data-srcset="/medias/8.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2025/03/14/hou-duan/shang-cheng/shou-ba-shou-jiao-ni-zai-wang-zhan-zhong-qi-yong-https-he-http2/" class="post-nav-link">
+    <a href="/2025/03/14/hou-duan/shang-cheng/shi-xian-shang-cheng-zhi-fu-gong-neng/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">手把手教你在网站中启用https和http2</div>
+        <div class="title-text">Nestjs+RabbitMQ+支付宝沙盒 实现电商支付功能</div>
       </div>
       
       <!-- <div class="content">
-        1. 前言在当今互联网时代，网站的安全性和加载速度成为用户体验中至关重要的两个因素。启用HTTPS可以通过加密通信保护数
+        1. 前言在电商系统中，支付功能是整个交易流程中最为关键的环节之一。一个完善的支付系统不仅要保证交易的安全性和可靠性，还
       </div> -->
     </a>
   </div>
@@ -1270,7 +1804,7 @@
     if (document.getElementsByClassName('mermaid').length) {
       if (window.mermaidJsLoad) mermaid.init()
       else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
           window.mermaidJsLoad = true
           mermaid.initialize({
             theme: 'default',

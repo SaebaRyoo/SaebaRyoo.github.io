@@ -44,8 +44,8 @@
             }
         }
     </style>
-    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
 
     
 
@@ -511,6 +511,21 @@
         
  <!-- prismjs 代码高亮 -->
  
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
 
 
 <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
@@ -580,7 +595,9 @@
 <li>events 块： 影响<strong>nginx 服务器与用户的网络连接</strong>，常用的设置包括是否开启对多 workprocess 下的网络连接进行序列化，是否允许同时接收多个网络连接等等</li>
 <li>http 块： 如反向代理和负载均衡都在此配置</li>
 </ul>
-<h2 id="location-的匹配规则"><a href="#location-的匹配规则" class="headerlink" title="location 的匹配规则"></a>location 的匹配规则</h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location[ = | ~ | ~* | ^~ ] url &#123;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="location-的匹配规则"><a href="#location-的匹配规则" class="headerlink" title="location 的匹配规则"></a>location 的匹配规则</h2><pre class="line-numbers language-vim" data-language="vim"><code class="language-vim">location<span class="token punctuation">[</span> <span class="token operator">=</span> | ~ | ~<span class="token operator">*</span> | ^~ <span class="token punctuation">]</span> url <span class="token punctuation">&#123;</span>
+  <span class="token operator">.</span><span class="token operator">.</span><span class="token operator">.</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <ul>
 <li><strong>&#x3D;</strong> : <strong>精确匹配</strong>, 用于<strong>不含正则表达式</strong>的 url 前，要求字符串与 url<strong>严格匹配</strong>，完全相等时，才能停止向下搜索并处理请求</li>
@@ -918,7 +935,7 @@ Action：一个 J
     if (document.getElementsByClassName('mermaid').length) {
       if (window.mermaidJsLoad) mermaid.init()
       else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
           window.mermaidJsLoad = true
           mermaid.initialize({
             theme: 'default',

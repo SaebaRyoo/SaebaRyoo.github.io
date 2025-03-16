@@ -44,8 +44,8 @@
             }
         }
     </style>
-    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
 
     
 
@@ -511,6 +511,21 @@
         
  <!-- prismjs 代码高亮 -->
  
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
 
 
 <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
@@ -570,7 +585,24 @@
     <article class="post post-detail">
       <div class="post-content">
         <p>我们可以使用 Node 来实现一个区块链，它的格式如下:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">index</span>: <span class="number">0</span>, <span class="comment">// 索引</span></span><br><span class="line">    <span class="attr">timestamp</span>: <span class="string">&quot;时间戳&quot;</span>,</span><br><span class="line">    <span class="attr">data</span>: <span class="string">&quot;区块的具体信息, 主要是交易信息&quot;</span>,</span><br><span class="line">    <span class="attr">hash</span>: <span class="string">&quot;当前区块信息的hash值&quot;</span>,</span><br><span class="line">    <span class="attr">prevHash</span>: <span class="string">&quot;上一个区块的哈希&quot;</span>,</span><br><span class="line">    <span class="attr">nonce</span>: <span class="string">&quot;随机数,用于计算出符合条件的hash&quot;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">index</span>: <span class="number">1</span>, <span class="comment">// 索引</span></span><br><span class="line">    <span class="attr">timestamp</span>: <span class="string">&quot;时间戳&quot;</span>,</span><br><span class="line">    <span class="attr">data</span>: <span class="string">&quot;区块的具体信息, 主要是交易信息&quot;</span>,</span><br><span class="line">    <span class="attr">hash</span>: <span class="string">&quot;当前区块信息的hash值&quot;</span>,</span><br><span class="line">    <span class="attr">prevHash</span>: <span class="string">&quot;上一个区块的哈希&quot;</span>,</span><br><span class="line">    <span class="attr">nonce</span>: <span class="string">&quot;随机数,用于计算出符合条件的hash&quot;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token punctuation">[</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">index</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token comment">// 索引</span>
+    <span class="token literal-property property">timestamp</span><span class="token operator">:</span> <span class="token string">"时间戳"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">data</span><span class="token operator">:</span> <span class="token string">"区块的具体信息, 主要是交易信息"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">hash</span><span class="token operator">:</span> <span class="token string">"当前区块信息的hash值"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">prevHash</span><span class="token operator">:</span> <span class="token string">"上一个区块的哈希"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">nonce</span><span class="token operator">:</span> <span class="token string">"随机数,用于计算出符合条件的hash"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">index</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token comment">// 索引</span>
+    <span class="token literal-property property">timestamp</span><span class="token operator">:</span> <span class="token string">"时间戳"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">data</span><span class="token operator">:</span> <span class="token string">"区块的具体信息, 主要是交易信息"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">hash</span><span class="token operator">:</span> <span class="token string">"当前区块信息的hash值"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">prevHash</span><span class="token operator">:</span> <span class="token string">"上一个区块的哈希"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">nonce</span><span class="token operator">:</span> <span class="token string">"随机数,用于计算出符合条件的hash"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>然后就是根据信息实现区块链的功能</p>
 <ol>
@@ -892,7 +924,7 @@
     if (document.getElementsByClassName('mermaid').length) {
       if (window.mermaidJsLoad) mermaid.init()
       else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
           window.mermaidJsLoad = true
           mermaid.initialize({
             theme: 'default',

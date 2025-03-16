@@ -44,8 +44,8 @@
             }
         }
     </style>
-    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-    <link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
 
     
 
@@ -511,6 +511,21 @@
         
  <!-- prismjs 代码高亮 -->
  
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
 
 
 <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
@@ -620,25 +635,32 @@
 </li>
 </ol>
 <h3 id="脚手架本地-link-标准流程"><a href="#脚手架本地-link-标准流程" class="headerlink" title="脚手架本地 link 标准流程"></a>脚手架本地 link 标准流程</h3><p>链接本地脚手架</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd your-cli-dir</span><br><span class="line">npm link</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">cd your-cli-dir
+npm link<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>链接本地库文件（当功能比较多，做分包时用）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd your-lib-dir</span><br><span class="line">npm link</span><br><span class="line">cd your-cli-dir</span><br><span class="line">npm link your-lib</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">cd your-lib-dir
+npm link
+cd your-cli-dir
+npm link your-lib<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>取消链接本地库文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd your-lib-dir</span><br><span class="line">npm unlink</span><br><span class="line">cd your-cli-dir</span><br><span class="line">npm unlink your-lib</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">cd your-lib-dir
+npm unlink
+cd your-cli-dir
+npm unlink your-lib<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
       </div>
       <div class="post-tags-categories">
         
         <div class="tags">
           
-            <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/" class="">
-              工程化
-            </a>
-          
             <a href="/tags/Node/" class="">
               Node
+            </a>
+          
+            <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/" class="">
+              工程化
             </a>
           
         </div>
@@ -949,7 +971,7 @@
     if (document.getElementsByClassName('mermaid').length) {
       if (window.mermaidJsLoad) mermaid.init()
       else {
-        loadScript('https://unpkg.com/mermaid/dist/mermaid.min.js').then(() => {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
           window.mermaidJsLoad = true
           mermaid.initialize({
             theme: 'default',
