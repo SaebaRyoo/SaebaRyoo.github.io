@@ -65,7 +65,7 @@ highlight:
   blue: '#6699cc'
   purple: '#cc99cc'
 prismjs:
-  enable: false
+  enable: true
   preprocess: true
   line_number: true
   tab_replace: ''
@@ -127,3 +127,18 @@ deploy:
 permalink_pinyin:
   enable: true
   separator: '-' # default: '-'
+
+
+markdown:
+  render:
+    html: true
+    xhtmlOut: false
+    breaks: true
+    linkify: true
+    typographer: true
+  plugins:
+    - markdown-it-footnote
+    - markdown-it-sup
+    - markdown-it-sub
+    - markdown-it-abbr
+    - markdown-it-emoji

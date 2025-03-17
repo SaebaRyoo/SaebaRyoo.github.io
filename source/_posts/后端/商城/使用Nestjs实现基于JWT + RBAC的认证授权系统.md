@@ -11,7 +11,7 @@ tags:
     
 ## 前言
 
-本系统实现了一个基于RBAC（Role-Based Access Control）的认证授权系统，主要包含以下功能：
+这篇文章使用Nestjs实现了一个基于JWT+RBAC（Role-Based Access Control）的认证授权系统，主要包含以下功能：
 
 - 用户认证：实现用户登录、登出等基础认证功能
 - 权限控制：基于RBAC模型的细粒度权限控制
@@ -21,7 +21,7 @@ tags:
 
 ### 实体关系图
 
-```mermaid
+<pre class="mermaid">
 erDiagram
     SysUsersEntity ||--o{ UsersRoleEntity : has
     RoleEntity ||--o{ UsersRoleEntity : has
@@ -43,7 +43,7 @@ erDiagram
         number admin_id PK
         number role_id PK
     }
-```
+</pre>
 
 ### 表结构说明
 

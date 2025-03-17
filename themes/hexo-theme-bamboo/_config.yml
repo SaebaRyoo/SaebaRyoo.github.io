@@ -743,7 +743,7 @@ mermaid:
   on: true
   # built-in themes: default/forest/dark/neutral
   theme: default
-  cdn: https://unpkg.com/mermaid/dist/mermaid.min.js
+  cdn: https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js
 
 # pjax
 pjax:
@@ -843,8 +843,8 @@ CDN:
   ayuJs: https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js
   copyRight: https://creativecommons.org/licenses/by-nc-nd/4.0/
   live2d: https://cdn.jsdelivr.net/gh/yuang01/live2d-widget@latest/autoload.js # https://cdn.jsdelivr.net/gh 这个cdn目前国内不太稳定，可能导致左下角人物加载不出来
-  paceJs: //cdn.bootcss.com/pace/1.0.2/pace.min.js
-  paceCss: //cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css
+  paceJs: https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js
+  paceCss: https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css
   weather: https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0
   typedJs: https://unpkg.com/typed.js@2.0.11
   jquery: https://unpkg.com/jquery@3.5.1/dist/jquery.min.js

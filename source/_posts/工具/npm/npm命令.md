@@ -5,7 +5,7 @@ categories:
   - 工具
 tags:
   - Node
-  - Npm
+  - NPM
 ---
 
 # [原文地址，本篇仅做记录学习](https://www.cnblogs.com/PeunZhang/p/5553574.html)
