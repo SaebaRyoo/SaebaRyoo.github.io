@@ -535,6 +535,64 @@
         <div class="post-info">
           <div class="post-time">
             <i class="fas fa-clock" aria-hidden="true"></i>
+            <span class="post-time">2025-02-23</span>
+          </div>
+          <div class="post-title">
+            <a class="post-title-link" href="/2025/02/23/yun-wei/shi-yong-github-actions-docker-zi-dong-hua-bu-shu-nestjs/">使用Github Actions+Docker自动化部署Nestjs</a>
+          </div>
+          <div class="post-meta">
+            <div class="post-tags">
+              <!-- 文章详情页的标签 -->
+
+    <i class="iconfont icontag"></i>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nestjs/" rel="tag">Nestjs</a></li></ul>
+
+            </div>
+            <div class="post-categories">
+              <!-- 文章详情页的分类 -->
+
+<div class="article-category">
+  <i class="iconfont iconbookmark1"></i>
+  <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+</div>
+
+
+            </div>
+          </div>
+          <div class="post-img-mobile">
+            <a href="/2025/02/23/yun-wei/shi-yong-github-actions-docker-zi-dong-hua-bu-shu-nestjs/" style="background-size: cover; 
+              background-position: center center;">
+              <img class="lazyload lazyload placeholder" src="/medias/3.jpg" class="lazyload placeholder" data-srcset="/medias/3.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+            </a>
+          </div>
+          <div class="post-content">
+            1. 如何安全部署
+在下面的部署工作中，我们会将 Linux 服务器的 SSH 私钥配置到 GitHub 的 Secrets 中，虽然是一种常见的自动化部署方式，但需要谨慎处理以确保安全性。
+1.1. 优点
+
+​自动化部署​**：通过 Gi
+          </div>
+        </div>
+        <div class="post-more">
+          <a href="/2025/02/23/yun-wei/shi-yong-github-actions-docker-zi-dong-hua-bu-shu-nestjs/">
+            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
+          </a>
+        </div>
+      </div>
+      <div class="post-img">
+        <a href="/2025/02/23/yun-wei/shi-yong-github-actions-docker-zi-dong-hua-bu-shu-nestjs/" style="background-size: cover; 
+          background-position: center center;">
+          <img class="lazyload lazyload placeholder" src="/medias/3.jpg" class="lazyload placeholder" data-srcset="/medias/3.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+        </a>
+      </div>
+    </article>
+  
+    
+    <article class="post reveal" style="   ">
+      <div class="post-main">
+        <div class="post-info">
+          <div class="post-time">
+            <i class="fas fa-clock" aria-hidden="true"></i>
             <span class="post-time">2025-02-20</span>
           </div>
           <div class="post-title">
@@ -566,13 +624,16 @@
             </a>
           </div>
           <div class="post-content">
-            1. docker 部署 nginx1.1. 拉取镜像docker pull nginx
-1.2. 创建挂载目录mkdir -p /usr/local/docker-volumes/nginx/&#123;conf,log,html&#12
+            1. docker 部署 nginx
+1.1. 拉取镜像
+docker pull nginx
+1.2. 创建挂载目录
+mkdir -p /usr/local/docker-volumes/nginx/&#123;conf,log,html&
           </div>
         </div>
         <div class="post-more">
           <a href="/2025/02/20/yun-wei/githubaction-zi-dong-hua-bu-shu-qian-duan-ying-yong/">
-            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
+            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
           </a>
         </div>
       </div>
@@ -585,7 +646,7 @@
     </article>
   
     
-    <article class="post reveal" style="   ">
+    <article class="post reveal" style="flex-direction: row-reverse;   ">
       <div class="post-main">
         <div class="post-info">
           <div class="post-time">
@@ -625,16 +686,18 @@
 本文用于学习和记录
 
 1. 前提条件
+
 安装 Docker 和 Docker Compose
 安装 Jenkins
 拥有一个前端项目的代码库（例如 GitHub）
 
-1.1. 准备一台服务器服务器一台，请根据自己的项目选择不同配置的服务器，
+1.1. 准备一台服务器
+服务器一台，请根据自己的项目选择不同配置的服务
           </div>
         </div>
         <div class="post-more">
           <a href="/2025/02/20/yun-wei/jenkins-qian-duan-zi-dong-hua-bu-shu/">
-            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
+            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
           </a>
         </div>
       </div>
@@ -647,7 +710,7 @@
     </article>
   
     
-    <article class="post reveal" style="flex-direction: row-reverse;   ">
+    <article class="post reveal" style="   ">
       <div class="post-main">
         <div class="post-info">
           <div class="post-time">
@@ -684,13 +747,15 @@
           </div>
           <div class="post-content">
             
-theme: channing-cyan在一个后台管理系统中，安全是很重要的。不光后端需要做权限校验，前端也需要做权限控制。我们可以大致将权限分为 3 种： 接口权限、页面权限、按钮权限。
-在这当中，前端主要关注点则是页面权限，按钮权限，
+theme: channing-cyan
+在一个后台管理系统中，安全是很重要的。不光后端需要做权限校验，前端也需要做权限控制。
+我们可以大致将权限分为 3 种： 接口权限、页面权限、按钮权限。
+在这当中，前端主要关注点则是页面权限，按钮权
           </div>
         </div>
         <div class="post-more">
           <a href="/2025/02/20/qian-duan/react/qian-duan-ri-chang-ji-yu-rbac-he-react-router-v6-de-quan-xian-kong-zhi/">
-            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
+            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
           </a>
         </div>
       </div>
@@ -703,7 +768,7 @@ theme: channing-cyan在一个后台管理系统中，安全是很重要的。不
     </article>
   
     
-    <article class="post reveal" style="   ">
+    <article class="post reveal" style="flex-direction: row-reverse;   ">
       <div class="post-main">
         <div class="post-info">
           <div class="post-time">
@@ -739,12 +804,13 @@ theme: channing-cyan在一个后台管理系统中，安全是很重要的。不
             </a>
           </div>
           <div class="post-content">
-            PostgreSQL 数据库备份与恢复操作在使用 PostgreSQL 数据库时，pg_dump 是一个常用的工具，用于备份数据库的内容。备份和恢复数据库是数据库管理中的重要环节，可以确保数据的安全性和可恢复性。以下是关于如何使用 pg_d
+            PostgreSQL 数据库备份与恢复操作
+在使用 PostgreSQL 数据库时，pg_dump 是一个常用的工具，用于备份数据库的内容。备份和恢复数据库是数据库管理中的重要环节，可以确保数据的安全性和可恢复性。以下是关于如何使用 pg_
           </div>
         </div>
         <div class="post-more">
           <a href="/2025/02/20/hou-duan/shu-ju-ku/postgres/shi-yong-pg-dump-bei-fen-hui-fu-shu-ju-ku/">
-            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
+            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
           </a>
         </div>
       </div>
@@ -757,7 +823,7 @@ theme: channing-cyan在一个后台管理系统中，安全是很重要的。不
     </article>
   
     
-    <article class="post reveal" style="flex-direction: row-reverse;   ">
+    <article class="post reveal" style="   ">
       <div class="post-main">
         <div class="post-info">
           <div class="post-time">
@@ -793,14 +859,15 @@ theme: channing-cyan在一个后台管理系统中，安全是很重要的。不
             </a>
           </div>
           <div class="post-content">
-            请看原文点击查看原文
+            请看原文
+点击查看原文
 以下内容只用作记录
 
           </div>
         </div>
         <div class="post-more">
           <a href="/2025/02/20/hou-duan/shu-ju-ku/redis/wan-zi-chang-wen-jie-xi-redis/">
-            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
+            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
           </a>
         </div>
       </div>
@@ -813,7 +880,7 @@ theme: channing-cyan在一个后台管理系统中，安全是很重要的。不
     </article>
   
     
-    <article class="post reveal" style="   ">
+    <article class="post reveal" style="flex-direction: row-reverse;   ">
       <div class="post-main">
         <div class="post-info">
           <div class="post-time">
@@ -846,12 +913,14 @@ theme: channing-cyan在一个后台管理系统中，安全是很重要的。不
             </a>
           </div>
           <div class="post-content">
-            WebWorker 介绍什么是 Web Worker？为 JS 创造多线程的环境，允许主线程创建 Worker 线程，将一些任务分配给后者运行。也就是主线程和 worker 线程并行。等到 Worker 线程完成计算的任务，再通过 post
+            WebWorker 介绍
+什么是 Web Worker？
+为 JS 创造多线程的环境，允许主线程创建 Worker 线程，将一些任务分配给后者运行。也就是主线程和 worker 线程并行。等到 Worker 线程完成计算的任务，再通过 po
           </div>
         </div>
         <div class="post-more">
           <a href="/2023/09/18/wang-luo/webworker-he-serviceworker/">
-            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
+            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
           </a>
         </div>
       </div>
@@ -864,7 +933,7 @@ theme: channing-cyan在一个后台管理系统中，安全是很重要的。不
     </article>
   
     
-    <article class="post reveal" style="flex-direction: row-reverse;   ">
+    <article class="post reveal" style="   ">
       <div class="post-main">
         <div class="post-info">
           <div class="post-time">
@@ -897,15 +966,17 @@ theme: channing-cyan在一个后台管理系统中，安全是很重要的。不
             </a>
           </div>
           <div class="post-content">
-            TCP 的三次握手四次挥手三次握手的过程如下：
+            TCP 的三次握手四次挥手
+三次握手的过程如下：
+
 客户端向服务器发送 SYN 包，表示请求连接。
 服务器收到 SYN 包后，向客户端发送 SYN+ACK 包，表示确认请求，并准备好接受数据。
-客户端收到 SYN+ACK 包后，向服务器发送 A
+客户端收到 SYN+ACK 包后，向服务器发送
           </div>
         </div>
         <div class="post-more">
           <a href="/2023/09/18/wang-luo/tcp/">
-            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
+            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
           </a>
         </div>
       </div>
@@ -918,7 +989,7 @@ theme: channing-cyan在一个后台管理系统中，安全是很重要的。不
     </article>
   
     
-    <article class="post reveal" style="   ">
+    <article class="post reveal" style="flex-direction: row-reverse;   ">
       <div class="post-main">
         <div class="post-info">
           <div class="post-time">
@@ -951,13 +1022,15 @@ theme: channing-cyan在一个后台管理系统中，安全是很重要的。不
             </a>
           </div>
           <div class="post-content">
-            什么是 websocket？websocket 是一种网络传输协议，它和 http 一样，都位于 OSI 模型的应用层。且都依赖于 TCP 协议。但是他的协议是 ws 或 wss。
-功能？websocket 协议支持浏览器于 web 服务器
+            什么是 websocket？
+websocket 是一种网络传输协议，它和 http 一样，都位于 OSI 模型的应用层。且都依赖于 TCP 协议。但是他的协议是 ws 或 wss。
+功能？
+websocket 协议支持浏览器于 web 服
           </div>
         </div>
         <div class="post-more">
           <a href="/2023/09/18/wang-luo/websocket/">
-            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
+            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
           </a>
         </div>
       </div>
@@ -970,7 +1043,7 @@ theme: channing-cyan在一个后台管理系统中，安全是很重要的。不
     </article>
   
     
-    <article class="post reveal" style="flex-direction: row-reverse;   ">
+    <article class="post reveal" style="   ">
       <div class="post-main">
         <div class="post-info">
           <div class="post-time">
@@ -1007,15 +1080,18 @@ theme: channing-cyan在一个后台管理系统中，安全是很重要的。不
           </div>
           <div class="post-content">
             Cookie 相关知识
+
 github
 掘金
 
-常见问题主域名可以访问子域名的 cookie 吗？在浏览器中，主域名是无法直接访问子域名的 cookie 的，这是由同源策略所限制的。同源策略要求两个页面只有在协议、主机和端口号都相同的情况下，
+常见问题
+主域名可以访问子域名的 cookie 吗？
+在浏览器中，主域名是无法直接访问子域名的 cookie 的，这是由同源策略所限制的。同源策略要求两个页面只有在协议、主机和端口号都相同的情
           </div>
         </div>
         <div class="post-more">
           <a href="/2023/09/04/wang-luo/cookie/">
-            <i class="iconfont iconmore" pointer style="float: right;  " title="阅读更多"></i>
+            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
           </a>
         </div>
       </div>
@@ -1023,61 +1099,6 @@ github
         <a href="/2023/09/04/wang-luo/cookie/" style="background-size: cover; 
           background-position: center center;">
           <img class="lazyload lazyload placeholder" src="/medias/12.jpg" class="lazyload placeholder" data-srcset="/medias/12.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-        </a>
-      </div>
-    </article>
-  
-    
-    <article class="post reveal" style="   ">
-      <div class="post-main">
-        <div class="post-info">
-          <div class="post-time">
-            <i class="fas fa-clock" aria-hidden="true"></i>
-            <span class="post-time">2023-09-04</span>
-          </div>
-          <div class="post-title">
-            <a class="post-title-link" href="/2023/09/04/wang-luo/https-yuan-li/">HTTPS总结</a>
-          </div>
-          <div class="post-meta">
-            <div class="post-tags">
-              <!-- 文章详情页的标签 -->
-
-            </div>
-            <div class="post-categories">
-              <!-- 文章详情页的分类 -->
-
-<div class="article-category">
-  <i class="iconfont iconbookmark1"></i>
-  <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a>
-</div>
-
-
-            </div>
-          </div>
-          <div class="post-img-mobile">
-            <a href="/2023/09/04/wang-luo/https-yuan-li/" style="background-size: cover; 
-              background-position: center center;">
-              <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-            </a>
-          </div>
-          <div class="post-content">
-            HTTPShttps 采用对称加密和非对称加密+数字证书的方式，对传输数据进行加密
-对称加密方式如下
-
-客户端发送加密套件列表（就是客户端支持的加密方式）+ client-random
-服务器从加密套件中选择一个加密方式，并生成 servi
-          </div>
-        </div>
-        <div class="post-more">
-          <a href="/2023/09/04/wang-luo/https-yuan-li/">
-            <i class="iconfont iconmore" pointer style="  " title="阅读更多"></i>
-          </a>
-        </div>
-      </div>
-      <div class="post-img">
-        <a href="/2023/09/04/wang-luo/https-yuan-li/" style="background-size: cover; 
-          background-position: center center;">
-          <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
         </a>
       </div>
     </article>
@@ -1217,7 +1238,7 @@ github
             <li><a class="flat-box"
               title="/categories/%E5%90%8E%E7%AB%AF/" href="/categories/%E5%90%8E%E7%AB%AF/"
               id="categoriesE5908EE7ABAF"
-              ><div class='name'>后端</div><div class='badge'>(16)</div></a></li>
+              ><div class='name'>后端</div><div class='badge'>(15)</div></a></li>
           
             <li><a class="flat-box"
               title="/categories/%E5%B7%A5%E5%85%B7/" href="/categories/%E5%B7%A5%E5%85%B7/"
@@ -1247,7 +1268,7 @@ github
             <li><a class="flat-box"
               title="/categories/%E8%BF%90%E7%BB%B4/" href="/categories/%E8%BF%90%E7%BB%B4/"
               id="categoriesE8BF90E7BBB4"
-              ><div class='name'>运维</div><div class='badge'>(3)</div></a></li>
+              ><div class='name'>运维</div><div class='badge'>(5)</div></a></li>
           
             <li><a class="flat-box"
               title="/categories/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/" href="/categories/%E9%9D%A2%E8%AF%95%E6%80%BB%E7%BB%93/"
@@ -1272,7 +1293,7 @@ github
 
 
     <div class='content'>
-    <a href="/tags/Docker/" style="font-size: 17px; color: #858585">Docker</a> <a href="/tags/ElasticSearch/" style="font-size: 14px; color: #999">ElasticSearch</a> <a href="/tags/Git/" style="font-size: 15px; color: #929292">Git</a> <a href="/tags/JavaScript/" style="font-size: 24px; color: #555">JavaScript</a> <a href="/tags/Jenkins/" style="font-size: 14px; color: #999">Jenkins</a> <a href="/tags/LLM/" style="font-size: 14px; color: #999">LLM</a> <a href="/tags/MySQL/" style="font-size: 17px; color: #858585">MySQL</a> <a href="/tags/NPM/" style="font-size: 16px; color: #8b8b8b">NPM</a> <a href="/tags/Nest-js/" style="font-size: 19px; color: #777">Nest.js</a> <a href="/tags/Nestjs/" style="font-size: 14px; color: #999">Nestjs</a> <a href="/tags/Nginx/" style="font-size: 16px; color: #8b8b8b">Nginx</a> <a href="/tags/Node/" style="font-size: 22px; color: #636363">Node</a> <a href="/tags/Postgres/" style="font-size: 14px; color: #999">Postgres</a> <a href="/tags/React/" style="font-size: 23px; color: #5c5c5c">React</a> <a href="/tags/React-Router/" style="font-size: 15px; color: #929292">React-Router</a> <a href="/tags/Redis/" style="font-size: 14px; color: #999">Redis</a> <a href="/tags/Typescript/" style="font-size: 14px; color: #999">Typescript</a> <a href="/tags/Webpack/" style="font-size: 18px; color: #7e7e7e">Webpack</a> <a href="/tags/css/" style="font-size: 17px; color: #858585">css</a> <a href="/tags/git/" style="font-size: 15px; color: #929292">git</a> <a href="/tags/hexo/" style="font-size: 15px; color: #929292">hexo</a> <a href="/tags/html/" style="font-size: 14px; color: #999">html</a> <a href="/tags/vscode/" style="font-size: 15px; color: #929292">vscode</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" style="font-size: 14px; color: #999">函数式编程</a> <a href="/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/" style="font-size: 14px; color: #999">可视化</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 16px; color: #8b8b8b">安全</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/" style="font-size: 21px; color: #696969">工程化</a> <a href="/tags/%E6%B5%8B%E8%AF%95/" style="font-size: 14px; color: #999">测试</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 16px; color: #8b8b8b">浏览器</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 14px; color: #999">消息队列</a> <a href="/tags/%E7%A7%BB%E5%8A%A8%E7%AB%AF/" style="font-size: 15px; color: #929292">移动端</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 20px; color: #707070">设计模式</a>
+    <a href="/tags/Docker/" style="font-size: 17px; color: #858585">Docker</a> <a href="/tags/ElasticSearch/" style="font-size: 14px; color: #999">ElasticSearch</a> <a href="/tags/Git/" style="font-size: 15px; color: #929292">Git</a> <a href="/tags/JavaScript/" style="font-size: 24px; color: #555">JavaScript</a> <a href="/tags/Jenkins/" style="font-size: 14px; color: #999">Jenkins</a> <a href="/tags/LLM/" style="font-size: 14px; color: #999">LLM</a> <a href="/tags/MySQL/" style="font-size: 17px; color: #858585">MySQL</a> <a href="/tags/NPM/" style="font-size: 16px; color: #8b8b8b">NPM</a> <a href="/tags/Nest-js/" style="font-size: 19px; color: #777">Nest.js</a> <a href="/tags/Nestjs/" style="font-size: 14px; color: #999">Nestjs</a> <a href="/tags/Nginx/" style="font-size: 18px; color: #7e7e7e">Nginx</a> <a href="/tags/Node/" style="font-size: 22px; color: #636363">Node</a> <a href="/tags/Postgres/" style="font-size: 14px; color: #999">Postgres</a> <a href="/tags/React/" style="font-size: 23px; color: #5c5c5c">React</a> <a href="/tags/React-Router/" style="font-size: 15px; color: #929292">React-Router</a> <a href="/tags/Redis/" style="font-size: 14px; color: #999">Redis</a> <a href="/tags/Typescript/" style="font-size: 14px; color: #999">Typescript</a> <a href="/tags/Webpack/" style="font-size: 18px; color: #7e7e7e">Webpack</a> <a href="/tags/css/" style="font-size: 17px; color: #858585">css</a> <a href="/tags/git/" style="font-size: 15px; color: #929292">git</a> <a href="/tags/hexo/" style="font-size: 15px; color: #929292">hexo</a> <a href="/tags/html/" style="font-size: 14px; color: #999">html</a> <a href="/tags/vscode/" style="font-size: 15px; color: #929292">vscode</a> <a href="/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" style="font-size: 14px; color: #999">函数式编程</a> <a href="/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/" style="font-size: 14px; color: #999">可视化</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 16px; color: #8b8b8b">安全</a> <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/" style="font-size: 21px; color: #696969">工程化</a> <a href="/tags/%E6%B5%8B%E8%AF%95/" style="font-size: 14px; color: #999">测试</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 16px; color: #8b8b8b">浏览器</a> <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" style="font-size: 14px; color: #999">消息队列</a> <a href="/tags/%E7%A7%BB%E5%8A%A8%E7%AB%AF/" style="font-size: 15px; color: #929292">移动端</a> <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" style="font-size: 20px; color: #707070">设计模式</a>
     </div>
 </section>
 
@@ -1293,6 +1314,27 @@ github
       <!-- hash算法 -->
       
       <div class="aside-list">
+        
+          <div class="aside-list-item">
+            
+            
+            
+
+            <div class="post-img-box">
+              <a href="/2025/03/17/yun-wei/nginx-fu-wu-qi-xiang-xi-ru-men/" class="post-img " style="background-size: cover; 
+                background-position: center center;">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/12.jpg" class="lazyload placeholder" data-srcset="/medias/12.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+              </a>
+            </div>
+            <div class="post-date-title">
+              <div>
+                
+                  <span class="post-date">03-17</span>
+                
+              </div>
+              <a class="post-title" href="/2025/03/17/yun-wei/nginx-fu-wu-qi-xiang-xi-ru-men/">nginx服务器详细解析</a>
+            </div>
+          </div>
         
           <div class="aside-list-item">
             
@@ -1342,9 +1384,9 @@ github
             
 
             <div class="post-img-box">
-              <a href="/2025/03/14/hou-duan/shang-cheng/shi-yong-nestjs-shi-xian-ji-yu-jwt-rbac-de-ren-zheng-shou-quan-xi-tong/" class="post-img " style="background-size: cover; 
+              <a href="/2025/03/14/yun-wei/shou-ba-shou-jiao-ni-zai-wang-zhan-zhong-qi-yong-https-he-http2/" class="post-img " style="background-size: cover; 
                 background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/12.jpg" class="lazyload placeholder" data-srcset="/medias/12.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/13.jpg" class="lazyload placeholder" data-srcset="/medias/13.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
               </a>
             </div>
             <div class="post-date-title">
@@ -1353,28 +1395,7 @@ github
                   <span class="post-date">03-14</span>
                 
               </div>
-              <a class="post-title" href="/2025/03/14/hou-duan/shang-cheng/shi-yong-nestjs-shi-xian-ji-yu-jwt-rbac-de-ren-zheng-shou-quan-xi-tong/">使用Nestjs实现基于JWT + RBAC的认证授权系统</a>
-            </div>
-          </div>
-        
-          <div class="aside-list-item">
-            
-            
-            
-
-            <div class="post-img-box">
-              <a href="/2025/03/14/hou-duan/shang-cheng/shou-ba-shou-jiao-ni-zai-wang-zhan-zhong-qi-yong-https-he-http2/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" style="width:100%;height:100%;object-fit:cover;" data-src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                
-                  <span class="post-date">03-14</span>
-                
-              </div>
-              <a class="post-title" href="/2025/03/14/hou-duan/shang-cheng/shou-ba-shou-jiao-ni-zai-wang-zhan-zhong-qi-yong-https-he-http2/">手把手教你在网站中启用https和http2</a>
+              <a class="post-title" href="/2025/03/14/yun-wei/shou-ba-shou-jiao-ni-zai-wang-zhan-zhong-qi-yong-https-he-http2/">手把手教你在Nginx服务器中启用https和http2</a>
             </div>
           </div>
         
@@ -1406,7 +1427,7 @@ github
     
   <section class="widget side_archives">
     
-    <header><a style="color: red" href='/archives/'><i class="fas fa-archive fa-fw" aria-hidden="true"></i><span class='name'>归档</span></a></header><div class="content"><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/03/"><span class="card-archive-list-date">三月 2025</span><span class="card-archive-list-count">9</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/02/"><span class="card-archive-list-date">二月 2025</span><span class="card-archive-list-count">6</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/09/"><span class="card-archive-list-date">九月 2023</span><span class="card-archive-list-count">10</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/06/"><span class="card-archive-list-date">六月 2023</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/05/"><span class="card-archive-list-date">五月 2023</span><span class="card-archive-list-count">5</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/04/"><span class="card-archive-list-date">四月 2023</span><span class="card-archive-list-count">15</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/03/"><span class="card-archive-list-date">三月 2023</span><span class="card-archive-list-count">6</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">十二月 2022</span><span class="card-archive-list-count">1</span></a></li></ul></div>
+    <header><a style="color: red" href='/archives/'><i class="fas fa-archive fa-fw" aria-hidden="true"></i><span class='name'>归档</span></a></header><div class="content"><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/03/"><span class="card-archive-list-date">三月 2025</span><span class="card-archive-list-count">10</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/02/"><span class="card-archive-list-date">二月 2025</span><span class="card-archive-list-count">6</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/09/"><span class="card-archive-list-date">九月 2023</span><span class="card-archive-list-count">10</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/06/"><span class="card-archive-list-date">六月 2023</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/05/"><span class="card-archive-list-date">五月 2023</span><span class="card-archive-list-count">5</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/04/"><span class="card-archive-list-date">四月 2023</span><span class="card-archive-list-count">15</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/03/"><span class="card-archive-list-date">三月 2023</span><span class="card-archive-list-count">6</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">十二月 2022</span><span class="card-archive-list-count">1</span></a></li></ul></div>
   </section>
 
     <section class="widget side_webinfo">
@@ -1423,7 +1444,7 @@ github
       
         <div class="webinfo-item">
           <div>文章数目：</div>
-          <div>103 篇</div>
+          <div>104 篇</div>
         </div>
       
 
@@ -1466,7 +1487,7 @@ github
         <div class="webinfo-item">
           <div>最后活动时间：</div>
           
-            <div id="last-update" style="display: none;">Mon Mar 17 2025 11:53:00 GMT+0800 (中国标准时间)</div>
+            <div id="last-update" style="display: none;">Mon Mar 17 2025 16:32:23 GMT+0800 (中国标准时间)</div>
             <div id="last-update-show">2025-03-17 日</div>
           
         </div>

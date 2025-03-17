@@ -584,24 +584,28 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h2><p>为啥取名为 Node 呢？</p>
+        <h2 id="架构">架构</h2>
+<p>为啥取名为 Node 呢？</p>
 <p>因为 Node 的架构主要分为 4 大部分，<code>Node Standard Library</code>, <code>Node Bindings</code>, <code>V8</code>, <code>Libuv</code></p>
 <p>它通过将一个个节点连接起来，组成 js 的服务端运行时,我们看下面这张图</p>
-<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f4f9d04eb6264ca0b10ce45ba341b57c~tplv-k3u1fbpfcp-watermark.image" class="lazyload placeholder" data-srcset="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f4f9d04eb6264ca0b10ce45ba341b57c~tplv-k3u1fbpfcp-watermark.image" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="node架构.png"></p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f4f9d04eb6264ca0b10ce45ba341b57c~tplv-k3u1fbpfcp-watermark.image?" class="lazyload placeholder" data-srcset="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f4f9d04eb6264ca0b10ce45ba341b57c~tplv-k3u1fbpfcp-watermark.image?" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="node架构.png"></p>
 <ul>
 <li>最上层的<code>Node Standard Library</code>, 是我们每天都在用的标准库， 如 Http, Buffer 模块</li>
 <li><code>Node bindings</code>是沟通 JS 和 C++的桥梁，封装 V8 和 Libuv 的细节，向上层提供基础 API 服务</li>
-<li>最底层是支撑 Node 运行的关键，有 c&#x2F;c++实现<ul>
+<li>最底层是支撑 Node 运行的关键，有 c/c++实现
+<ul>
 <li>V8 是 google 开发的 JavaScript 引擎，提供 JavaScript 运行环</li>
-<li>Libuv 是专门为 Node 开发的封装库，提供跨平台的异步 I&#x2F;O 能力</li>
+<li>Libuv 是专门为 Node 开发的封装库，提供跨平台的异步 I/O 能力</li>
 <li>C-ares 用于异步请求 DNS，它通过 c 实现</li>
 <li>http_parser 、OpenSSL、zlib 等提供包括 http 解析、SSL、数据压缩等其他功能</li>
 </ul>
 </li>
 </ul>
-<p>上面说到了 Libuv 是为 Node 开发的封装库，但是 node 在一开始时，使用的是 libev 实现<strong>事件循环</strong>来处理异步 I&#x2F;O、定时器和信号等事件。但是，随着 node 的流行，libev 只能在 Unix 环境下运行的缺点暴露了出来，所以就自己实现了<code>libuv</code>来代替<code>libev</code></p>
-<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><p>Node 作为一个 JavaScript 的后端运行平台，它保留了前端浏览器 JavaScript 中那些熟悉的接口(<code>setTimeout</code>、<code>setInterval</code>)。并且 js 的语言特性并没有改写</p>
-<h3 id="单线程"><a href="#单线程" class="headerlink" title="单线程"></a>单线程</h3><p>好处：</p>
+<p>上面说到了 Libuv 是为 Node 开发的封装库，但是 node 在一开始时，使用的是 libev 实现<strong>事件循环</strong>来处理异步 I/O、定时器和信号等事件。但是，随着 node 的流行，libev 只能在 Unix 环境下运行的缺点暴露了出来，所以就自己实现了<code>libuv</code>来代替<code>libev</code></p>
+<h2 id="特点">特点</h2>
+<p>Node 作为一个 JavaScript 的后端运行平台，它保留了前端浏览器 JavaScript 中那些熟悉的接口(<code>setTimeout</code>、<code>setInterval</code>)。并且 js 的语言特性并没有改写</p>
+<h3 id="单线程">单线程</h3>
+<p>好处：</p>
 <ul>
 <li>不像多线程编程那样处处在意状态的同步，没有死锁</li>
 <li>没有上下文切换的性能开销</li>
@@ -611,14 +615,15 @@
 <ul>
 <li>无法充分利用多核 cpu</li>
 <li>错误会 blocking 整个应用</li>
-<li>大量计算占用 CPU 导致无法继续调用异步 I&#x2F;O</li>
+<li>大量计算占用 CPU 导致无法继续调用异步 I/O</li>
 </ul>
 <p>在浏览器中，JS 长时间执行会导致 UI 渲染和响应被中断(卡顿), 那么浏览器在 HTML5 的标准中引入了<code>Web Worker</code>。 它可以创建一个单独个<code>工作线程</code>，将大计算量的 js 放入到该线程中执行。然后再通过消息传递的方式将结果给到<code>主线程</code>，不过<code>工作线程</code>无法访问到<code>DOM</code>等宿主对象.</p>
 <p>Node 采用了和<code>Web Worker</code>相同的思路来解决单线程中大计算量的问题，那就是<code>child_process</code>。这样，Node 就可以通过<code>child_process</code>来解决程序 <code>健壮性</code>和<code>利用多核CPU</code>的问题。</p>
-<h3 id="EventLoop-事件循环-Timer-和process-nextTick"><a href="#EventLoop-事件循环-Timer-和process-nextTick" class="headerlink" title="EventLoop(事件循环), Timer 和process.nextTick()"></a>EventLoop(事件循环), Timer 和<code>process.nextTick()</code></h3><p><a target="_blank" rel="noopener" href="https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick">文档</a></p>
-<p><code>事件循环</code>使 Node 能够执行非阻塞 I&#x2F;O(异步 I&#x2F;O)操作，这是因为在 JavaScript 中执行一些 I&#x2F;O 操作时，比如<code>timer</code>、<code>网络任务</code>、<code>文件读写</code>等。 Node 这个<code>runtime</code>会将这些事件都交给操作系统的内核来执行，因为大多数的现代内核都是<code>多线程</code>的，它们可以并行执行多个操作。然后，当某个操作完成后，内核会告诉 Node，以便对应的回调函数可以被添加到<code>队列</code>中，最终被<code>事件循环</code>执行</p>
+<h3 id="EventLoop-事件循环-Timer-和process-nextTick">EventLoop(事件循环), Timer 和<code>process.nextTick()</code></h3>
+<p><a target="_blank" rel="noopener" href="https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick">文档</a></p>
+<p><code>事件循环</code>使 Node 能够执行非阻塞 I/O(异步 I/O)操作，这是因为在 JavaScript 中执行一些 I/O 操作时，比如<code>timer</code>、<code>网络任务</code>、<code>文件读写</code>等。 Node 这个<code>runtime</code>会将这些事件都交给操作系统的内核来执行，因为大多数的现代内核都是<code>多线程</code>的，它们可以并行执行多个操作。然后，当某个操作完成后，内核会告诉 Node，以便对应的回调函数可以被添加到<code>队列</code>中，最终被<code>事件循环</code>执行</p>
 <p>下图显示了事件循环的操作顺序的概述</p>
-<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/903cd57a79944f3f9dfaa8d3eb5e975b~tplv-k3u1fbpfcp-watermark.image" class="lazyload placeholder" data-srcset="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/903cd57a79944f3f9dfaa8d3eb5e975b~tplv-k3u1fbpfcp-watermark.image" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image.png"></p>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/903cd57a79944f3f9dfaa8d3eb5e975b~tplv-k3u1fbpfcp-watermark.image?" class="lazyload placeholder" data-srcset="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/903cd57a79944f3f9dfaa8d3eb5e975b~tplv-k3u1fbpfcp-watermark.image?" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image.png"></p>
 <blockquote>
 <p>每个框表示事件循环中的一个”阶段(phase)“</p>
 </blockquote>
@@ -627,41 +632,49 @@
 <p>以下是各个阶段的描述:</p>
 <ul>
 <li><strong>timer</strong>: 这个阶段执行由<code>setTimeout</code>和<code>setInterval</code>调度的回调函数</li>
-<li><strong>pending callbacks</strong> : 延迟执行 I&#x2F;O 回调函数到下个循环中</li>
+<li><strong>pending callbacks</strong> : 延迟执行 I/O 回调函数到下个循环中</li>
 <li><strong>idle, prepare</strong>: 内部使用</li>
-<li><strong>poll</strong> 检索新的 I&#x2F;O 事件，执行 I&#x2F;O 相关的回调函数（除了由关闭回调，定时器安排的回调和<code>setImmediate()外，几乎所有的回调都是如此</code>）；在适当的时候，Node 会阻塞这里</li>
+<li><strong>poll</strong> 检索新的 I/O 事件，执行 I/O 相关的回调函数（除了由关闭回调，定时器安排的回调和<code>setImmediate()外，几乎所有的回调都是如此</code>）；在适当的时候，Node 会阻塞这里</li>
 <li><strong>check</strong>: <code>setTmmediate()</code>回调函数在这里被调用</li>
-<li><strong>close callbacks</strong>: 执行关闭回调，比如<code>socket.on(&#39;close&#39;, callback)</code>这些</li>
+<li><strong>close callbacks</strong>: 执行关闭回调，比如<code>socket.on('close', callback)</code>这些</li>
 </ul>
-<p>在运行每次事件循环之间，Node.js 会检查是否正在等待任何异步 I&#x2F;O 或定时器，如果没有则会进行清理关闭</p>
+<p>在运行每次事件循环之间，Node.js 会检查是否正在等待任何异步 I/O 或定时器，如果没有则会进行清理关闭</p>
 <p><strong>以下是每个阶段的具体信息:</strong></p>
-<h4 id="timers-阶段"><a href="#timers-阶段" class="headerlink" title="timers 阶段"></a>timers 阶段</h4><p>定时器指定了回调函数可执行的阈值，而非用户想要它执行的确切时间。定时器回调将在指定时间段过去后尽早地安排执行，但操作系统调度或其他回调的运行可能会延迟它们的执行。</p>
-<h4 id="pending-callbacks-阶段"><a href="#pending-callbacks-阶段" class="headerlink" title="pending callbacks 阶段"></a>pending callbacks 阶段</h4><p>这个阶段执行一些系统操作的回调，如 TCP 错误的类型。例如，如果一个 TCP 套接字在连接时收到 <code>ECONNREFUSED</code> 错误,一些 Unix&#x2F;Linux 系统会等待一会再报告错误。这将会放到队列中，在<code>pending callbacks</code>阶段执行</p>
-<h4 id="poll-阶段"><a href="#poll-阶段" class="headerlink" title="poll 阶段"></a>poll 阶段</h4><p><code>poll</code>阶段有两个主要的方法:</p>
+<h4 id="timers-阶段">timers 阶段</h4>
+<p>定时器指定了回调函数可执行的阈值，而非用户想要它执行的确切时间。定时器回调将在指定时间段过去后尽早地安排执行，但操作系统调度或其他回调的运行可能会延迟它们的执行。</p>
+<h4 id="pending-callbacks-阶段">pending callbacks 阶段</h4>
+<p>这个阶段执行一些系统操作的回调，如 TCP 错误的类型。例如，如果一个 TCP 套接字在连接时收到 <code>ECONNREFUSED</code> 错误,一些 Unix/Linux 系统会等待一会再报告错误。这将会放到队列中，在<code>pending callbacks</code>阶段执行</p>
+<h4 id="poll-阶段">poll 阶段</h4>
+<p><code>poll</code>阶段有两个主要的方法:</p>
 <ol>
-<li>计算它应该阻塞和轮询 I&#x2F;O 的时间，然后</li>
+<li>计算它应该阻塞和轮询 I/O 的时间，然后</li>
 <li>执行<code>poll</code>队列中的事件</li>
 </ol>
 <p>当<code>事件循环</code>进入<code>poll</code>阶段且已经没有以及被调度的<code>timers</code>时，会发生两件事</p>
 <ol>
 <li>如果<code>poll</code> 队列不为空，<code>事件循环</code>将遍历其回调队列，同步执行它们，直到队列被耗尽或达到系统相关的硬限制。</li>
-<li>如果<code>poll</code>队列为空，会发生两件事<ul>
+<li>如果<code>poll</code>队列为空，会发生两件事
+<ul>
 <li>如果脚本已经通过<code>setImmediate()</code>被执行，事件循环将会结束<code>poll</code>阶段，并且继续到<code>check</code>阶段去执行那些被调度的脚本</li>
 <li>如果没有通过 setImmediate() 执行脚本，事件循环将等待回调被添加到队列中，然后立即执行它们。</li>
 </ul>
 </li>
 </ol>
 <p>一旦<code>poll</code>队列为空，事件循环会检查已经达到时间阈值的定时器。如果有一个或多个定时器准备好了，事件循环将回到定时器阶段，执行这些定时器的回调。</p>
-<h4 id="check-阶段"><a href="#check-阶段" class="headerlink" title="check 阶段"></a>check 阶段</h4><p>该阶段允许在<code>poll(轮询)</code>阶段完成后立即执行回调。如果<code>poll</code>阶段变为空闲，并且使用 <code>setImmediate()</code> 安排了脚本，则事件循环可能会继续到<code>check</code>阶段，而不是等待。</p>
-<h4 id="close-阶段"><a href="#close-阶段" class="headerlink" title="close 阶段"></a>close 阶段</h4><p>当一个 socket 连接或者一个 handle 被突然关闭时（例如调用了<code>socket.destroy()</code>方法），close 事件会被发送到这个阶段执行回调。否则事件会用<code>process.nextTick（）</code>方法发送出去。</p>
-<h3 id="process-nextTick-setTimeout-与-setImmediate-的区别与使用场景"><a href="#process-nextTick-setTimeout-与-setImmediate-的区别与使用场景" class="headerlink" title="process.nextTick,setTimeout 与 setImmediate 的区别与使用场景"></a><strong>process.nextTick,setTimeout 与 setImmediate 的区别与使用场景</strong></h3><p>在 node 中有三个常用的用来推迟任务执行的方法：</p>
+<h4 id="check-阶段">check 阶段</h4>
+<p>该阶段允许在<code>poll(轮询)</code>阶段完成后立即执行回调。如果<code>poll</code>阶段变为空闲，并且使用 <code>setImmediate()</code> 安排了脚本，则事件循环可能会继续到<code>check</code>阶段，而不是等待。</p>
+<h4 id="close-阶段">close 阶段</h4>
+<p>当一个 socket 连接或者一个 handle 被突然关闭时（例如调用了<code>socket.destroy()</code>方法），close 事件会被发送到这个阶段执行回调。否则事件会用<code>process.nextTick（）</code>方法发送出去。</p>
+<h3 id="process-nextTick-setTimeout-与-setImmediate-的区别与使用场景"><strong>process.nextTick,setTimeout 与 setImmediate 的区别与使用场景</strong></h3>
+<p>在 node 中有三个常用的用来推迟任务执行的方法：</p>
 <ul>
 <li>setTimeout（setInterval 与之相同）</li>
 <li>setImmediate</li>
 <li>process.nextTick</li>
 </ul>
 <p>这三者间存在着一些非常不同的区别：</p>
-<h4 id="process-nextTick"><a href="#process-nextTick" class="headerlink" title="process.nextTick()"></a>process.nextTick()</h4><p>您可能已经注意到，在图表中没有显示<code>process.nextTick()</code>，尽管它是异步 API 的一部分。这是因为<code>process.nextTick()</code>实际上并不属于事件循环的一部分。相反，<code>nextTickQueue</code>将在<strong>当前操作</strong>完成后被处理，而不管事件循环的当前阶段如何。在这里，<strong>一个操作</strong>被定义为从底层 C&#x2F;C++处理程序的转换和处理需要执行的 JavaScript。(这里我的理解是解析 JavaScript 时会作为一个任务，被添加到事件队列中，然后<code>事件循环</code>在执行当前这个任务时<code>process.nextTick</code>的回调是永远优先于其他事件的。不过在另一个事件的回调中，调用<code>nexTick</code>只会在当前这个回调中优先于其他事件，我们可以看下面这个例子)</p>
+<h4 id="process-nextTick">process.nextTick()</h4>
+<p>您可能已经注意到，在图表中没有显示<code>process.nextTick()</code>，尽管它是异步 API 的一部分。这是因为<code>process.nextTick()</code>实际上并不属于事件循环的一部分。相反，<code>nextTickQueue</code>将在<strong>当前操作</strong>完成后被处理，而不管事件循环的当前阶段如何。在这里，<strong>一个操作</strong>被定义为从底层 C/C++处理程序的转换和处理需要执行的 JavaScript。(这里我的理解是解析 JavaScript 时会作为一个任务，被添加到事件队列中，然后<code>事件循环</code>在执行当前这个任务时<code>process.nextTick</code>的回调是永远优先于其他事件的。不过在另一个事件的回调中，调用<code>nexTick</code>只会在当前这个回调中优先于其他事件，我们可以看下面这个例子)</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"fs"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token function">setImmediate</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
@@ -692,7 +705,6 @@ fs<span class="token punctuation">.</span><span class="token function">readFile<
 process<span class="token punctuation">.</span><span class="token function">nextTick</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"nextTick"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>我们可以看到输出如下:</p>
 <pre class="line-numbers language-none"><code class="language-none">nextTick
 setTimeout
@@ -701,8 +713,7 @@ inner readFile ----&gt; nextTick2
 setImmediate
 inner readFile ----&gt; setImmediate
 inner readFile ----&gt; setTimeout<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>也就是说无论在哪个阶段调用<code>process.nextTick()</code>，所有传递给<code>process.nextTick()</code>的回调都会在事件循环继续之前被解决。这可能会导致一些不良情况，因为它允许通过递归<code>process.nextTick()</code>调用来“饿死”I&#x2F;O，从而防止事件循环达到轮询阶段。</p>
+<p>也就是说无论在哪个阶段调用<code>process.nextTick()</code>，所有传递给<code>process.nextTick()</code>的回调都会在事件循环继续之前被解决。这可能会导致一些不良情况，因为它允许通过递归<code>process.nextTick()</code>调用来“饿死”I/O，从而防止事件循环达到轮询阶段。</p>
 <p>与执行<code>poll</code> 队列中的任务不同的是，这个操作在队列清空前是不会停止的。这也就意味着，错误的使用<code>process.nextTick()</code>方法会导致 node 进入一个死循环。。直到内存泄漏。</p>
 <p>为什么像这样的东西会被包含在 Node.js 中？部分原因是一种设计哲学，即 API 应该始终是异步的，即使它不必是异步的。例如，考虑这段代码片段：</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">apiCall</span><span class="token punctuation">(</span><span class="token parameter">arg<span class="token punctuation">,</span> callback</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
@@ -712,7 +723,6 @@ inner readFile ----&gt; setTimeout<span aria-hidden="true" class="line-numbers-r
       <span class="token keyword">new</span> <span class="token class-name">TypeError</span><span class="token punctuation">(</span><span class="token string">"argument should be string"</span><span class="token punctuation">)</span>
     <span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>这段代码片段进行参数检查，如果参数不正确，它将把错误传递给回调函数。最近更新的 API 允许将参数传递给<code>process.nextTick()</code>，使其能够接收回调函数之后传递的任何参数，并将其传递给回调函数，因此你不必嵌套函数。</p>
 <p>我们所做的是将错误传递回用户，但仅在允许用户代码的其余部分执行后。通过使用<code>process.nextTick()</code>，我们保证 apiCall()总是在用户代码的其余部分运行并且在允许事件循环继续之前运行其回调函数。为了实现这一点，JS 调用栈允许展开，然后立即执行提供的回调函数，这允许人们对<code>process.nextTick()</code>进行递归调用，而不会导致 v8 的<code>RangeError: Maximum call stack size exceeded</code>。</p>
 <p>这种理念可能导致一些潜在的问题情况。以这个片段为例。</p>
@@ -730,7 +740,6 @@ inner readFile ----&gt; setTimeout<span aria-hidden="true" class="line-numbers-r
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 bar <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>用户定义了<code>someAsyncApiCall()</code>以具有异步签名，但实际上它是同步操作的。当调用它时，由<code>someAsyncApiCall()</code>提供的回调函数在事件循环的同一阶段中被调用，因为<code>someAsyncApiCall()</code>实际上并没有异步操作。因此，回调函数尝试引用 bar 变量，即使它可能还没有在范围内，因为脚本还没有能够完成运行。</p>
 <p>通过将回调函数放置在<code>process.nextTick()</code>中，脚本仍然可以完全运行，允许在调用回调函数之前初始化所有变量、函数等。它还有一个优点，就是不允许事件循环继续。在允许事件循环继续之前，提醒用户存在错误可能是有用的。以下是使用<code>process.nextTick()</code>的先前示例：</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">let</span> bar<span class="token punctuation">;</span>
@@ -744,16 +753,15 @@ bar <span class="token operator">=</span> <span class="token number">1</span><sp
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 bar <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>下面有一个真正用在应用中的例子：</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> server <span class="token operator">=</span> net<span class="token punctuation">.</span><span class="token function">createServer</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token number">8080</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 server<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"listening"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
 <p>这个例子中当，当 listen 方法被调用时，除非端口被占用，否则会立刻绑定在对应的端口上。</p>
-<p>这意味着此时这个端口可以立刻触发 listening 事件并执行其回调。然而，这时候<code>on(&#39;listening)</code>还没有将 callback 设置好，自然没有 callback 可以执行。</p>
+<p>这意味着此时这个端口可以立刻触发 listening 事件并执行其回调。然而，这时候<code>on('listening)</code>还没有将 callback 设置好，自然没有 callback 可以执行。</p>
 <p>为了避免出现这种情况，node 会在 listen 事件中使用<code>process.nextTick()</code>方法，确保事件在回调函数绑定后被触发。</p>
-<h4 id="setTimeout-和-setImmediate"><a href="#setTimeout-和-setImmediate" class="headerlink" title="setTimeout()和 setImmediate()"></a><strong>setTimeout()和 setImmediate()</strong></h4><p>在三个方法中，这两个方法最容易被弄混。实际上，某些情况下这两个方法的表现也非常相似。然而实际上，这两个方法的意义却大为不同。</p>
+<h4 id="setTimeout-和-setImmediate"><strong>setTimeout()和 setImmediate()</strong></h4>
+<p>在三个方法中，这两个方法最容易被弄混。实际上，某些情况下这两个方法的表现也非常相似。然而实际上，这两个方法的意义却大为不同。</p>
 <p><code>setTimeout()</code>方法是定义一个回调，并且希望这个回调在我们所指定的时间间隔后第一时间去执行。注意这个<strong>第一时间执行</strong>，这意味着，受到操作系统和当前执行任务的诸多影响，该回调并不会在我们预期的时间间隔后精准的执行。执行的时间存在一定的延迟和误差，这是不可避免的。node 会在可以执行 timer 回调的第一时间去执行你所设定的任务。</p>
 <p><code>setImmediate()</code>方法从意义上讲是立刻执行的意思，但是实际上它却是在一个固定的阶段才会执行回调，即<code>poll</code>阶段之后。有趣的是，这个名字的意义和上面提到的<code>process.nextTick()</code>方法才是最匹配的。node 的开发者们也清楚这两个方法的命名上存在一定的混淆，他们表示不会把这两个方法的名字调换过来—因为有大量的 node 程序使用着这两个方法，调换命名所带来的好处与它的影响相比不值一提。</p>
 <p>setTimeout()和不设置时间间隔的 setImmediate()表现上极其相似。猜猜下面这段代码的结果是什么？</p>
@@ -764,9 +772,8 @@ server<span class="token punctuation">.</span><span class="token function">on</s
 <span class="token function">setImmediate</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
   console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"immediate"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>实际上，答案是不一定。没错，就连 node 的开发者都无法准确的判断这两者的顺序谁前谁后。这取决于这段代码的运行环境。运行环境中的各种复杂的情况会导致在同步队列里两个方法的顺序随机决定。</p>
-<p>但是，在一种情况下可以准确判断两个方法回调的执行顺序，那就是在一个 I&#x2F;O 事件的回调中。下面这段代码的顺序永远是固定的：</p>
+<p>但是，在一种情况下可以准确判断两个方法回调的执行顺序，那就是在一个 I/O 事件的回调中。下面这段代码的顺序永远是固定的：</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"fs"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 fs<span class="token punctuation">.</span><span class="token function">readFile</span><span class="token punctuation">(</span><span class="token string">"./path"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">err<span class="token punctuation">,</span> data</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
@@ -778,19 +785,20 @@ fs<span class="token punctuation">.</span><span class="token function">readFile<
     console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"inner readFile ----> setTimeout"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>答案永远是：</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">immediate
 <span class="token function">timeout</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<p>因为在 I&#x2F;O 事件的回调中，<code>setImmediate</code>方法的回调永远在<code>timer</code>的回调前执行。</p>
-<h2 id="模块加载"><a href="#模块加载" class="headerlink" title="模块加载"></a>模块加载</h2><p>Node 的模块规范和浏览器的模块规范不同，服务端 node 采用的是<code>Commonjs</code>规范，浏览器采用的<code>ESModule</code>规范</p>
+<p>因为在 I/O 事件的回调中，<code>setImmediate</code>方法的回调永远在<code>timer</code>的回调前执行。</p>
+<h2 id="模块加载">模块加载</h2>
+<p>Node 的模块规范和浏览器的模块规范不同，服务端 node 采用的是<code>Commonjs</code>规范，浏览器采用的<code>ESModule</code>规范</p>
 <p>它们有两个比较大的差异</p>
 <ol>
 <li><code>Commonjs</code>模块输出的是一个<strong>值的拷贝</strong>, <code>ESModule</code>输出的是<strong>值的引用</strong></li>
 </ol>
 <p>因为<code>Commonjs</code>模块输出的是值的拷贝，所以内部的变化影响不到这个值。不过只针对基本数据类型，当<code>module.exports</code>中导出了一个引用类型时，它拷贝的只是一个<strong>引用</strong>，所以还是会改变</p>
-<p>再说回<code>ESModule</code>，它的运行机制是在 JS 引擎对脚本静态分析的时候，遇到<code>import</code>关键字，就会生成一个只读引用。<br>等到脚本真正执行时，再更具这个只读引用，找到对应模块然后取值。所以，只要原始值改变，<code>import</code>加载的内容也会跟着变。<br>因此,<code>ESModule</code>是动态引用，且不会缓存值，模块里面的变量绑定其所在的模块。</p>
+<p>再说回<code>ESModule</code>，它的运行机制是在 JS 引擎对脚本静态分析的时候，遇到<code>import</code>关键字，就会生成一个只读引用。<br>
+等到脚本真正执行时，再更具这个只读引用，找到对应模块然后取值。所以，只要原始值改变，<code>import</code>加载的内容也会跟着变。<br>
+因此,<code>ESModule</code>是动态引用，且不会缓存值，模块里面的变量绑定其所在的模块。</p>
 <ol start="2">
 <li><code>CommonJS</code> 模块是运行时加载，<code>ESModule</code> 是编译时输出接口。</li>
 </ol>

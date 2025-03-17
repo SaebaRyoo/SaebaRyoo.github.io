@@ -584,14 +584,22 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><blockquote>
+        <h3 id="定义">定义</h3>
+<blockquote>
 <p>模板方式是一种只需要继承就可以实现的简单的模式</p>
 </blockquote>
-<p>模板由两个部分结构组成，第一个是<strong>抽象类</strong>，第二部分是具体的<strong>实现子类</strong>。<br>通常在抽象父类中封装了子类的算法框架，包括实现一些公共方法以及封装子类中所有方法的执行顺序。<br>子类通过继承这个抽象父类，也继承了算法框架，并且可以选择重写父类。</p>
-<h3 id="举个栗子-Coffee-or-Tea"><a href="#举个栗子-Coffee-or-Tea" class="headerlink" title="举个栗子 - Coffee or Tea"></a>举个栗子 - Coffee or Tea</h3><ol>
+<p>模板由两个部分结构组成，第一个是<strong>抽象类</strong>，第二部分是具体的<strong>实现子类</strong>。<br>
+通常在抽象父类中封装了子类的算法框架，包括实现一些公共方法以及封装子类中所有方法的执行顺序。<br>
+子类通过继承这个抽象父类，也继承了算法框架，并且可以选择重写父类。</p>
+<h3 id="举个栗子-Coffee-or-Tea">举个栗子 - Coffee or Tea</h3>
+<ol>
 <li>泡一杯咖啡</li>
 </ol>
-<p>泡咖啡的步骤通常如下：<br>1）把水煮沸<br>2）用沸水冲咖啡<br>3）把咖啡倒进杯子<br>4）加糖或加奶</p>
+<p>泡咖啡的步骤通常如下：<br>
+1）把水煮沸<br>
+2）用沸水冲咖啡<br>
+3）把咖啡倒进杯子<br>
+4）加糖或加奶</p>
 <p>通过下面的代码我们就可以获得一杯咖啡</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Coffee</span> <span class="token punctuation">&#123;</span>
   <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
@@ -619,11 +627,14 @@
 
 <span class="token keyword">const</span> inst <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Coffee</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 inst<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ol start="2">
 <li>泡一杯茶</li>
 </ol>
-<p>泡茶的步骤通常如下：<br>1）把水煮沸<br>2）用沸水浸泡茶叶<br>3）把茶倒进杯子<br>4）加柠檬</p>
+<p>泡茶的步骤通常如下：<br>
+1）把水煮沸<br>
+2）用沸水浸泡茶叶<br>
+3）把茶倒进杯子<br>
+4）加柠檬</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Tea</span> <span class="token punctuation">&#123;</span>
   <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">boilWater</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -649,12 +660,17 @@ inst<span class="token punctuation">.</span><span class="token function">init</s
 <span class="token punctuation">&#125;</span>
 <span class="token keyword">const</span> inst <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Tea</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 inst<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>事实上，泡咖啡和泡茶的过程是大同小异的。我们可以发现，主要有以下几点不同：</p>
-<p>原料不同。一个是咖啡，一个是茶叶，我们可以抽象成“饮料”<br>泡的方式不同，一个是冲泡，一个是浸泡。我们可以抽象为“泡”<br>加入的调料不同，一个是糖和牛奶，一个是柠檬。我们可以抽象为“调料”</p>
+<p>原料不同。一个是咖啡，一个是茶叶，我们可以抽象成“饮料”<br>
+泡的方式不同，一个是冲泡，一个是浸泡。我们可以抽象为“泡”<br>
+加入的调料不同，一个是糖和牛奶，一个是柠檬。我们可以抽象为“调料”</p>
 <p>经过抽象后，不管是泡咖啡还是泡茶，我们都抽象成为以下四个步骤：</p>
-<p>1）把水煮沸<br>2）用沸水冲泡饮料<br>3）把饮料倒进杯子<br>4）在饮料中加入调料</p>
-<p>所以，不管是冲泡还是浸泡，我们都可以给一个通用的方法 brew()。<br>同理，不管是糖还是牛奶还是柠檬，我们都可以称之 addCondiments()</p>
+<p>1）把水煮沸<br>
+2）用沸水冲泡饮料<br>
+3）把饮料倒进杯子<br>
+4）在饮料中加入调料</p>
+<p>所以，不管是冲泡还是浸泡，我们都可以给一个通用的方法 brew()。<br>
+同理，不管是糖还是牛奶还是柠檬，我们都可以称之 addCondiments()</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Beverage</span> <span class="token punctuation">&#123;</span>
   <span class="token function">boilWater</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"把水煮沸"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -678,7 +694,6 @@ inst<span class="token punctuation">.</span><span class="token function">init</s
     <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">addCondiments</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>然后，我们可以创建 Coffee 和 Tea 子类</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Coffee</span> <span class="token keyword">extends</span> <span class="token class-name">Beverage</span> <span class="token punctuation">&#123;</span>
   <span class="token function">brew</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
@@ -713,9 +728,12 @@ coffee<span class="token punctuation">.</span><span class="token function">init<
 
 <span class="token keyword">const</span> tea <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Tea</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 tea<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="模板方法的应用场景"><a href="#模板方法的应用场景" class="headerlink" title="模板方法的应用场景"></a>模板方法的应用场景</h3><p>模板方法模式常被架构师用于搭建项目的框架，架构师定好了框架的骨架，<br>程序员继承框架的结构之后，负责往里面填空。</p>
-<h3 id="hook-方法"><a href="#hook-方法" class="headerlink" title="hook 方法"></a>hook 方法</h3><p>当某些子类有一些个性化的需求，比如这里，泡茶不想要加柠檬。<br>那么可以这样改写父类</p>
+<h3 id="模板方法的应用场景">模板方法的应用场景</h3>
+<p>模板方法模式常被架构师用于搭建项目的框架，架构师定好了框架的骨架，<br>
+程序员继承框架的结构之后，负责往里面填空。</p>
+<h3 id="hook-方法">hook 方法</h3>
+<p>当某些子类有一些个性化的需求，比如这里，泡茶不想要加柠檬。<br>
+那么可以这样改写父类</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Beverage</span> <span class="token punctuation">&#123;</span>
   <span class="token comment">// ....</span>
   <span class="token function">wantsAddCondiments</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
@@ -795,20 +813,21 @@ tea<span class="token punctuation">.</span><span class="token function">init</sp
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/6.jpg" class="lazyload placeholder" data-srcset="/medias/6.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2021/06/06/qian-duan/javascript/javascript-she-ji-mo-shi/7.zu-he-mo-shi/" class="post-nav-link">
+    <a href="/2021/06/06/qian-duan/javascript/javascript-she-ji-mo-shi/6.ming-ling-mo-shi/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">JavaScript设计模式 -- 7.组合模式</div>
+        <div class="title-text">JavaScript设计模式 -- 6.命令模式</div>
       </div>
       
       <!-- <div class="content">
         定义
-用小的对象来构建更大的对象，而这些小的对象本身也可能是有更小的对象构成。
 
-用途
-组合模式将对象组合成树形结构，以
+命令模式中的命令（command）指的是一个执行某些特定事情的指令
+
+应用场景
+有时候需要向某些对象发送请求，但
       </div> -->
     </a>
   </div>
@@ -819,15 +838,21 @@ tea<span class="token punctuation">.</span><span class="token function">init</sp
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/2.jpg" class="lazyload placeholder" data-srcset="/medias/2.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/6.jpg" class="lazyload placeholder" data-srcset="/medias/6.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2021/06/03/qian-duan/javascript/javascript-she-ji-mo-shi/0.she-ji-yuan-ze/" class="post-nav-link">
+    <a href="/2021/06/06/qian-duan/javascript/javascript-she-ji-mo-shi/7.zu-he-mo-shi/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">JavaScript设计模式 -- 设计原则</div>
+        <div class="title-text">JavaScript设计模式 -- 7.组合模式</div>
       </div>
       <!-- <div class="content">
-        单一职责原则（SRP）就一个类而言，应该仅有一个引起它变化的原因。在 js 中，需要用到类的场景不多。单一职责更多的被运
+        定义
+
+用小的对象来构建更大的对象，而这些小的对象本身也可能是有更小的对象构成。
+
+用途
+
+组合模式将对象组合成树形结构
       </div> -->
     </a>
   </div>

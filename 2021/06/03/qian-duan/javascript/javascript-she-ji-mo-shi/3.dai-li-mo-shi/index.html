@@ -584,7 +584,8 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><blockquote>
+        <h3 id="定义">定义</h3>
+<blockquote>
 <p>代理模式是为一个对象提供一个代用品或占位符，以便控制对它的访问。代理模式的关键是<strong>当客户不方便直接访问对象或者不满足需要时。提供一个替身对象来控制对这个对象的访问，客户实际上访问的是替身对象</strong></p>
 </blockquote>
 <pre class="line-numbers language-flow" data-language="flow"><code class="language-flow">st<span class="token operator">=></span>start<span class="token operator">:</span> 客户
@@ -592,9 +593,10 @@ op<span class="token operator">=></span>operation<span class="token operator">:<
 e<span class="token operator">=></span>end<span class="token operator">:</span> 本体对象
 
 st<span class="token operator">-</span><span class="token operator">></span>op<span class="token operator">-</span><span class="token operator">></span>e<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
-<li>在前后端分离的架构中，收到浏览器端 <strong>同源策略</strong> 的影响，常见的问题就是 CORS(跨域资源共享)，这个可以通过后端设置响应头<code>Access-Control-Allow-Origin</code>为<code>*</code>，来允许浏览器跨域访问资源。<br>当然，前端也可以通过 node 以及其中间件，在本地搭建一个服务，然后将页面中的请求转发到真正的 web server(同源策略只针对浏览器，服务端向服务端发送请求是没有同源限制的)。在后者的方式中。node 承担的就是一个代理的作用。</li>
+<h3 id="应用场景">应用场景</h3>
+<ul>
+<li>在前后端分离的架构中，收到浏览器端 <strong>同源策略</strong> 的影响，常见的问题就是 CORS(跨域资源共享)，这个可以通过后端设置响应头<code>Access-Control-Allow-Origin</code>为<code>*</code>，来允许浏览器跨域访问资源。<br>
+当然，前端也可以通过 node 以及其中间件，在本地搭建一个服务，然后将页面中的请求转发到真正的 web server(同源策略只针对浏览器，服务端向服务端发送请求是没有同源限制的)。在后者的方式中。node 承担的就是一个代理的作用。</li>
 <li>当需要中间人来辅助完成工作，或锦上添花时使用。</li>
 </ul>
 <p><strong>小明追女神</strong></p>
@@ -633,7 +635,6 @@ st<span class="token operator">-</span><span class="token operator">></span>op<s
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
 xiaoming<span class="token punctuation">.</span><span class="token function">sendFlower</span><span class="token punctuation">(</span>xiaohong<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p><strong>保护代理</strong></p>
 <p>一束花的开销可能很大，所以我们需要当真正需要它的时候才去创建。</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> xiaohong <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -646,7 +647,6 @@ xiaoming<span class="token punctuation">.</span><span class="token function">sen
     <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p><strong>缓存代理</strong></p>
 <p>在项目中我们经常遇到一些分页请求，或者一些历史数据、历史图表数据请求等等。理论上，我们可以将已经看过的数据缓存下来。</p>
 <p>下面我们就按照这两个，使用高阶函数动态创建代理。</p>
@@ -683,7 +683,6 @@ xiaoming<span class="token punctuation">.</span><span class="token function">sen
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token comment">// 当用户翻页时调用</span>
 <span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">getData</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>也可以使用 Proxy 构造函数来创建代理,该代理可以优化一些耗时操作</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">cacheProxy</span><span class="token punctuation">(</span><span class="token parameter">fn</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">const</span> cache <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Map</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -714,7 +713,6 @@ xiaoming<span class="token punctuation">.</span><span class="token function">sen
 
 <span class="token function">expensiveProxy</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// cal new data...</span>
 <span class="token function">expensiveProxy</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// using cache data...</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>上面获取历史数据的例子我们也可以用 Proxy 来改写一下</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> <span class="token function-variable function">createCacheProxy</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">fn</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">const</span> cache <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Map</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -797,10 +795,12 @@ xiaoming<span class="token punctuation">.</span><span class="token function">sen
       
       <!-- <div class="content">
         定义
+
 策略模式就是定义一系列的算法，将他们一个个封装起来。
 
-使用场景在实际开发中，我们需要将算法的含义扩大一些。
-比如
+使用场景
+在实际开发中，我们需要将算法的含义扩大一些。
+
       </div> -->
     </a>
   </div>
@@ -819,8 +819,10 @@ xiaoming<span class="token punctuation">.</span><span class="token function">sen
         <div class="title-text">数据结构和算法</div>
       </div>
       <!-- <div class="content">
-        数据结构和算法数据结构，主要需要掌握，数组，栈，队列，链表，树（二叉树）
-数组这是一种最简单，最基础的数据结构，在 js
+        数据结构和算法
+数据结构，主要需要掌握，数组，栈，队列，链表，树（二叉树）
+数组
+这是一种最简单，最基础的数据结构，在 
       </div> -->
     </a>
   </div>

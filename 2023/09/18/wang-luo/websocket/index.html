@@ -584,8 +584,10 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h3 id="什么是-websocket？"><a href="#什么是-websocket？" class="headerlink" title="什么是 websocket？"></a>什么是 websocket？</h3><p>websocket 是一种网络传输协议，它和 http 一样，都位于 OSI 模型的应用层。且都依赖于 TCP 协议。但是他的协议是 ws 或 wss。</p>
-<h3 id="功能？"><a href="#功能？" class="headerlink" title="功能？"></a>功能？</h3><p>websocket 协议支持浏览器于 web 服务器之间的<strong>双向通信</strong>。</p>
+        <h3 id="什么是-websocket？">什么是 websocket？</h3>
+<p>websocket 是一种网络传输协议，它和 http 一样，都位于 OSI 模型的应用层。且都依赖于 TCP 协议。但是他的协议是 ws 或 wss。</p>
+<h3 id="功能？">功能？</h3>
+<p>websocket 协议支持浏览器于 web 服务器之间的<strong>双向通信</strong>。</p>
 <p>在 websocket 协议出现之前，网站中都是通过<strong>长轮询</strong> 或者 <strong>长连接</strong> 之类的来实现 <strong>Comet</strong>这种 web 推送，使得服务器能够主动的、实时的将消息推送给客户端。</p>
 <p><strong>长轮询</strong></p>
 <p>在 http 中，每一个 request 对应一个 response。response 是被动的，服务器是无法主动向客户端推送信息。但是在一些实时性较高的需求中，这是无法满足需求的。因此，可以每隔一段时间就主动的向服务请求，以获取最新的数据。这个保持连接的过程就是长轮询。</p>
@@ -600,11 +602,15 @@
       <span class="token function">setTimeout</span><span class="token punctuation">(</span>loadData<span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="长连接"><a href="#长连接" class="headerlink" title="长连接"></a>长连接</h3><p>long poll 其实原理跟 ajax 轮询 差不多，都是采用轮询的方式，不过采取的是阻塞模型（一直保持连接），也就是说，客户端发起连接后，如果没消息，就一直不返回 Response 给客户端。直到有消息才返回，返回完之后，客户端再次建立连接，周而复始</p>
-<p>在页面里嵌入一个隐蔵 iframe，将这个隐蔵 iframe 的 src 属性设为对一个长连接的请求或是采用 xhr 请求，服务器端就能源源不断地往客户端输入数据。<br>优点：消息即时到达，不发无用请求；管理起来也相对方便。<br>缺点：服务器维护一个长连接会增加开销。</p>
-<h3 id="为什么需要使用-websocket"><a href="#为什么需要使用-websocket" class="headerlink" title="为什么需要使用 websocket"></a>为什么需要使用 websocket</h3><p>从上面的例子来看都非常的消耗资源，且都有一个特点，也就是 http 协议的特点：<strong>被动性</strong>；</p>
-<p>长轮询： 它的主要逻辑都是不断的在建立 http 连接，然后等待服务器处理<br>长连接（long poll）： 需要有很高的并发。所以 ajax 轮询 和 long poll 都有可能发生这种情况。</p>
+<h3 id="长连接">长连接</h3>
+<p>long poll 其实原理跟 ajax 轮询 差不多，都是采用轮询的方式，不过采取的是阻塞模型（一直保持连接），也就是说，客户端发起连接后，如果没消息，就一直不返回 Response 给客户端。直到有消息才返回，返回完之后，客户端再次建立连接，周而复始</p>
+<p>在页面里嵌入一个隐蔵 iframe，将这个隐蔵 iframe 的 src 属性设为对一个长连接的请求或是采用 xhr 请求，服务器端就能源源不断地往客户端输入数据。<br>
+优点：消息即时到达，不发无用请求；管理起来也相对方便。<br>
+缺点：服务器维护一个长连接会增加开销。</p>
+<h3 id="为什么需要使用-websocket">为什么需要使用 websocket</h3>
+<p>从上面的例子来看都非常的消耗资源，且都有一个特点，也就是 http 协议的特点：<strong>被动性</strong>；</p>
+<p>长轮询： 它的主要逻辑都是不断的在建立 http 连接，然后等待服务器处理<br>
+长连接（long poll）： 需要有很高的并发。所以 ajax 轮询 和 long poll 都有可能发生这种情况。</p>
 <p>而 websocket，当服务器建立 websocket 协议时，只需要经历一次 HTTP 请求，就可以做到远远不断的信息传送，也就是在有信息的情况下才会主动的通知，而不是像 http 一样，每次都是需要客户端来询问(发起请求)。</p>
 <p>这样，就解决的以上的消息延时的问题以及非常消耗资源的情况。</p>
 
@@ -651,9 +657,11 @@
       </div>
       
       <!-- <div class="content">
-        TCP 的三次握手四次挥手三次握手的过程如下：
+        TCP 的三次握手四次挥手
+三次握手的过程如下：
+
 客户端向服务器发送 SYN 包，表示请求连接。
-服务器收到 SYN 包后
+服务器收到 SYN 
       </div> -->
     </a>
   </div>
@@ -673,10 +681,13 @@
       </div>
       <!-- <div class="content">
         Cookie 相关知识
+
 github
 掘金
 
-常见问题主域名可以访问子域名的 cookie 吗？在浏览器中，主域名是无法
+常见问题
+主域名可以访问子域名的 cookie 吗？
+在浏览器中，主域名
       </div> -->
     </a>
   </div>
