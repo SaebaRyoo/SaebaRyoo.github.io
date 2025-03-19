@@ -585,17 +585,14 @@
     <article class="post post-detail">
       <div class="post-content">
         <hr>
-<h2 id="theme-channing-cyan">theme: channing-cyan</h2>
-<p>在一个后台管理系统中，安全是很重要的。不光后端需要做权限校验，前端也需要做权限控制。<br>
-我们可以大致将权限分为 3 种： <strong>接口权限</strong>、<strong>页面权限</strong>、<strong>按钮权限</strong>。</p>
+<h2 id="theme-channing-cyan"><a href="#theme-channing-cyan" class="headerlink" title="theme: channing-cyan"></a>theme: channing-cyan</h2><p>在一个后台管理系统中，安全是很重要的。不光后端需要做权限校验，前端也需要做权限控制。<br>我们可以大致将权限分为 3 种： <strong>接口权限</strong>、<strong>页面权限</strong>、<strong>按钮权限</strong>。</p>
 <p>在这当中，前端主要关注点则是<strong>页面权限</strong>，<strong>按钮权限</strong>，而前端做这些的主要目的则是：</p>
 <ul>
 <li>禁止用户访问一些无权限访问的页面</li>
 <li>过滤不必要的请求，减少服务器压力</li>
 </ul>
 <p>这是具体的<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/Demos/tree/main/react-auth-demo/client">代码实现</a>，下面主要是思路的整理，以及一些核心实现</p>
-<h2 id="接口权限">接口权限</h2>
-<p>接口权限一般是用户登录后，后端根据账号密码来<code>认证</code>和<code>授权</code>，并颁发<code>token</code>或者<code>session</code>等来保存用户登录状态。</p>
+<h2 id="接口权限"><a href="#接口权限" class="headerlink" title="接口权限"></a>接口权限</h2><p>接口权限一般是用户登录后，后端根据账号密码来<code>认证</code>和<code>授权</code>，并颁发<code>token</code>或者<code>session</code>等来保存用户登录状态。</p>
 <p>后续客户端请求一般是在<code>header</code>中携带<code>token</code>，后端通过对 token 进行<code>鉴权</code>是否合法来控制是否可以访问接口。</p>
 <p>一般后台会通过用户的角色等来做对应的接口<code>权限控制</code>。</p>
 <p>而需要我们前端做的是在请求中携带好登录后回传的<code>token</code>,我们以<strong>axios</strong>为例</p>
@@ -625,8 +622,8 @@ instance<span class="token punctuation">.</span>interceptors<span class="token p
     <span class="token builtin">Promise</span><span class="token punctuation">.</span><span class="token function">reject</span><span class="token punctuation">(</span>err<span class="token punctuation">.</span>response<span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="页面权限">页面权限</h2>
-<p>首先，我们先完成<code>路由配置</code></p>
+
+<h2 id="页面权限"><a href="#页面权限" class="headerlink" title="页面权限"></a>页面权限</h2><p>首先，我们先完成<code>路由配置</code></p>
 <p><code>src/routes/routes.tsx</code></p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx"><span class="token keyword">export</span> <span class="token keyword">type</span> <span class="token class-name">RoutesType</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
   path<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
@@ -669,6 +666,7 @@ instance<span class="token punctuation">.</span>interceptors<span class="token p
     element<span class="token operator">:</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">NotFound</span></span> <span class="token punctuation">/></span></span><span class="token punctuation">,</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
 <span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>然后是基于<code>路由配置</code>来生成对应的路由组件</p>
 <p><code>src/routes/root.tsx</code></p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx"><span class="token keyword">const</span> <span class="token function-variable function">Root</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
@@ -723,16 +721,17 @@ instance<span class="token punctuation">.</span>interceptors<span class="token p
     </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">BrowserRouter</span></span><span class="token punctuation">></span></span>
   <span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>最后是只需要在入口中写入<code>Root</code>组件即可</p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx">ReactDOM<span class="token punctuation">.</span><span class="token function">createRoot</span><span class="token punctuation">(</span>document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">"root"</span><span class="token punctuation">)</span> <span class="token keyword">as</span> HTMLElement<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">render</span><span class="token punctuation">(</span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Provider</span></span> <span class="token attr-name">store</span><span class="token script language-javascript"><span class="token script-punctuation punctuation">=</span><span class="token punctuation">&#123;</span>store<span class="token punctuation">&#125;</span></span><span class="token punctuation">></span></span><span class="token plain-text">
     </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Root</span></span> <span class="token punctuation">/></span></span><span class="token plain-text">
   </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Provider</span></span><span class="token punctuation">></span></span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>上面只是完成了基本的配置，下面才是权限相关</p>
 <p>路由权限主要分为两个方向：</p>
-<h3 id="1-菜单权限">1. 菜单权限</h3>
-<p>一般来说，后台通过维护<code>user</code>、<code>role</code>、<code>menu</code>、<code>user_role</code>、<code>menu_role</code>这几张表来做基于 RBAC 的权限设计。</p>
+<h3 id="1-菜单权限"><a href="#1-菜单权限" class="headerlink" title="1. 菜单权限"></a>1. 菜单权限</h3><p>一般来说，后台通过维护<code>user</code>、<code>role</code>、<code>menu</code>、<code>user_role</code>、<code>menu_role</code>这几张表来做基于 RBAC 的权限设计。</p>
 <p>所以，在登录接口中，一般后台会返回用户对应的<code>角色</code>、<code>菜单</code>等信息。我们通过<code>redux-toolkit</code>保存登录数据。大致信息如下(<strong>未真正请求接口，只写了初始数据</strong>):</p>
 <p><code>src/pages/login/Login.slice.ts</code></p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">interface</span> <span class="token class-name">LoginState</span> <span class="token punctuation">&#123;</span>
@@ -769,6 +768,7 @@ instance<span class="token punctuation">.</span>interceptors<span class="token p
     <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
   <span class="token punctuation">]</span><span class="token punctuation">,</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这里的<code>role</code>表示当前用户的角色,<code>menuLists</code>为用户可访问的菜单</p>
 <p>然后在首页中生成菜单列表</p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx"><span class="token keyword">const</span> getMenuItem <span class="token operator">=</span> <span class="token punctuation">(</span>menus<span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">any</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
@@ -814,9 +814,9 @@ instance<span class="token punctuation">.</span>interceptors<span class="token p
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">export</span> <span class="token keyword">default</span> Home<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>但是，只<strong>根据权限列表来动态生成菜单</strong>并不能完全实现权限相关的目的。用户还可以通过<strong>在地址栏输入 url</strong>的方式来访问没有在菜单中显示的页面。</p>
-<h3 id="2-路由权限">2. 路由权限</h3>
-<p>我们可以通过实现一个<code>AuthRoute</code>来解决上述的问题。</p>
+<h3 id="2-路由权限"><a href="#2-路由权限" class="headerlink" title="2. 路由权限"></a>2. 路由权限</h3><p>我们可以通过实现一个<code>AuthRoute</code>来解决上述的问题。</p>
 <p>通过<code>AuthRoute</code>来拦截页面的访问操作。</p>
 <p><code>src/routes/AuthRoute.tsx</code></p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx"><span class="token comment">// 无需权限认证的白名单</span>
@@ -864,18 +864,17 @@ instance<span class="token punctuation">.</span>interceptors<span class="token p
   <span class="token keyword">return</span> children<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 <span class="token keyword">export</span> <span class="token keyword">default</span> AuthRoute<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>然后，在我们生成<code>Route</code>的时候在<code>element</code>属性中使用<code>AuthRoute</code>,这一步，我们已经在上面<code>src/routes/root.tsx</code>这个文件中写进去了。</p>
 <p>到这里，我们就通过实现<code>AuthRoute</code>来拦截页面访问，做权限相关处理。</p>
-<p>然后我们可以运行该<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/Demos/tree/main/react-auth-demo/client">仓库</a><br>
-代码来看效果。</p>
+<p>然后我们可以运行该<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/Demos/tree/main/react-auth-demo/client">仓库</a><br>代码来看效果。</p>
 <p>目前没有实现登录相关功能，所以需要手动在<code>localStorage</code>中添加<code>access_token</code>来模拟登录。</p>
 <ul>
 <li><strong>如果没有登录(没有 access_token)或者登录已过期，访问任何路由都会被路由到<code>/login</code>。</strong></li>
 <li><strong>如果已经登录，但是再访问登录页面，会被路由到<code>/</code>首页</strong></li>
 <li><strong>如果已经登录，但是访问了一个你无访问的页面,如<code>/protected</code>，则会被路由到<code>/unauthorized</code>页面</strong></li>
 </ul>
-<h2 id="按钮权限">按钮权限</h2>
-<p>按钮级别的权限，根据当前用户角色的不同，可以看到的按钮和操作不同。这里我只简单实现了一个<code>AuthButton</code></p>
+<h2 id="按钮权限"><a href="#按钮权限" class="headerlink" title="按钮权限"></a>按钮权限</h2><p>按钮级别的权限，根据当前用户角色的不同，可以看到的按钮和操作不同。这里我只简单实现了一个<code>AuthButton</code></p>
 <p><code>src/coponents/auth-button/index.tsx</code></p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Button <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"antd"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token keyword">type</span> <span class="token punctuation">&#123;</span> ButtonProps <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"antd"</span><span class="token punctuation">;</span>
@@ -896,6 +895,7 @@ instance<span class="token punctuation">.</span>interceptors<span class="token p
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
 <span class="token keyword">export</span> <span class="token keyword">default</span> AuthButton<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>使用方法如下，新增了一个<code>roles</code>属性，表示哪些角色可以看见该按钮</p>
 <p><code>src/pages/foo/auth-button.tsx</code></p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx"><span class="token keyword">const</span> ButtonPermission<span class="token operator">:</span> React<span class="token punctuation">.</span><span class="token function-variable function">FC</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
@@ -911,10 +911,10 @@ instance<span class="token punctuation">.</span>interceptors<span class="token p
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
 <span class="token keyword">export</span> <span class="token keyword">default</span> ButtonPermission<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>我们可以手动的修改<code>Login.slice.ts</code>中的<code>role</code>来查看不同的情况。</p>
 <p>这种实现方式比较简单，大伙可以根据自己的具体场景选择更好的方案</p>
-<h2 id="参考">参考</h2>
-<ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://www.hyhblog.cn/2018/04/25/user_login_auth_terms/">认证、授权、鉴权和权限控制</a></li>
 <li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000020887109">https://segmentfault.com/a/1190000020887109</a></li>
 </ul>
@@ -978,10 +978,9 @@ instance<span class="token punctuation">.</span>interceptors<span class="token p
 本文用于学习和记录
 
 1. 前提条件
-
 安装 Docker 和 Docker Compose
 安装 Jenkins
-拥
+拥有
       </div> -->
     </a>
   </div>
@@ -992,16 +991,17 @@ instance<span class="token punctuation">.</span>interceptors<span class="token p
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/14.jpg" class="lazyload placeholder" data-srcset="/medias/14.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/10.jpg" class="lazyload placeholder" data-srcset="/medias/10.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2025/02/20/hou-duan/shu-ju-ku/postgres/shi-yong-pg-dump-bei-fen-hui-fu-shu-ju-ku/" class="post-nav-link">
+    <a href="/2025/02/20/hou-duan/shu-ju-ku/redis/wan-zi-chang-wen-jie-xi-redis/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">使用pg_dump备份、恢复数据库</div>
+        <div class="title-text">万字好文！带你入门 redis</div>
       </div>
       <!-- <div class="content">
-        PostgreSQL 数据库备份与恢复操作
-在使用 PostgreSQL 数据库时，pg_dump 是一个常用的工具，用
+        请看原文点击查看原文
+以下内容只用作记录
+
       </div> -->
     </a>
   </div>

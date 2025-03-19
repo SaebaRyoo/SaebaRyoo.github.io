@@ -585,27 +585,23 @@
     <article class="post post-detail">
       <div class="post-content">
         <p><strong>前端开发配置系列文章的 github 仓库为： <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/webpack-config">https://github.com/SaebaRyoo/webpack-config</a> ,如果您在看的过程中发现了什么不足和错误，感谢您能指出！</strong></p>
-<h2 id="概念">概念</h2>
-<p>Webpack 是一个静态模块打包器，它将所有的资源都看作模块。通过一个或多个入口，构建一个依赖图谱(dependency graph)。然后将所有模块组合成一个或多个 bundle</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>Webpack 是一个静态模块打包器，它将所有的资源都看作模块。通过一个或多个入口，构建一个依赖图谱(dependency graph)。然后将所有模块组合成一个或多个 bundle</p>
 <div align="center">
    <img src="https://i.postimg.cc/JzjqbKNW/image.png" class="lazyload placeholder" data-srcset="https://i.postimg.cc/JzjqbKNW/image.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" width = "600" alt="" align=center />
 </div>
+
 <p>可以通过一个简单的例子来初步了解 Webpack</p>
 <p><strong>比如： 我们想要使用 es6 的箭头函数来写一个功能，但是有的浏览器不支持（IE6-11 或其他老版本浏览器）。那么这个用户在加载这个 js 资源的时候就会报错。</strong></p>
 <p>但这显然不是我们想要的结果，这时候就需要用到 webpack 或像 gulp 这样的构建工具来帮助我们将 es6 的语法转化成低版本浏览器可兼容的代码。</p>
 <p>那么用 webpack 来配置一个构建工具时如下：</p>
 <ol>
-<li>
-<p>创建一个目录，并<code>yarn init</code>初始化一个包管理器</p>
+<li><p>创建一个目录，并<code>yarn init</code>初始化一个包管理器</p>
 </li>
-<li>
-<p>安装 webpack <code>yarn install webpack webpack-cli -D</code></p>
+<li><p>安装 webpack <code>yarn install webpack webpack-cli -D</code></p>
 </li>
-<li>
-<p>想要将 es6 转化为 es5 语法，需要用到 babel 插件对代码进行编译,所以需要安装 babel 和相应的 loader <code>yarn add @babel/core @babel/preset-env babel-loader -D</code></p>
+<li><p>想要将 es6 转化为 es5 语法，需要用到 babel 插件对代码进行编译,所以需要安装 babel 和相应的 loader <code>yarn add @babel/core @babel/preset-env babel-loader -D</code></p>
 </li>
-<li>
-<p>配置.babelrc</p>
+<li><p>配置.babelrc</p>
 </li>
 </ol>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
@@ -618,13 +614,15 @@
     <span class="token punctuation">]</span>
   <span class="token punctuation">]</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <ol start="5">
-<li>创建 src/index.js 入口</li>
+<li>创建 src&#x2F;index.js 入口</li>
 </ol>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> <span class="token function-variable function">sum</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">sum</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <ol start="6">
-<li>创建输出文件 dist/html</li>
+<li>创建输出文件 dist&#x2F;html</li>
 </ol>
 <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
@@ -637,6 +635,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>./bundle.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <ol start="7">
 <li>然后就是配置 webpack.config.js</li>
 </ol>
@@ -661,8 +660,9 @@ console<span class="token punctuation">.</span><span class="token function">log<
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
 module<span class="token punctuation">.</span>exports <span class="token operator">=</span> config<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <ol start="8">
-<li>最后通过构建命令<code>./node_modules/.bin/webpack --config webpack.config.js --mode development</code> 运行配置，会生成一个 dist/bundle.js 文件，这就是转换后的 js 文件</li>
+<li>最后通过构建命令<code>./node_modules/.bin/webpack --config webpack.config.js --mode development</code> 运行配置，会生成一个 dist&#x2F;bundle.js 文件，这就是转换后的 js 文件</li>
 </ol>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">/*
  * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
@@ -699,6 +699,7 @@ module<span class="token punctuation">.</span>exports <span class="token operato
   <span class="token comment">/******/</span>
   <span class="token comment">/******/</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><strong>上面这个例子就使用了 webpack 的几个核心概念</strong></p>
 <ol>
 <li>入口 entry</li>
@@ -792,9 +793,8 @@ module<span class="token punctuation">.</span>exports <span class="token operato
         <div class="title-text">从零开始搭建前端脚手架</div>
       </div>
       <!-- <div class="content">
-        前端脚手架是什么？
-它将常用的开发流程抽象为 template，通过 cli 的交互形式帮助我们对开发过程进行提效。
-比
+        前端脚手架是什么？它将常用的开发流程抽象为 template，通过 cli 的交互形式帮助我们对开发过程进行提效。
+比如
       </div> -->
     </a>
   </div>

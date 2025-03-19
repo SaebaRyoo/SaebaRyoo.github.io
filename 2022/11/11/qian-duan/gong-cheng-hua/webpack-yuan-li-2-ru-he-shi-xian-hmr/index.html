@@ -584,16 +584,13 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <p>HMR 能够在保持页面状态不变的情况下动态更新代码模块，在 webpack 实现 HMR 之前，应用的加载更新都是一种页面级别的院子操作。<br>
-即使再小的改动，如更新字体大小等都会重新加载整个页面，会降低整体开发效率，如：</p>
+        <p>HMR 能够在保持页面状态不变的情况下动态更新代码模块，在 webpack 实现 HMR 之前，应用的加载更新都是一种页面级别的院子操作。<br>即使再小的改动，如更新字体大小等都会重新加载整个页面，会降低整体开发效率，如：</p>
 <ul>
 <li>对于复杂表单，你需要重新填写很多字段</li>
 <li>弹框消失，可是你只需要修改弹框内一些小样式，却还需要重新执行显示该弹框的交互动作</li>
 </ul>
-<h2 id="使用-HMR">使用 HMR</h2>
-<p><strong>从 webpack-dev-server v4 开始，HMR 是默认启用的。它会自动应用 webpack.HotModuleReplacementPlugin，这是启用 HMR 所必需的。因此当 hot 设置为 true 或者通过 CLI 设置 --hot，你不需要在你的 webpack.config.js 添加该插件。</strong></p>
-<h2 id="实现原理">实现原理</h2>
-<ol>
+<h2 id="使用-HMR"><a href="#使用-HMR" class="headerlink" title="使用 HMR"></a>使用 HMR</h2><p><strong>从 webpack-dev-server v4 开始，HMR 是默认启用的。它会自动应用 webpack.HotModuleReplacementPlugin，这是启用 HMR 所必需的。因此当 hot 设置为 true 或者通过 CLI 设置 –hot，你不需要在你的 webpack.config.js 添加该插件。</strong></p>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><ol>
 <li>使用<code>webpack-dev-server(WDS)</code>创建一个 server，托管静态资源，同时以 Runtime 方式注入一段处理<code>HMR</code>逻辑的客户端代码</li>
 <li>浏览器加载页面，与<code>WDS</code>建立 WebSocket 连接</li>
 <li>Webpack 监听到文件变化，增量构建产生变更的模块，并通过 WebSocket 发送<code>hash</code>事件</li>
@@ -658,9 +655,8 @@
       
       <!-- <div class="content">
         为什么要写单元测试
-
 帮助开发者完善异常逻辑，提高程序健壮性
-降低代码耦合度，防止在项目中出现修改了一处代码后，却影响了
+降低代码耦合度，防止在项目中出现修改了一处代码后，却影响了其
       </div> -->
     </a>
   </div>
@@ -679,9 +675,8 @@
         <div class="title-text">Webpack的loader和plugin的编写</div>
       </div>
       <!-- <div class="content">
-        loader 的链式调用和顺序执行
-loader 就是一个 js 函数，它的作用就是接收源码，并返回新的源码。
-如果是多
+        loader 的链式调用和顺序执行loader 就是一个 js 函数，它的作用就是接收源码，并返回新的源码。
+如果是多个
       </div> -->
     </a>
   </div>

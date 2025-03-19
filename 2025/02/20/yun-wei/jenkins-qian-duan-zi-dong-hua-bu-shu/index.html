@@ -587,46 +587,40 @@
         <blockquote>
 <p>本文用于学习和记录</p>
 </blockquote>
-<h1>1. 前提条件</h1>
-<ul>
+<h1 id="1-前提条件"><a href="#1-前提条件" class="headerlink" title="1. 前提条件"></a>1. 前提条件</h1><ul>
 <li>安装 Docker 和 Docker Compose</li>
 <li>安装 Jenkins</li>
 <li>拥有一个前端项目的代码库（例如 GitHub）</li>
 </ul>
-<h2 id="1-1-准备一台服务器">1.1. 准备一台服务器</h2>
-<p>服务器一台，请根据自己的项目选择不同配置的服务器，如果你的项目很大，内存太小，则会导致 build 失败</p>
-<h2 id="1-2-安装-docker">1.2. 安装 docker</h2>
-<p>看 docker 相关安装步骤</p>
-<h2 id="1-3-安装-jdk">1.3. 安装 jdk</h2>
-<h3 id="1-3-1-检查系统是否自带-jdk">1.3.1. 检查系统是否自带 jdk</h3>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">java</span> <span class="token parameter variable">--version</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h3 id="1-3-2-如果有就删除">1.3.2. 如果有就删除</h3>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">rpm</span> <span class="token parameter variable">-qa</span> <span class="token operator">|</span> <span class="token function">grep</span> <span class="token parameter variable">-i</span> <span class="token function">java</span> <span class="token operator">|</span> <span class="token function">xargs</span> <span class="token parameter variable">-n1</span> <span class="token function">rpm</span> <span class="token parameter variable">-e</span> <span class="token parameter variable">--nodeps</span>
+<h2 id="1-1-准备一台服务器"><a href="#1-1-准备一台服务器" class="headerlink" title="1.1. 准备一台服务器"></a>1.1. 准备一台服务器</h2><p>服务器一台，请根据自己的项目选择不同配置的服务器，如果你的项目很大，内存太小，则会导致 build 失败</p>
+<h2 id="1-2-安装-docker"><a href="#1-2-安装-docker" class="headerlink" title="1.2. 安装 docker"></a>1.2. 安装 docker</h2><p>看 docker 相关安装步骤</p>
+<h2 id="1-3-安装-jdk"><a href="#1-3-安装-jdk" class="headerlink" title="1.3. 安装 jdk"></a>1.3. 安装 jdk</h2><h3 id="1-3-1-检查系统是否自带-jdk"><a href="#1-3-1-检查系统是否自带-jdk" class="headerlink" title="1.3.1. 检查系统是否自带 jdk"></a>1.3.1. 检查系统是否自带 jdk</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">java</span> <span class="token parameter variable">--version</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="1-3-2-如果有就删除"><a href="#1-3-2-如果有就删除" class="headerlink" title="1.3.2. 如果有就删除"></a>1.3.2. 如果有就删除</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">rpm</span> <span class="token parameter variable">-qa</span> <span class="token operator">|</span> <span class="token function">grep</span> <span class="token parameter variable">-i</span> <span class="token function">java</span> <span class="token operator">|</span> <span class="token function">xargs</span> <span class="token parameter variable">-n1</span> <span class="token function">rpm</span> <span class="token parameter variable">-e</span> <span class="token parameter variable">--nodeps</span>
 <span class="token comment">#rpm -qa:查询所安装的所有rpm包</span>
 <span class="token comment">#grep -i:忽略大小写</span>
 <span class="token comment">#xargs -n1:表示每次只传递一个参数</span>
 <span class="token comment">#rpm -e --nodeps:强制卸载软件</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="1-3-3-检查是否删除">1.3.3. 检查是否删除</h3>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#查看是否还在即可</span>
+
+<h3 id="1-3-3-检查是否删除"><a href="#1-3-3-检查是否删除" class="headerlink" title="1.3.3. 检查是否删除"></a>1.3.3. 检查是否删除</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#查看是否还在即可</span>
 <span class="token function">rpm</span> <span class="token parameter variable">-qa</span> <span class="token operator">|</span> <span class="token function">grep</span> <span class="token parameter variable">-i</span> <span class="token function">java</span>
 <span class="token comment">#或者查看java版本</span>
 <span class="token function">java</span> <span class="token parameter variable">-version</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="1-3-4-通过wget-下载jdk1-8-并解压">1.3.4. 通过<a href="https://link.juejin.cn/?target=https%3A%2F%2Fso.csdn.net%2Fso%2Fsearch%3Fq%3Dwget%25E4%25B8%258B%25E8%25BD%25BD%26spm%3D1001.2101.3001.7020">wget 下载</a>jdk1.8 并解压</h3>
-<h4 id="1-3-4-1-进入-home-目录并创建-jdk-文件夹">1.3.4.1. 进入 home 目录并创建 jdk 文件夹</h4>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /home   //进入home文件夹
+
+<h3 id="1-3-4-通过wget-下载jdk1-8-并解压"><a href="#1-3-4-通过wget-下载jdk1-8-并解压" class="headerlink" title="1.3.4. 通过wget 下载jdk1.8 并解压"></a>1.3.4. 通过<a href="https://link.juejin.cn/?target=https://so.csdn.net/so/search?q=wget%25E4%25B8%258B%25E8%25BD%25BD&spm=1001.2101.3001.7020">wget 下载</a>jdk1.8 并解压</h3><h4 id="1-3-4-1-进入-home-目录并创建-jdk-文件夹"><a href="#1-3-4-1-进入-home-目录并创建-jdk-文件夹" class="headerlink" title="1.3.4.1. 进入 home 目录并创建 jdk 文件夹"></a>1.3.4.1. 进入 home 目录并创建 jdk 文件夹</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /home   //进入home文件夹
 <span class="token function">mkdir</span> jdk  //创建jdk文件夹
 <span class="token builtin class-name">cd</span> jdk     //进入jdk文件夹<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h4 id="1-3-4-2-进入-jdk-文件通过-wget-下载-jdk1-8">1.3.4.2. 进入 jdk 文件通过 wget 下载 jdk1.8</h4>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">wget</span> <span class="token punctuation">\</span>
+
+<h4 id="1-3-4-2-进入-jdk-文件通过-wget-下载-jdk1-8"><a href="#1-3-4-2-进入-jdk-文件通过-wget-下载-jdk1-8" class="headerlink" title="1.3.4.2. 进入 jdk 文件通过 wget 下载 jdk1.8"></a>1.3.4.2. 进入 jdk 文件通过 wget 下载 jdk1.8</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">wget</span> <span class="token punctuation">\</span>
 --no-check-certificate <span class="token punctuation">\</span>
 --no-cookies <span class="token punctuation">\</span>
 <span class="token parameter variable">--header</span> <span class="token punctuation">\</span>
 <span class="token string">"Cookie: oraclelicense=accept-securebackup-cookie"</span> <span class="token punctuation">\</span>
 http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.tar.gz<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="1-3-4-3-解压安装包">1.3.4.3. 解压安装包</h4>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">tar</span> xvf jdk-8u131-linux-x64.tar.gz<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="1-3-4-4-配置环境变量">1.3.4.4. 配置环境变量</h4>
-<pre><code>vim /etc/profile
+
+<h4 id="1-3-4-3-解压安装包"><a href="#1-3-4-3-解压安装包" class="headerlink" title="1.3.4.3. 解压安装包"></a>1.3.4.3. 解压安装包</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">tar</span> xvf jdk-8u131-linux-x64.tar.gz<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="1-3-4-4-配置环境变量"><a href="#1-3-4-4-配置环境变量" class="headerlink" title="1.3.4.4. 配置环境变量"></a>1.3.4.4. 配置环境变量</h4><pre><code>vim /etc/profile
 </code></pre>
 <p>然后在最后一行插入以下内容</p>
 <pre><code>export JAVA_HOME=/home/jdk/jdk1.8.0_131 # 你的jdk文件路径
@@ -634,22 +628,18 @@ export CLASSPATH=$:CLASSPATH:$JAVA_HOME/lib/
 export PATH=$PATH:$JAVA_HOME/bin
 </code></pre>
 <p>然后运行<code>source /etc/profile</code>使文件生效</p>
-<h4 id="1-3-4-5-查看是否安装成功">1.3.4.5. 查看是否安装成功</h4>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">java</span> <span class="token parameter variable">-version</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h2 id="1-4-安装-jenkins">1.4. 安装 jenkins</h2>
-<h3 id="1-4-1-使用-docker-安装">1.4.1. 使用 docker 安装</h3>
-<h4 id="1-4-1-1-拉取镜像">1.4.1.1. 拉取镜像</h4>
-<pre><code>docker pull jenkins/jenkins:latest
+<h4 id="1-3-4-5-查看是否安装成功"><a href="#1-3-4-5-查看是否安装成功" class="headerlink" title="1.3.4.5. 查看是否安装成功"></a>1.3.4.5. 查看是否安装成功</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">java</span> <span class="token parameter variable">-version</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="1-4-安装-jenkins"><a href="#1-4-安装-jenkins" class="headerlink" title="1.4. 安装 jenkins"></a>1.4. 安装 jenkins</h2><h3 id="1-4-1-使用-docker-安装"><a href="#1-4-1-使用-docker-安装" class="headerlink" title="1.4.1. 使用 docker 安装"></a>1.4.1. 使用 docker 安装</h3><h4 id="1-4-1-1-拉取镜像"><a href="#1-4-1-1-拉取镜像" class="headerlink" title="1.4.1.1. 拉取镜像"></a>1.4.1.1. 拉取镜像</h4><pre><code>docker pull jenkins/jenkins:latest
 </code></pre>
-<h4 id="1-4-1-2-创建挂载目录">1.4.1.2. 创建挂载目录</h4>
-<p>挂载目录用于存放数据</p>
+<h4 id="1-4-1-2-创建挂载目录"><a href="#1-4-1-2-创建挂载目录" class="headerlink" title="1.4.1.2. 创建挂载目录"></a>1.4.1.2. 创建挂载目录</h4><p>挂载目录用于存放数据</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">//创建目录
 <span class="token function">mkdir</span> <span class="token parameter variable">-p</span> /usr/local/docker-volumes/jenkins_data
 
 //授权权限
 <span class="token function">chmod</span> <span class="token number">777</span> /usr/local/docker-volumes/jenkins_data<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="1-4-1-3-启动-Jenkins-容器">1.4.1.3. 启动 Jenkins 容器</h4>
-<p>启动命令如下</p>
+
+<h4 id="1-4-1-3-启动-Jenkins-容器"><a href="#1-4-1-3-启动-Jenkins-容器" class="headerlink" title="1.4.1.3. 启动 Jenkins 容器"></a>1.4.1.3. 启动 Jenkins 容器</h4><p>启动命令如下</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token punctuation">\</span>
   <span class="token parameter variable">-p</span> <span class="token number">8082</span>:8080 <span class="token punctuation">\</span>  <span class="token comment"># 映射 Jenkins Web 端口</span>
   <span class="token parameter variable">-p</span> <span class="token number">50000</span>:50000 <span class="token punctuation">\</span>  <span class="token comment"># 映射 Jenkins Agent 端口</span>
@@ -667,24 +657,20 @@ export PATH=$PATH:$JAVA_HOME/bin
   --health-timeout<span class="token operator">=</span>10s <span class="token punctuation">\</span>  <span class="token comment"># 健康检查超时时间</span>
   --health-retries<span class="token operator">=</span><span class="token number">3</span> <span class="token punctuation">\</span>  <span class="token comment"># 健康检查重试次数</span>
   jenkins/jenkins:latest  <span class="token comment"># Jenkins 镜像</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="1-4-1-4-验证是否启动成功">1.4.1.4. 验证是否启动成功</h4>
-<pre><code>docker ps -a | grep myjenkins
+
+<h4 id="1-4-1-4-验证是否启动成功"><a href="#1-4-1-4-验证是否启动成功" class="headerlink" title="1.4.1.4. 验证是否启动成功"></a>1.4.1.4. 验证是否启动成功</h4><pre><code>docker ps -a | grep myjenkins
 </code></pre>
 <p>然后检查 STATUS，正常如下</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/f3cff85a941448479548aa14e584ec94~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=2uSuLD6PZwrUWTrwFefkfEfGxjQ%3D" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/f3cff85a941448479548aa14e584ec94~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=2uSuLD6PZwrUWTrwFefkfEfGxjQ%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
-<h4 id="1-4-1-5-修改插件源">1.4.1.5. 修改插件源</h4>
-<p>Jenkins 在安装插件时，下载相关插件包特别慢，我们可以将 Jenkins 默认的插件数据源变更为国内数据源，然后重启 Jenkins</p>
-<h5 id="1-4-1-5-1-进入目录">1.4.1.5.1. 进入目录</h5>
-<p>以我们的例子为准，我们挂载的 volume 如下</p>
+<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/f3cff85a941448479548aa14e584ec94~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=2uSuLD6PZwrUWTrwFefkfEfGxjQ=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/f3cff85a941448479548aa14e584ec94~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=2uSuLD6PZwrUWTrwFefkfEfGxjQ=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h4 id="1-4-1-5-修改插件源"><a href="#1-4-1-5-修改插件源" class="headerlink" title="1.4.1.5. 修改插件源"></a>1.4.1.5. 修改插件源</h4><p>Jenkins 在安装插件时，下载相关插件包特别慢，我们可以将 Jenkins 默认的插件数据源变更为国内数据源，然后重启 Jenkins</p>
+<h5 id="1-4-1-5-1-进入目录"><a href="#1-4-1-5-1-进入目录" class="headerlink" title="1.4.1.5.1. 进入目录"></a>1.4.1.5.1. 进入目录</h5><p>以我们的例子为准，我们挂载的 volume 如下</p>
 <pre><code>cd /usr/local/docker-volumes/jenkins_data/updates
 </code></pre>
-<h5 id="1-4-1-5-2-修改-default-json-的源">1.4.1.5.2. 修改 default.json 的源</h5>
-<pre><code>sed -i 's#http://updates.jenkins-ci.org/download/#https://mirrors.tuna.tsinghua.edu.cn/jenkins/#g' default.json
-sed -i 's#http://www.google.com/#https://www.baidu.com/#g' default.json
+<h5 id="1-4-1-5-2-修改-default-json-的源"><a href="#1-4-1-5-2-修改-default-json-的源" class="headerlink" title="1.4.1.5.2. 修改 default.json 的源"></a>1.4.1.5.2. 修改 default.json 的源</h5><pre><code>sed -i &#39;s#http://updates.jenkins-ci.org/download/#https://mirrors.tuna.tsinghua.edu.cn/jenkins/#g&#39; default.json
+sed -i &#39;s#http://www.google.com/#https://www.baidu.com/#g&#39; default.json
 </code></pre>
-<h5 id="1-4-1-5-3-修改-hudson-model-UpdateCenter-xml-的-url">1.4.1.5.3. 修改 hudson.model.UpdateCenter.xml 的 url</h5>
-<p>将该文件修改为如下内容</p>
-<pre><code>&lt;?xml version='1.1encoding='UTF-8'?&gt;
+<h5 id="1-4-1-5-3-修改-hudson-model-UpdateCenter-xml-的-url"><a href="#1-4-1-5-3-修改-hudson-model-UpdateCenter-xml-的-url" class="headerlink" title="1.4.1.5.3. 修改 hudson.model.UpdateCenter.xml 的 url"></a>1.4.1.5.3. 修改 hudson.model.UpdateCenter.xml 的 url</h5><p>将该文件修改为如下内容</p>
+<pre><code>&lt;?xml version=&#39;1.1encoding=&#39;UTF-8&#39;?&gt;
 &lt;sites&gt;
     &lt;site&gt;
         &lt;id&gt;default&lt;/id&gt;
@@ -692,25 +678,19 @@ sed -i 's#http://www.google.com/#https://www.baidu.com/#g' default.json
     &lt;/site&gt;
 &lt;/sites&gt;
 </code></pre>
-<h4 id="1-4-1-6-登录-jenkins">1.4.1.6. 登录 jenkins</h4>
-<p>在我们访问了 <code>ip:8082</code>后，界面会跳出来</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/c115a80eac7544b5b426989e87c6967c~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=fxYNJVbZ3tPSqAfJBkg0yUKX8pg%3D" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/c115a80eac7544b5b426989e87c6967c~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=fxYNJVbZ3tPSqAfJBkg0yUKX8pg%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<h4 id="1-4-1-6-登录-jenkins"><a href="#1-4-1-6-登录-jenkins" class="headerlink" title="1.4.1.6. 登录 jenkins"></a>1.4.1.6. 登录 jenkins</h4><p>在我们访问了 <code>ip:8082</code>后，界面会跳出来</p>
+<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/c115a80eac7544b5b426989e87c6967c~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=fxYNJVbZ3tPSqAfJBkg0yUKX8pg=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/c115a80eac7544b5b426989e87c6967c~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=fxYNJVbZ3tPSqAfJBkg0yUKX8pg=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 <p>然后我们就可以通过以下的方式获取密码</p>
-<h5 id="1-4-1-6-1-查看日志">1.4.1.6.1. 查看日志</h5>
-<p><code>docker logs myjenkins</code>，找到<strong>Please use the following password to proceed to installation</strong></p>
+<h5 id="1-4-1-6-1-查看日志"><a href="#1-4-1-6-1-查看日志" class="headerlink" title="1.4.1.6.1. 查看日志"></a>1.4.1.6.1. 查看日志</h5><p><code>docker logs myjenkins</code>，找到<strong>Please use the following password to proceed to installation</strong></p>
 <p>这句话后面的就是初始密码</p>
-<h5 id="1-4-1-6-2-查看文件">1.4.1.6.2. 查看文件</h5>
-<p>查看我们挂载的目录</p>
+<h5 id="1-4-1-6-2-查看文件"><a href="#1-4-1-6-2-查看文件" class="headerlink" title="1.4.1.6.2. 查看文件"></a>1.4.1.6.2. 查看文件</h5><p>查看我们挂载的目录</p>
 <pre><code>cd /usr/local/docker-volumes/jenkins_data/secrets
 
 cat initialAdminPassword
 </code></pre>
-<h5 id=""></h5>
-<h4 id="1-4-1-7-安装插件">1.4.1.7. 安装插件</h4>
-<p>选择<strong>安装推荐的插件</strong></p>
+<h5 id=""><a href="#" class="headerlink" title=""></a></h5><h4 id="1-4-1-7-安装插件"><a href="#1-4-1-7-安装插件" class="headerlink" title="1.4.1.7. 安装插件"></a>1.4.1.7. 安装插件</h4><p>选择<strong>安装推荐的插件</strong></p>
 <p>下载完成，就可以进入 jenkins 进行操作了</p>
-<h4 id="1-4-1-8-插件推荐">1.4.1.8. 插件推荐</h4>
-<ul>
+<h4 id="1-4-1-8-插件推荐"><a href="#1-4-1-8-插件推荐" class="headerlink" title="1.4.1.8. 插件推荐"></a>1.4.1.8. 插件推荐</h4><ul>
 <li>Locale（中文插件）</li>
 <li>Maven Integration（maven 构建工具）</li>
 <li>Publish Over SSH（远程推送工具）</li>
@@ -718,37 +698,33 @@ cat initialAdminPassword
 <li>Deploy to container（自动化部署工程所需要插件，部署到容器插件）</li>
 <li>git parameter（用户参数化构建过程里添加 git 类型参数）</li>
 </ul>
-<h4 id="1-4-1-9-安装-node">1.4.1.9. 安装 node</h4>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/30aee06e464c4a36b960cf8e38279f00~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=0f1l4bFRvA1oXaVZLiGVVjf1fHE%3D" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/30aee06e464c4a36b960cf8e38279f00~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=0f1l4bFRvA1oXaVZLiGVVjf1fHE%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
-<h4 id="1-4-1-10-配置-node">1.4.1.10. 配置 node</h4>
-<p>我们进入<code>Dashboard &gt; 系统管理 &gt; Tools </code>进行如下配置</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/70fad0103df9412b85e359b262d16099~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=kLYJWX9DcsfS9QLjDgSirH%2FGYxQ%3D" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/70fad0103df9412b85e359b262d16099~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=kLYJWX9DcsfS9QLjDgSirH%2FGYxQ%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
-<h4 id="1-4-1-11-配置-github">1.4.1.11. 配置 github</h4>
-<p>进入<code>Dashboard &gt; 系统管理 &gt; System</code> 配置如下信息</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/56a2b4c7a67f4c6dab74ea3378a93cf4~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=BDMxLnlG722X0JuoZA%2FkoUmo9b8%3D" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/56a2b4c7a67f4c6dab74ea3378a93cf4~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=BDMxLnlG722X0JuoZA%2FkoUmo9b8%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<h4 id="1-4-1-9-安装-node"><a href="#1-4-1-9-安装-node" class="headerlink" title="1.4.1.9. 安装 node"></a>1.4.1.9. 安装 node</h4><p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/30aee06e464c4a36b960cf8e38279f00~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=0f1l4bFRvA1oXaVZLiGVVjf1fHE=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/30aee06e464c4a36b960cf8e38279f00~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=0f1l4bFRvA1oXaVZLiGVVjf1fHE=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h4 id="1-4-1-10-配置-node"><a href="#1-4-1-10-配置-node" class="headerlink" title="1.4.1.10. 配置 node"></a>1.4.1.10. 配置 node</h4><p>我们进入<code>Dashboard &gt; 系统管理 &gt; Tools </code>进行如下配置</p>
+<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/70fad0103df9412b85e359b262d16099~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=kLYJWX9DcsfS9QLjDgSirH/GYxQ=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/70fad0103df9412b85e359b262d16099~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=kLYJWX9DcsfS9QLjDgSirH/GYxQ=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h4 id="1-4-1-11-配置-github"><a href="#1-4-1-11-配置-github" class="headerlink" title="1.4.1.11. 配置 github"></a>1.4.1.11. 配置 github</h4><p>进入<code>Dashboard &gt; 系统管理 &gt; System</code> 配置如下信息</p>
+<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/56a2b4c7a67f4c6dab74ea3378a93cf4~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=BDMxLnlG722X0JuoZA/koUmo9b8=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/56a2b4c7a67f4c6dab74ea3378a93cf4~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=BDMxLnlG722X0JuoZA/koUmo9b8=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 <p>点击添加</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/d47908b9f1e44d9f8370f846d657bb47~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=EqAKMtQ8scJziAViAVAdikbthDk%3D" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/d47908b9f1e44d9f8370f846d657bb47~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=EqAKMtQ8scJziAViAVAdikbthDk%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">我们去 github 获取秘钥填写进 secret 里面</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/e015d76dc551459885aea599531bbd2e~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=3wOXHveCgkYHP2IxA78smAm94Lo%3D" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/e015d76dc551459885aea599531bbd2e~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=3wOXHveCgkYHP2IxA78smAm94Lo%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/d47908b9f1e44d9f8370f846d657bb47~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=EqAKMtQ8scJziAViAVAdikbthDk=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/d47908b9f1e44d9f8370f846d657bb47~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=EqAKMtQ8scJziAViAVAdikbthDk=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp">我们去 github 获取秘钥填写进 secret 里面</p>
+<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/e015d76dc551459885aea599531bbd2e~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=3wOXHveCgkYHP2IxA78smAm94Lo=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/e015d76dc551459885aea599531bbd2e~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=3wOXHveCgkYHP2IxA78smAm94Lo=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 <p>然后点击测试，如果如第一张图的返回一样，则表示成功</p>
-<p>点击高级<img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/096566de0b4f46b1b7a5c6dd87088019~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=2tvYxOiXkoZWff%2FJz1LWc8F2fbI%3D" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/096566de0b4f46b1b7a5c6dd87088019~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=2tvYxOiXkoZWff%2FJz1LWc8F2fbI%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<p>点击高级<img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/096566de0b4f46b1b7a5c6dd87088019~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=2tvYxOiXkoZWff/Jz1LWc8F2fbI=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/096566de0b4f46b1b7a5c6dd87088019~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=2tvYxOiXkoZWff/Jz1LWc8F2fbI=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 <p>将这个 url 复制到 github 仓库里面进行配置</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/1c2192804d574924a9f488c71e823f49~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=j1XgC1GyPwKg90%2B9o0Sh8R7nyNU%3D" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/1c2192804d574924a9f488c71e823f49~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=j1XgC1GyPwKg90%2B9o0Sh8R7nyNU%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/1c2192804d574924a9f488c71e823f49~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=j1XgC1GyPwKg90+9o0Sh8R7nyNU=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/1c2192804d574924a9f488c71e823f49~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=j1XgC1GyPwKg90+9o0Sh8R7nyNU=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 <p>点击 Webhooks，在这里粘贴我们刚刚复制的 url 地址</p>
-<h4 id="1-4-1-12-创建一个任务">1.4.1.12. 创建一个任务</h4>
-<p>到 Dashboard 首页，点击新建任务</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/1dea6fd866f1439691e5413e4b75da02~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=UQRD1MCLA6XdiIBv6ZdPgugdxZw%3D" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/1dea6fd866f1439691e5413e4b75da02~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=UQRD1MCLA6XdiIBv6ZdPgugdxZw%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<h4 id="1-4-1-12-创建一个任务"><a href="#1-4-1-12-创建一个任务" class="headerlink" title="1.4.1.12. 创建一个任务"></a>1.4.1.12. 创建一个任务</h4><p>到 Dashboard 首页，点击新建任务</p>
+<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/1dea6fd866f1439691e5413e4b75da02~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=UQRD1MCLA6XdiIBv6ZdPgugdxZw=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/1dea6fd866f1439691e5413e4b75da02~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=UQRD1MCLA6XdiIBv6ZdPgugdxZw=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 <p>输入 github 地址</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/4909f79eead04ceaa7d6bc7ff6bc51ef~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=ToZXap%2BfPVbz%2FLgDaAOV9LZUWTU%3D" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/4909f79eead04ceaa7d6bc7ff6bc51ef~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=ToZXap%2BfPVbz%2FLgDaAOV9LZUWTU%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/4909f79eead04ceaa7d6bc7ff6bc51ef~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=ToZXap+fPVbz/LgDaAOV9LZUWTU=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/4909f79eead04ceaa7d6bc7ff6bc51ef~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=ToZXap+fPVbz/LgDaAOV9LZUWTU=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 <p>找到 <strong>源码管理标题</strong> 然后点击 Git, 添加 github 账号密码</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/73657bf5a7044ba4b1daf7dedfbcaed8~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=4eALj95hldA%2BspAY7gl4izZkoZY%3D" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/73657bf5a7044ba4b1daf7dedfbcaed8~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=4eALj95hldA%2BspAY7gl4izZkoZY%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/73657bf5a7044ba4b1daf7dedfbcaed8~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=4eALj95hldA+spAY7gl4izZkoZY=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/73657bf5a7044ba4b1daf7dedfbcaed8~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=4eALj95hldA+spAY7gl4izZkoZY=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 <p><strong><em>后面有个指定分支，别填错。要和你 git 项目的主分支一样</em></strong></p>
 <hr>
 <p>触发器选择 GitHub hook trigger for GITScm polling</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/5a61e9302e7149b6b35f600cc361d8ad~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=vnxRll4Q5c4KqC%2BwXau7C5%2Bw01A%3D" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/5a61e9302e7149b6b35f600cc361d8ad~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=vnxRll4Q5c4KqC%2BwXau7C5%2Bw01A%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/5a61e9302e7149b6b35f600cc361d8ad~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=vnxRll4Q5c4KqC+wXau7C5+w01A=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/5a61e9302e7149b6b35f600cc361d8ad~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=vnxRll4Q5c4KqC+wXau7C5+w01A=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 <p>构建环境选择 node</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/35a5454b5aab4dcfb1088be81ae14713~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=2m9OJL0eny1CHHhGsBmJWXcBtjo%3D" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/35a5454b5aab4dcfb1088be81ae14713~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=2m9OJL0eny1CHHhGsBmJWXcBtjo%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/35a5454b5aab4dcfb1088be81ae14713~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=2m9OJL0eny1CHHhGsBmJWXcBtjo=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/35a5454b5aab4dcfb1088be81ae14713~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=2m9OJL0eny1CHHhGsBmJWXcBtjo=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 <p>添加构建步骤</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/6fa38a8245954a9996b839722025001d~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=%2BaUNsKCtNn88NaRClZU7hj0Zcys%3D" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/6fa38a8245954a9996b839722025001d~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=%2BaUNsKCtNn88NaRClZU7hj0Zcys%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/6fa38a8245954a9996b839722025001d~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=+aUNsKCtNn88NaRClZU7hj0Zcys=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/6fa38a8245954a9996b839722025001d~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=+aUNsKCtNn88NaRClZU7hj0Zcys=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 <p>输入命令</p>
 <pre><code># 设置Node内存限制
 # export NODE_OPTIONS=&quot;--max_old_space_size=1024&quot;
@@ -783,16 +759,13 @@ docker run \
   reactginxcontainer
 </code></pre>
 <p>完成后如下，然后点击保存即可</p>
-<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/6a80dce2984c4327833736e20e7998a8~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=4cPL29BGSSuv8m664fDaVY3hlPk%3D" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/6a80dce2984c4327833736e20e7998a8~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0%3D&amp;rk3s=f64ab15b&amp;x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&amp;x-orig-expires=1740639296&amp;x-orig-sign=4cPL29BGSSuv8m664fDaVY3hlPk%3D" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
-<h3 id="1-4-2-给前端项目配置环境">1.4.2. 给前端项目配置环境</h3>
-<h4 id="1-4-2-1-创建-Dockerfile">1.4.2.1. 创建 Dockerfile</h4>
-<p>首先，为前端项目创建一个 Dockerfile，用于打包前端项目：</p>
+<p><img src="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/6a80dce2984c4327833736e20e7998a8~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=4cPL29BGSSuv8m664fDaVY3hlPk=" class="lazyload placeholder" data-srcset="https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/6a80dce2984c4327833736e20e7998a8~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAgU2FlYmFSeW8=:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiNTg4OTkzOTYxNDA4Njg1In0=&rk3s=f64ab15b&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018&x-orig-expires=1740639296&x-orig-sign=4cPL29BGSSuv8m664fDaVY3hlPk=" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h3 id="1-4-2-给前端项目配置环境"><a href="#1-4-2-给前端项目配置环境" class="headerlink" title="1.4.2. 给前端项目配置环境"></a>1.4.2. 给前端项目配置环境</h3><h4 id="1-4-2-1-创建-Dockerfile"><a href="#1-4-2-1-创建-Dockerfile" class="headerlink" title="1.4.2.1. 创建 Dockerfile"></a>1.4.2.1. 创建 Dockerfile</h4><p>首先，为前端项目创建一个 Dockerfile，用于打包前端项目：</p>
 <pre><code>FROM nginx
 COPY dist/ /usr/share/nginx/html/
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 </code></pre>
-<h4 id="1-4-2-2-创建一个-nginx-default-conf-文件，用于-Nginx-配置：">1.4.2.2. 创建一个 nginx/<code>default.conf</code> 文件，用于 Nginx 配置：</h4>
-<pre><code>server &#123;
+<h4 id="1-4-2-2-创建一个-nginx-x2F-default-conf-文件，用于-Nginx-配置："><a href="#1-4-2-2-创建一个-nginx-x2F-default-conf-文件，用于-Nginx-配置：" class="headerlink" title="1.4.2.2. 创建一个 nginx&#x2F;default.conf 文件，用于 Nginx 配置："></a>1.4.2.2. 创建一个 nginx&#x2F;<code>default.conf</code> 文件，用于 Nginx 配置：</h4><pre><code>server &#123;
     listen       80;
     server_name  localhost;
 ​
@@ -825,12 +798,9 @@ COPY nginx/default.conf /etc/nginx/conf.d/default.conf
     &#125;
 &#125;
 </code></pre>
-<h3 id="1-4-3-推送代码">1.4.3. 推送代码</h3>
-<p>完成上述操作后就可以直接在本地 push 代码了</p>
-<h3 id="1-4-4-开始构建">1.4.4. 开始构建</h3>
-<p>然后我们切换到我们的 jenkins 管理界面，到 dashboard 中选择我们创建的任务。就可以看到构建进度和状态了。到这里部署完成</p>
-<h1>参考</h1>
-<ul>
+<h3 id="1-4-3-推送代码"><a href="#1-4-3-推送代码" class="headerlink" title="1.4.3. 推送代码"></a>1.4.3. 推送代码</h3><p>完成上述操作后就可以直接在本地 push 代码了</p>
+<h3 id="1-4-4-开始构建"><a href="#1-4-4-开始构建" class="headerlink" title="1.4.4. 开始构建"></a>1.4.4. 开始构建</h3><p>然后我们切换到我们的 jenkins 管理界面，到 dashboard 中选择我们创建的任务。就可以看到构建进度和状态了。到这里部署完成</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ul>
 <li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7377643248187146251">https://juejin.cn/post/7377643248187146251</a></li>
 </ul>
 
@@ -893,11 +863,8 @@ COPY nginx/default.conf /etc/nginx/conf.d/default.conf
       </div>
       
       <!-- <div class="content">
-        1. docker 部署 nginx
-1.1. 拉取镜像
-docker pull nginx
-1.2. 创建挂载目录
-m
+        1. docker 部署 nginx1.1. 拉取镜像docker pull nginx
+1.2. 创建挂载目录mkdi
       </div> -->
     </a>
   </div>
@@ -917,8 +884,7 @@ m
       </div>
       <!-- <div class="content">
         
-theme: channing-cyan
-在一个后台管理系统中，安全是很重要的。不光后端需要做权限校验，前端也需要做权
+theme: channing-cyan在一个后台管理系统中，安全是很重要的。不光后端需要做权限校验，前端也需要做权限
       </div> -->
     </a>
   </div>
