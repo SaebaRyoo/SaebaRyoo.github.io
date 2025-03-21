@@ -584,43 +584,50 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="1-如何安全部署"><a href="#1-如何安全部署" class="headerlink" title="1. 如何安全部署"></a>1. <strong>如何安全部署</strong></h1><p><strong>在下面的部署工作中，我们会将 Linux 服务器的 SSH 私钥配置到 GitHub 的 Secrets 中，虽然是一种常见的自动化部署方式，但需要谨慎处理以确保安全性。</strong></p>
-<h2 id="1-1-优点"><a href="#1-1-优点" class="headerlink" title="1.1. 优点"></a>1.1. <strong>优点</strong></h2><ul>
-<li>​<strong>自动化部署</strong>​<strong>：通过 GitHub Actions 实现自动化部署，减少人工操作，提高效率。</strong></li>
+        <h1>1. <strong>如何安全部署</strong></h1>
+<p><strong>在下面的部署工作中，我们会将 Linux 服务器的 SSH 私钥配置到 GitHub 的 Secrets 中，虽然是一种常见的自动化部署方式，但需要谨慎处理以确保安全性。</strong></p>
+<h2 id="1-1-优点">1.1. <strong>优点</strong></h2>
+<ul>
+<li>​<strong>自动化部署</strong>​**：通过 GitHub Actions 实现自动化部署，减少人工操作，提高效率。**</li>
 </ul>
-<h2 id="1-2-潜在风险"><a href="#1-2-潜在风险" class="headerlink" title="1.2. 潜在风险"></a>1.2. <strong>潜在风险</strong></h2><ul>
-<li>​<strong>私钥泄露</strong>​<strong>：如果 GitHub 账号被入侵，攻击者可能获取到 Secrets 中的 SSH 私钥，从而访问你的服务器。</strong></li>
-<li>​<strong>私钥滥用</strong>​<strong>：如果私钥被用于多个服务器，一旦泄露，所有相关服务器都会受到影响。</strong></li>
+<h2 id="1-2-潜在风险">1.2. <strong>潜在风险</strong></h2>
+<ul>
+<li>​<strong>私钥泄露</strong>​**：如果 GitHub 账号被入侵，攻击者可能获取到 Secrets 中的 SSH 私钥，从而访问你的服务器。**</li>
+<li>​<strong>私钥滥用</strong>​**：如果私钥被用于多个服务器，一旦泄露，所有相关服务器都会受到影响。**</li>
 </ul>
-<h2 id="1-3-安全方案"><a href="#1-3-安全方案" class="headerlink" title="1.3. 安全方案"></a>1.3. <strong>安全方案</strong></h2><h3 id="1-3-1-创建专用用户："><a href="#1-3-1-创建专用用户：" class="headerlink" title="1.3.1. 创建专用用户："></a>1.3.1. <strong>创建专用用户：</strong></h3><p><strong>在服务器上创建一个专门用于部署的用户，并限制其权限。</strong></p>
-<h4 id="1-3-1-1-创建部署账户"><a href="#1-3-1-1-创建部署账户" class="headerlink" title="1.3.1.1. 创建部署账户"></a>1.3.1.1. <strong>创建部署账户</strong></h4><p><strong>Linux 系统中创建用户账户的最基本方法是使用 useradd 命令</strong></p>
+<h2 id="1-3-安全方案">1.3. <strong>安全方案</strong></h2>
+<h3 id="1-3-1-创建专用用户：">1.3.1. <strong>创建专用用户：</strong></h3>
+<p><strong>在服务器上创建一个专门用于部署的用户，并限制其权限。</strong></p>
+<h4 id="1-3-1-1-创建部署账户">1.3.1.1. <strong>创建部署账户</strong></h4>
+<p><strong>Linux 系统中创建用户账户的最基本方法是使用 useradd 命令</strong></p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">useradd</span> <span class="token parameter variable">-d</span> /home/deploy deploy<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><strong>上面的命令等同于下面的命令，不过他简化了为 deploy 用户指定”家目录”的操作</strong></p>
+<p><strong>上面的命令等同于下面的命令，不过他简化了为 deploy 用户指定&quot;家目录&quot;的操作</strong></p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">useradd</span> deploy
 <span class="token function">sudo</span> <span class="token function">chown</span> deploy:deploy /home/deploy
 <span class="token function">sudo</span> <span class="token function">chmod</span> <span class="token number">700</span> /home/deploy<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="1-3-1-2-设置密码"><a href="#1-3-1-2-设置密码" class="headerlink" title="1.3.1.2. 设置密码"></a>1.3.1.2. <strong>设置密码</strong></h4><p><strong>新用户创建后，需要为其设置密码，我们可以使用以下命令修改 deploy 用户的密码</strong></p>
+<h4 id="1-3-1-2-设置密码">1.3.1.2. <strong>设置密码</strong></h4>
+<p><strong>新用户创建后，需要为其设置密码，我们可以使用以下命令修改 deploy 用户的密码</strong></p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">passwd</span> deploy<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h4 id="1-3-1-3-为用户分配用户组"><a href="#1-3-1-3-为用户分配用户组" class="headerlink" title="1.3.1.3. 为用户分配用户组"></a>1.3.1.3. <strong>为用户分配用户组</strong></h4><p><strong>我们创建了 deploy 用户后，它默认就有一个 deploy 组，我们可以通过</strong><code>&lt;span class=&quot;ne-text&quot;&gt;groups deploy&lt;/span&gt;</code>来查看这个用户的组。如果想要查看全部的组就使用<code>&lt;span class=&quot;ne-text&quot;&gt;cat /etc/group&lt;/span&gt;</code>。</p>
+<h4 id="1-3-1-3-为用户分配用户组">1.3.1.3. <strong>为用户分配用户组</strong></h4>
+<p><strong>我们创建了 deploy 用户后，它默认就有一个 deploy 组，我们可以通过</strong><code>&lt;span class=&quot;ne-text&quot;&gt;groups deploy&lt;/span&gt;</code>来查看这个用户的组。如果想要查看全部的组就使用<code>&lt;span class=&quot;ne-text&quot;&gt;cat /etc/group&lt;/span&gt;</code>。</p>
 <p><strong>因为我们后续会使用 docker 部署，所以为了</strong>确保 <code>&lt;span class=&quot;ne-text&quot;&gt;deploy&lt;/span&gt;</code> 用户有权限访问 Docker 守护进程。我们可以使用以下命令</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">usermod</span> <span class="token parameter variable">-aG</span> <span class="token function">docker</span> deploy<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h4 id="1-3-1-4-删除和冻结用户账户"><a href="#1-3-1-4-删除和冻结用户账户" class="headerlink" title="1.3.1.4. 删除和冻结用户账户"></a>1.3.1.4. <strong>删除和冻结用户账户</strong></h4><p><strong>在某些情况下，可能需要删除或冻结用户。这时候就需要使用 userdel 命令，或者 passwd</strong></p>
+<h4 id="1-3-1-4-删除和冻结用户账户">1.3.1.4. <strong>删除和冻结用户账户</strong></h4>
+<p><strong>在某些情况下，可能需要删除或冻结用户。这时候就需要使用 userdel 命令，或者 passwd</strong></p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 删除用户以及他的 家目录</span>
 <span class="token function">userdel</span> deploy
 
 <span class="token comment"># 冻结用户账户，使其无法登录</span>
 <span class="token function">passwd</span> <span class="token parameter variable">-l</span> deploy<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-3-2-限制私钥权限（暂未使用）"><a href="#1-3-2-限制私钥权限（暂未使用）" class="headerlink" title="1.3.2. 限制私钥权限（暂未使用）"></a>1.3.2. <strong>限制私钥权限（暂未使用）</strong></h3><p>​<strong>限制私钥权限</strong>​<strong>：为 GitHub Actions 使用的 SSH 私钥配置最小权限。例如：</strong></p>
+<h3 id="1-3-2-限制私钥权限（暂未使用）">1.3.2. <strong>限制私钥权限（暂未使用）</strong></h3>
+<p>​<strong>限制私钥权限</strong>​**：为 GitHub Actions 使用的 SSH 私钥配置最小权限。例如：**</p>
 <ul>
 <li><strong>仅允许该私钥访问特定的目录（如部署目录）。</strong></li>
 <li>**禁止该私钥执行危险操作（如 **<code>&lt;span class=&quot;ne-text&quot;&gt;sudo&lt;/span&gt;</code> 或修改系统文件）。</li>
 </ul>
-<h1 id="2-给-nestjs-项目增加-docker-配置"><a href="#2-给-nestjs-项目增加-docker-配置" class="headerlink" title="2. 给 nestjs 项目增加 docker 配置"></a>2. <strong>给 nestjs 项目增加 docker 配置</strong></h1><h2 id="2-1-创建-Dockerfile-镜像文件"><a href="#2-1-创建-Dockerfile-镜像文件" class="headerlink" title="2.1. 创建 Dockerfile 镜像文件"></a>2.1. <strong>创建 Dockerfile 镜像文件</strong></h2><pre class="line-numbers language-docker" data-language="docker"><code class="language-docker"><span class="token comment"># 使用官方 Node.js 运行时作为基础镜像</span>
+<h1>2. <strong>给 nestjs 项目增加 docker 配置</strong></h1>
+<h2 id="2-1-创建-Dockerfile-镜像文件">2.1. <strong>创建 Dockerfile 镜像文件</strong></h2>
+<pre class="line-numbers language-docker" data-language="docker"><code class="language-docker"><span class="token comment"># 使用官方 Node.js 运行时作为基础镜像</span>
 <span class="token instruction"><span class="token keyword">FROM</span> node:20.18.0-alpine <span class="token keyword">AS</span> builder</span>
 
 <span class="token comment"># 设置工作目录为 /ibuy-backend</span>
@@ -643,8 +650,8 @@
 
 <span class="token comment"># 设置启动命令</span>
 <span class="token instruction"><span class="token keyword">CMD</span> [<span class="token string">"node"</span>, <span class="token string">"dist/main.js"</span>]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="2-2-创建-docker-compose-yml-部署文件"><a href="#2-2-创建-docker-compose-yml-部署文件" class="headerlink" title="2.2. 创建 docker-compose.yml 部署文件"></a>2.2. <strong>创建 docker-compose.yml 部署文件</strong></h2><p><strong>这个</strong><code>&lt;span class=&quot;ne-text&quot;&gt;environment&lt;/span&gt;</code>是按照你.env 文件中的变量来配置的，<code>&lt;span class=&quot;ne-text&quot;&gt;.env&lt;/span&gt;</code>后面会讲到</p>
+<h2 id="2-2-创建-docker-compose-yml-部署文件">2.2. <strong>创建 docker-compose.yml 部署文件</strong></h2>
+<p><strong>这个</strong><code>&lt;span class=&quot;ne-text&quot;&gt;environment&lt;/span&gt;</code>是按照你.env 文件中的变量来配置的，<code>&lt;span class=&quot;ne-text&quot;&gt;.env&lt;/span&gt;</code>后面会讲到</p>
 <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"2.5"</span>
 
 <span class="token key atrule">services</span><span class="token punctuation">:</span>
@@ -685,35 +692,44 @@
 <span class="token key atrule">networks</span><span class="token punctuation">:</span>
   <span class="token key atrule">ibuy_network</span><span class="token punctuation">:</span>
     <span class="token key atrule">driver</span><span class="token punctuation">:</span> bridge<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h1 id="3-配置-Github-Workflow"><a href="#3-配置-Github-Workflow" class="headerlink" title="3. 配置 Github Workflow"></a>3. <strong>配置 Github Workflow</strong></h1><h2 id="3-1-Github-Action-简介"><a href="#3-1-Github-Action-简介" class="headerlink" title="3.1. Github Action 简介"></a>3.1. <strong>Github Action 简介</strong></h2><ul>
+<h1>3. <strong>配置 Github Workflow</strong></h1>
+<h2 id="3-1-Github-Action-简介">3.1. <strong>Github Action 简介</strong></h2>
+<ul>
 <li><strong>GitHub Actions</strong> 部署文件通常以 <code>&lt;span class=&quot;ne-text&quot;&gt;xxx.yml&lt;/span&gt;</code> 命名，路径为项目根目录下 <code>&lt;span class=&quot;ne-text&quot;&gt;/.github/workflows/xxx.yml&lt;/span&gt;</code> 。</li>
 <li><strong>Jobs 中使用的 Action 可以去 github 的</strong><a target="_blank" rel="noopener" href="https://github.com/marketplace">macketplace</a>寻找</li>
 </ul>
 <p><strong>一般的 workflow 流程如下</strong></p>
 <ol>
-<li><p><strong>Action</strong></p>
+<li>
+<p><strong>Action</strong></p>
 <ol>
 <li><strong>条件</strong></li>
 </ol>
 </li>
-<li><p><strong>分支</strong></p>
+<li>
+<p><strong>分支</strong></p>
 </li>
-<li><p><strong>Jobs</strong></p>
+<li>
+<p><strong>Jobs</strong></p>
 <ol>
 <li><strong>运行环境</strong></li>
 </ol>
 </li>
-<li><p><strong>步骤一</strong></p>
+<li>
+<p><strong>步骤一</strong></p>
 </li>
-<li><p><strong>步骤二</strong></p>
+<li>
+<p><strong>步骤二</strong></p>
 </li>
-<li><p><strong>步骤 N</strong></p>
+<li>
+<p><strong>步骤 N</strong></p>
 </li>
-<li><p><strong>发布到服务器</strong></p>
+<li>
+<p><strong>发布到服务器</strong></p>
 </li>
 </ol>
-<h2 id="3-2-创建-workflow"><a href="#3-2-创建-workflow" class="headerlink" title="3.2. 创建 workflow"></a>3.2. <strong>创建 workflow</strong></h2><p><strong>根据上面的分析，我们可以在前端项目的根目录创建如下的 **</strong>.github&#x2F;workflows&#x2F;deploy.yml**</p>
+<h2 id="3-2-创建-workflow">3.2. <strong>创建 workflow</strong></h2>
+<p><strong>根据上面的分析，我们可以在前端项目的根目录创建如下的 **</strong>.github/workflows/deploy.yml**</p>
 <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">name</span><span class="token punctuation">:</span> Docker Image CI/CD
 
 <span class="token key atrule">on</span><span class="token punctuation">:</span>
@@ -758,41 +774,39 @@
 
             <span class="token comment"># 构建并启动 Docker 容器</span>
             docker<span class="token punctuation">-</span>compose up <span class="token punctuation">-</span><span class="token punctuation">-</span>build <span class="token punctuation">-</span>d<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>因为要部署到服务器端，所以要了解连接到服务器的方式，我们选择 ssh 连接，网上也用 sftp 连接连接的教程。</p>
 <p>​<strong>我们用的 Action 是</strong><a target="_blank" rel="noopener" href="https://github.com/marketplace/actions/ssh-deploy#configuration"><strong>ssh deploy</strong></a> <strong>，它相关的配置项可以点链接详细查看</strong></p>
 <p>​</p>
-<h2 id="3-3-在服务器配置秘钥"><a href="#3-3-在服务器配置秘钥" class="headerlink" title="3.3. 在服务器配置秘钥"></a>3.3. <strong>在服务器配置秘钥</strong></h2><ul>
+<h2 id="3-3-在服务器配置秘钥">3.3. <strong>在服务器配置秘钥</strong></h2>
+<ul>
 <li><strong>使用</strong><code>&lt;span class=&quot;ne-text&quot;&gt;deploy&lt;/span&gt;</code>用户登录我们的服务器，在 <code>&lt;span class=&quot;ne-text&quot;&gt;root&lt;/span&gt;</code> 目录下输入，直接回车到底</li>
 </ul>
 <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">ssh<span class="token punctuation">-</span>keygen <span class="token punctuation">-</span>m PEM <span class="token punctuation">-</span>t rsa <span class="token punctuation">-</span>b 4096<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <ul>
 <li>**此时， **<code>&lt;span class=&quot;ne-text&quot;&gt;~/.ssh/&lt;/span&gt;</code> 下生成了私钥文件 <code>&lt;span class=&quot;ne-text&quot;&gt;id_dsa&lt;/span&gt;</code> 、公钥文件<code>&lt;span class=&quot;ne-text&quot;&gt;id_dsa.pub&lt;/span&gt;</code> ，然后根据公钥文件生成<code>&lt;span class=&quot;ne-text&quot;&gt;authorized_keys&lt;/span&gt;</code> ，</li>
 </ul>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> ~/.ssh/id_rsa.pub <span class="token operator">>></span> ~/.ssh/authorized_keys<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <ul>
 <li><strong>给以上三个文件分别设置权限。</strong></li>
 </ul>
 <pre class="line-numbers language-c" data-language="c"><code class="language-c">chmod <span class="token number">600</span> <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>ssh<span class="token operator">/</span>id_rsa<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <pre class="line-numbers language-c" data-language="c"><code class="language-c">chmod <span class="token number">600</span> <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>ssh<span class="token operator">/</span>id_rsa<span class="token punctuation">.</span>pub<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <pre class="line-numbers language-c" data-language="c"><code class="language-c">chmod <span class="token number">600</span> <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>ssh<span class="token operator">/</span>authorized_keys<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="3-4-在-github-项目中设置仓库秘钥"><a href="#3-4-在-github-项目中设置仓库秘钥" class="headerlink" title="3.4. 在 github 项目中设置仓库秘钥"></a>3.4. <strong>在 github 项目中设置仓库秘钥</strong></h2><p>**进入到你的 github 项目中，点击顶部导航栏的**<strong>​Setting。​</strong>然后点击 **Secrets and variables -&gt; New repository secret** 创建 workflow 中需要的三个变量，分别是</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2025/png/411665/1739775808823-a0836f96-220a-408d-a58d-0abd591a7ece.png" class="lazyload placeholder" data-srcset="https://cdn.nlark.com/yuque/0/2025/png/411665/1739775808823-a0836f96-220a-408d-a58d-0abd591a7ece.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
-<h3 id="3-4-1-REMOTE-HOST"><a href="#3-4-1-REMOTE-HOST" class="headerlink" title="3.4.1. REMOTE_HOST"></a>3.4.1. <strong>REMOTE_HOST</strong></h3><p><strong>你的服务器 ip</strong></p>
-<h3 id="3-4-2-REMOTE-USER"><a href="#3-4-2-REMOTE-USER" class="headerlink" title="3.4.2. REMOTE_USER"></a>3.4.2. <strong>REMOTE_USER</strong></h3><p>**填写 **<code>&lt;span class=&quot;ne-text&quot;&gt;deploy&lt;/span&gt;</code>用户</p>
-<h3 id="3-4-3-SSH-PRIVATE-KEY"><a href="#3-4-3-SSH-PRIVATE-KEY" class="headerlink" title="3.4.3. SSH_PRIVATE_KEY"></a>3.4.3. <strong>SSH_PRIVATE_KEY</strong></h3><p><strong>用于连接服务器的秘钥，你需要在</strong>服务器中 <code>&lt;span class=&quot;ne-text&quot;&gt;cat&lt;/span&gt;</code> 密钥，将所有内容复制到上图的 <strong>SSH_PRIVATE_KEY</strong> 中</p>
+<h2 id="3-4-在-github-项目中设置仓库秘钥">3.4. <strong>在 github 项目中设置仓库秘钥</strong></h2>
+<p>**进入到你的 github 项目中，点击顶部导航栏的**<strong>​Setting。​</strong>然后点击 **Secrets and variables -&gt; New repository secret** 创建 workflow 中需要的三个变量，分别是</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2025/png/411665/1739775808823-a0836f96-220a-408d-a58d-0abd591a7ece.png" class="lazyload placeholder" data-srcset="https://cdn.nlark.com/yuque/0/2025/png/411665/1739775808823-a0836f96-220a-408d-a58d-0abd591a7ece.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<h3 id="3-4-1-REMOTE-HOST">3.4.1. <strong>REMOTE_HOST</strong></h3>
+<p><strong>你的服务器 ip</strong></p>
+<h3 id="3-4-2-REMOTE-USER">3.4.2. <strong>REMOTE_USER</strong></h3>
+<p>**填写 **<code>&lt;span class=&quot;ne-text&quot;&gt;deploy&lt;/span&gt;</code>用户</p>
+<h3 id="3-4-3-SSH-PRIVATE-KEY">3.4.3. <strong>SSH_PRIVATE_KEY</strong></h3>
+<p><strong>用于连接服务器的秘钥，你需要在</strong>服务器中 <code>&lt;span class=&quot;ne-text&quot;&gt;cat&lt;/span&gt;</code> 密钥，将所有内容复制到上图的 <strong>SSH_PRIVATE_KEY</strong> 中</p>
 <pre class="line-numbers language-c" data-language="c"><code class="language-c">cat <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>ssh<span class="token operator">/</span>id_rsa<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h1 id="4-服务器设置"><a href="#4-服务器设置" class="headerlink" title="4. 服务器设置"></a>4. <strong>服务器设置</strong></h1><p><strong>使用</strong><code>&lt;span class=&quot;ne-text&quot;&gt;deploy&lt;/span&gt;</code>用户登录服务器，然后输入<code>&lt;span class=&quot;ne-text&quot;&gt;pwd&lt;/span&gt;</code>。我们会发现当前用户的工作目就是我们设置的家目录<code>&lt;span class=&quot;ne-text&quot;&gt;/home/deploy&lt;/span&gt;</code></p>
-<p><img src="https://cdn.nlark.com/yuque/0/2025/png/411665/1740295209014-52f4acdc-f863-46c2-ba88-9add391f2d4f.png" class="lazyload placeholder" data-srcset="https://cdn.nlark.com/yuque/0/2025/png/411665/1740295209014-52f4acdc-f863-46c2-ba88-9add391f2d4f.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h1>4. <strong>服务器设置</strong></h1>
+<p><strong>使用</strong><code>&lt;span class=&quot;ne-text&quot;&gt;deploy&lt;/span&gt;</code>用户登录服务器，然后输入<code>&lt;span class=&quot;ne-text&quot;&gt;pwd&lt;/span&gt;</code>。我们会发现当前用户的工作目就是我们设置的家目录<code>&lt;span class=&quot;ne-text&quot;&gt;/home/deploy&lt;/span&gt;</code></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2025/png/411665/1740295209014-52f4acdc-f863-46c2-ba88-9add391f2d4f.png" class="lazyload placeholder" data-srcset="https://cdn.nlark.com/yuque/0/2025/png/411665/1740295209014-52f4acdc-f863-46c2-ba88-9add391f2d4f.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
 <p><strong>然后我们创建 nestjs 的工作目录</strong></p>
 <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">mkdir <span class="token punctuation">-</span>p ~/work/ibuy<span class="token punctuation">-</span>backend<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <p><strong>这里的</strong><code>&lt;span class=&quot;ne-text&quot;&gt;&quot;~&quot;&lt;/span&gt;</code>指的就是我们的家目录 <code>&lt;span class=&quot;ne-text&quot;&gt;/home/deploy&lt;/span&gt;</code>。</p>
 <p><strong>因为我们的.env 文件不能外露到 github 上，所需要使用</strong><code>&lt;span class=&quot;ne-text&quot;&gt;vim .env&lt;/span&gt;</code>手动创建以下我们的<code>&lt;span class=&quot;ne-text&quot;&gt;.env&lt;/span&gt;</code>文件，将下面的内容拷贝到<code>&lt;span class=&quot;ne-text&quot;&gt;.env&lt;/span&gt;</code>中</p>
 <p><strong>注意：这里要按照你自己的环境变量配置</strong></p>
@@ -827,8 +841,8 @@ ES_NODE=http://your-host:9200
 ELASTIC_USERNAME=elastic
 ELASTIC_PASSWORD=xxx
 ES_PORT=9200<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h1 id="5-其他方案问题"><a href="#5-其他方案问题" class="headerlink" title="5. 其他方案问题"></a>5. <strong>其他方案问题</strong></h1><p><strong>在使用 github action 部署时发现 nestjs 的项目在 build 时不会将 node_modules 打包进去，这就导致需要将所有的文件拉到服务器上再执行构建任务。正好有一篇</strong><a target="_blank" rel="noopener" href="https://juejin.cn/post/7065724860688760862#heading-2">文章</a>也讲到了这个问题。它是自己创建了一个<code>&lt;span class=&quot;ne-text&quot;&gt;webpack.config.js&lt;/span&gt;</code>文件，忽略掉<code>&lt;span class=&quot;ne-text&quot;&gt;externals&lt;/span&gt;</code>以及一些 nest 提供的插件。但是这有一个很大的隐患：只适用于简单的纯 js 项目，如果遇到了依赖库里有动态加载，二进制依赖，使用了 fs 读写文件，这几种情况打包成一个文件会出问题</p>
+<h1>5. <strong>其他方案问题</strong></h1>
+<p><strong>在使用 github action 部署时发现 nestjs 的项目在 build 时不会将 node_modules 打包进去，这就导致需要将所有的文件拉到服务器上再执行构建任务。正好有一篇</strong><a target="_blank" rel="noopener" href="https://juejin.cn/post/7065724860688760862#heading-2">文章</a>也讲到了这个问题。它是自己创建了一个<code>&lt;span class=&quot;ne-text&quot;&gt;webpack.config.js&lt;/span&gt;</code>文件，忽略掉<code>&lt;span class=&quot;ne-text&quot;&gt;externals&lt;/span&gt;</code>以及一些 nest 提供的插件。但是这有一个很大的隐患：只适用于简单的纯 js 项目，如果遇到了依赖库里有动态加载，二进制依赖，使用了 fs 读写文件，这几种情况打包成一个文件会出问题</p>
 
       </div>
       <div class="post-tags-categories">
@@ -911,8 +925,11 @@ ES_PORT=9200<span aria-hidden="true" class="line-numbers-rows"><span></span><spa
         <div class="title-text">使用Docker + Jenkins + Nginx 实战前端自动化部署</div>
       </div>
       <!-- <div class="content">
-        1. docker 部署 nginx1.1. 拉取镜像docker pull nginx
-1.2. 创建挂载目录mkdi
+        1. docker 部署 nginx
+1.1. 拉取镜像
+docker pull nginx
+1.2. 创建挂载目录
+m
       </div> -->
     </a>
   </div>

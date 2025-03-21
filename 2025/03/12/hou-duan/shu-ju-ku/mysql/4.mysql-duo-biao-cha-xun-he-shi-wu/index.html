@@ -587,12 +587,15 @@
         <p>在实际的数据库应用中，数据通常分布在多个相关的表中，如何高效地从这些表中获取和处理数据是数据库开发中的重要课题。多表查询提供了强大的数据检索能力，通过连接查询和子查询，我们可以灵活地组合和筛选来自不同表的数据。同时，在进行数据修改操作时，事务管理机制确保了数据的一致性和完整性，是构建可靠数据库应用的基石。</p>
 <p>本文将系统地介绍MySQL中的多表查询和事务管理。首先从多表查询的基本概念入手，详细讲解内连接、外连接等不同的连接查询方式，以及子查询的多种使用场景。接着深入探讨事务的概念、特性和隔离级别，帮助读者理解如何在实际开发中正确使用事务来保证数据的安全性。文章配有丰富的示例代码，便于读者实践和掌握这些重要的数据库操作技术。</p>
 <p>建议读者在学习本文时，结合实际案例进行练习，特别是在理解不同类型的连接查询和事务隔离级别时，动手实践是加深理解的最好方式。</p>
-<h2 id="一、多表查询基础"><a href="#一、多表查询基础" class="headerlink" title="一、多表查询基础"></a>一、多表查询基础</h2><h3 id="1-1-概念"><a href="#1-1-概念" class="headerlink" title="1.1 概念"></a>1.1 概念</h3><p>多表查询是指从多个表中获取数据的查询操作。在进行多表查询时会产生笛卡尔积，即两个集合的所有组合情况。为了得到有意义的查询结果，需要通过条件消除无用的数据。</p>
-<h3 id="1-2-基本语法"><a href="#1-2-基本语法" class="headerlink" title="1.2 基本语法"></a>1.2 基本语法</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> 列名列表
+<h2 id="一、多表查询基础">一、多表查询基础</h2>
+<h3 id="1-1-概念">1.1 概念</h3>
+<p>多表查询是指从多个表中获取数据的查询操作。在进行多表查询时会产生笛卡尔积，即两个集合的所有组合情况。为了得到有意义的查询结果，需要通过条件消除无用的数据。</p>
+<h3 id="1-2-基本语法">1.2 基本语法</h3>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> 列名列表
 <span class="token keyword">FROM</span> 表名列表
 <span class="token keyword">WHERE</span> 条件<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-3-示例数据准备"><a href="#1-3-示例数据准备" class="headerlink" title="1.3 示例数据准备"></a>1.3 示例数据准备</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 部门表</span>
+<h3 id="1-3-示例数据准备">1.3 示例数据准备</h3>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 部门表</span>
 <span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> dept<span class="token punctuation">(</span>
   id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token keyword">AUTO_INCREMENT</span><span class="token punctuation">,</span>
   NAME <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
@@ -619,8 +622,10 @@
 <span class="token punctuation">(</span><span class="token string">'唐僧'</span><span class="token punctuation">,</span><span class="token string">'男'</span><span class="token punctuation">,</span><span class="token number">9000</span><span class="token punctuation">,</span><span class="token string">'2008-08-08'</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
 <span class="token punctuation">(</span><span class="token string">'白骨精'</span><span class="token punctuation">,</span><span class="token string">'女'</span><span class="token punctuation">,</span><span class="token number">5000</span><span class="token punctuation">,</span><span class="token string">'2015-10-07'</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
 <span class="token punctuation">(</span><span class="token string">'蜘蛛精'</span><span class="token punctuation">,</span><span class="token string">'女'</span><span class="token punctuation">,</span><span class="token number">4500</span><span class="token punctuation">,</span><span class="token string">'2011-03-14'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="二、连接查询"><a href="#二、连接查询" class="headerlink" title="二、连接查询"></a>二、连接查询</h2><h3 id="2-1-内连接查询"><a href="#2-1-内连接查询" class="headerlink" title="2.1 内连接查询"></a>2.1 内连接查询</h3><h4 id="2-1-1-隐式内连接"><a href="#2-1-1-隐式内连接" class="headerlink" title="2.1.1 隐式内连接"></a>2.1.1 隐式内连接</h4><p>使用WHERE条件消除无用数据</p>
+<h2 id="二、连接查询">二、连接查询</h2>
+<h3 id="2-1-内连接查询">2.1 内连接查询</h3>
+<h4 id="2-1-1-隐式内连接">2.1.1 隐式内连接</h4>
+<p>使用WHERE条件消除无用数据</p>
 <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 查询所有员工信息和对应的部门信息</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> emp<span class="token punctuation">,</span>dept 
 <span class="token keyword">WHERE</span> emp<span class="token punctuation">.</span>dept_id <span class="token operator">=</span> dept<span class="token punctuation">.</span>id<span class="token punctuation">;</span>
@@ -635,8 +640,8 @@
     dept t2
 <span class="token keyword">WHERE</span>
     t1<span class="token punctuation">.</span>dept_id <span class="token operator">=</span> t2<span class="token punctuation">.</span>id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="2-1-2-显式内连接"><a href="#2-1-2-显式内连接" class="headerlink" title="2.1.2 显式内连接"></a>2.1.2 显式内连接</h4><p>使用INNER JOIN关键字，语法更直观</p>
+<h4 id="2-1-2-显式内连接">2.1.2 显式内连接</h4>
+<p>使用INNER JOIN关键字，语法更直观</p>
 <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 标准语法</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> emp
 <span class="token keyword">INNER</span> <span class="token keyword">JOIN</span> dept <span class="token keyword">ON</span> emp<span class="token punctuation">.</span>dept_id <span class="token operator">=</span> dept<span class="token punctuation">.</span>id<span class="token punctuation">;</span>
@@ -644,23 +649,27 @@
 <span class="token comment">-- INNER可以省略</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> emp
 <span class="token keyword">JOIN</span> dept <span class="token keyword">ON</span> emp<span class="token punctuation">.</span>dept_id <span class="token operator">=</span> dept<span class="token punctuation">.</span>id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-2-外连接查询"><a href="#2-2-外连接查询" class="headerlink" title="2.2 外连接查询"></a>2.2 外连接查询</h3><h4 id="2-2-1-左外连接"><a href="#2-2-1-左外连接" class="headerlink" title="2.2.1 左外连接"></a>2.2.1 左外连接</h4><p>查询左表所有数据以及其与右表的交集部分</p>
+<h3 id="2-2-外连接查询">2.2 外连接查询</h3>
+<h4 id="2-2-1-左外连接">2.2.1 左外连接</h4>
+<p>查询左表所有数据以及其与右表的交集部分</p>
 <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 查询所有员工信息及其部门信息（包括没有部门的员工）</span>
 <span class="token keyword">SELECT</span> t1<span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">,</span> t2<span class="token punctuation">.</span>name <span class="token keyword">AS</span> <span class="token string">'部门名称'</span>
 <span class="token keyword">FROM</span> emp t1 
 <span class="token keyword">LEFT</span> <span class="token keyword">JOIN</span> dept t2 
 <span class="token keyword">ON</span> t1<span class="token punctuation">.</span>dept_id <span class="token operator">=</span> t2<span class="token punctuation">.</span>id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="2-2-2-右外连接"><a href="#2-2-2-右外连接" class="headerlink" title="2.2.2 右外连接"></a>2.2.2 右外连接</h4><p>查询右表所有数据以及其与左表的交集部分</p>
+<h4 id="2-2-2-右外连接">2.2.2 右外连接</h4>
+<p>查询右表所有数据以及其与左表的交集部分</p>
 <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 查询所有部门信息及其员工信息（包括没有员工的部门）</span>
 <span class="token keyword">SELECT</span> t1<span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">,</span> t2<span class="token punctuation">.</span>name <span class="token keyword">AS</span> <span class="token string">'员工姓名'</span>
 <span class="token keyword">FROM</span> dept t1 
 <span class="token keyword">RIGHT</span> <span class="token keyword">JOIN</span> emp t2 
 <span class="token keyword">ON</span> t2<span class="token punctuation">.</span>dept_id <span class="token operator">=</span> t1<span class="token punctuation">.</span>id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="三、子查询"><a href="#三、子查询" class="headerlink" title="三、子查询"></a>三、子查询</h2><h3 id="3-1-概念"><a href="#3-1-概念" class="headerlink" title="3.1 概念"></a>3.1 概念</h3><p>子查询是指查询中嵌套查询，内部的查询称为子查询。</p>
-<h3 id="3-2-子查询分类"><a href="#3-2-子查询分类" class="headerlink" title="3.2 子查询分类"></a>3.2 子查询分类</h3><h4 id="3-2-1-单行单列子查询"><a href="#3-2-1-单行单列子查询" class="headerlink" title="3.2.1 单行单列子查询"></a>3.2.1 单行单列子查询</h4><p>子查询结果为单个值，可以使用比较运算符</p>
+<h2 id="三、子查询">三、子查询</h2>
+<h3 id="3-1-概念">3.1 概念</h3>
+<p>子查询是指查询中嵌套查询，内部的查询称为子查询。</p>
+<h3 id="3-2-子查询分类">3.2 子查询分类</h3>
+<h4 id="3-2-1-单行单列子查询">3.2.1 单行单列子查询</h4>
+<p>子查询结果为单个值，可以使用比较运算符</p>
 <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 查询工资最高的员工信息</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> emp 
 <span class="token keyword">WHERE</span> salary <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token function">MAX</span><span class="token punctuation">(</span>salary<span class="token punctuation">)</span> <span class="token keyword">FROM</span> emp<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -668,23 +677,25 @@
 <span class="token comment">-- 查询工资小于平均工资的员工</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> emp 
 <span class="token keyword">WHERE</span> salary <span class="token operator">&lt;</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token function">AVG</span><span class="token punctuation">(</span>salary<span class="token punctuation">)</span> <span class="token keyword">FROM</span> emp<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="3-2-2-多行单列子查询"><a href="#3-2-2-多行单列子查询" class="headerlink" title="3.2.2 多行单列子查询"></a>3.2.2 多行单列子查询</h4><p>子查询结果为一列多行，可以使用IN等运算符</p>
+<h4 id="3-2-2-多行单列子查询">3.2.2 多行单列子查询</h4>
+<p>子查询结果为一列多行，可以使用IN等运算符</p>
 <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 查询财务部和市场部的所有员工信息</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> emp 
 <span class="token keyword">WHERE</span> dept_id <span class="token operator">IN</span> <span class="token punctuation">(</span>
     <span class="token keyword">SELECT</span> id <span class="token keyword">FROM</span> dept 
     <span class="token keyword">WHERE</span> NAME <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token string">'财务部'</span><span class="token punctuation">,</span><span class="token string">'市场部'</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="3-2-3-多行多列子查询"><a href="#3-2-3-多行多列子查询" class="headerlink" title="3.2.3 多行多列子查询"></a>3.2.3 多行多列子查询</h4><p>子查询结果可以作为一张虚拟表</p>
+<h4 id="3-2-3-多行多列子查询">3.2.3 多行多列子查询</h4>
+<p>子查询结果可以作为一张虚拟表</p>
 <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 查询2011-11-11后入职的员工信息和部门信息</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> dept t1<span class="token punctuation">,</span>
 <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> emp <span class="token keyword">WHERE</span> join_date <span class="token operator">></span> <span class="token string">'2011-11-11'</span><span class="token punctuation">)</span> t2
 <span class="token keyword">WHERE</span> t1<span class="token punctuation">.</span>id <span class="token operator">=</span> t2<span class="token punctuation">.</span>dept_id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="四、事务管理"><a href="#四、事务管理" class="headerlink" title="四、事务管理"></a>四、事务管理</h2><h3 id="4-1-事务概念"><a href="#4-1-事务概念" class="headerlink" title="4.1 事务概念"></a>4.1 事务概念</h3><p>事务是一组操作的集合，这些操作要么全部成功，要么全部失败。事务是数据库维护数据一致性的单位。</p>
-<h3 id="4-2-事务的基本操作"><a href="#4-2-事务的基本操作" class="headerlink" title="4.2 事务的基本操作"></a>4.2 事务的基本操作</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 开启事务</span>
+<h2 id="四、事务管理">四、事务管理</h2>
+<h3 id="4-1-事务概念">4.1 事务概念</h3>
+<p>事务是一组操作的集合，这些操作要么全部成功，要么全部失败。事务是数据库维护数据一致性的单位。</p>
+<h3 id="4-2-事务的基本操作">4.2 事务的基本操作</h3>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 开启事务</span>
 <span class="token keyword">START</span> <span class="token keyword">TRANSACTION</span><span class="token punctuation">;</span>
 
 <span class="token comment">-- 提交事务</span>
@@ -692,8 +703,8 @@
 
 <span class="token comment">-- 回滚事务</span>
 <span class="token keyword">ROLLBACK</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="4-3-事务示例"><a href="#4-3-事务示例" class="headerlink" title="4.3 事务示例"></a>4.3 事务示例</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 创建账户表</span>
+<h3 id="4-3-事务示例">4.3 事务示例</h3>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 创建账户表</span>
 <span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> account <span class="token punctuation">(</span>
   id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token keyword">AUTO_INCREMENT</span><span class="token punctuation">,</span>
   NAME <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
@@ -713,14 +724,15 @@
 <span class="token keyword">UPDATE</span> account <span class="token keyword">SET</span> balance <span class="token operator">=</span> balance <span class="token operator">+</span> <span class="token number">500</span> 
 <span class="token keyword">WHERE</span> NAME <span class="token operator">=</span> <span class="token string">'李四'</span><span class="token punctuation">;</span>
 <span class="token keyword">COMMIT</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="4-4-事务的四大特性（ACID）"><a href="#4-4-事务的四大特性（ACID）" class="headerlink" title="4.4 事务的四大特性（ACID）"></a>4.4 事务的四大特性（ACID）</h3><ol>
+<h3 id="4-4-事务的四大特性（ACID）">4.4 事务的四大特性（ACID）</h3>
+<ol>
 <li><strong>原子性（Atomicity）</strong>：事务是不可分割的最小操作单位</li>
 <li><strong>一致性（Consistency）</strong>：事务执行前后，数据保持一致</li>
 <li><strong>隔离性（Isolation）</strong>：多个事务之间相互独立</li>
 <li><strong>持久性（Durability）</strong>：事务一旦提交，结果永久保存</li>
 </ol>
-<h3 id="4-5-事务的隔离级别"><a href="#4-5-事务的隔离级别" class="headerlink" title="4.5 事务的隔离级别"></a>4.5 事务的隔离级别</h3><table>
+<h3 id="4-5-事务的隔离级别">4.5 事务的隔离级别</h3>
+<table>
 <thead>
 <tr>
 <th>隔离级别</th>
@@ -730,7 +742,8 @@
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>READ UNCOMMITTED</td>
 <td>是</td>
 <td>是</td>
@@ -758,13 +771,13 @@
 <td>否</td>
 <td>串行化</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 查询当前隔离级别</span>
 <span class="token keyword">SELECT</span> @<span class="token variable">@tx_isolation</span><span class="token punctuation">;</span>
 
 <span class="token comment">-- 设置隔离级别</span>
 <span class="token keyword">SET</span> <span class="token keyword">GLOBAL</span> <span class="token keyword">TRANSACTION</span> <span class="token keyword">ISOLATION</span> <span class="token keyword">LEVEL</span> <span class="token keyword">READ</span> <span class="token keyword">COMMITTED</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>注意：隔离级别从低到高安全性越来越高，但性能越来越低。应根据实际业务需求选择合适的隔离级别。</p>
 
       </div>
@@ -809,16 +822,16 @@
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/8.jpg" class="lazyload placeholder" data-srcset="/medias/8.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2025/03/13/hou-duan/shang-cheng/shi-yong-nestjs-elasticsearch-shi-xian-dian-shang-sou-suo-gong-neng/" class="post-nav-link">
+    <a href="/2025/03/12/hou-duan/shu-ju-ku/mysql/3.mysql-yue-shu-he-shu-ju-ku-she-ji/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">使用Nestjs+ElasticSearch实现电商搜索功能</div>
+        <div class="title-text">MySQL约束和数据库设计</div>
       </div>
       
       <!-- <div class="content">
-        1. ElasticSearch简介ElasticSearch（简称ES）是一个开源的分布式搜索引擎，基于强大的搜索和分
+        在数据库开发中，约束和数据库设计是确保数据完整性和系统性能的关键要素。MySQL约束通过限制数据的输入和修改，保证数据的
       </div> -->
     </a>
   </div>
@@ -829,15 +842,18 @@
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/8.jpg" class="lazyload placeholder" data-srcset="/medias/8.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2025/03/12/hou-duan/shu-ju-ku/mysql/3.mysql-yue-shu-he-shu-ju-ku-she-ji/" class="post-nav-link">
+    <a href="/2025/03/03/hou-duan/shang-cheng/shi-yong-minio-he-nestjs-shi-xian-wen-jian-cun-chu/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">MySQL约束和数据库设计</div>
+        <div class="title-text">使用Minio和Nestjs实现文件存储</div>
       </div>
       <!-- <div class="content">
-        在数据库开发中，约束和数据库设计是确保数据完整性和系统性能的关键要素。MySQL约束通过限制数据的输入和修改，保证数据的
+        
+本文详细介绍了如何在商城项目中使用 MinIO 和 Nest.js 实现文件存储功能。文章分为四个主要部分：
+
+使用 
       </div> -->
     </a>
   </div>

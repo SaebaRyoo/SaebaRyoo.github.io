@@ -584,14 +584,16 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>https 采用对称加密和非对称加密+数字证书的方式，对传输数据进行加密</p>
+        <h2 id="HTTPS">HTTPS</h2>
+<p>https 采用对称加密和非对称加密+数字证书的方式，对传输数据进行加密</p>
 <p><strong>对称加密方式如下</strong></p>
 <ol>
 <li>客户端发送加密套件列表（就是客户端支持的加密方式）+ client-random</li>
 <li>服务器从加密套件中选择一个加密方式，并生成 service-random + 新的加密套件返回给客户端</li>
 <li>最后浏览器和服务器分别返回确认消息</li>
 </ol>
-<p>这样浏览器和服务器都有相同 client-random 和 service-random，然后再使用相同的方法混合起来生成一个 master-secret。<br>有了 master-secret 和加密套件后，双方就可以进行数据的加密传输了。</p>
+<p>这样浏览器和服务器都有相同 client-random 和 service-random，然后再使用相同的方法混合起来生成一个 master-secret。<br>
+有了 master-secret 和加密套件后，双方就可以进行数据的加密传输了。</p>
 <p>但是由于 client-random 和 service-random 是明文的。意味着中间人也可以拿到加密套件和双方随机数。由于利用随机数合成密钥的算法是公开的，所以中间人拿到随机数后，也可以合成密钥，然后破解数据</p>
 <p><strong>非对称加密</strong></p>
 <ol>
@@ -604,11 +606,11 @@
 <li>非对称加密效率太低。严重影响到解密数据的数据，进而影响到用户打开页面的速度。</li>
 <li>无法保证服务器发送给浏览器的数据安全。虽然浏览器端可以使用公钥来加密，但是服务器只能私钥加密。因此，当服务器发送数据和公钥的时候，中间人也是可以获取到公钥和私钥加密的数据的。这样就无法保证服务器端发送的数据安全。</li>
 </ul>
-<p><strong>对称加密和非对称加密搭配使用</strong><br>相比较对称加密和非对称加密，采用两者相结合的方式则更加完美。<strong>使用对称加密来传输数据，使用非对称加密来传输对称加密的密钥</strong>。</p>
+<p><strong>对称加密和非对称加密搭配使用</strong><br>
+相比较对称加密和非对称加密，采用两者相结合的方式则更加完美。<strong>使用对称加密来传输数据，使用非对称加密来传输对称加密的密钥</strong>。</p>
 <div align="center">
    <img src="https://i.postimg.cc/65KrmVY3/https.png" class="lazyload placeholder" data-srcset="https://i.postimg.cc/65KrmVY3/https.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" width = "600" alt="图片名称" align=center />
 </div>
-
 <ol>
 <li>首先浏览器端会发送 client-random、对称加密列表、非对称加密列表给服务器端</li>
 <li>服务器端选择并发送对称加密方式、非对称加密方式、service-random 和公钥给浏览器端</li>
@@ -616,9 +618,10 @@
 <li>服务器端接收到使用公钥加密的 pre-master，然后使用私钥解密获取到 pre-master。（到此，浏览器端和服务器端都有了 client-random、service-random、pre-master）</li>
 <li>使用 client-random、service-random、pre-master 生成的<strong>master secret</strong>加密传输数据。</li>
 </ol>
-<p><strong>添加数字证书</strong><br>虽然使用对称和非对称混合加密的方式，完美的实现了数据的加密传输。但是黑客可以通过 DNS 劫持将网站的 ip 换成自己的 ip。这样，对于用户来说，其实访问的就是黑客的服务器了。黑客就可以在自己的服务器上实现公钥和私钥。对于浏览器而言，它完全不知道现在在访问黑客的站点。</p>
+<p><strong>添加数字证书</strong><br>
+虽然使用对称和非对称混合加密的方式，完美的实现了数据的加密传输。但是黑客可以通过 DNS 劫持将网站的 ip 换成自己的 ip。这样，对于用户来说，其实访问的就是黑客的服务器了。黑客就可以在自己的服务器上实现公钥和私钥。对于浏览器而言，它完全不知道现在在访问黑客的站点。</p>
 <p>所以需要有个第三方的权威机构来向浏览器证明“服务器”就是服务器。比如，买了房子，需要证明这个房子是你的。那么这里的房管局就是一个<strong>第三方权威机构</strong>。而房产证就是<strong>证书</strong>。</p>
-<p>同理，网站 A 要证明服务器就是网站 A 的，也需要一个权威机构来颁发证书。这个权威机构就是**CA(Certificate Authority)<strong>，颁发的证书就是</strong>数字证书（Digital Certificate)**。</p>
+<p>同理，网站 A 要证明服务器就是网站 A 的，也需要一个权威机构来颁发证书。这个权威机构就是<strong>CA(Certificate Authority)</strong>，颁发的证书就是<strong>数字证书（Digital Certificate)</strong>。</p>
 <p>对于浏览器来说，数字证书的作用就是：1、通过证书向浏览器证明身份。2、包含服务器的公钥。</p>
 <p>所以，包含了数字证书的 https，与“对称与分对称结合”的方法相比，改变了如下两点：</p>
 <ol>
@@ -635,7 +638,8 @@
 </ul>
 <p>最后一步的数字签名的步骤：Hash 函数计算网站提供的明文信息，得出信息摘要 -&gt; CA 使用密钥加密信息摘要，密文就是 CA 颁发给网站的数字签名</p>
 <p>这就相当于房管局在房产证上盖的章，这个章是可以去验证的，同样我们也可以通过数字签名来验证是否是该 CA 颁发的。</p>
-<p><strong>浏览器如何验证数字证书</strong><br>有了 CA 签名过的数字证书后，当浏览器向服务器发出请求时，服务器会返回数字证书给浏览器。</p>
+<p><strong>浏览器如何验证数字证书</strong><br>
+有了 CA 签名过的数字证书后，当浏览器向服务器发出请求时，服务器会返回数字证书给浏览器。</p>
 <p>浏览器接收到数字证书后，会进行验证。</p>
 <ol>
 <li>首先浏览器读取证书的明文信息，采用 CA 签名是相同的 Hash 函数计算并得到<strong>信息摘要 A</strong></li>
@@ -648,7 +652,8 @@
 <li>数字证书最核心的是 CA 使用它的私钥生成的数字签名；</li>
 <li>内置 CA 对应的证书称为根证书，根证书是最权威的机构，它们自己为自己签名，我们把这称为自签名证书。</li>
 </ol>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/intro/100033601">https://time.geekbang.org/column/intro/100033601</a></p>
+<h3 id="参考">参考</h3>
+<p><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/intro/100033601">https://time.geekbang.org/column/intro/100033601</a></p>
 
       </div>
       <div class="post-tags-categories">
@@ -694,10 +699,13 @@
       
       <!-- <div class="content">
         Cookie 相关知识
+
 github
 掘金
 
-常见问题主域名可以访问子域名的 cookie 吗？在浏览器中，主域名是无法
+常见问题
+主域名可以访问子域名的 cookie 吗？
+在浏览器中，主域名
       </div> -->
     </a>
   </div>
@@ -716,8 +724,11 @@ github
         <div class="title-text">HTTP的发展以及个版本对比</div>
       </div>
       <!-- <div class="content">
-        http&#x2F;0.9 http&#x2F;1.0 http&#x2F;1.1 的发展http&#x2F;0.9
-h
+        http/0.9 http/1.0 http/1.1 的发展
+http/0.9
+
+
+http/0.9 是 1991 年提
       </div> -->
     </a>
   </div>

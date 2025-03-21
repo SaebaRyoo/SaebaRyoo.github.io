@@ -584,7 +584,8 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h3 id="axios-中统一的封装了如下的问题"><a href="#axios-中统一的封装了如下的问题" class="headerlink" title="axios 中统一的封装了如下的问题"></a>axios 中统一的封装了如下的问题</h3><ul>
+        <h3 id="axios-中统一的封装了如下的问题">axios 中统一的封装了如下的问题</h3>
+<ul>
 <li>支持浏览器请求 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest">XMLHttpRequests</a> 请求</li>
 <li>支持 node 中的 http 模块的请求 <a target="_blank" rel="noopener" href="http://nodejs.org/api/http.html">http</a> 请求</li>
 <li>支持 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a> API</li>
@@ -615,11 +616,11 @@
   <span class="token punctuation">&#125;</span>
   <span class="token keyword">return</span> adapter<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ol start="2">
 <li>它是如何拦截请求的？</li>
 </ol>
-<p>当你通过 axios 发起请求时，且注册了<code>request interceptors</code> 或者 <code>response interceptors</code>后，axios 会在初始化阶段创建一个<code>var chain = [dispatchRequest, undefined]</code>数组。然后会将注册的<code>request interceptors</code> 和 <code>response interceptors</code> 分别插入到<code>chain</code>的头部和尾部。<br>最后再通过 promise 顺序执行链式调用。完成请求和响应的拦截功能。</p>
+<p>当你通过 axios 发起请求时，且注册了<code>request interceptors</code> 或者 <code>response interceptors</code>后，axios 会在初始化阶段创建一个<code>var chain = [dispatchRequest, undefined]</code>数组。然后会将注册的<code>request interceptors</code> 和 <code>response interceptors</code> 分别插入到<code>chain</code>的头部和尾部。<br>
+最后再通过 promise 顺序执行链式调用。完成请求和响应的拦截功能。</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// Hook up interceptors middleware</span>
 <span class="token comment">// 初始化的chain中的dispatchRequest就是执行的http请求</span>
 <span class="token comment">// 添加拦截器中间件</span>
@@ -647,11 +648,10 @@
 <span class="token punctuation">&#125;</span>
 
 <span class="token keyword">return</span> promise<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ol start="3">
 <li>它是如何取消请求的呢？</li>
 </ol>
-<p>首先，我们需要 通过 config.cancelToken &#x3D; new axios.CancelToken(function executor(c) {}) 去实例化一个 cancelToken， 传入 executor 的 c 则就是 cancel 函数，调用它则会取消当前请求</p>
+<p>首先，我们需要 通过 config.cancelToken = new axios.CancelToken(function executor© {}) 去实例化一个 cancelToken， 传入 executor 的 c 则就是 cancel 函数，调用它则会取消当前请求</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">CancelToken</span><span class="token punctuation">(</span><span class="token parameter">executor</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> executor <span class="token operator">!==</span> <span class="token string">"function"</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">TypeError</span><span class="token punctuation">(</span><span class="token string">"executor must be a function."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -681,8 +681,8 @@
 <span class="token keyword">function</span> <span class="token function">Cancel</span><span class="token punctuation">(</span><span class="token parameter">message</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">this</span><span class="token punctuation">.</span>message <span class="token operator">=</span> message<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>如果熟悉<code>XMLHttpRequest</code>的方法，那我们应该知道一个<code>abort</code>。对，在 axios 中同样是通过 abort 来实现的取消请求。在<code>xhr.js</code>中有这么一段代码。<br>如果实例化了 config.cancelToken，则会执行，并且 reject 一个原因</p>
+<p>如果熟悉<code>XMLHttpRequest</code>的方法，那我们应该知道一个<code>abort</code>。对，在 axios 中同样是通过 abort 来实现的取消请求。在<code>xhr.js</code>中有这么一段代码。<br>
+如果实例化了 config.cancelToken，则会执行，并且 reject 一个原因</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// 首先需要在request config中配置cancelToken，</span>
 <span class="token keyword">if</span> <span class="token punctuation">(</span>config<span class="token punctuation">.</span>cancelToken<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token comment">// Handle cancellation</span>
@@ -698,7 +698,6 @@
     request <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>实际应用中，我们可以通过 cancelToken 来记录请求 url，以避免重复请求。并且可创建一个白名单，以防止一些需要多次请求的接口</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">"axios"</span><span class="token punctuation">;</span>
 
@@ -769,15 +768,14 @@ axios<span class="token punctuation">.</span>interceptors<span class="token punc
     <span class="token keyword">return</span> Promise<span class="token punctuation">.</span><span class="token function">reject</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ol start="4">
-<li>axios 中如何解决的 XSRF（CSRF）安全问题？<br>在<code>defaults.js</code>中，有一些默认的 config 配置, 这需要后端来协同。具体文章可<a target="_blank" rel="noopener" href="http://www.qiutianaimeili.com/html/page/2019/03/lhx9z5xt45.html">查看</a></li>
+<li>axios 中如何解决的 XSRF（CSRF）安全问题？<br>
+在<code>defaults.js</code>中，有一些默认的 config 配置, 这需要后端来协同。具体文章可<a target="_blank" rel="noopener" href="http://www.qiutianaimeili.com/html/page/2019/03/lhx9z5xt45.html">查看</a></li>
 </ol>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token punctuation">&#123;</span>
   <span class="token literal-property property">xsrfCookieName</span><span class="token operator">:</span> <span class="token string">'XSRF-TOKEN'</span><span class="token punctuation">,</span> <span class="token comment">// 默认值， 表示如果需要防止XSRF攻击，则需要后端生成一个key为XSRF-TOKEN的session（当然，也可以和后端协商，然后自己写config来覆盖）</span>
   <span class="token literal-property property">xsrfHeaderName</span><span class="token operator">:</span> <span class="token string">'X-XSRF-TOKEN'</span><span class="token punctuation">,</span> <span class="token comment">// 然后在axios中自动的读取cookie中的值并在header中写入一个自定义的头X-XSRF-TOKEN</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>读取的操作在<code>xhr.js</code>中</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">if</span> <span class="token punctuation">(</span>utils<span class="token punctuation">.</span><span class="token function">isStandardBrowserEnv</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">var</span> cookies <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"./../helpers/cookies"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -866,7 +864,8 @@ axios<span class="token punctuation">.</span>interceptors<span class="token punc
         <div class="title-text">Proxy构造函数</div>
       </div>
       <!-- <div class="content">
-        使用 Proxy 结合观察者模式，模拟一个实现一个简单的双向绑定&lt;input type="text" id="in
+        使用 Proxy 结合观察者模式，模拟一个实现一个简单的双向绑定
+&lt;input type="text" id="i
       </div> -->
     </a>
   </div>

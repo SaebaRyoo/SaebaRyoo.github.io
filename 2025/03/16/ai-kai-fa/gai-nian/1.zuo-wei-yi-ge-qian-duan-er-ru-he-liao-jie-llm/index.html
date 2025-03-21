@@ -584,8 +584,10 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="1-LLM是如何工作的？"><a href="#1-LLM是如何工作的？" class="headerlink" title="1. LLM是如何工作的？"></a>1. LLM是如何工作的？</h1><p>用一句话总结，LLM就是一个”超级猜词机器”。它通过海量文本数据训练，学习语言规律，然后通过概率计算，预测下一个单词。让我们按照处理流程来详细了解LLM的工作原理。</p>
-<h2 id="1-1-整体流程图"><a href="#1-1-整体流程图" class="headerlink" title="1.1 整体流程图"></a>1.1 整体流程图</h2><p>下面我们先通过流程图来看一下它的工作流程。</p>
+        <h1>1. LLM是如何工作的？</h1>
+<p>用一句话总结，LLM就是一个&quot;超级猜词机器&quot;。它通过海量文本数据训练，学习语言规律，然后通过概率计算，预测下一个单词。让我们按照处理流程来详细了解LLM的工作原理。</p>
+<h2 id="1-1-整体流程图">1.1 整体流程图</h2>
+<p>下面我们先通过流程图来看一下它的工作流程。</p>
 <pre class="mermaid">
 graph TD
     A[输入文本] --> B(Token化处理)
@@ -619,13 +621,20 @@ graph TD
     L -.-> R[Top-p采样]
     end
 </pre>
-
 <p>有了以上的流程图，我们再分步解析</p>
-<h2 id="1-2-输入处理：Token化"><a href="#1-2-输入处理：Token化" class="headerlink" title="1.2 输入处理：Token化"></a>1.2 输入处理：Token化</h2><h3 id="1-2-1-Token：文字的-“最小零件”"><a href="#1-2-1-Token：文字的-“最小零件”" class="headerlink" title="1.2.1 Token：文字的 “最小零件”"></a>1.2.1 Token：文字的 “最小零件”</h3><p><code>Token</code>是理解大模型的重要概念。是一段文本被切分成的 <strong>最小单位</strong> ，比如我们通过<a target="_blank" rel="noopener" href="https://platform.openai.com/tokenizer">openai的分词器</a> 就可以把”ChatGPT is cool!” 这段文字切分为5个token 分别是[“Chat”, “GPT”, “is”, “cool”, “!”]<br><img src="/imgs/ai/4.png" class="lazyload placeholder" data-srcset="/imgs/ai/4.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
-<h3 id="1-2-2-上下文窗口（Context-Window）"><a href="#1-2-2-上下文窗口（Context-Window）" class="headerlink" title="1.2.2 上下文窗口（Context Window）"></a>1.2.2 上下文窗口（Context Window）</h3><p>各大厂商的竞争中，有一个很重要的指标就是上下文窗口的大小。这里的上下文窗口，指的就是大模型可以处理 Token 数量，上下文越大，能处理的 Token 越多。能处理的 Token 越多，大模型对信息的理解就越充分，生成的内容就越接近我们需要的结果。</p>
-<p>下面是 gpt-4o-mini 的上下文窗口处理的 Token 情况（摘自 Open AI 官网）。<br><img src="/imgs/ai/2.png" class="lazyload placeholder" data-srcset="/imgs/ai/2.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
-<p>同时，token也关系到如何计费。token越多，收费越多<br><img src="/imgs/ai/3.png" class="lazyload placeholder" data-srcset="/imgs/ai/3.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
-<h2 id="1-3-词表示（Word-Representation）"><a href="#1-3-词表示（Word-Representation）" class="headerlink" title="1.3 词表示（Word Representation）"></a>1.3 词表示（Word Representation）</h2><h3 id="1-3-1-传统方法：One-Hot编码（早期方案）"><a href="#1-3-1-传统方法：One-Hot编码（早期方案）" class="headerlink" title="1.3.1 传统方法：One-Hot编码（早期方案）"></a>1.3.1 传统方法：One-Hot编码（早期方案）</h3><p>One-Hot编码是最基础的词表示方法，将每个词表示为一个只有一个1，其余都是0的向量。这种方法简单直观，但无法表达词与词之间的关系。</p>
+<h2 id="1-2-输入处理：Token化">1.2 输入处理：Token化</h2>
+<h3 id="1-2-1-Token：文字的-“最小零件”">1.2.1 Token：文字的 “最小零件”</h3>
+<p><code>Token</code>是理解大模型的重要概念。是一段文本被切分成的 <strong>最小单位</strong> ，比如我们通过<a target="_blank" rel="noopener" href="https://platform.openai.com/tokenizer">openai的分词器</a> 就可以把&quot;ChatGPT is cool!&quot; 这段文字切分为5个token 分别是[“Chat”, “GPT”, “is”, “cool”, “!”]<br>
+<img src="/imgs/ai/4.png" class="lazyload placeholder" data-srcset="/imgs/ai/4.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<h3 id="1-2-2-上下文窗口（Context-Window）">1.2.2 上下文窗口（Context Window）</h3>
+<p>各大厂商的竞争中，有一个很重要的指标就是上下文窗口的大小。这里的上下文窗口，指的就是大模型可以处理 Token 数量，上下文越大，能处理的 Token 越多。能处理的 Token 越多，大模型对信息的理解就越充分，生成的内容就越接近我们需要的结果。</p>
+<p>下面是 gpt-4o-mini 的上下文窗口处理的 Token 情况（摘自 Open AI 官网）。<br>
+<img src="/imgs/ai/2.png" class="lazyload placeholder" data-srcset="/imgs/ai/2.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<p>同时，token也关系到如何计费。token越多，收费越多<br>
+<img src="/imgs/ai/3.png" class="lazyload placeholder" data-srcset="/imgs/ai/3.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<h2 id="1-3-词表示（Word-Representation）">1.3 词表示（Word Representation）</h2>
+<h3 id="1-3-1-传统方法：One-Hot编码（早期方案）">1.3.1 传统方法：One-Hot编码（早期方案）</h3>
+<p>One-Hot编码是最基础的词表示方法，将每个词表示为一个只有一个1，其余都是0的向量。这种方法简单直观，但无法表达词与词之间的关系。</p>
 <p>举个例子，假设我们的词表里只有5个词：[猫, 小猫, 狗, 跑, 睡觉]，那么每个词都会被编码成一个5维向量：</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// 词表大小为5的One-Hot编码示例</span>
 <span class="token keyword">const</span> vocabulary <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -643,15 +652,15 @@ graph TD
 
 <span class="token comment">// 计算相似度会得到0，说明One-Hot编码无法捕捉词义关系</span>
 <span class="token keyword">const</span> similarity <span class="token operator">=</span> <span class="token function">cosineSimilarity</span><span class="token punctuation">(</span>cat<span class="token punctuation">,</span> kitten<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 结果为0</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>这个例子展示了One-Hot编码的主要缺点：</p>
 <ol>
 <li>向量维度随词表大小线性增长（实际词表可能有几万到几十万个词）</li>
 <li>所有词之间的距离都相等，无法表达词义的相近程度</li>
 <li>无法进行有意义的向量运算（如类比推理）</li>
 </ol>
-<h3 id="1-3-2-现代方法：动态Embedding"><a href="#1-3-2-现代方法：动态Embedding" class="headerlink" title="1.3.2 现代方法：动态Embedding"></a>1.3.2 现代方法：动态Embedding</h3><p><code>Embedding</code>是将字符转换为<code>高维向量（一串数字）</code>的 <strong>过程</strong>。这种方法不仅能表示词的含义，还能捕捉词之间的关系。</p>
-<p>举个例子，假设我们使用300维的向量来表示每个词，那么”猫”这个词可能被表示为：</p>
+<h3 id="1-3-2-现代方法：动态Embedding">1.3.2 现代方法：动态Embedding</h3>
+<p><code>Embedding</code>是将字符转换为<code>高维向量（一串数字）</code>的 <strong>过程</strong>。这种方法不仅能表示词的含义，还能捕捉词之间的关系。</p>
+<p>举个例子，假设我们使用300维的向量来表示每个词，那么&quot;猫&quot;这个词可能被表示为：</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// 猫的词向量（简化示例，实际是300维）</span>
 <span class="token keyword">const</span> cat <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.2</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.5</span><span class="token punctuation">,</span> <span class="token number">0.8</span><span class="token punctuation">,</span> <span class="token number">0.1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">0.3</span><span class="token punctuation">,</span> <span class="token operator">...</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// 300个数字</span>
 
@@ -663,11 +672,14 @@ graph TD
 <p>这种表示方法相比One-Hot编码（假设词表大小为50000，就需要50000维向量）有两个明显优势：</p>
 <ol>
 <li>维度更低（通常是50~1000维），计算效率更高</li>
-<li>可以通过向量运算发现词之间的语义关系，比如”猫”和”小猫”的向量距离很近，而”猫”和”狗”的向量距离较远。</li>
+<li>可以通过向量运算发现词之间的语义关系，比如&quot;猫&quot;和&quot;小猫&quot;的向量距离很近，而&quot;猫&quot;和&quot;狗&quot;的向量距离较远。</li>
 </ol>
-<h3 id="1-3-3-位置编码"><a href="#1-3-3-位置编码" class="headerlink" title="1.3.3 位置编码"></a>1.3.3 位置编码</h3><p>为了让模型理解词在句子中的位置信息，需要给每个词的Embedding加入位置信息。</p>
-<h2 id="1-4-Transformer核心处理"><a href="#1-4-Transformer核心处理" class="headerlink" title="1.4 Transformer核心处理"></a>1.4 Transformer核心处理</h2><h3 id="1-4-1-自注意力机制（Self-Attention）"><a href="#1-4-1-自注意力机制（Self-Attention）" class="headerlink" title="1.4.1 自注意力机制（Self-Attention）"></a>1.4.1 自注意力机制（Self-Attention）</h3><p>它的核心机制就是让模型处理每个词时，会”注意”其他词的重要性。</p>
-<p><strong>比如句子”他打了球，然后它破了”，模型会关联”它”和”球”，而不是”他”。</strong></p>
+<h3 id="1-3-3-位置编码">1.3.3 位置编码</h3>
+<p>为了让模型理解词在句子中的位置信息，需要给每个词的Embedding加入位置信息。</p>
+<h2 id="1-4-Transformer核心处理">1.4 Transformer核心处理</h2>
+<h3 id="1-4-1-自注意力机制（Self-Attention）">1.4.1 自注意力机制（Self-Attention）</h3>
+<p>它的核心机制就是让模型处理每个词时，会&quot;注意&quot;其他词的重要性。</p>
+<p><strong>比如句子&quot;他打了球，然后它破了&quot;，模型会关联&quot;它&quot;和&quot;球&quot;，而不是&quot;他&quot;。</strong></p>
 <p>可以把它想象成代码中的<strong>依赖分析</strong>：</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// 伪代码示例：计算词间关联</span>
 <span class="token keyword">function</span> <span class="token function">selfAttention</span><span class="token punctuation">(</span>tokens<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
@@ -676,11 +688,15 @@ graph TD
   <span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token keyword">return</span> <span class="token function">weightedSum</span><span class="token punctuation">(</span>scores<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-4-2-多头注意力机制"><a href="#1-4-2-多头注意力机制" class="headerlink" title="1.4.2 多头注意力机制"></a>1.4.2 多头注意力机制</h3><p>通过多个不同的注意力头，模型可以同时关注不同角度的信息，比如语法关系、语义关系等。</p>
-<h3 id="1-4-3-前馈神经网络和LayerNorm"><a href="#1-4-3-前馈神经网络和LayerNorm" class="headerlink" title="1.4.3 前馈神经网络和LayerNorm"></a>1.4.3 前馈神经网络和LayerNorm</h3><p>经过注意力层后，每个token都会通过一个前馈神经网络进行进一步处理，并通过LayerNorm进行归一化，保持数值稳定。</p>
-<h2 id="1-5-输出生成"><a href="#1-5-输出生成" class="headerlink" title="1.5 输出生成"></a>1.5 输出生成</h2><h3 id="1-5-1-概率分布"><a href="#1-5-1-概率分布" class="headerlink" title="1.5.1 概率分布"></a>1.5.1 概率分布</h3><p>模型会为每个可能的下一个词计算概率。比如输入<code>&quot;今天天气真&quot;</code>，模型会计算<code>&quot;好&quot;</code>的概率是80%，<code>&quot;糟糕&quot;</code>的概率是<code>20%</code>，依此类推。</p>
-<h3 id="1-5-2-温度采样"><a href="#1-5-2-温度采样" class="headerlink" title="1.5.2 温度采样"></a>1.5.2 温度采样</h3><p>在生成内容时，我们通过温度（Temperature）参数来控制输出的随机性（0~1或更高）：</p>
+<h3 id="1-4-2-多头注意力机制">1.4.2 多头注意力机制</h3>
+<p>通过多个不同的注意力头，模型可以同时关注不同角度的信息，比如语法关系、语义关系等。</p>
+<h3 id="1-4-3-前馈神经网络和LayerNorm">1.4.3 前馈神经网络和LayerNorm</h3>
+<p>经过注意力层后，每个token都会通过一个前馈神经网络进行进一步处理，并通过LayerNorm进行归一化，保持数值稳定。</p>
+<h2 id="1-5-输出生成">1.5 输出生成</h2>
+<h3 id="1-5-1-概率分布">1.5.1 概率分布</h3>
+<p>模型会为每个可能的下一个词计算概率。比如输入<code>&quot;今天天气真&quot;</code>，模型会计算<code>&quot;好&quot;</code>的概率是80%，<code>&quot;糟糕&quot;</code>的概率是<code>20%</code>，依此类推。</p>
+<h3 id="1-5-2-温度采样">1.5.2 温度采样</h3>
+<p>在生成内容时，我们通过温度（Temperature）参数来控制输出的随机性（0~1或更高）：</p>
 <ul>
 <li>低温度（如0.2）：输出保守、确定性高（适合代码生成）</li>
 <li>高温度（如0.8）：输出更随机、有创意（适合写故事）</li>
@@ -691,12 +707,13 @@ model<span class="token punctuation">.</span><span class="token function">genera
 
 <span class="token comment">// 高温度 → 可能输出 "2, 或者11？开玩笑的，是2啦！（这都是概率性的结果）"</span>
 model<span class="token punctuation">.</span><span class="token function">generate</span><span class="token punctuation">(</span><span class="token string">"1+1="</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> temperature<span class="token operator">:</span> <span class="token number">0.8</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 可能是 "2" 也可能是 "11"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="1-5-3-Top-p采样"><a href="#1-5-3-Top-p采样" class="headerlink" title="1.5.3 Top-p采样"></a>1.5.3 Top-p采样</h3><p>除了温度之外，Top-p采样也是一个重要的控制参数，它决定了模型在选择下一个词时会考虑概率总和达到p的候选词。</p>
+<h3 id="1-5-3-Top-p采样">1.5.3 Top-p采样</h3>
+<p>除了温度之外，Top-p采样也是一个重要的控制参数，它决定了模型在选择下一个词时会考虑概率总和达到p的候选词。</p>
 <p>假设模型预测下一个词时，<code>好</code> 的概率是0.6，<code>很好</code>的概率是 0.2，<code>非常好</code>的概率是0.1。如果我们设置<code>p=0.8</code>，那么模型只会从<code>好</code>和<code>很好</code>这两个词中选择（因为它们的概率和为0.8），而不会考虑<code>非常好</code>。这种方法可以帮助模型在保持输出质量的同时，避免生成一些低概率（可能不太合适）的词</p>
-<h1 id="2-如何与大模型沟通"><a href="#2-如何与大模型沟通" class="headerlink" title="2. 如何与大模型沟通"></a>2. 如何与大模型沟通</h1><p>我们站在用户视角，写好提示词只需要掌握一个公式：</p>
+<h1>2. 如何与大模型沟通</h1>
+<p>我们站在用户视角，写好提示词只需要掌握一个公式：</p>
 <blockquote>
-<p><strong>提示词 &#x3D; 定义角色 + 背景信息 + 任务目标 + 输出要求</strong></p>
+<p><strong>提示词 = 定义角色 + 背景信息 + 任务目标 + 输出要求</strong></p>
 </blockquote>
 <ol>
 <li>定义角色：明确告诉AI它应该扮演什么角色，比如’你是一个资深的前端开发工程师’。这样可以让AI从特定的专业角度思考问题。</li>
@@ -704,29 +721,35 @@ model<span class="token punctuation">.</span><span class="token function">genera
 <li>任务目标：清晰地描述你想要完成什么，可以是具体的编码任务、代码优化、问题诊断等。目标越明确，AI的回答就越精准。</li>
 <li>输出要求：指定期望的输出格式、代码风格、注释要求等。这能确保AI的回答符合你的具体需求，比如’请用TypeScript实现，并添加详细注释’。</li>
 </ol>
-<h1 id="3-提示工程"><a href="#3-提示工程" class="headerlink" title="3. 提示工程"></a>3. 提示工程</h1><h2 id="3-1-零样本提示（Zero-shot-Prompting）"><a href="#3-1-零样本提示（Zero-shot-Prompting）" class="headerlink" title="3.1 零样本提示（Zero-shot Prompting）"></a>3.1 零样本提示（Zero-shot Prompting）</h2><p>零样本提示是最基础的提示方法，直接告诉模型要做什么，不需要提供示例。</p>
+<h1>3. 提示工程</h1>
+<h2 id="3-1-零样本提示（Zero-shot-Prompting）">3.1 零样本提示（Zero-shot Prompting）</h2>
+<p>零样本提示是最基础的提示方法，直接告诉模型要做什么，不需要提供示例。</p>
 <blockquote>
-<p>prompt &#x3D; <code>优化下面的代码性能：</code><br>直接让模型优化代码</p>
+<p>prompt = <code>优化下面的代码性能：</code><br>
+直接让模型优化代码</p>
 </blockquote>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">
 <span class="token keyword">function</span> <span class="token function">fibonacci</span><span class="token punctuation">(</span><span class="token parameter">n</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">return</span> n<span class="token punctuation">;</span>
   <span class="token keyword">return</span> <span class="token function">fibonacci</span><span class="token punctuation">(</span>n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token function">fibonacci</span><span class="token punctuation">(</span>n<span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>`<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="3-2-少样本提示（Few-shot-Prompting）"><a href="#3-2-少样本提示（Few-shot-Prompting）" class="headerlink" title="3.2 少样本提示（Few-shot Prompting）"></a>3.2 少样本提示（Few-shot Prompting）</h2><p>通过提供一些示例来引导模型，让它理解任务模式。</p>
+<h2 id="3-2-少样本提示（Few-shot-Prompting）">3.2 少样本提示（Few-shot Prompting）</h2>
+<p>通过提供一些示例来引导模型，让它理解任务模式。</p>
 <blockquote>
-<p>通过示例引导模型进行代码注释<br>prompt &#x3D; <code>请按照下面的示例格式为代码添加注释: function add(a, b) &#123; // 接收两个数字参数   return a + b;      // 返回它们的和 &#125;</code></p>
+<p>通过示例引导模型进行代码注释<br>
+prompt = <code>请按照下面的示例格式为代码添加注释: function add(a, b) &#123; // 接收两个数字参数   return a + b;      // 返回它们的和 &#125;</code></p>
 </blockquote>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">
 <span class="token comment">// 需要注释的代码：</span>
 <span class="token keyword">function</span> <span class="token function">multiply</span><span class="token punctuation">(</span><span class="token parameter">x<span class="token punctuation">,</span> y</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">return</span> x <span class="token operator">*</span> y<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>`<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="思维链（Chain-of-Thought）"><a href="#思维链（Chain-of-Thought）" class="headerlink" title="思维链（Chain-of-Thought）"></a>思维链（Chain-of-Thought）</h2><p>引导模型一步步思考问题，适合复杂的编程任务。</p>
+<h2 id="思维链（Chain-of-Thought）">思维链（Chain-of-Thought）</h2>
+<p>引导模型一步步思考问题，适合复杂的编程任务。</p>
 <blockquote>
-<p>引导模型逐步思考代码重构<br>prompt &#x3D; &#96;请一步步思考如何重构这段代码<br>思考步骤：</p>
+<p>引导模型逐步思考代码重构<br>
+prompt = `请一步步思考如何重构这段代码<br>
+思考步骤：</p>
 <ol>
 <li>首先，分析代码的主要功能</li>
 <li>找出代码中的重复模式</li>
@@ -747,10 +770,11 @@ model<span class="token punctuation">.</span><span class="token function">genera
   <span class="token keyword">return</span> result<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="角色扮演（Role-Playing）"><a href="#角色扮演（Role-Playing）" class="headerlink" title="角色扮演（Role Playing）"></a>角色扮演（Role Playing）</h2><p>让模型扮演特定角色，比如代码审查者、性能优化专家等。</p>
+<h2 id="角色扮演（Role-Playing）">角色扮演（Role Playing）</h2>
+<p>让模型扮演特定角色，比如代码审查者、性能优化专家等。</p>
 <blockquote>
-<p>让模型扮演代码审查者<br>prompt &#x3D; &#96;你是一个经验丰富的前端代码审查者，请审查下面的React组件代码，重点关注：</p>
+<p>让模型扮演代码审查者<br>
+prompt = `你是一个经验丰富的前端代码审查者，请审查下面的React组件代码，重点关注：</p>
 <ol>
 <li>性能优化</li>
 <li>最佳实践</li>
@@ -776,9 +800,9 @@ model<span class="token punctuation">.</span><span class="token function">genera
     </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
   <span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>`<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>这里只提到了基本的几项提示技术，算是抛砖引玉。我们可以通过<a target="_blank" rel="noopener" href="https://www.promptingguide.ai/zh">提示工程指南</a></p>
-<h1 id="4-衍生"><a href="#4-衍生" class="headerlink" title="4. 衍生"></a>4. 衍生</h1><p>下面这张图展示了基于LLM的几个生态组件（开发框架、RAG、Agent等），仅作抛砖引玉：</p>
+<h1>4. 衍生</h1>
+<p>下面这张图展示了基于LLM的几个生态组件（开发框架、RAG、Agent等），仅作抛砖引玉：</p>
 <ul>
 <li>开发框架 ➔ 上下文管理（记忆与工具集成）</li>
 <li>RAG系统 ➔ 动态知识更新（实时数据注入）</li>
@@ -818,9 +842,8 @@ graph TD
     end
 
 </pre>
-
-
-<h1 id="5-参考"><a href="#5-参考" class="headerlink" title="5. 参考"></a>5. 参考</h1><ul>
+<h1>5. 参考</h1>
+<ul>
 <li><a target="_blank" rel="noopener" href="http://gk.link/a/12xfi">程序员的AI开发第一课</a></li>
 </ul>
 
@@ -875,7 +898,9 @@ graph TD
       </div>
       
       <!-- <div class="content">
-        1. 基础篇1.1 Nginx介绍Nginx是一款轻量级的Web服务器、反向代理服务器，是由俄罗斯的程序设计师Igor 
+        1. 基础篇
+1.1 Nginx介绍
+Nginx是一款轻量级的Web服务器、反向代理服务器，是由俄罗斯的程序设计师Igo
       </div> -->
     </a>
   </div>
@@ -894,7 +919,8 @@ graph TD
         <div class="title-text">如何优雅的更新你的npm包</div>
       </div>
       <!-- <div class="content">
-        前言在现代软件开发中，无论是前端应用、还是node服务 保持项目依赖的更新都是一项重要但具有挑战性的任务。过时的依赖可能
+        前言
+在现代软件开发中，无论是前端应用、还是node服务 保持项目依赖的更新都是一项重要但具有挑战性的任务。过时的依赖可
       </div> -->
     </a>
   </div>

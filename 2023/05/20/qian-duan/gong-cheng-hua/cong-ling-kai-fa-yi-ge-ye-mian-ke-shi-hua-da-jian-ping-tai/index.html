@@ -588,7 +588,8 @@
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/VLayout#%E5%A6%82%E4%BD%95%E5%BC%80%E5%A7%8B">VLayout</a> 是一个学习页面可视化搭建的项目, 使用了 React + TS 技术来开发。如果您有好的建议，欢迎提出，如果感觉帮助到了您，不妨点个赞或<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/VLayout">star</a>。</p>
 </blockquote>
-<h2 id="功能设计"><a href="#功能设计" class="headerlink" title="功能设计"></a>功能设计</h2><p>首先开始一个项目时，我们需要理清他有哪些功能。以下页面可视化搭建的基础功能列表</p>
+<h2 id="功能设计">功能设计</h2>
+<p>首先开始一个项目时，我们需要理清他有哪些功能。以下页面可视化搭建的基础功能列表</p>
 <ol>
 <li>数据协议(JSON Schema)</li>
 <li>自定义组件库</li>
@@ -607,20 +608,23 @@
 <li>…</li>
 </ol>
 <p>有了上面的功能设计，我们可以通过画图来更清晰的理解流程</p>
-<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0ca3d162d11d419f8f5e16886bf34be1~tplv-k3u1fbpfcp-watermark.image" class="lazyload placeholder" data-srcset="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0ca3d162d11d419f8f5e16886bf34be1~tplv-k3u1fbpfcp-watermark.image" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="可视化搭建.png"></p>
-<p>总的来说，我们需要一个<strong>自定义组件库</strong>，它需要支持我们定义的<strong>数据协议(JSON Schema)<strong>。而</strong>编辑器</strong>则是通过对一个组件的<strong>JSON Schema</strong>进行编辑，然后输出最终用于在页面中展示的数据, 用现在流行的前端框架的展示逻辑就是**UI &#x3D; f(JSON Schema)**。</p>
-<h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><ul>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0ca3d162d11d419f8f5e16886bf34be1~tplv-k3u1fbpfcp-watermark.image?" class="lazyload placeholder" data-srcset="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0ca3d162d11d419f8f5e16886bf34be1~tplv-k3u1fbpfcp-watermark.image?" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="可视化搭建.png"></p>
+<p>总的来说，我们需要一个<strong>自定义组件库</strong>，它需要支持我们定义的<strong>数据协议(JSON Schema)</strong>。而<strong>编辑器</strong>则是通过对一个组件的<strong>JSON Schema</strong>进行编辑，然后输出最终用于在页面中展示的数据, 用现在流行的前端框架的展示逻辑就是<strong>UI = f(JSON Schema)</strong>。</p>
+<h2 id="技术选型">技术选型</h2>
+<ul>
 <li>项目管理工具： lerna</li>
-<li>构建工具：<ul>
+<li>构建工具：
+<ul>
 <li>编辑器： vite</li>
 <li>自定义组件库: rollup</li>
 </ul>
 </li>
-<li>前端框架&#x2F;库: ts + react + redux-toolkit + redux-persist + react-router + react-dnd + antd</li>
+<li>前端框架/库: ts + react + redux-toolkit + redux-persist + react-router + react-dnd + antd</li>
 <li>代码规范以及提交规范: eslint + prettier + husky + lint-stage + commitlint</li>
 <li>单元测试: jest + react-testing-library</li>
 </ul>
-<h2 id="项目管理-（如果想看实现逻辑，可直接到下面的功能实现）"><a href="#项目管理-（如果想看实现逻辑，可直接到下面的功能实现）" class="headerlink" title="项目管理 （如果想看实现逻辑，可直接到下面的功能实现）"></a>项目管理 （如果想看实现逻辑，可直接到下面的功能实现）</h2><p>通过上面我会发现，一个可视化搭建项目至少会包含两个子项目：</p>
+<h2 id="项目管理-（如果想看实现逻辑，可直接到下面的功能实现）">项目管理 （如果想看实现逻辑，可直接到下面的功能实现）</h2>
+<p>通过上面我会发现，一个可视化搭建项目至少会包含两个子项目：</p>
 <ol>
 <li>自定义的组件库</li>
 <li>用于可视化编辑的管理页面</li>
@@ -628,10 +632,14 @@
 <p>上面的子项目 1 目前是只实现了 React 版本的组件库，但是我觉的一个公司业务规模比较大的时候可能不止一种技术栈。可能会有 Vue、微信小程序等</p>
 <p>所以，为了项目的可扩展性，我们使用<strong>lerna</strong>来做 <strong>monorepo</strong></p>
 <p><strong>monorepo</strong>不是框架也不是库，它是一种项目管理的概念。它表示将多个项目放在一个仓库中统一开发，便于管理，使用统一标准开发，当有多个依赖项目的时候也便于发布。而<strong>lerna</strong>是基于这个概念实现的项目管理工具。</p>
-<h3 id="lerna-简单介绍"><a href="#lerna-简单介绍" class="headerlink" title="lerna 简单介绍"></a>lerna 简单介绍</h3><h4 id="全局安装"><a href="#全局安装" class="headerlink" title="全局安装"></a>全局安装</h4><p><code>yarn global add lerna</code> 或者<code>npm install lerna -g</code></p>
-<h4 id="创建项目根目录"><a href="#创建项目根目录" class="headerlink" title="创建项目根目录"></a>创建项目根目录</h4><p><code>mkdir lerna-demo &amp;&amp; lerna init</code></p>
+<h3 id="lerna-简单介绍">lerna 简单介绍</h3>
+<h4 id="全局安装">全局安装</h4>
+<p><code>yarn global add lerna</code> 或者<code>npm install lerna -g</code></p>
+<h4 id="创建项目根目录">创建项目根目录</h4>
+<p><code>mkdir lerna-demo &amp;&amp; lerna init</code></p>
 <p>执行完 init 后会多出一个<code>packages</code>目录和<code>lerna.json</code>，并且会配置一个<code>workspace</code></p>
-<h4 id="创建不同的子项目"><a href="#创建不同的子项目" class="headerlink" title="创建不同的子项目"></a>创建不同的子项目</h4><p>然后我们可以在 packages 中创建不同的项目,具体代码可以查看<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/Demos/tree/main/lerna-demo/packages">lerna-demo</a></p>
+<h4 id="创建不同的子项目">创建不同的子项目</h4>
+<p>然后我们可以在 packages 中创建不同的项目,具体代码可以查看<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/Demos/tree/main/lerna-demo/packages">lerna-demo</a></p>
 <blockquote>
 <p>代码里有个需要注意的点就是打包配置中设置的打包方式要和你引入的方式是一致的，或者直接在打包配置中设置<code>esm</code>、<code>cjs</code>和<code>umd</code>三种方式，然后根据不同的规范去引入不同的代码。</p>
 </blockquote>
@@ -645,18 +653,22 @@
     <span class="token property">"footer"</span><span class="token operator">:</span> <span class="token string">"*"</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>这样就相当于告诉 lerna 去 link workspace 中的<code>header</code>和<code>footer</code>，就像<code>npm install</code>了一样。</p>
 <p>然后再<code>yarn</code>执行一下命令</p>
-<h4 id="打包项目"><a href="#打包项目" class="headerlink" title="打包项目"></a>打包项目</h4><p>如果需要打包所有的项目则直接运行<code>lerna run build</code></p>
+<h4 id="打包项目">打包项目</h4>
+<p>如果需要打包所有的项目则直接运行<code>lerna run build</code></p>
 <p>lerna 会按照依赖顺序，先打包<code>header</code>和<code>footer</code>，最好再打包<code>website</code></p>
 <p>也可以使用<code>--scope</code>配置 指定需要打包的项目<code>lerna run build --scope header --scope footer</code>,这样，website 项目就不会被打包。</p>
 <p>运行单元测试也同上。</p>
-<h4 id="项目运行"><a href="#项目运行" class="headerlink" title="项目运行"></a>项目运行</h4><p>打包好了两个依赖项目后，就可以运行<code>website</code>了，</p>
+<h4 id="项目运行">项目运行</h4>
+<p>打包好了两个依赖项目后，就可以运行<code>website</code>了，</p>
 <p><code>lerna run dev --scope=website</code></p>
 <p>也可以不加<code>--scope</code>,因为其他两个项目中并没有<code>dev</code>这个运行命令。</p>
 <p>最后就可以直接访问了</p>
-<h2 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h2><h3 id="1-数据协议-JSON-Schema"><a href="#1-数据协议-JSON-Schema" class="headerlink" title="1. 数据协议(JSON Schema)"></a>1. 数据协议(JSON Schema)</h3><p>定义一个通用的数据协议，我们以一个 Button 组件为例，它接收的<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/VLayout/blob/main/packages/r-material/src/custom-components/Button/schema.ts">Schema 数据</a>如下:<br>其他的自定义组件也都是接收这种格式的数据</p>
+<h2 id="功能实现">功能实现</h2>
+<h3 id="1-数据协议-JSON-Schema">1. 数据协议(JSON Schema)</h3>
+<p>定义一个通用的数据协议，我们以一个 Button 组件为例，它接收的<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/VLayout/blob/main/packages/r-material/src/custom-components/Button/schema.ts">Schema 数据</a>如下:<br>
+其他的自定义组件也都是接收这种格式的数据</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token punctuation">&#123;</span>
   <span class="token literal-property property">id</span><span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
   <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'Button'</span><span class="token punctuation">,</span>
@@ -684,7 +696,6 @@
     <span class="token literal-property property">backgroundColor</span><span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>你可以看到上面的数据中有一个<strong>type: Button</strong>字段，这个字段就是每个组件库中的唯一的字段，标识了是什么组件。</p>
 <p>接着，进入自定义组件的<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/VLayout/blob/main/packages/r-material/src/index.tsx">入口处</a>，我们使用的<strong>策略模式</strong>根据 schema 的 type 来判断加载哪个组件</p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx"><span class="token comment">// 懒加载</span>
@@ -709,9 +720,9 @@
     </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token class-name">Suspense</span></span><span class="token punctuation">></span></span>
   <span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-自定义组件"><a href="#2-自定义组件" class="headerlink" title="2. 自定义组件"></a>2. 自定义组件</h3><p>我们还是以实现一个<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/VLayout/blob/main/packages/r-material/src/custom-components/Button/Button.tsx">Button</a>组件为例,目前只需要将 style 渲染到组件中即可.</p>
-<p>**PS: 只要修改组件库，就需要使用 lerna run build –scope [your-components]**来从新打包，不然依赖这个组件库的项目无法使用到你更改后的版本</p>
+<h3 id="2-自定义组件">2. 自定义组件</h3>
+<p>我们还是以实现一个<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/VLayout/blob/main/packages/r-material/src/custom-components/Button/Button.tsx">Button</a>组件为例,目前只需要将 style 渲染到组件中即可.</p>
+<p>**PS: 只要修改组件库，就需要使用 lerna run build --scope [your-components]**来从新打包，不然依赖这个组件库的项目无法使用到你更改后的版本</p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx"><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">Button</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> schema<span class="token punctuation">,</span> <span class="token operator">...</span>rest <span class="token punctuation">&#125;</span><span class="token operator">:</span> MaterialProps<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">const</span> <span class="token punctuation">&#123;</span> propValue<span class="token punctuation">,</span> style <span class="token punctuation">&#125;</span> <span class="token operator">=</span> schema<span class="token punctuation">;</span>
   <span class="token keyword">return</span> <span class="token punctuation">(</span>
@@ -720,8 +731,7 @@
     </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
   <span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>并且，每个组件都对应着一个初始的<strong>schema</strong> 和 <strong>template</strong>。 前者我们已经说过了，我们主要说一下后者。**<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/VLayout/blob/main/packages/r-material/src/custom-components/Button/template.ts">template</a>** 它相对比较简单，就是定义这个组件的一些基础信息,用于在编辑器中展现出一个可拖拽的组件列表</p>
+<p>并且，每个组件都对应着一个初始的<strong>schema</strong> 和 <strong>template</strong>。 前者我们已经说过了，我们主要说一下后者。<strong><a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/VLayout/blob/main/packages/r-material/src/custom-components/Button/template.ts">template</a></strong> 它相对比较简单，就是定义这个组件的一些基础信息,用于在编辑器中展现出一个可拖拽的组件列表</p>
 <p>**PS: template 中的 type 必须要和 schema 中的 type 是一致的，因为我们后续需要通过这个 type 获取对应的 schema</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">const</span> Button<span class="token operator">:</span> T_Template <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
   type<span class="token operator">:</span> <span class="token string">"Button"</span><span class="token punctuation">,</span>
@@ -730,8 +740,8 @@
   displayName<span class="token operator">:</span> <span class="token string">"按钮组件"</span><span class="token punctuation">,</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 <span class="token keyword">export</span> <span class="token keyword">default</span> Button<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="3-编辑器-画布"><a href="#3-编辑器-画布" class="headerlink" title="3. 编辑器(画布)"></a>3. 编辑器(画布)</h3><p>画布主要有两个部分</p>
+<h3 id="3-编辑器-画布">3. 编辑器(画布)</h3>
+<p>画布主要有两个部分</p>
 <ul>
 <li>可拖拽的组件目标</li>
 <li>用于放置拖拽目标的画布容器</li>
@@ -756,9 +766,8 @@
     </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
   <span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>然后，直接遍历<strong>template</strong>生成组件列表即可。</p>
-<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1a44241ca4b44355a9116a66c463f165~tplv-k3u1fbpfcp-watermark.image" class="lazyload placeholder" data-srcset="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1a44241ca4b44355a9116a66c463f165~tplv-k3u1fbpfcp-watermark.image" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image.png"></p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1a44241ca4b44355a9116a66c463f165~tplv-k3u1fbpfcp-watermark.image?" class="lazyload placeholder" data-srcset="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1a44241ca4b44355a9116a66c463f165~tplv-k3u1fbpfcp-watermark.image?" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image.png"></p>
 <p>上面的代码中我们可以看到通过<strong>react-dnd</strong>的<code>useDrag</code> 传输了对应的<strong>默认 schema</strong>到<code>item</code>属性中。这是组件能在画布中展示的核心逻辑，对应到<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/VLayout/blob/main/packages/website/src/features/Editor/index.tsx">画布容器</a>中，有对应的<code>useDrop</code>来接收这个<code>item</code></p>
 <p>代码实现如下:</p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx"><span class="token comment">// ...</span>
@@ -777,7 +786,6 @@
   <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token comment">// ...</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>获取到了<strong>Schema</strong>数据后，我们通过一个<code>schemaList</code>来保存插入的数据。然后就是通过遍历<code>schemaList</code>来生成对应的组件。这里的组件，就是我们在另一个子项目中的自定义组件库中的一个组件。下面是主要逻辑</p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx"><span class="token punctuation">&#123;</span>
   schemaList<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span>schema<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
@@ -790,9 +798,11 @@
     <span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="4-可拖拽"><a href="#4-可拖拽" class="headerlink" title="4. 可拖拽"></a>4. 可拖拽</h3><p>上面只是简单的实现了将组件拖拽到了画布中。但是，我们希望的是在画布中也可以拖拽组件来完成布局。<br><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/918d53da2b634e5bb65a0ee97554fbce~tplv-k3u1fbpfcp-watermark.image" class="lazyload placeholder" data-srcset="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/918d53da2b634e5bb65a0ee97554fbce~tplv-k3u1fbpfcp-watermark.image" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="拖拽.gif"></p>
-<p>因为我们采用的是定位的布局方式，那么实际需要的就是<strong>移动的元素位于画布的坐标</strong><br><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/97cef5eafe33455398b10b2ba782134e~tplv-k3u1fbpfcp-watermark.image" class="lazyload placeholder" data-srcset="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/97cef5eafe33455398b10b2ba782134e~tplv-k3u1fbpfcp-watermark.image" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="截屏2023-03-10 11.19.00.png"></p>
+<h3 id="4-可拖拽">4. 可拖拽</h3>
+<p>上面只是简单的实现了将组件拖拽到了画布中。但是，我们希望的是在画布中也可以拖拽组件来完成布局。<br>
+<img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/918d53da2b634e5bb65a0ee97554fbce~tplv-k3u1fbpfcp-watermark.image?" class="lazyload placeholder" data-srcset="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/918d53da2b634e5bb65a0ee97554fbce~tplv-k3u1fbpfcp-watermark.image?" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="拖拽.gif"></p>
+<p>因为我们采用的是定位的布局方式，那么实际需要的就是<strong>移动的元素位于画布的坐标</strong><br>
+<img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/97cef5eafe33455398b10b2ba782134e~tplv-k3u1fbpfcp-watermark.image?" class="lazyload placeholder" data-srcset="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/97cef5eafe33455398b10b2ba782134e~tplv-k3u1fbpfcp-watermark.image?" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="截屏2023-03-10 11.19.00.png"></p>
 <p>获取<code>left</code>和<code>top</code>主要实现逻辑大致如下：</p>
 <ol>
 <li>监听<code>mousedown</code>事件</li>
@@ -851,11 +861,14 @@
   document<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"mousemove"</span><span class="token punctuation">,</span> move<span class="token punctuation">)</span><span class="token punctuation">;</span>
   document<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"mouseup"</span><span class="token punctuation">,</span> up<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="5-放大缩小"><a href="#5-放大缩小" class="headerlink" title="5. 放大缩小"></a>5. 放大缩小</h3><p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/edb2c819f1044d558eacd207e6a6d35d~tplv-k3u1fbpfcp-watermark.image" class="lazyload placeholder" data-srcset="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/edb2c819f1044d558eacd207e6a6d35d~tplv-k3u1fbpfcp-watermark.image" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="放大缩小.gif"></p>
+<h3 id="5-放大缩小">5. 放大缩小</h3>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/edb2c819f1044d558eacd207e6a6d35d~tplv-k3u1fbpfcp-watermark.image?" class="lazyload placeholder" data-srcset="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/edb2c819f1044d558eacd207e6a6d35d~tplv-k3u1fbpfcp-watermark.image?" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="放大缩小.gif"></p>
 <p>它的实现思路是通过在拖拽组件的外面包裹一个节点，然后再加上三个 point(圆点)，通过当前组件的 schema 计算出包裹层的坐标，然后将三个 point 依据包裹层定位，再通过在 point 上添加对应的事件来监听即可，这里就不贴代码了。如果想看实现细节可直接到 <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/VLayout/blob/main/packages/website/src/features/Editor/PointsWrapper.tsx#L102">PointWrapper</a> 查看</p>
-<h3 id="6-组件属性编辑"><a href="#6-组件属性编辑" class="headerlink" title="6. 组件属性编辑"></a>6. 组件属性编辑</h3><p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e2364576baab41779974dcde5a67e8a5~tplv-k3u1fbpfcp-watermark.image" class="lazyload placeholder" data-srcset="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e2364576baab41779974dcde5a67e8a5~tplv-k3u1fbpfcp-watermark.image" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="样式编辑.gif"></p>
-<p>当我们选中画布中的一个组件时，右侧就会显示出当前组件对应的 schema，目前只实现了样式的编辑。<br>实现这个功能的核心就是需要定义与样式对应的 map<br><a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/VLayout/blob/main/packages/website/src/utils/attr.ts#L2">styleMap</a></p>
+<h3 id="6-组件属性编辑">6. 组件属性编辑</h3>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e2364576baab41779974dcde5a67e8a5~tplv-k3u1fbpfcp-watermark.image?" class="lazyload placeholder" data-srcset="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e2364576baab41779974dcde5a67e8a5~tplv-k3u1fbpfcp-watermark.image?" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="样式编辑.gif"></p>
+<p>当我们选中画布中的一个组件时，右侧就会显示出当前组件对应的 schema，目前只实现了样式的编辑。<br>
+实现这个功能的核心就是需要定义与样式对应的 map<br>
+<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/VLayout/blob/main/packages/website/src/utils/attr.ts#L2">styleMap</a></p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">export</span> <span class="token keyword">const</span> styleMap<span class="token operator">:</span> <span class="token builtin">any</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
   rotate<span class="token operator">:</span> <span class="token punctuation">&#123;</span> label<span class="token operator">:</span> <span class="token string">"旋转角度"</span><span class="token punctuation">,</span> type<span class="token operator">:</span> <span class="token string">"number"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
   width<span class="token operator">:</span> <span class="token punctuation">&#123;</span> label<span class="token operator">:</span> <span class="token string">"宽"</span><span class="token punctuation">,</span> type<span class="token operator">:</span> <span class="token string">"number"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
@@ -874,7 +887,6 @@
   verticalAlign<span class="token operator">:</span> <span class="token punctuation">&#123;</span> label<span class="token operator">:</span> <span class="token string">"上下对齐"</span><span class="token punctuation">,</span> type<span class="token operator">:</span> <span class="token string">"select"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
   opacity<span class="token operator">:</span> <span class="token punctuation">&#123;</span> label<span class="token operator">:</span> <span class="token string">"不透明度"</span><span class="token punctuation">,</span> type<span class="token operator">:</span> <span class="token string">"number"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>然后在组件中遍历这个<code>map</code>，并通过不同的<code>type</code>生成不同的输入框。然后将数据和功能绑定即可</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/VLayout/blob/main/packages/website/src/features/AttrToolTabs/Attrs.tsx">Attrs.tsx</a></p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx"><span class="token keyword">const</span> <span class="token function-variable function">renderComp</span> <span class="token operator">=</span> <span class="token punctuation">(</span>style<span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">,</span> styleProp<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">,</span> type<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
@@ -916,8 +928,8 @@
   <span class="token punctuation">&#125;</span>
   <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="7-图层管理"><a href="#7-图层管理" class="headerlink" title="7. 图层管理"></a>7. 图层管理</h3><p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/edffd8923b4e46dab45253b24fa94353~tplv-k3u1fbpfcp-watermark.image" class="lazyload placeholder" data-srcset="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/edffd8923b4e46dab45253b24fa94353~tplv-k3u1fbpfcp-watermark.image" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="图层.gif"></p>
+<h3 id="7-图层管理">7. 图层管理</h3>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/edffd8923b4e46dab45253b24fa94353~tplv-k3u1fbpfcp-watermark.image?" class="lazyload placeholder" data-srcset="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/edffd8923b4e46dab45253b24fa94353~tplv-k3u1fbpfcp-watermark.image?" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="图层.gif"></p>
 <p>图层管理相对比较简单，因为我们是基于<code>absolute</code>定位做的。且已经有了对应<code>schemaList</code>数据，那么我们需要做的就是移动当前组件对应的<code>schema</code>数据在<code>schemaList</code>中的数据就行了</p>
 <p>核心的实现就是一个<code>[swapSchema](https://github.com/SaebaRyoo/VLayout/blob/main/packages/website/src/features/Editor/editor.slice.ts)</code>方法，通过数据的索引切换位置</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token function-variable function">swapSchema</span><span class="token operator">:</span> <span class="token punctuation">(</span>
@@ -929,29 +941,34 @@
   state<span class="token punctuation">.</span>schemaList<span class="token punctuation">[</span>curIdx<span class="token punctuation">]</span> <span class="token operator">=</span> state<span class="token punctuation">.</span>schemaList<span class="token punctuation">[</span>targetIdx<span class="token punctuation">]</span><span class="token punctuation">;</span>
   state<span class="token punctuation">.</span>schemaList<span class="token punctuation">[</span>targetIdx<span class="token punctuation">]</span> <span class="token operator">=</span> temp<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="8-复制粘贴"><a href="#8-复制粘贴" class="headerlink" title="8. 复制粘贴"></a>8. 复制粘贴</h3><p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/57c2d9dbd1ff42348e5f99112b54c0ce~tplv-k3u1fbpfcp-watermark.image" class="lazyload placeholder" data-srcset="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/57c2d9dbd1ff42348e5f99112b54c0ce~tplv-k3u1fbpfcp-watermark.image" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="复制粘贴.gif"></p>
+<h3 id="8-复制粘贴">8. 复制粘贴</h3>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/57c2d9dbd1ff42348e5f99112b54c0ce~tplv-k3u1fbpfcp-watermark.image?" class="lazyload placeholder" data-srcset="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/57c2d9dbd1ff42348e5f99112b54c0ce~tplv-k3u1fbpfcp-watermark.image?" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="复制粘贴.gif"></p>
 <p>复制粘贴的实现需要屏蔽浏览器的默认右击事件，所以我在项目中写了一个<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/VLayout/blob/main/packages/website/src/components/RightClickMenu/RightClick.tsx">RightClick 组件</a>,实现细节我就不贴代码了。</p>
 <p>主要逻辑还是复制一份当前操作的组件的<code>schema</code>数据，然后粘贴的时候调用显示<code>RightClick</code>组件的方法，通过<code>RightClick</code>组件获取当前右击的鼠标位置，来确定粘贴后的组件的坐标。</p>
-<h3 id="9-持久化存储和预览"><a href="#9-持久化存储和预览" class="headerlink" title="9. 持久化存储和预览"></a>9. 持久化存储和预览</h3><p>持久化存储使用的是<code>redux-presist</code><br>因为并没有接入后端，所以希望通过在 localStorage 中长期存储，防止刷新丢失数据。</p>
+<h3 id="9-持久化存储和预览">9. 持久化存储和预览</h3>
+<p>持久化存储使用的是<code>redux-presist</code><br>
+因为并没有接入后端，所以希望通过在 localStorage 中长期存储，防止刷新丢失数据。</p>
 <p>预览页面的实现就是获取<code>schemaList</code>数据，然后生成最终的展示页面即可。</p>
-<h3 id="10-事件绑定"><a href="#10-事件绑定" class="headerlink" title="10. 事件绑定"></a>10. 事件绑定</h3><p>关于事件绑定，在<code>schema</code>中，有一个<code>events</code>对象，我的思路是在<code>events</code>对象中存放如下结构</p>
+<h3 id="10-事件绑定">10. 事件绑定</h3>
+<p>关于事件绑定，在<code>schema</code>中，有一个<code>events</code>对象，我的思路是在<code>events</code>对象中存放如下结构</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token punctuation">&#123;</span>
   <span class="token literal-property property">events</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
     <span class="token literal-property property">onClick</span><span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">window.location.href = 'http://www.baidu.com'</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
     <span class="token comment">// ...</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>直接通过编辑开放画布，让用户直接通过代码去做一些交互，比如上面的就是添加了一个点击事件，后面就是需要执行点击逻辑，在自定义组件中通过<code>new Function(string code)</code>构建一个 function。</p>
 <p>然后给组件添加一个<code>isEdit</code>属性，让组件来判断是否为编辑状态，编辑状态下取消所有事件</p>
 <p>关于安全问题，后续也可以通过定义各种功能的代码块的方式，限制用户只能添加特定的 js 逻辑。这样也方便扩展。</p>
-<h2 id="发包"><a href="#发包" class="headerlink" title="发包"></a>发包</h2><p>需要先<code>npm login</code>登录</p>
+<h2 id="发包">发包</h2>
+<p>需要先<code>npm login</code>登录</p>
 <p>然后在根目录使用 lerna 命令<code>lerna publish --force-publish</code>,</p>
 <p>使用<a target="_blank" rel="noopener" href="https://lerna.js.org/docs/faq#how-do-i-retry-publishing-if-publish-fails">–force-publish</a>的原因如下</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过自己造轮子，确实收获颇多。当你独立去做一个项目的时候，你就会从整体上出发，思考项目的管理，技术的选型等等。最重要的是能够实践你的所学。</p>
+<h2 id="总结">总结</h2>
+<p>通过自己造轮子，确实收获颇多。当你独立去做一个项目的时候，你就会从整体上出发，思考项目的管理，技术的选型等等。最重要的是能够实践你的所学。</p>
 <p><strong>PS: 后续会继续迭代未完成的功能，如果您有好的建议，感谢您能提出。如果觉得有帮助可以帮我点个赞或者<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/VLayout">star</a></strong></p>
-<h2 id="站在巨人肩上"><a href="#站在巨人肩上" class="headerlink" title="站在巨人肩上"></a>站在巨人肩上</h2><ol>
+<h2 id="站在巨人肩上">站在巨人肩上</h2>
+<ol>
 <li><a target="_blank" rel="noopener" href="https://github.com/woai3c/Front-end-articles/issues/19">可视化拖拽组件库的技术要点分析</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/MrXujiang/h5-Dooring">h5-doording</a></li>
 </ol>
@@ -1027,7 +1044,8 @@
       </div>
       <!-- <div class="content">
         本文只是用于将学习到的知识做一个梳理与总结
-浏览器架构现代浏览器通常采用多进程架构。每个进程都有独立的内存空间，相互隔离
+浏览器架构
+现代浏览器通常采用多进程架构。每个进程都有独立的内存空间，相互隔
       </div> -->
     </a>
   </div>
