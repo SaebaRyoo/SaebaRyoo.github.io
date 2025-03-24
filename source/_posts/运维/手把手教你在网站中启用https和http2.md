@@ -1,11 +1,11 @@
 ---
-title: 手把手教你在网站中启用https和http2
+title: 手把手教你在Nginx服务器中启用https和http2
 date: 2025-03-14
 categories:
-  - 后端
+  - 运维
 tags:
   - 安全
-  - Nest.js
+  - Nginx
 ---
 
 # 1. 前言
