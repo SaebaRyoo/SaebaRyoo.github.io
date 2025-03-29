@@ -587,9 +587,7 @@
         <p>在数据库开发中，约束和数据库设计是确保数据完整性和系统性能的关键要素。MySQL约束通过限制数据的输入和修改，保证数据的准确性和一致性；而良好的数据库设计则能够减少数据冗余、提高查询效率，为应用系统提供可靠的数据基础。</p>
 <p>本文将系统地介绍MySQL的约束类型（主键、非空、唯一、外键约束）以及数据库设计的核心概念。从基础的DQL查询开始，逐步深入到数据库设计范式和多表关系的处理，最后还包含了实用的数据库维护知识。无论你是数据库初学者，还是想要提升数据库设计能力的开发者，都能在本文中找到有价值的内容。</p>
 <p>建议读者在学习本文时，结合实际案例进行练习，特别是在理解数据库设计范式和多表关系时，动手实践是加深理解的最好方式。</p>
-<h2 id="基础查询（DQL）">基础查询（DQL）</h2>
-<h3 id="排序查询">排序查询</h3>
-<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 语法：ORDER BY 子句</span>
+<h2 id="基础查询（DQL）"><a href="#基础查询（DQL）" class="headerlink" title="基础查询（DQL）"></a>基础查询（DQL）</h2><h3 id="排序查询"><a href="#排序查询" class="headerlink" title="排序查询"></a>排序查询</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 语法：ORDER BY 子句</span>
 <span class="token comment">-- ORDER BY 排序字段1 排序方式1, 排序字段2 排序方式2...</span>
 
 <span class="token comment">-- 排序方式：</span>
@@ -598,8 +596,8 @@
 
 <span class="token comment">-- 注意：如果有多个排序条件，则当前边的条件值一样时，才会判断第二条件</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> student <span class="token keyword">ORDER</span> <span class="token keyword">BY</span> math <span class="token keyword">DESC</span><span class="token punctuation">,</span> english <span class="token keyword">ASC</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="聚合函数">聚合函数</h3>
-<p>将一列数据作为一个整体，进行纵向计算。</p>
+
+<h3 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h3><p>将一列数据作为一个整体，进行纵向计算。</p>
 <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 计算个数</span>
 <span class="token keyword">SELECT</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span> <span class="token keyword">FROM</span> student<span class="token punctuation">;</span>  <span class="token comment">-- 一般选择非空的列：主键</span>
 <span class="token keyword">SELECT</span> <span class="token function">COUNT</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> student<span class="token punctuation">;</span>   <span class="token comment">-- 计算所有行数</span>
@@ -615,13 +613,13 @@
 
 <span class="token comment">-- 计算平均值</span>
 <span class="token keyword">SELECT</span> <span class="token function">AVG</span><span class="token punctuation">(</span>math<span class="token punctuation">)</span> <span class="token keyword">FROM</span> student<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>注意：聚合函数的计算会排除NULL值。解决方案：</p>
 <ol>
 <li>选择不包含NULL的列进行计算</li>
 <li>使用IFNULL函数处理NULL值</li>
 </ol>
-<h3 id="分组查询">分组查询</h3>
-<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 语法：GROUP BY 分组字段</span>
+<h3 id="分组查询"><a href="#分组查询" class="headerlink" title="分组查询"></a>分组查询</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 语法：GROUP BY 分组字段</span>
 
 <span class="token comment">-- 按照性别分组，查询男女同学的平均分</span>
 <span class="token keyword">SELECT</span> sex<span class="token punctuation">,</span> <span class="token function">AVG</span><span class="token punctuation">(</span>math<span class="token punctuation">)</span> <span class="token keyword">FROM</span> student <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> sex<span class="token punctuation">;</span>
@@ -641,37 +639,34 @@
 <span class="token keyword">WHERE</span> math <span class="token operator">></span> <span class="token number">70</span> 
 <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> sex 
 <span class="token keyword">HAVING</span> 人数 <span class="token operator">></span> <span class="token number">2</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>注意：</p>
 <ol>
 <li>分组之后查询的字段：分组字段、聚合函数</li>
-<li>WHERE和HAVING的区别：
-<ul>
+<li>WHERE和HAVING的区别：<ul>
 <li>WHERE在分组之前进行限定，不满足条件的不参与分组</li>
 <li>HAVING在分组之后进行限定，不满足条件的不会被查询出来</li>
 <li>WHERE后不可以跟聚合函数，HAVING可以进行聚合函数的判断</li>
 </ul>
 </li>
 </ol>
-<h3 id="分页查询">分页查询</h3>
-<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 语法：LIMIT 开始的索引,每页查询的条数</span>
+<h3 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 语法：LIMIT 开始的索引,每页查询的条数</span>
 <span class="token comment">-- 公式：开始的索引 = (当前页码 - 1) * 每页显示的条数</span>
 
 <span class="token comment">-- 每页显示3条记录</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> student <span class="token keyword">LIMIT</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">;</span>  <span class="token comment">-- 第1页</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> student <span class="token keyword">LIMIT</span> <span class="token number">3</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">;</span>  <span class="token comment">-- 第2页</span>
 <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> student <span class="token keyword">LIMIT</span> <span class="token number">6</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">;</span>  <span class="token comment">-- 第3页</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>注意：LIMIT是MySQL的特有语法。</p>
-<h2 id="约束（Constraints）">约束（Constraints）</h2>
-<p>约束是对表中的数据进行限定，保证数据的正确性、有效性和完整性。</p>
-<h3 id="约束类型">约束类型</h3>
-<ol>
+<h2 id="约束（Constraints）"><a href="#约束（Constraints）" class="headerlink" title="约束（Constraints）"></a>约束（Constraints）</h2><p>约束是对表中的数据进行限定，保证数据的正确性、有效性和完整性。</p>
+<h3 id="约束类型"><a href="#约束类型" class="headerlink" title="约束类型"></a>约束类型</h3><ol>
 <li>主键约束：PRIMARY KEY</li>
 <li>非空约束：NOT NULL</li>
 <li>唯一约束：UNIQUE</li>
 <li>外键约束：FOREIGN KEY</li>
 </ol>
-<h3 id="非空约束（NOT-NULL）">非空约束（NOT NULL）</h3>
-<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 创建表时添加非空约束</span>
+<h3 id="非空约束（NOT-NULL）"><a href="#非空约束（NOT-NULL）" class="headerlink" title="非空约束（NOT NULL）"></a>非空约束（NOT NULL）</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 创建表时添加非空约束</span>
 <span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> stu<span class="token punctuation">(</span>
     id <span class="token keyword">INT</span><span class="token punctuation">,</span>
     name <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>  <span class="token comment">-- name不能为空</span>
@@ -682,8 +677,8 @@
 
 <span class="token comment">-- 删除非空约束</span>
 <span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> stu <span class="token keyword">MODIFY</span> name <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="唯一约束（UNIQUE）">唯一约束（UNIQUE）</h3>
-<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 创建表时添加唯一约束</span>
+
+<h3 id="唯一约束（UNIQUE）"><a href="#唯一约束（UNIQUE）" class="headerlink" title="唯一约束（UNIQUE）"></a>唯一约束（UNIQUE）</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 创建表时添加唯一约束</span>
 <span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> stu<span class="token punctuation">(</span>
     id <span class="token keyword">INT</span><span class="token punctuation">,</span>
     phone_number <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span> <span class="token keyword">UNIQUE</span>  <span class="token comment">-- 手机号不能重复</span>
@@ -694,9 +689,9 @@
 
 <span class="token comment">-- 删除唯一约束</span>
 <span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> stu <span class="token keyword">DROP</span> <span class="token keyword">INDEX</span> phone_number<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>注意：唯一约束可以有NULL值，但只能有一条记录为NULL。</p>
-<h3 id="主键约束（PRIMARY-KEY）">主键约束（PRIMARY KEY）</h3>
-<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 创建表时添加主键约束</span>
+<h3 id="主键约束（PRIMARY-KEY）"><a href="#主键约束（PRIMARY-KEY）" class="headerlink" title="主键约束（PRIMARY KEY）"></a>主键约束（PRIMARY KEY）</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 创建表时添加主键约束</span>
 <span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> stu<span class="token punctuation">(</span>
     id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>  <span class="token comment">-- 给id添加主键约束</span>
     name <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
@@ -719,14 +714,14 @@
 
 <span class="token comment">-- 添加自动增长</span>
 <span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> stu <span class="token keyword">MODIFY</span> id <span class="token keyword">INT</span> <span class="token keyword">AUTO_INCREMENT</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>注意：</p>
 <ol>
 <li>主键必须非空且唯一</li>
 <li>一张表只能有一个字段为主键</li>
 <li>主键就是表中记录的唯一标识</li>
 </ol>
-<h3 id="外键约束（FOREIGN-KEY）">外键约束（FOREIGN KEY）</h3>
-<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 创建表时添加外键</span>
+<h3 id="外键约束（FOREIGN-KEY）"><a href="#外键约束（FOREIGN-KEY）" class="headerlink" title="外键约束（FOREIGN KEY）"></a>外键约束（FOREIGN KEY）</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 创建表时添加外键</span>
 <span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> 表名<span class="token punctuation">(</span>
     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
     外键列
@@ -748,30 +743,25 @@
 <span class="token keyword">REFERENCES</span> 主表名称<span class="token punctuation">(</span>主表列名称<span class="token punctuation">)</span> 
 <span class="token keyword">ON</span> <span class="token keyword">UPDATE</span> <span class="token keyword">CASCADE</span> 
 <span class="token keyword">ON</span> <span class="token keyword">DELETE</span> <span class="token keyword">CASCADE</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>级联操作类型：</p>
 <ol>
 <li>级联更新：ON UPDATE CASCADE</li>
 <li>级联删除：ON DELETE CASCADE</li>
 </ol>
-<h2 id="数据库设计">数据库设计</h2>
-<h3 id="多表关系">多表关系</h3>
-<h4 id="一对一关系">一对一关系</h4>
-<ul>
+<h2 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h2><h3 id="多表关系"><a href="#多表关系" class="headerlink" title="多表关系"></a>多表关系</h3><h4 id="一对一关系"><a href="#一对一关系" class="headerlink" title="一对一关系"></a>一对一关系</h4><ul>
 <li>示例：人和身份证</li>
 <li>实现：在任意一方添加唯一外键，指向另一方的主键</li>
 </ul>
-<h4 id="一对多关系">一对多关系</h4>
-<ul>
+<h4 id="一对多关系"><a href="#一对多关系" class="headerlink" title="一对多关系"></a>一对多关系</h4><ul>
 <li>示例：部门和员工</li>
 <li>实现：在多的一方建立外键，指向一的一方的主键</li>
 </ul>
-<h4 id="多对多关系">多对多关系</h4>
-<ul>
+<h4 id="多对多关系"><a href="#多对多关系" class="headerlink" title="多对多关系"></a>多对多关系</h4><ul>
 <li>示例：学生和课程</li>
 <li>实现：需要借助中间表，中间表至少包含两个外键，分别指向两张表的主键</li>
 </ul>
-<h3 id="实际案例">实际案例</h3>
-<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 旅游线路分类表</span>
+<h3 id="实际案例"><a href="#实际案例" class="headerlink" title="实际案例"></a>实际案例</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 旅游线路分类表</span>
 <span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> tab_category <span class="token punctuation">(</span>
     cid <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token keyword">AUTO_INCREMENT</span><span class="token punctuation">,</span>
     cname <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword">UNIQUE</span>
@@ -808,43 +798,35 @@
     <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>rid<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> tab_route<span class="token punctuation">(</span>rid<span class="token punctuation">)</span><span class="token punctuation">,</span>
     <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span><span class="token punctuation">(</span>uid<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> tab_user<span class="token punctuation">(</span>uid<span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="数据库设计范式">数据库设计范式</h3>
-<h4 id="第一范式（1NF）">第一范式（1NF）</h4>
-<p>要求属性具有原子性，不可再分解。</p>
+
+<h3 id="数据库设计范式"><a href="#数据库设计范式" class="headerlink" title="数据库设计范式"></a>数据库设计范式</h3><h4 id="第一范式（1NF）"><a href="#第一范式（1NF）" class="headerlink" title="第一范式（1NF）"></a>第一范式（1NF）</h4><p>要求属性具有原子性，不可再分解。</p>
 <p>示例：</p>
 <ul>
 <li>不规范：学生（学号，姓名，出生日期(年,月,日)）</li>
 <li>规范：学生（学号，姓名，出生年，出生月，出生日）</li>
 </ul>
-<h4 id="第二范式（2NF）">第二范式（2NF）</h4>
-<p>在1NF的基础上，消除非主键列对主键的部分依赖。</p>
+<h4 id="第二范式（2NF）"><a href="#第二范式（2NF）" class="headerlink" title="第二范式（2NF）"></a>第二范式（2NF）</h4><p>在1NF的基础上，消除非主键列对主键的部分依赖。</p>
 <p>示例：</p>
 <ul>
 <li>不规范：选课（学号，课程号，姓名，学分）</li>
-<li>规范：
-<ul>
+<li>规范：<ul>
 <li>学生（学号，姓名）</li>
 <li>课程（课程号，学分）</li>
 <li>选课（学号，课程号）</li>
 </ul>
 </li>
 </ul>
-<h4 id="第三范式（3NF）">第三范式（3NF）</h4>
-<p>在2NF的基础上，消除传递依赖。</p>
+<h4 id="第三范式（3NF）"><a href="#第三范式（3NF）" class="headerlink" title="第三范式（3NF）"></a>第三范式（3NF）</h4><p>在2NF的基础上，消除传递依赖。</p>
 <p>示例：</p>
 <ul>
 <li>不规范：学生（学号，姓名，年龄，学院名称，学院电话）</li>
-<li>规范：
-<ul>
+<li>规范：<ul>
 <li>学生（学号，姓名，年龄，学院编号）</li>
 <li>学院（学院编号，学院名称，学院电话）</li>
 </ul>
 </li>
 </ul>
-<h2 id="数据库维护">数据库维护</h2>
-<h3 id="数据库备份与还原">数据库备份与还原</h3>
-<h4 id="命令行方式">命令行方式</h4>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 备份</span>
+<h2 id="数据库维护"><a href="#数据库维护" class="headerlink" title="数据库维护"></a>数据库维护</h2><h3 id="数据库备份与还原"><a href="#数据库备份与还原" class="headerlink" title="数据库备份与还原"></a>数据库备份与还原</h3><h4 id="命令行方式"><a href="#命令行方式" class="headerlink" title="命令行方式"></a>命令行方式</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 备份</span>
 mysqldump -u用户名 -p密码 数据库名称 <span class="token operator">></span> 保存的路径
 
 <span class="token comment"># 还原</span>
@@ -853,8 +835,8 @@ mysqldump -u用户名 -p密码 数据库名称 <span class="token operator">></s
 <span class="token comment"># 3. 使用数据库</span>
 <span class="token comment"># 4. 执行文件</span>
 <span class="token builtin class-name">source</span> 文件路径<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="Docker容器方式">Docker容器方式</h4>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 从Docker容器中备份数据库</span>
+
+<h4 id="Docker容器方式"><a href="#Docker容器方式" class="headerlink" title="Docker容器方式"></a>Docker容器方式</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 从Docker容器中备份数据库</span>
 <span class="token function">docker</span> <span class="token builtin class-name">exec</span> mysql容器名称 mysqldump -u用户名 -p密码 数据库名称 <span class="token operator">></span> 宿主机保存路径
 
 <span class="token comment"># 示例：备份test数据库</span>
@@ -869,6 +851,7 @@ mysqldump -u用户名 -p密码 数据库名称 <span class="token operator">></s
 
 <span class="token comment"># 示例：还原test数据库</span>
 <span class="token function">docker</span> <span class="token builtin class-name">exec</span> <span class="token parameter variable">-i</span> mysql8 mysql <span class="token parameter variable">-uroot</span> <span class="token parameter variable">-ppassword</span> <span class="token builtin class-name">test</span> <span class="token operator">&lt;</span> /home/backup/test.sql<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>注意事项：</p>
 <ol>
 <li>确保有足够的磁盘空间存储备份文件</li>
@@ -928,8 +911,7 @@ mysqldump -u用户名 -p密码 数据库名称 <span class="token operator">></s
       </div>
       
       <!-- <div class="content">
-        1. ElasticSearch简介
-ElasticSearch（简称ES）是一个开源的分布式搜索引擎，基于强大的搜索和
+        1. ElasticSearch简介ElasticSearch（简称ES）是一个开源的分布式搜索引擎，基于强大的搜索和分
       </div> -->
     </a>
   </div>

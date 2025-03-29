@@ -584,27 +584,23 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <p>我们都知道 hexo 是一个静态博客框架，它配合 github pages 可以部署个人博客，但是 hexo 会默认编译<code>source</code>目录下所有文件，<br>
-而我们自己的 react 项目打包出来以后已经是编译后的文件了。所以我们需要让 hexo 跳过编译我们指定的文件</p>
-<h2 id="配置修改">配置修改</h2>
-<p>hexo 也给我们提供了一个参数<code>skip_render</code>, 用于跳过指定文件的编译，直接复制到 public 中。</p>
+        <p>我们都知道 hexo 是一个静态博客框架，它配合 github pages 可以部署个人博客，但是 hexo 会默认编译<code>source</code>目录下所有文件，<br>而我们自己的 react 项目打包出来以后已经是编译后的文件了。所以我们需要让 hexo 跳过编译我们指定的文件</p>
+<h2 id="配置修改"><a href="#配置修改" class="headerlink" title="配置修改"></a>配置修改</h2><p>hexo 也给我们提供了一个参数<code>skip_render</code>, 用于跳过指定文件的编译，直接复制到 public 中。</p>
 <p>那么，我们需要做的就是在<code>source</code>目录下创建一个新项目<code>source/your-project</code></p>
 <p>然后在根目录的<code>_config.yml</code>中有一个<code>skip_render</code>字段，我们只需要按照以下来配置即可</p>
 <pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">skip_render</span><span class="token punctuation">:</span>
   <span class="token punctuation">-</span> your<span class="token punctuation">-</span>project/<span class="token important">**/*</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>然后就可以将打包的项目放入到<code>source/your-project</code>中去，我们以打包一个 react 项目为例，可能包含以下的文件</p>
 <ul>
-<li>your-project
-<ul>
+<li>your-project<ul>
 <li>index.html</li>
-<li>imgs
-<ul>
+<li>imgs<ul>
 <li>a.png</li>
 <li>b.svg</li>
 </ul>
 </li>
-<li>assets
-<ul>
+<li>assets<ul>
 <li>index-03c73ac2-baad1081.js</li>
 <li>index-b4e46d6f-92026574.js</li>
 <li>index-bf437fc1-230805f9.js</li>
@@ -617,8 +613,7 @@
 </ul>
 <p>这里需要注意的是，如果你没有在你的构建工具中去做设置的话，一般情况下打包出来的<code>index.html</code>里面对应的资源文件的引用都是绝对路径，比如<code>&lt;script type=&quot;module&quot; crossorigin src=&quot;/assets/index-e60f790f.js&quot;&gt;&lt;/script&gt;</code></p>
 <p>但是部署到 github pages 中需要相对路径，所以需要改成这样<code>&lt;script type=&quot;module&quot; crossorigin src=&quot;./assets/index-e60f790f.js&quot;&gt;&lt;/script&gt;</code></p>
-<h2 id="项目路由修改">项目路由修改</h2>
-<p>正常到这里就结束了，但是如果项目中使用了路由管理，那么就需要修改项目中对应的路由前缀，我们以<code>react-router</code>为例,需要添加上你在<code>source</code>目录下创建的项目的目录名。</p>
+<h2 id="项目路由修改"><a href="#项目路由修改" class="headerlink" title="项目路由修改"></a>项目路由修改</h2><p>正常到这里就结束了，但是如果项目中使用了路由管理，那么就需要修改项目中对应的路由前缀，我们以<code>react-router</code>为例,需要添加上你在<code>source</code>目录下创建的项目的目录名。</p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx">
 <span class="token punctuation">&#123;</span>
   path<span class="token operator">:</span> <span class="token string">'/your-project'</span><span class="token punctuation">,</span>
@@ -628,10 +623,10 @@
   path<span class="token operator">:</span> <span class="token string">'/your-project/preview'</span><span class="token punctuation">,</span>
   element<span class="token operator">:</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token class-name">Preview</span></span> <span class="token punctuation">/></span></span><span class="token punctuation">,</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>因为 github pages 中是按照你创建的那个目录为路由的。所以最终到线上的访问地址就是<code>xxx.github.io/your-project</code>。但是如果不在<code>react-router</code>中给路由加上前缀，你到线上访问<code>xxx.github.io/your-project</code>就会因为无法找到对应的资源而报 404。</p>
 <p>最后我们直接运行<code>hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</code>就可以完成发布了，然后就可以到线上访问你的 react 项目了</p>
-<h2 id="总结">总结</h2>
-<p>对于一些个人展示小项目来说，白嫖服务器太爽了。既减少了购买服务器的开支，又省的自己配置 web 服务器</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>对于一些个人展示小项目来说，白嫖服务器太爽了。既减少了购买服务器的开支，又省的自己配置 web 服务器</p>
 
       </div>
       <div class="post-tags-categories">

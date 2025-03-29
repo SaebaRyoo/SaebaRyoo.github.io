@@ -584,15 +584,11 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h3 id="单一职责原则（SRP）">单一职责原则（SRP）</h3>
-<p>就一个类而言，应该仅有一个引起它变化的原因。在 js 中，需要用到类的场景不多。单一职责更多的被运用到对象或者方法级别上。</p>
-<p>单一职责原则（SRP）被定义为“引起变化的原因”。如果我们有两个动机去改写一个方法，那么这个方法就有两个职责。<br>
-每个职责都是变化的一个轴线，<strong>如果一个方法承担了过多的职责，那么在需求变迁的过程中，需要改写这个方法的可能性就越大</strong></p>
-<p>此时，这个方法通常就是一个不稳定的方法，修改代码总是危险的。<strong>特别是当两个或者更多的职责耦合在一起时，一个职责的变化可能会影响到其他职责的实现，造成意想不到的破坏</strong>，<br>
-这种耦合性得到的是低内聚和脆弱的设计。</p>
+        <h3 id="单一职责原则（SRP）"><a href="#单一职责原则（SRP）" class="headerlink" title="单一职责原则（SRP）"></a>单一职责原则（SRP）</h3><p>就一个类而言，应该仅有一个引起它变化的原因。在 js 中，需要用到类的场景不多。单一职责更多的被运用到对象或者方法级别上。</p>
+<p>单一职责原则（SRP）被定义为“引起变化的原因”。如果我们有两个动机去改写一个方法，那么这个方法就有两个职责。<br>每个职责都是变化的一个轴线，<strong>如果一个方法承担了过多的职责，那么在需求变迁的过程中，需要改写这个方法的可能性就越大</strong></p>
+<p>此时，这个方法通常就是一个不稳定的方法，修改代码总是危险的。<strong>特别是当两个或者更多的职责耦合在一起时，一个职责的变化可能会影响到其他职责的实现，造成意想不到的破坏</strong>，<br>这种耦合性得到的是低内聚和脆弱的设计。</p>
 <p><strong>因此，SRP 原则提现在：一个方法只做一件事</strong></p>
-<h3 id="最少知识原则（LKP）">最少知识原则（LKP）</h3>
-
+<h3 id="最少知识原则（LKP）"><a href="#最少知识原则（LKP）" class="headerlink" title="最少知识原则（LKP）"></a>最少知识原则（LKP）</h3>
       </div>
       <div class="post-tags-categories">
         
@@ -639,20 +635,22 @@
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/13.jpg" class="lazyload placeholder" data-srcset="/medias/13.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/10.jpg" class="lazyload placeholder" data-srcset="/medias/10.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2021/06/06/qian-duan/javascript/javascript-she-ji-mo-shi/8.mo-ban-fang-fa-mo-shi/" class="post-nav-link">
+    <a href="/2021/06/03/qian-duan/javascript/javascript-she-ji-mo-shi/1.dan-li-mo-shi/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">JavaScript设计模式 -- 8.模板方法模式</div>
+        <div class="title-text">JavaScript设计模式 -- 1.单例模式</div>
       </div>
       
       <!-- <div class="content">
         定义
+保证一个类只有一个实例，并提供一个访问它的全局访问点
 
-模板方式是一种只需要继承就可以实现的简单的模式
-
-模板由两个部分结构组成，第一个是抽象类，第二部分是具体的实现子
+常见场景
+线程池
+全局缓存
+浏览器中的 window 对象
       </div> -->
     </a>
   </div>
@@ -663,17 +661,19 @@
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/12.jpg" class="lazyload placeholder" data-srcset="/medias/12.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/13.jpg" class="lazyload placeholder" data-srcset="/medias/13.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2021/06/03/qian-duan/javascript/javascript-she-ji-mo-shi/3.dai-li-mo-shi/" class="post-nav-link">
+    <a href="/2021/06/03/qian-duan/javascript/javascript-she-ji-mo-shi/2.ce-lue-mo-shi/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">JavaScript设计模式 -- 3.代理模式</div>
+        <div class="title-text">JavaScript设计模式 -- 2.策略模式</div>
       </div>
       <!-- <div class="content">
         定义
+策略模式就是定义一系列的算法，将他们一个个封装起来。
 
-代理模式是为一个对象提供一个代用品或占位符，以便控制对它的访问。代理模式的关键是当客户不方便直接访问对象或者不满
+使用场景在实际开发中，我们需要将算法的含义扩大一些。
+比如
       </div> -->
     </a>
   </div>

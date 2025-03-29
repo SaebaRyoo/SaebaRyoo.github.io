@@ -734,11 +734,9 @@ MinIO 的基础配置（创建 bucket 和 AccessKey）
             </a>
           </div>
           <div class="post-content">
-            1. 如何安全部署
-在下面的部署工作中，我们会将 Linux 服务器的 SSH 私钥配置到 GitHub 的 Secrets 中，虽然是一种常见的自动化部署方式，但需要谨慎处理以确保安全性。
+            1. 如何安全部署在下面的部署工作中，我们会将 Linux 服务器的 SSH 私钥配置到 GitHub 的 Secrets 中，虽然是一种常见的自动化部署方式，但需要谨慎处理以确保安全性。
 1.1. 优点
-
-​自动化部署​**：通过 Gi
+​自动化部署​：通过 GitHub
           </div>
         </div>
         <div class="post-more">
@@ -792,11 +790,8 @@ MinIO 的基础配置（创建 bucket 和 AccessKey）
             </a>
           </div>
           <div class="post-content">
-            1. docker 部署 nginx
-1.1. 拉取镜像
-docker pull nginx
-1.2. 创建挂载目录
-mkdir -p /usr/local/docker-volumes/nginx/&#123;conf,log,html&
+            1. docker 部署 nginx1.1. 拉取镜像docker pull nginx
+1.2. 创建挂载目录mkdir -p /usr/local/docker-volumes/nginx/&#123;conf,log,html&#12
           </div>
         </div>
         <div class="post-more">
@@ -854,13 +849,11 @@ mkdir -p /usr/local/docker-volumes/nginx/&#123;conf,log,html&
 本文用于学习和记录
 
 1. 前提条件
-
 安装 Docker 和 Docker Compose
 安装 Jenkins
 拥有一个前端项目的代码库（例如 GitHub）
 
-1.1. 准备一台服务器
-服务器一台，请根据自己的项目选择不同配置的服务
+1.1. 准备一台服务器服务器一台，请根据自己的项目选择不同配置的服务器，
           </div>
         </div>
         <div class="post-more">
@@ -915,10 +908,8 @@ mkdir -p /usr/local/docker-volumes/nginx/&#123;conf,log,html&
           </div>
           <div class="post-content">
             
-theme: channing-cyan
-在一个后台管理系统中，安全是很重要的。不光后端需要做权限校验，前端也需要做权限控制。
-我们可以大致将权限分为 3 种： 接口权限、页面权限、按钮权限。
-在这当中，前端主要关注点则是页面权限，按钮权
+theme: channing-cyan在一个后台管理系统中，安全是很重要的。不光后端需要做权限校验，前端也需要做权限控制。我们可以大致将权限分为 3 种： 接口权限、页面权限、按钮权限。
+在这当中，前端主要关注点则是页面权限，按钮权限，
           </div>
         </div>
         <div class="post-more">
@@ -972,8 +963,7 @@ theme: channing-cyan
             </a>
           </div>
           <div class="post-content">
-            请看原文
-点击查看原文
+            请看原文点击查看原文
 以下内容只用作记录
 
           </div>
@@ -1029,8 +1019,7 @@ theme: channing-cyan
             </a>
           </div>
           <div class="post-content">
-            PostgreSQL 数据库备份与恢复操作
-在使用 PostgreSQL 数据库时，pg_dump 是一个常用的工具，用于备份数据库的内容。备份和恢复数据库是数据库管理中的重要环节，可以确保数据的安全性和可恢复性。以下是关于如何使用 pg_
+            PostgreSQL 数据库备份与恢复操作在使用 PostgreSQL 数据库时，pg_dump 是一个常用的工具，用于备份数据库的内容。备份和恢复数据库是数据库管理中的重要环节，可以确保数据的安全性和可恢复性。以下是关于如何使用 pg_d
           </div>
         </div>
         <div class="post-more">
@@ -1081,9 +1070,7 @@ theme: channing-cyan
             </a>
           </div>
           <div class="post-content">
-            WebWorker 介绍
-什么是 Web Worker？
-为 JS 创造多线程的环境，允许主线程创建 Worker 线程，将一些任务分配给后者运行。也就是主线程和 worker 线程并行。等到 Worker 线程完成计算的任务，再通过 po
+            WebWorker 介绍什么是 Web Worker？为 JS 创造多线程的环境，允许主线程创建 Worker 线程，将一些任务分配给后者运行。也就是主线程和 worker 线程并行。等到 Worker 线程完成计算的任务，再通过 post
           </div>
         </div>
         <div class="post-more">
@@ -1484,8 +1471,8 @@ theme: channing-cyan
         <div class="webinfo-item">
           <div>最后活动时间：</div>
           
-            <div id="last-update" style="display: none;">Fri Mar 21 2025 22:06:51 GMT+0800 (中国标准时间)</div>
-            <div id="last-update-show">2025-03-21 日</div>
+            <div id="last-update" style="display: none;">Sat Mar 29 2025 14:53:08 GMT+0800 (中国标准时间)</div>
+            <div id="last-update-show">2025-03-29 日</div>
           
         </div>
         
@@ -1535,7 +1522,7 @@ theme: channing-cyan
           try {
             document.getElementById('last-update-show').innerHTML = timeago(new Date(lastUpDate));
           } catch (error) {
-            document.getElementById('last-update-show').innerHTML = '2025-03-21 日';
+            document.getElementById('last-update-show').innerHTML = '2025-03-29 日';
           }
         </script>
         

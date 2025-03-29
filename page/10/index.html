@@ -563,13 +563,10 @@
             </a>
           </div>
           <div class="post-content">
-            数据结构和算法
-数据结构，主要需要掌握，数组，栈，队列，链表，树（二叉树）
-数组
-这是一种最简单，最基础的数据结构，在 js 中是原生支持的
-栈
-在 js 中，栈和队列都没有原生的实现，需要依赖数组实现
-栈是后进先出的一个数据结构，所以只能
+            数据结构和算法数据结构，主要需要掌握，数组，栈，队列，链表，树（二叉树）
+数组这是一种最简单，最基础的数据结构，在 js 中是原生支持的
+栈在 js 中，栈和队列都没有原生的实现，需要依赖数组实现
+栈是后进先出的一个数据结构，所以只能用到 
           </div>
         </div>
         <div class="post-more">
@@ -741,10 +738,8 @@
 
 
 
-
 客户端渲染
 服务端渲染
-
 
 
 
@@ -759,7 +754,7 @@ HTML 和数据串行加载
 
 
 渲染
-前端加载空白 html，
+前端加载空白 html，然后
           </div>
         </div>
         <div class="post-more">
@@ -813,10 +808,8 @@ HTML 和数据串行加载
             </a>
           </div>
           <div class="post-content">
-            传参方式
-HashRouter
-
-通过在url中增加查询字符串。如 &lt;Link to=&#123;&#123;pathname: '/test', search: '?id=1'&#125;&#125;&gt;或者&lt;Link t
+            传参方式HashRouter
+通过在url中增加查询字符串。如 &lt;Link to=&#123;&#123;pathname: '/test', search: '?id=1'&#125;&#125;&gt;或者&lt;Link to=
           </div>
         </div>
         <div class="post-more">
@@ -924,17 +917,14 @@ HashRouter
             </a>
           </div>
           <div class="post-content">
-            var、let、const 的作用和区别
-var
-
+            var、let、const 的作用和区别var
 会在当前执行环境中进行变量提升
 可重复声明，可以修改
-如果未使用 var 关键字声明，则会提升为全局 // 严格模式下会报错
+如果未使用 var 关键字声明，则会提升为全局 &#x2F;&#x2F; 严格模式下会报错
 
 let
-
 let 无法重复声明
-let 有暂存死区，无法进行
+let 有暂存
           </div>
         </div>
         <div class="post-more">
@@ -988,9 +978,7 @@ let 有暂存死区，无法进行
             </a>
           </div>
           <div class="post-content">
-            Grid 简介
-CSS Grid Layout(又叫Grid或者CSS Grid)，它是一个二维网格的布局系统。在这之前经过了tables,float,positioning和inline-block,但它们都相当于一个
-hack，并且功能
+            Grid 简介CSS Grid Layout(又叫Grid或者CSS Grid)，它是一个二维网格的布局系统。在这之前经过了tables,float,positioning和inline-block,但它们都相当于一个hack，并且功能较少
           </div>
         </div>
         <div class="post-more">
@@ -1044,10 +1032,9 @@ hack，并且功能
             </a>
           </div>
           <div class="post-content">
-            水平垂直居中
-使用以下的核心代码，控制多行(多列)、单行(单列)的元素水平垂直居中
+            水平垂直居中使用以下的核心代码，控制多行(多列)、单行(单列)的元素水平垂直居中
 .container &#123;
-  flex-direction: column; /* 这一行用于多行或多列的水平垂直居中，如果是单行单列可以去掉 *
+  flex-direction: column; /* 这一行用于多行或多列的水平垂直居中，如果是单行单列可以去掉 */
           </div>
         </div>
         <div class="post-more">
@@ -1101,16 +1088,13 @@ hack，并且功能
             </a>
           </div>
           <div class="post-content">
-            盒模型
-在 css 中，有两种盒模型：
+            盒模型在 css 中，有两种盒模型：
 
 标准盒模型(box-sizing: content-box)：
 
 这是我们熟悉的符合 W3C 标准的盒子模型
-尺寸计算公式：
-width = 内容的宽度
-height = 内容的高度
-不包含bord
+尺寸计算公式：width &#x3D; 内容的宽度height &#x3D; 内容的高度
+
           </div>
         </div>
         <div class="post-more">
@@ -1511,8 +1495,8 @@ height = 内容的高度
         <div class="webinfo-item">
           <div>最后活动时间：</div>
           
-            <div id="last-update" style="display: none;">Fri Mar 21 2025 22:06:51 GMT+0800 (中国标准时间)</div>
-            <div id="last-update-show">2025-03-21 日</div>
+            <div id="last-update" style="display: none;">Sat Mar 29 2025 14:53:08 GMT+0800 (中国标准时间)</div>
+            <div id="last-update-show">2025-03-29 日</div>
           
         </div>
         
@@ -1562,7 +1546,7 @@ height = 内容的高度
           try {
             document.getElementById('last-update-show').innerHTML = timeago(new Date(lastUpDate));
           } catch (error) {
-            document.getElementById('last-update-show').innerHTML = '2025-03-21 日';
+            document.getElementById('last-update-show').innerHTML = '2025-03-29 日';
           }
         </script>
         

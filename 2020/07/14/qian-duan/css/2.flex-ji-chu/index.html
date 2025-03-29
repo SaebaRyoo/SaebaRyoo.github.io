@@ -584,12 +584,8 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="以下所有代码的示例都在仓库">以下所有代码的示例都在<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/Demos/tree/main/html-css-demo/Flex-demo">仓库</a></h2>
-<h2 id="基本概念"><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html">基本概念</a></h2>
-<p>flex 是弹性布局，任何一个容器都可以指定为 flex 布局。只需要设置<code>display: flex</code>即可。在设为 flex 布局后，子元素的<code>float</code>,<code>clear</code>,<code>vertical-align</code>属性会失效</p>
-<h2 id="应用在容器上的属性">应用在容器上的属性</h2>
-<h3 id="1-flex-direction-设置项目的主轴">1. flex-direction 设置项目的主轴</h3>
-<ul>
+        <h2 id="以下所有代码的示例都在仓库"><a href="#以下所有代码的示例都在仓库" class="headerlink" title="以下所有代码的示例都在仓库"></a>以下所有代码的示例都在<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/Demos/tree/main/html-css-demo/Flex-demo">仓库</a></h2><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html">基本概念</a></h2><p>flex 是弹性布局，任何一个容器都可以指定为 flex 布局。只需要设置<code>display: flex</code>即可。在设为 flex 布局后，子元素的<code>float</code>,<code>clear</code>,<code>vertical-align</code>属性会失效</p>
+<h2 id="应用在容器上的属性"><a href="#应用在容器上的属性" class="headerlink" title="应用在容器上的属性"></a>应用在容器上的属性</h2><h3 id="1-flex-direction-设置项目的主轴"><a href="#1-flex-direction-设置项目的主轴" class="headerlink" title="1. flex-direction 设置项目的主轴"></a>1. flex-direction 设置项目的主轴</h3><ul>
 <li>row（默认值）：主轴为水平方向，起点在左端。</li>
 <li>row-reverse：主轴为水平方向，起点在右端。</li>
 <li>column：主轴为垂直方向，起点在上沿。</li>
@@ -598,8 +594,8 @@
 <pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">&#123;</span>
   <span class="token property">flex-direction</span><span class="token punctuation">:</span> row | row-reverse | column | column-reverse<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="2-flex-wrap-设置项目是否换行">2. flex-wrap 设置项目是否换行</h3>
-<ul>
+
+<h3 id="2-flex-wrap-设置项目是否换行"><a href="#2-flex-wrap-设置项目是否换行" class="headerlink" title="2. flex-wrap 设置项目是否换行"></a>2. flex-wrap 设置项目是否换行</h3><ul>
 <li>nowrap(默认值): 不换行</li>
 <li>wrap: 换行</li>
 <li>wrap-reverse: 换行，第一行在下方</li>
@@ -607,14 +603,14 @@
 <pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">&#123;</span>
   <span class="token property">flex-wrap</span><span class="token punctuation">:</span> nowrap | wrap | wrap-reverse<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="3-flex-flow-以上两个的简写">3. flex-flow 以上两个的简写</h3>
-<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">flex-flow属性是flex-direction属性和flex-wrap属性的简写形式，默认值为row
+
+<h3 id="3-flex-flow-以上两个的简写"><a href="#3-flex-flow-以上两个的简写" class="headerlink" title="3. flex-flow 以上两个的简写"></a>3. flex-flow 以上两个的简写</h3><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">flex-flow属性是flex-direction属性和flex-wrap属性的简写形式，默认值为row
   nowrap。
   .container</span> <span class="token punctuation">&#123;</span>
   <span class="token property">flex-flow</span><span class="token punctuation">:</span> &lt;flex-direction> || &lt;flex-wrap><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="4-justify-content-设置项目在主轴上的对齐方式">4. justify-content 设置项目在主轴上的对齐方式</h3>
-<ul>
+
+<h3 id="4-justify-content-设置项目在主轴上的对齐方式"><a href="#4-justify-content-设置项目在主轴上的对齐方式" class="headerlink" title="4. justify-content 设置项目在主轴上的对齐方式"></a>4. justify-content 设置项目在主轴上的对齐方式</h3><ul>
 <li>flex-start: 在主轴的开始位置按顺序排序</li>
 <li>flex-end: 在主轴的结束位置按顺序排序</li>
 <li>center: 项目集中在主轴的中间</li>
@@ -624,8 +620,8 @@
 <pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">&#123;</span>
   <span class="token property">justify-content</span><span class="token punctuation">:</span> flex-start | flex-end | center | space-between | space-around<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="5-align-items-设置所有项目在交叉轴上的位置">5. align-items 设置所有项目在交叉轴上的位置</h3>
-<ul>
+
+<h3 id="5-align-items-设置所有项目在交叉轴上的位置"><a href="#5-align-items-设置所有项目在交叉轴上的位置" class="headerlink" title="5. align-items 设置所有项目在交叉轴上的位置"></a>5. align-items 设置所有项目在交叉轴上的位置</h3><ul>
 <li>stretch（默认值）：如果项目未设置高度或设为 auto，将占满整个容器的高度。</li>
 <li>flex-start：交叉轴的起点对齐。</li>
 <li>flex-end：交叉轴的终点对齐。</li>
@@ -635,8 +631,8 @@
 <pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">&#123;</span>
   <span class="token property">align-items</span><span class="token punctuation">:</span> flex-start | flex-end | center | baseline | stretch<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="6-align-content-用来分配交叉轴方向的剩余空间-表现行为和-justify-content-属性一致，除了多出一个-stretch">6. align-content 用来分配交叉轴方向的剩余空间 表现行为和 justify-content 属性一致，除了多出一个 stretch.</h3>
-<ul>
+
+<h3 id="6-align-content-用来分配交叉轴方向的剩余空间-表现行为和-justify-content-属性一致，除了多出一个-stretch"><a href="#6-align-content-用来分配交叉轴方向的剩余空间-表现行为和-justify-content-属性一致，除了多出一个-stretch" class="headerlink" title="6. align-content 用来分配交叉轴方向的剩余空间 表现行为和 justify-content 属性一致，除了多出一个 stretch."></a>6. align-content 用来分配交叉轴方向的剩余空间 表现行为和 justify-content 属性一致，除了多出一个 stretch.</h3><ul>
 <li>stretch（默认值）：轴线占满整个交叉轴。</li>
 <li>flex-start：与交叉轴的起点对齐。</li>
 <li>flex-end：与交叉轴的终点对齐。</li>
@@ -649,41 +645,34 @@
   <span class="token property">align-content</span><span class="token punctuation">:</span> flex-start | flex-end | center | space-between | space-around |
     stretch<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="应用在项目上的属性">应用在项目上的属性</h2>
-<h3 id="1-order-属性-定义项目的排列顺序，数值越小，月考勤，默认为-0（不推荐使用，性能损耗大）">1. order 属性 定义项目的排列顺序，数值越小，月考勤，默认为 0（不推荐使用，性能损耗大）</h3>
-<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
+
+<h2 id="应用在项目上的属性"><a href="#应用在项目上的属性" class="headerlink" title="应用在项目上的属性"></a>应用在项目上的属性</h2><h3 id="1-order-属性-定义项目的排列顺序，数值越小，月考勤，默认为-0（不推荐使用，性能损耗大）"><a href="#1-order-属性-定义项目的排列顺序，数值越小，月考勤，默认为-0（不推荐使用，性能损耗大）" class="headerlink" title="1. order 属性 定义项目的排列顺序，数值越小，月考勤，默认为 0（不推荐使用，性能损耗大）"></a>1. order 属性 定义项目的排列顺序，数值越小，月考勤，默认为 0（不推荐使用，性能损耗大）</h3><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
   <span class="token property">order</span><span class="token punctuation">:</span> &lt;number><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="2-flex-grow-定义项目的放大比例，默认为-0。即存在剩余空间也不放大。">2. flex-grow 定义项目的放大比例，默认为 0。即存在剩余空间也不放大。</h3>
-<p>在一个 flex 容器内，如果给项目设置了 flex-grow,那么会每个设置了 flex-grow 的项目都会多分到: <strong>(剩余空间宽度/flex-grow 总数) * 当前项目 flex-grow 数</strong><br>
-假设容器宽度为 600px,有三个项目 width 都为 100px, 后两个分别设置了以下属性，那么最后计算出来的宽度就是<br>
-item1: 100px,item2:200px, item3: 300px;</p>
+
+<h3 id="2-flex-grow-定义项目的放大比例，默认为-0。即存在剩余空间也不放大。"><a href="#2-flex-grow-定义项目的放大比例，默认为-0。即存在剩余空间也不放大。" class="headerlink" title="2. flex-grow 定义项目的放大比例，默认为 0。即存在剩余空间也不放大。"></a>2. flex-grow 定义项目的放大比例，默认为 0。即存在剩余空间也不放大。</h3><p>在一个 flex 容器内，如果给项目设置了 flex-grow,那么会每个设置了 flex-grow 的项目都会多分到: <strong>(剩余空间宽度&#x2F;flex-grow 总数) * 当前项目 flex-grow 数</strong><br>假设容器宽度为 600px,有三个项目 width 都为 100px, 后两个分别设置了以下属性，那么最后计算出来的宽度就是<br>item1: 100px,item2:200px, item3: 300px;</p>
 <pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item2</span> <span class="token punctuation">&#123;</span>
   <span class="token property">flex-grow</span><span class="token punctuation">:</span> 1<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 <span class="token selector">.item3</span> <span class="token punctuation">&#123;</span>
   <span class="token property">flex-grow</span><span class="token punctuation">:</span> 2<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="3-flex-shrink">3. flex-shrink</h3>
-<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
+
+<h3 id="3-flex-shrink"><a href="#3-flex-shrink" class="headerlink" title="3. flex-shrink"></a>3. flex-shrink</h3><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
   <span class="token property">flex-shrink</span><span class="token punctuation">:</span> &lt;number><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>定义项目的缩小比例，默认为 1，即如果容器空间不足，容器内的项目缩小。<br>
-但是 flex-shrink 会组织 flex 项目缩小为 0。所以继续缩小会按照<code>min-content</code>的大小计算。<br>
-这就是为什么显式设置<code>flex:1</code>不一定能让所有 flex 项目宽度相等的主要原因之一。所以有一个小技巧就是<br>
-要实现等分列布局效果时，显示的在 flex 项目上设置<code>min-width:0</code>，避免内容不等长，造成列不等分</p>
-<h3 id="4-flex-basis">4. flex-basis</h3>
-<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
+
+<p>定义项目的缩小比例，默认为 1，即如果容器空间不足，容器内的项目缩小。<br>但是 flex-shrink 会组织 flex 项目缩小为 0。所以继续缩小会按照<code>min-content</code>的大小计算。<br>这就是为什么显式设置<code>flex:1</code>不一定能让所有 flex 项目宽度相等的主要原因之一。所以有一个小技巧就是<br>要实现等分列布局效果时，显示的在 flex 项目上设置<code>min-width:0</code>，避免内容不等长，造成列不等分</p>
+<h3 id="4-flex-basis"><a href="#4-flex-basis" class="headerlink" title="4. flex-basis"></a>4. flex-basis</h3><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
   <span class="token property">flex-basis</span><span class="token punctuation">:</span> &lt;length> | auto<span class="token punctuation">;</span> <span class="token comment">/* default auto */</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>默认值时 auto ，用于给项目设置一个初始化的尺寸(理想的尺寸)。之所以说是理想的尺寸，是因为根据浏览器会<br>
-根据 <code>content ➜ width ➜ flex-basis</code> 来决定用哪个值来初始化 Flex 项目的假设主尺寸。如果 Flex 项目显式设置了 <code>flex-basis</code> 属性，则会忽略 <code>width</code> 和 <code>content</code> 。但最终浏览器计算出来的 Flex 项目主尺寸（计算后的 flex-basis 属性的值）会受到 CSS 的 <code>min-*</code> 和 <code>max-*</code> 属性值的限制，其中 <code>min-*</code> 用来设置 Flex 项目的下限值，<code>max-*</code>用来设置 Flex 项目的上限值 。</p>
-<h3 id="5-flex-建议优先使用-flex-属性，而不是单独写三个分离的属性-该属性是-flex-grow-flex-shrink-flex-basis-的简写，默认值是0-1-auto，后两个属性可选">5. flex(建议优先使用 flex 属性，而不是单独写三个分离的属性) 该属性是 flex-grow, flex-shrink, flex-basis 的简写，默认值是<code>0 1 auto</code>，后两个属性可选</h3>
-<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
+
+<p>默认值时 auto ，用于给项目设置一个初始化的尺寸(理想的尺寸)。之所以说是理想的尺寸，是因为根据浏览器会<br>根据 <code>content ➜ width ➜ flex-basis</code> 来决定用哪个值来初始化 Flex 项目的假设主尺寸。如果 Flex 项目显式设置了 <code>flex-basis</code> 属性，则会忽略 <code>width</code> 和 <code>content</code> 。但最终浏览器计算出来的 Flex 项目主尺寸（计算后的 flex-basis 属性的值）会受到 CSS 的 <code>min-*</code> 和 <code>max-*</code> 属性值的限制，其中 <code>min-*</code> 用来设置 Flex 项目的下限值，<code>max-*</code>用来设置 Flex 项目的上限值 。</p>
+<h3 id="5-flex-建议优先使用-flex-属性，而不是单独写三个分离的属性-该属性是-flex-grow-flex-shrink-flex-basis-的简写，默认值是0-1-auto，后两个属性可选"><a href="#5-flex-建议优先使用-flex-属性，而不是单独写三个分离的属性-该属性是-flex-grow-flex-shrink-flex-basis-的简写，默认值是0-1-auto，后两个属性可选" class="headerlink" title="5. flex(建议优先使用 flex 属性，而不是单独写三个分离的属性) 该属性是 flex-grow, flex-shrink, flex-basis 的简写，默认值是0 1 auto，后两个属性可选"></a>5. flex(建议优先使用 flex 属性，而不是单独写三个分离的属性) 该属性是 flex-grow, flex-shrink, flex-basis 的简写，默认值是<code>0 1 auto</code>，后两个属性可选</h3><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
   <span class="token property">flex</span><span class="token punctuation">:</span> none | [ &lt; <span class="token string">"flex-grow"</span> > &lt; <span class="token string">"flex-shrink"</span> >? || &lt; <span class="token string">"flex-basis"</span> >]<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="6-align-self">6. align-self</h3>
-<p>该属性可用于设置单个项目与其他项目不同的对齐方式，会覆盖 align-items 属性，默认值为 auto(继承容器的 align-items 属性，如果父元素没设值则为 stretch)</p>
+
+<h3 id="6-align-self"><a href="#6-align-self" class="headerlink" title="6. align-self"></a>6. align-self</h3><p>该属性可用于设置单个项目与其他项目不同的对齐方式，会覆盖 align-items 属性，默认值为 auto(继承容器的 align-items 属性，如果父元素没设值则为 stretch)</p>
 <pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
   <span class="token property">align-self</span><span class="token punctuation">:</span> auto | flex-start | flex-end | center | baseline | stretch<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
@@ -739,12 +728,11 @@ item1: 100px,item2:200px, item3: 300px;</p>
       </div>
       
       <!-- <div class="content">
-        盒模型
-在 css 中，有两种盒模型：
+        盒模型在 css 中，有两种盒模型：
 
 标准盒模型(box-sizing: content-box)：
 
-这是我们熟悉
+这是我们熟悉的
       </div> -->
     </a>
   </div>
@@ -763,8 +751,7 @@ item1: 100px,item2:200px, item3: 300px;</p>
         <div class="title-text">html基础</div>
       </div>
       <!-- <div class="content">
-        DOCTYPE(文档类型)的作用是什么?
-DTD(document type definition, 文档类型定义) 是
+        DOCTYPE(文档类型)的作用是什么?DTD(document type definition, 文档类型定义) 是一
       </div> -->
     </a>
   </div>

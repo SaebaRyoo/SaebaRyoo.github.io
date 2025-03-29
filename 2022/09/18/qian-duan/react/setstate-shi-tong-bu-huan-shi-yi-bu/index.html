@@ -589,9 +589,7 @@
 <li>setState 的“异步”并不是说内部由异步代码实现，其实本身执行的过程和代码都是同步的，只是合成事件和钩子函数的调用顺序在更新之前，导致在合成事件和钩子函数中没法立马拿到更新后的值，形式了所谓的“异步”，当然可以通过第二个参数 setState(partialState, callback) 中的 callback 拿到更新后的结果。</li>
 <li>setState 的批量更新优化也是建立在“异步”（合成事件、钩子函数）之上的，在原生事件和 setTimeout 中不会批量更新，在“异步”中如果对同一个值进行多次 setState ， setState 的批量更新策略会对其进行覆盖，取最后一次的执行，如果是同时 setState 多个不同的值，在更新时会对其进行合并批量更新。</li>
 </ol>
-<h3 id="为什么-setState-是异步的？"><a target="_blank" rel="noopener" href="https://github.com/facebook/react/issues/11527">为什么 setState 是异步的？</a></h3>
-<p>为了批量更新而延迟 reconciliation, <code>setState()</code>同步渲染在多数情况下效率低下，如果我们知道可能会得到多个更新，最好进行批处理更新<br>
-例如，如果我们在浏览器单击处理程序中，并且<code>Child</code>和<code>Parent</code>都调用<code>setState</code>，则我们不想将其重新渲染两次，而是希望将它们标记为 <code>dirty</code>，然后再将它们一起渲染 退出浏览器事件。</p>
+<h3 id="为什么-setState-是异步的？"><a href="#为什么-setState-是异步的？" class="headerlink" title="为什么 setState 是异步的？"></a><a target="_blank" rel="noopener" href="https://github.com/facebook/react/issues/11527">为什么 setState 是异步的？</a></h3><p>为了批量更新而延迟 reconciliation, <code>setState()</code>同步渲染在多数情况下效率低下，如果我们知道可能会得到多个更新，最好进行批处理更新<br>例如，如果我们在浏览器单击处理程序中，并且<code>Child</code>和<code>Parent</code>都调用<code>setState</code>，则我们不想将其重新渲染两次，而是希望将它们标记为 <code>dirty</code>，然后再将它们一起渲染 退出浏览器事件。</p>
 <p>你会问： 为什么我们不能做同样的事情(批处理)，而是立即将<code>setState</code>更新写入<code>this.state</code>而无需等待<code>recelication</code>结束. 我认为没有一个明显的答案（两种解决方案都需要权衡），但是我可以想到一些原因。</p>
 <ol>
 <li>保持内部一致性</li>
@@ -604,9 +602,11 @@
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 1</span>
 <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>value <span class="token operator">+</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 2</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>但是，假设这个 state 需要被提升，以便在几个组件之间共享，所以您将它移动到父组件</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">-</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>state<span class="token punctuation">.</span>value <span class="token operator">+</span> <span class="token number">1</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token operator">+</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span><span class="token function">onIncrement</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Does the same thing in a parent</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
 <p>我想强调的是，在依赖于 setState()的典型 React 应用程序中，这是您每天都会进行的最常见的特定于 react 的重构。</p>
 <p>但是，这破坏了我们的代码！</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 0</span>
@@ -614,6 +614,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 0</span>
 <span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span><span class="token function">onIncrement</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 0</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>这是因为在您建议的模型中，会立即刷新 this.state，但不会刷新 this.props。 而且，我们无法在不重新渲染父级的情况下立即刷新 this.props，这意味着我们将不得不放弃批处理（根据情况，批处理会大大降低性能）。</p>
 <p>那么 React 今天如何解决这个问题呢？ 在 React 中，this.state 和 this.props 都仅在 reconciliation 和 flushing,之后更新，因此您将看到 0 在重构前后都被打印。 这使提升状态安全。</p>
 <p>综上所述，React 模型并不总是导致最简洁的代码，但是它在内部是一致的，并且可以确保提升状态是安全的</p>
@@ -681,8 +682,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
       
       <!-- <div class="content">
         1. 攻击者如何发起一次 csrf（Cross-site request forgery 跨站请求伪造）
-
-2. 如何实
+2. 如何实现
       </div> -->
     </a>
   </div>
@@ -702,10 +702,9 @@ console<span class="token punctuation">.</span><span class="token function">log<
       </div>
       <!-- <div class="content">
         常用命令
-
 查看版本: nginx -v
 启动: nginx
-关闭: nginx -s stop(推荐) || ngin
+关闭: nginx -s stop(推荐) || nginx
       </div> -->
     </a>
   </div>

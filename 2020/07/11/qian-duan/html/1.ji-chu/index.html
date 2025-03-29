@@ -584,19 +584,16 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="DOCTYPE-文档类型-的作用是什么">DOCTYPE(文档类型)的作用是什么?</h2>
-<p>DTD(document type definition, 文档类型定义) 是一系列的语法规则，用来定义 XML 或者(X)HTML 的文件类型。浏览器通过它来判断文档类型,并执行文件合法性的检验，并决定使用何种协议来解析，以及切换浏览器模式(标准模式或者混杂模式)</p>
-<h2 id="文档的混杂模式-quirks-mode-和标准模式-standards-mode"><a target="_blank" rel="noopener" href="https://github.com/lxnxbnq/blog/issues/16">文档的混杂模式(quirks mode)和标准模式(standards mode)</a></h2>
-<h2 id="使用-data-属性的好处是什么？">使用 data- 属性的好处是什么？</h2>
-<p>可以存储一些不需要显示在浏览器上的额外信息，比如一片文章，并且你想要的存储一些额外的信息。</p>
+        <h2 id="DOCTYPE-文档类型-的作用是什么"><a href="#DOCTYPE-文档类型-的作用是什么" class="headerlink" title="DOCTYPE(文档类型)的作用是什么?"></a>DOCTYPE(文档类型)的作用是什么?</h2><p>DTD(document type definition, 文档类型定义) 是一系列的语法规则，用来定义 XML 或者(X)HTML 的文件类型。浏览器通过它来判断文档类型,并执行文件合法性的检验，并决定使用何种协议来解析，以及切换浏览器模式(标准模式或者混杂模式)</p>
+<h2 id="文档的混杂模式-quirks-mode-和标准模式-standards-mode"><a href="#文档的混杂模式-quirks-mode-和标准模式-standards-mode" class="headerlink" title="文档的混杂模式(quirks mode)和标准模式(standards mode)"></a><a target="_blank" rel="noopener" href="https://github.com/lxnxbnq/blog/issues/16">文档的混杂模式(quirks mode)和标准模式(standards mode)</a></h2><h2 id="使用-data-属性的好处是什么？"><a href="#使用-data-属性的好处是什么？" class="headerlink" title="使用 data- 属性的好处是什么？"></a>使用 data- 属性的好处是什么？</h2><p>可以存储一些不需要显示在浏览器上的额外信息，比如一片文章，并且你想要的存储一些额外的信息。</p>
 <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>article</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>electriccars<span class="token punctuation">"</span></span> <span class="token attr-name">data-columns</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>3<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>...<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>article</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>并且可以通过 dataset 来获取一个元素中的所有 data-信息</p>
 <pre class="line-numbers language-none"><code class="language-none">var article &#x3D; document.querySelector(&#39;#electriccars&#39;);
 article.dataset.columns &#x2F;&#x2F; 3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h2 id="如果将-HTML5-看做一个开放平台，那它的构建模块有哪些？">如果将 HTML5 看做一个开放平台，那它的构建模块有哪些？</h2>
-<p>标签及属性、地理位置(Geolocation)、画布(canvas)、视频(video)、音频(audio)、拖放(drag)、<a target="_blank" rel="noopener" href="https://www.zhangxinxu.com/wordpress/2011/12/html5%E6%89%A9%E5%B1%95-%E5%BE%AE%E6%95%B0%E6%8D%AE-%E4%B8%B0%E5%AF%8C%E7%BD%91%E9%A1%B5%E6%91%98%E8%A6%81/#comments">微数据</a>、<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Using_the_application_cache">应用缓存</a>、Web 存储、web workers、<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Server-sent_events/Using_server-sent_events">服务器发送事件</a></p>
-<h2 id="cookie、sessionStorage、localStorage、indexedDB-的区别">cookie、sessionStorage、localStorage、indexedDB 的区别</h2>
-<table>
+
+<h2 id="如果将-HTML5-看做一个开放平台，那它的构建模块有哪些？"><a href="#如果将-HTML5-看做一个开放平台，那它的构建模块有哪些？" class="headerlink" title="如果将 HTML5 看做一个开放平台，那它的构建模块有哪些？"></a>如果将 HTML5 看做一个开放平台，那它的构建模块有哪些？</h2><p>标签及属性、地理位置(Geolocation)、画布(canvas)、视频(video)、音频(audio)、拖放(drag)、<a target="_blank" rel="noopener" href="https://www.zhangxinxu.com/wordpress/2011/12/html5%E6%89%A9%E5%B1%95-%E5%BE%AE%E6%95%B0%E6%8D%AE-%E4%B8%B0%E5%AF%8C%E7%BD%91%E9%A1%B5%E6%91%98%E8%A6%81/#comments">微数据</a>、<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Using_the_application_cache">应用缓存</a>、Web 存储、web workers、<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Server-sent_events/Using_server-sent_events">服务器发送事件</a></p>
+<h2 id="cookie、sessionStorage、localStorage、indexedDB-的区别"><a href="#cookie、sessionStorage、localStorage、indexedDB-的区别" class="headerlink" title="cookie、sessionStorage、localStorage、indexedDB 的区别"></a>cookie、sessionStorage、localStorage、indexedDB 的区别</h2><table>
 <thead>
 <tr>
 <th></th>
@@ -605,8 +602,7 @@ article.dataset.columns &#x2F;&#x2F; 3<span aria-hidden="true" class="line-numbe
 <th>localStorage</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>请求方式</td>
 <td>cookie 始终在同源的 http 请求中被携带</td>
 <td>请求中不主动携带</td>
@@ -630,41 +626,29 @@ article.dataset.columns &#x2F;&#x2F; 3<span aria-hidden="true" class="line-numbe
 <td>所有同源窗口中共享</td>
 <td>不在不同的浏览器窗口中共享，即使是同一个页面</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/WindowOrWorkerGlobalScope/indexedDB">indexedDB</a></p>
-<h2 id="script-、-script-defer-、-script-async-的区别"><code>&lt;script&gt;</code>、<code>&lt;script defer&gt;</code> 、<code>&lt;script async &gt;</code> 的区别</h2>
-<p><img src="../../assets/script%E6%A0%87%E7%AD%BE%E5%8C%BA%E5%88%AB.png" class="lazyload placeholder" data-srcset="../../assets/script%E6%A0%87%E7%AD%BE%E5%8C%BA%E5%88%AB.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<h2 id="lt-script-gt-、-lt-script-defer-gt-、-lt-script-async-gt-的区别"><a href="#lt-script-gt-、-lt-script-defer-gt-、-lt-script-async-gt-的区别" class="headerlink" title="&lt;script&gt;、&lt;script defer&gt; 、&lt;script async &gt; 的区别"></a><code>&lt;script&gt;</code>、<code>&lt;script defer&gt;</code> 、<code>&lt;script async &gt;</code> 的区别</h2><p><img src="/../../assets/script%E6%A0%87%E7%AD%BE%E5%8C%BA%E5%88%AB.png" class="lazyload placeholder" data-srcset="/../../assets/script%E6%A0%87%E7%AD%BE%E5%8C%BA%E5%88%AB.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
 <p>通过上图可知，在解析 HTML 时遇上 script 标签</p>
 <ol>
 <li>当为 <strong><code>&lt;script/&gt;</code></strong> 时，渲染进程会停止 html 解析并下载 script 标签的 content 然后执行，在这个过程中阻塞解析</li>
 <li>当为 <strong><code>&lt;script defer/&gt;</code></strong> 时，渲染进程不会停止 html 解析，而是并行下载 script，然后等到 html 解析完成后，<strong>DOMContentLoaded</strong> 事件触发之前执行</li>
 <li>当为 <strong><code>&lt;script async/&gt;</code></strong> 时，并行下载 script，然后执行 script 脚本，并阻塞 html 解析</li>
 </ol>
-<h2 id="为什么通常推荐将-CSS-link-放置在-head-head-之间，而将-JS-script-放置在-body-之前？你知道有哪些例外吗？">为什么通常推荐将 CSS <code>&lt;link&gt;</code> 放置在 <code>&lt;head&gt;&lt;/head&gt;</code> 之间，而将 JS <code>&lt;script&gt;</code> 放置在 <code>&lt;/body&gt;</code> 之前？你知道有哪些例外吗？</h2>
-<p>把 <strong><code>&lt;link&gt;</code></strong> 标签放在 <strong><code>&lt;head&gt;&lt;/head&gt;</code></strong> 之间是规范要求的内容。<br>
-此外，这种做法可以让页面逐步呈现，提高了用户体验。<br>
-将样式表放在文档底部附近，会使许多浏览器（包括 IE）不能逐步呈现页面。<br>
-一些浏览器会阻止渲染，以避免在页面样式发生变化时，重新绘制页面中的元素。这种做法可以防止呈现给用户空白的页面或没有样式的内容。</p>
+<h2 id="为什么通常推荐将-CSS-lt-link-gt-放置在-lt-head-gt-lt-head-gt-之间，而将-JS-lt-script-gt-放置在-lt-body-gt-之前？你知道有哪些例外吗？"><a href="#为什么通常推荐将-CSS-lt-link-gt-放置在-lt-head-gt-lt-head-gt-之间，而将-JS-lt-script-gt-放置在-lt-body-gt-之前？你知道有哪些例外吗？" class="headerlink" title="为什么通常推荐将 CSS &lt;link&gt; 放置在 &lt;head&gt;&lt;/head&gt; 之间，而将 JS &lt;script&gt; 放置在 &lt;/body&gt; 之前？你知道有哪些例外吗？"></a>为什么通常推荐将 CSS <code>&lt;link&gt;</code> 放置在 <code>&lt;head&gt;&lt;/head&gt;</code> 之间，而将 JS <code>&lt;script&gt;</code> 放置在 <code>&lt;/body&gt;</code> 之前？你知道有哪些例外吗？</h2><p>把 <strong><code>&lt;link&gt;</code></strong> 标签放在 <strong><code>&lt;head&gt;&lt;/head&gt;</code></strong> 之间是规范要求的内容。<br>此外，这种做法可以让页面逐步呈现，提高了用户体验。<br>将样式表放在文档底部附近，会使许多浏览器（包括 IE）不能逐步呈现页面。<br>一些浏览器会阻止渲染，以避免在页面样式发生变化时，重新绘制页面中的元素。这种做法可以防止呈现给用户空白的页面或没有样式的内容。</p>
 <p>把 <strong><code>&lt;script&gt;</code></strong> 标签恰好放在 <strong><code>&lt;/body&gt;</code></strong> 之前</p>
 <p>脚本在下载和执行期间会阻止 HTML 解析。把 <strong><code>&lt;script&gt;</code></strong> 标签放在底部，保证 HTML 首先完成解析，将页面尽早呈现给用户。</p>
-<p>例外情况是当你的脚本里包含<code>document.write()</code>时。但是现在，<code>document.write()</code>不推荐使用。<br>
-同时，将 <strong><code>&lt;script&gt;</code></strong> 标签放在底部，意味着浏览器不能开始下载脚本，直到整个文档（document）被解析。<br>
-比较好的做法是，<code>&lt;script&gt;</code> 使用 <strong>defer</strong> 属性，放在 <strong><code>&lt;head&gt;</code></strong> 中</p>
-<h2 id="什么是渐进式渲染（progressive-rendering）？">什么是渐进式渲染（progressive rendering）？</h2>
-<p>渐进式渲染是用于提高网页性能（尤其是提高用户感知的加载速度），以尽快呈现页面的技术。</p>
+<p>例外情况是当你的脚本里包含<code>document.write()</code>时。但是现在，<code>document.write()</code>不推荐使用。<br>同时，将 <strong><code>&lt;script&gt;</code></strong> 标签放在底部，意味着浏览器不能开始下载脚本，直到整个文档（document）被解析。<br>比较好的做法是，<code>&lt;script&gt;</code> 使用 <strong>defer</strong> 属性，放在 <strong><code>&lt;head&gt;</code></strong> 中</p>
+<h2 id="什么是渐进式渲染（progressive-rendering）？"><a href="#什么是渐进式渲染（progressive-rendering）？" class="headerlink" title="什么是渐进式渲染（progressive rendering）？"></a>什么是渐进式渲染（progressive rendering）？</h2><p>渐进式渲染是用于提高网页性能（尤其是提高用户感知的加载速度），以尽快呈现页面的技术。</p>
 <p>在以前互联网带宽较小的时期，这种技术更为普遍。如今，移动终端的盛行，而移动网络往往不稳定，渐进式渲染在现代前端开发中仍然有用武之地。</p>
 <p>例如:</p>
 <ol>
 <li>图片懒加载: 页面上的图片不会一次性全部加载。当用户滚动页面到图片部分时，JavaScript 将加载并显示图像。</li>
-<li>确定显示内容的优先级（分层次渲染）: 为了尽快将页面呈现给用户，页面只包含基本的最少量的 CSS、脚本和内容，然后可以使用延迟加载脚本或监听 DOMContentLoaded/load 事件加载其他资源和内容。</li>
+<li>确定显示内容的优先级（分层次渲染）: 为了尽快将页面呈现给用户，页面只包含基本的最少量的 CSS、脚本和内容，然后可以使用延迟加载脚本或监听 DOMContentLoaded&#x2F;load 事件加载其他资源和内容。</li>
 <li>异步加载 HTML 片段——当页面通过后台渲染时，把 HTML 拆分，通过异步请求，分块发送给浏览器。更多相关细节可以在<a target="_blank" rel="noopener" href="https://tech.ebayinc.com/engineering/async-fragments-rediscovering-progressive-html-rendering-with-marko/">这里</a>找到。</li>
 </ol>
-<h2 id="HTML-和-XHTML-有什么区别？">HTML 和 XHTML 有什么区别？</h2>
-<p>XHTML 是当前 HTML 版的继承者。HTML 语法要求比较松散，这样对网页编写者来说，比较方便，但对于机器来说，语言的语法越松散，处理起来就越困难，对于传统的计算机来说，还有能力兼容松散语法，但对于许多其他设备，比如手机，难度就比较大。因此产生了语法要求更加严格的 XHTML。</p>
-<h2 id="HMTL5-新标签"><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/Guide/HTML/HTML5/HTML5_element_list">HMTL5 新标签</a></h2>
-<h2 id="iframe-的使用">iframe 的使用</h2>
-<ol>
+<h2 id="HTML-和-XHTML-有什么区别？"><a href="#HTML-和-XHTML-有什么区别？" class="headerlink" title="HTML 和 XHTML 有什么区别？"></a>HTML 和 XHTML 有什么区别？</h2><p>XHTML 是当前 HTML 版的继承者。HTML 语法要求比较松散，这样对网页编写者来说，比较方便，但对于机器来说，语言的语法越松散，处理起来就越困难，对于传统的计算机来说，还有能力兼容松散语法，但对于许多其他设备，比如手机，难度就比较大。因此产生了语法要求更加严格的 XHTML。</p>
+<h2 id="HMTL5-新标签"><a href="#HMTL5-新标签" class="headerlink" title="HMTL5 新标签"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/Guide/HTML/HTML5/HTML5_element_list">HMTL5 新标签</a></h2><h2 id="iframe-的使用"><a href="#iframe-的使用" class="headerlink" title="iframe 的使用"></a>iframe 的使用</h2><ol>
 <li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000004502619">https://segmentfault.com/a/1190000004502619</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20653055">https://www.zhihu.com/question/20653055</a></li>
 </ol>
@@ -720,9 +704,7 @@ article.dataset.columns &#x2F;&#x2F; 3<span aria-hidden="true" class="line-numbe
       </div>
       
       <!-- <div class="content">
-        以下所有代码的示例都在仓库
-基本概念
-flex 是弹性布局，任何一个容器都可以指定为 flex 布局。只需要设置disp
+        以下所有代码的示例都在仓库基本概念flex 是弹性布局，任何一个容器都可以指定为 flex 布局。只需要设置displa
       </div> -->
     </a>
   </div>
@@ -741,12 +723,9 @@ flex 是弹性布局，任何一个容器都可以指定为 flex 布局。只需
         <div class="title-text">Nestjs#1.基于grpc的微服务(一)</div>
       </div>
       <!-- <div class="content">
-        Why
-微服务的优缺点
+        Why微服务的优缺点
 这篇文章只是讲了比较基础的 demo
-Setup
-首先需要安装 nestjs 的命令行工具
-np
+Setup首先需要安装 nestjs 的命令行工具npm i
       </div> -->
     </a>
   </div>

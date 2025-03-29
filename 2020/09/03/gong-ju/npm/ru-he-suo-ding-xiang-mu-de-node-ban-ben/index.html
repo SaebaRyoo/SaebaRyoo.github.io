@@ -585,32 +585,31 @@
     <article class="post post-detail">
       <div class="post-content">
         <p>在一个项目中,随着时间的推移，一些依赖库可能只能工作于当时安装时所采用的 node 版本。这时再使用新版本 node 时就无法保证项目在一个稳定的环境中运行，甚至是无法运行。为了稳定，通常我们需要在开始时就选定一个兼容性强的 node LTS 版本，并且在项目中锁定版本。</p>
-<h3 id="nvmrc">.nvmrc</h3>
-<p>如果项目中使用了 nvm 来进行版本控制，需要在根目录创建一个<code>[.nvmrc](https://github.com/nvm-sh/nvm#nvmrc)</code>文件来指定 node 版本，内容如下：</p>
+<h3 id="nvmrc"><a href="#nvmrc" class="headerlink" title=".nvmrc"></a>.nvmrc</h3><p>如果项目中使用了 nvm 来进行版本控制，需要在根目录创建一个<code>[.nvmrc](https://github.com/nvm-sh/nvm#nvmrc)</code>文件来指定 node 版本，内容如下：</p>
 <p>.nvmrc</p>
 <pre class="line-numbers language-none"><code class="language-none">v14.19.1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h3 id="package-json">package.json</h3>
-<p>我们可以通过在<code>package.json</code>中设置<code>engines</code>属性来指定版本范围。<a target="_blank" rel="noopener" href="https://docs.npmjs.com/cli/v9/configuring-npm/package-json">npm-package 文档</a></p>
+
+<h3 id="package-json"><a href="#package-json" class="headerlink" title="package.json"></a>package.json</h3><p>我们可以通过在<code>package.json</code>中设置<code>engines</code>属性来指定版本范围。<a target="_blank" rel="noopener" href="https://docs.npmjs.com/cli/v9/configuring-npm/package-json">npm-package 文档</a></p>
 <p>指定 node 版本的范围</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
   <span class="token property">"engines"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
     <span class="token property">"node"</span><span class="token operator">:</span> <span class="token string">">=14.19.1 &lt;=17.9.0"</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>固定为指定版本</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
   <span class="token property">"engines"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
     <span class="token property">"node"</span><span class="token operator">:</span> <span class="token string">"~14.19.1"</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="npmrc">.npmrc</h3>
-<p>前面我们说了在 package.json 中指定<code>engines</code>属性来限制 node 版本，这个在<code>yarn</code>和<code>pnpm</code>中时有效的。<br>
-在配置了 engines 后,再使用 nvm 将 node 版本变为 v12.8.3 之后再使用<code>yarn</code>来安装依赖，就会报错<br>
-<a target="_blank" rel="noopener" href="https://postimg.cc/3yqYdf3B"><img src="https://i.postimg.cc/RFSFp28j/image.png" class="lazyload placeholder" data-srcset="https://i.postimg.cc/RFSFp28j/image.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image.png"></a></p>
+
+<h3 id="npmrc"><a href="#npmrc" class="headerlink" title=".npmrc"></a>.npmrc</h3><p>前面我们说了在 package.json 中指定<code>engines</code>属性来限制 node 版本，这个在<code>yarn</code>和<code>pnpm</code>中时有效的。<br>在配置了 engines 后,再使用 nvm 将 node 版本变为 v12.8.3 之后再使用<code>yarn</code>来安装依赖，就会报错<br><a target="_blank" rel="noopener" href="https://postimg.cc/3yqYdf3B"><img src="https://i.postimg.cc/RFSFp28j/image.png" class="lazyload placeholder" data-srcset="https://i.postimg.cc/RFSFp28j/image.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image.png"></a></p>
 <p><code>pnpm i</code>也是相似的报错</p>
 <p>但是使用<code>npm i</code>并不会按照<code>engines</code>的属性来报错，这是因为在 npm 中设置了<a target="_blank" rel="noopener" href="https://docs.npmjs.com/cli/v7/using-npm/config#engine-strict">engine-strict</a>默认为 false。因此，我们需要创建<code>.npmrc</code>来显式的定义为 true，如下</p>
 <p>.npmrc</p>
 <pre class="line-numbers language-none"><code class="language-none">engine-strict&#x3D;true<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>这样当 node 未满足版本要求时，就无法运行<code>npm install</code>了</p>
 
       </div>
@@ -668,10 +667,8 @@
       </div>
       
       <!-- <div class="content">
-        传参方式
-HashRouter
-
-通过在url中增加查询字符串。如 &lt;Link to=&#123;&#123;pa
+        传参方式HashRouter
+通过在url中增加查询字符串。如 &lt;Link to=&#123;&#123;path
       </div> -->
     </a>
   </div>
@@ -690,12 +687,10 @@ HashRouter
         <div class="title-text">var、let、const原理</div>
       </div>
       <!-- <div class="content">
-        var、let、const 的作用和区别
-var
-
+        var、let、const 的作用和区别var
 会在当前执行环境中进行变量提升
 可重复声明，可以修改
-如果未使用 v
+如果未使用 var
       </div> -->
     </a>
   </div>

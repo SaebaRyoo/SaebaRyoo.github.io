@@ -584,42 +584,35 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="var、let、const-的作用和区别">var、let、const 的作用和区别</h2>
-<h3 id="var">var</h3>
-<ul>
+        <h2 id="var、let、const-的作用和区别"><a href="#var、let、const-的作用和区别" class="headerlink" title="var、let、const 的作用和区别"></a>var、let、const 的作用和区别</h2><h3 id="var"><a href="#var" class="headerlink" title="var"></a>var</h3><ul>
 <li>会在当前执行环境中进行变量提升</li>
 <li>可重复声明，可以修改</li>
-<li>如果未使用 var 关键字声明，则会提升为全局 // 严格模式下会报错</li>
+<li>如果未使用 var 关键字声明，则会提升为全局 &#x2F;&#x2F; 严格模式下会报错</li>
 </ul>
-<h3 id="let">let</h3>
-<ul>
+<h3 id="let"><a href="#let" class="headerlink" title="let"></a>let</h3><ul>
 <li>let 无法重复声明</li>
 <li>let 有暂存死区，无法进行变量提升</li>
 <li>let 声明的变量的作用域是块级的</li>
 </ul>
-<h3 id="const">const</h3>
-<ul>
+<h3 id="const"><a href="#const" class="headerlink" title="const"></a>const</h3><ul>
 <li>const 声明一个常量，无法修改。但是在声明引用类型时，可以修改值。</li>
 <li>其他同 let</li>
 </ul>
-<h2 id="问题">问题</h2>
-<ol>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
 <li>为什么 var 会有变量提升呢?</li>
 <li>let、const 是否有变量提升？</li>
 <li>为什么 let 和 const 有暂存死区？</li>
 <li>为什么 var 可以重复声明、修改，let 不能重复声明，却可以修改，const 可以修改引用类型的值？</li>
 </ol>
 <p>接下来我们按照问题去解答</p>
-<h3 id="为什么-var-会有变量提升？">为什么 var 会有变量提升？</h3>
-<blockquote>
+<h3 id="为什么-var-会有变量提升？"><a href="#为什么-var-会有变量提升？" class="headerlink" title="为什么 var 会有变量提升？"></a>为什么 var 会有变量提升？</h3><blockquote>
 <p>结论如下，这里具体可以查看<a target="_blank" rel="noopener" href="https://segmentfault.com/q/1010000013591021">为什么 js 需要进行变量提升</a></p>
 </blockquote>
 <ol>
 <li>解析和预编译过程中的声明提升可以提高性能，让函数可以在执行时预先为变量分配栈空间</li>
 <li>声明提升还可以提高 JS 代码的容错性，使一些不规范的代码也可以正常执行</li>
 </ol>
-<h3 id="let、const-是否有变量提升？">let、const 是否有变量提升？</h3>
-<blockquote>
+<h3 id="let、const-是否有变量提升？"><a href="#let、const-是否有变量提升？" class="headerlink" title="let、const 是否有变量提升？"></a>let、const 是否有变量提升？</h3><blockquote>
 <p>出处<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/27558914">let 和 const 有提升吗(hoist)</a></p>
 </blockquote>
 <ul>
@@ -627,26 +620,20 @@
 <li>从块顶部到该变量的初始化语句，这块区域叫做 TDZ（临时死区）</li>
 <li>如果你在 TDZ 内使用该变量，JS 就会报错（var 没有 TDZ）</li>
 </ul>
-<h3 id="为什么-let-和-const-有暂存死区">为什么 let 和 const 有暂存死区</h3>
-<p>首先可以看一段 es6 的标准</p>
+<h3 id="为什么-let-和-const-有暂存死区"><a href="#为什么-let-和-const-有暂存死区" class="headerlink" title="为什么 let 和 const 有暂存死区"></a>为什么 let 和 const 有暂存死区</h3><p>首先可以看一段 es6 的标准</p>
 <blockquote>
 <p>let and const declarations define variables that are scoped to the running execution context’s LexicalEnvironment. The variables are created when their containing Lexical Environment is instantiated but may not be accessed in any way until the variable’s LexicalBinding is evaluated. A variable defined by a LexicalBinding with an Initializer is assigned the value of its Initializer’s AssignmentExpression when the LexicalBinding is evaluated, not when the variable is created. If a LexicalBinding in a let declaration does not have an Initializer the variable is assigned the value undefined when the LexicalBinding is evaluated.</p>
 </blockquote>
 <p><em>它的大概意思就是 let 和 const 会将当前执行的上下文栈形成一个封闭的作用域。在语法上，<strong>从块顶部到该变量的初始化语句,称为 “暂时性死区”</strong>（ temporal dead zone，简称 TDZ）。</em></p>
-<h3 id="为什么-var-可以重复声明、修改，let-不能重复声明，却可以修改，const-可以修改引用类型的值">为什么 var 可以重复声明、修改，let 不能重复声明，却可以修改，const 可以修改引用类型的值</h3>
-<ul>
-<li>
-<p>var 的话会直接在栈内存里预分配内存空间，然后等到实际语句执行的时候，再存储对应的变量，如果传的是引用类型，那么会在堆内存里开辟一个内存空间存储实际内容，栈内存会存储一个指向堆内存的指针</p>
+<h3 id="为什么-var-可以重复声明、修改，let-不能重复声明，却可以修改，const-可以修改引用类型的值"><a href="#为什么-var-可以重复声明、修改，let-不能重复声明，却可以修改，const-可以修改引用类型的值" class="headerlink" title="为什么 var 可以重复声明、修改，let 不能重复声明，却可以修改，const 可以修改引用类型的值"></a>为什么 var 可以重复声明、修改，let 不能重复声明，却可以修改，const 可以修改引用类型的值</h3><ul>
+<li><p>var 的话会直接在栈内存里预分配内存空间，然后等到实际语句执行的时候，再存储对应的变量，如果传的是引用类型，那么会在堆内存里开辟一个内存空间存储实际内容，栈内存会存储一个指向堆内存的指针</p>
 </li>
-<li>
-<p>let 是不会在栈内存里预分配内存空间，而且在栈内存分配变量时，做一个检查，如果已经有相同变量名存在就会报错</p>
+<li><p>let 是不会在栈内存里预分配内存空间，而且在栈内存分配变量时，做一个检查，如果已经有相同变量名存在就会报错</p>
 </li>
-<li>
-<p>const 也不会预分配内存空间，在栈内存分配变量时也会做同样的检查。不过 const 存储的变量是不可修改的，对于基本类型来说你无法修改定义的值，对于引用类型来说你无法修改栈内存里分配的指针，但是你可以修改指针指向的对象里面的属性</p>
+<li><p>const 也不会预分配内存空间，在栈内存分配变量时也会做同样的检查。不过 const 存储的变量是不可修改的，对于基本类型来说你无法修改定义的值，对于引用类型来说你无法修改栈内存里分配的指针，但是你可以修改指针指向的对象里面的属性</p>
 </li>
 </ul>
-<h3 id="参考文档">参考文档</h3>
-<ul>
+<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><ul>
 <li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/var">MDN var</a></li>
 <li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/let">MDN let</a></li>
 <li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/const">MDN const</a></li>
@@ -723,8 +710,7 @@
         <div class="title-text">grid基础</div>
       </div>
       <!-- <div class="content">
-        Grid 简介
-CSS Grid Layout(又叫Grid或者CSS Grid)，它是一个二维网格的布局系统。在这之前
+        Grid 简介CSS Grid Layout(又叫Grid或者CSS Grid)，它是一个二维网格的布局系统。在这之前经
       </div> -->
     </a>
   </div>

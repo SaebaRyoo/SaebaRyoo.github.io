@@ -587,52 +587,34 @@
         <blockquote>
 <p>本文章是用来总结卡颂大佬的<a target="_blank" rel="noopener" href="https://appjiz2zqrn2142.h5.xiaoeknow.com/p/decorate/homepage">《从零实现 React18》</a>课程的。</p>
 </blockquote>
-<h2 id="章节-1">章节 1</h2>
-<p>主要讲解了一个项目的搭建应该从以下几个角度出发：</p>
+<h2 id="章节-1"><a href="#章节-1" class="headerlink" title="章节 1"></a>章节 1</h2><p>主要讲解了一个项目的搭建应该从以下几个角度出发：</p>
 <ul>
 <li>项目结构（是选择 Multi-repo 还是 Mono-repo）</li>
 <li>打包工具</li>
 <li>如何定义开发规范</li>
 </ul>
-<h2 id="章节-2">章节 2</h2>
-<p>这一章主要讲了如何去实现 jsx 这个与宿主环境无关的方法，它在 react 包中。虽然是和宿主环境无关，但是这个方法是 react 中的基础，它会在运行时将已经转化后的 jsx 元素变为 ReactElement</p>
-<h2 id="章节-3-5">章节 3 - 5</h2>
-<p>因为<code>ReactElement</code>是 React 中用来描述 jsx 中单一节点的数据结构，无法表达节点间的关系，且无法拓展(如：表达状态)。所以在<code>Reconciler</code>中还实现了<code>FiberNode</code>作为介于<code>ReactElement</code>和<code>真实DOM</code>间的<code>虚拟DOM</code>。然后实现<code>workLoop</code>的工作循环，而这一流程主要为<code>beginWork</code>、<code>completeWork</code>和<code>commit</code>.</p>
+<h2 id="章节-2"><a href="#章节-2" class="headerlink" title="章节 2"></a>章节 2</h2><p>这一章主要讲了如何去实现 jsx 这个与宿主环境无关的方法，它在 react 包中。虽然是和宿主环境无关，但是这个方法是 react 中的基础，它会在运行时将已经转化后的 jsx 元素变为 ReactElement</p>
+<h2 id="章节-3-5"><a href="#章节-3-5" class="headerlink" title="章节 3 - 5"></a>章节 3 - 5</h2><p>因为<code>ReactElement</code>是 React 中用来描述 jsx 中单一节点的数据结构，无法表达节点间的关系，且无法拓展(如：表达状态)。所以在<code>Reconciler</code>中还实现了<code>FiberNode</code>作为介于<code>ReactElement</code>和<code>真实DOM</code>间的<code>虚拟DOM</code>。然后实现<code>workLoop</code>的工作循环，而这一流程主要为<code>beginWork</code>、<code>completeWork</code>和<code>commit</code>.</p>
 <p><code>JSX语法</code>在<code>编译时</code>被 babel 编译为被编译成<code>ReactElement</code>,然后在<code>beginWork</code>阶段通过<code>ReactElement</code>生成<code>FiberNode</code>，最后在<code>commit</code>阶段将<code>离屏DOM</code>插入到 Continaer 中编程真正的<code>DOM</code></p>
 <p>在<code>ReactDOM.render</code>时创建<code>fiberRootNode</code>和<code>rootFiber</code>且<code>beginWork</code>流程中通过 diff 来对更新<code>wip</code>。并添加对应的<code>flags</code>。</p>
 <p>然后在<code>completeWork</code>中将<code>flags</code>冒泡到父节点中，标记<code>subtreeflags</code>,为后续 commit 提供基础</p>
-<p>在第四章中还实现了通用的更新机制<code>Update</code>和<code>UpdateQueue</code>，并在<code>ReactDOM</code>初始化时接入了这套更新机制,<br>
-不过目前并没有实现完整的 updateQueue 链表结构，只能支持单一 hook 的初始化和更新</p>
-<h2 id="章节-6">章节 6</h2>
-<p>这一章节主要作用是实现<code>commit</code>操作，串联 Reconciler 逻辑与真实 DOM 操作。通过在<code>completeWork</code>中冒泡的<code>flags</code>，在完成所有子树的<code>归</code>的逻辑后，执行插入等 DOM 节点操作</p>
-<p>而 commit 这个过程中会产生<code>突变(Mutation)</code>，所谓<code>Mutation</code>就是将<strong>一个属性的值从 a 直接变为 b,比如 color: red -&gt; color: green</strong>,而<code>Mutation</code>又被<br>
-分成了三个子阶段</p>
+<p>在第四章中还实现了通用的更新机制<code>Update</code>和<code>UpdateQueue</code>，并在<code>ReactDOM</code>初始化时接入了这套更新机制,<br>不过目前并没有实现完整的 updateQueue 链表结构，只能支持单一 hook 的初始化和更新</p>
+<h2 id="章节-6"><a href="#章节-6" class="headerlink" title="章节 6"></a>章节 6</h2><p>这一章节主要作用是实现<code>commit</code>操作，串联 Reconciler 逻辑与真实 DOM 操作。通过在<code>completeWork</code>中冒泡的<code>flags</code>，在完成所有子树的<code>归</code>的逻辑后，执行插入等 DOM 节点操作</p>
+<p>而 commit 这个过程中会产生<code>突变(Mutation)</code>，所谓<code>Mutation</code>就是将<strong>一个属性的值从 a 直接变为 b,比如 color: red -&gt; color: green</strong>,而<code>Mutation</code>又被<br>分成了三个子阶段</p>
 <ul>
 <li>beforeMotation: 突变前</li>
 <li>mutation</li>
 <li>layout: 突变后</li>
 </ul>
-<p>然后可以在这个<code>Mutation</code>的过程中执行副作用，<br>
-这章目前只实现了在<code>mutation子阶段</code>插入 DOM 节点和 Text 文本节点创建等基础操作。</p>
+<p>然后可以在这个<code>Mutation</code>的过程中执行副作用，<br>这章目前只实现了在<code>mutation子阶段</code>插入 DOM 节点和 Text 文本节点创建等基础操作。</p>
 <p>并且后面用的<code>useEffectLayout</code>hook 就是在<code>layout</code>子阶段执行（目前未实现）</p>
-<h2 id="章节-7">章节 7</h2>
-<p>通过在<code>beginWork</code>流程添加对函数组件的<code>tag</code>类型的判断，并实现<code>renderWithHooks</code>方法执行函数组件并获取函数组件的<code>child</code>对应的<code>HostComponent</code>来实现函数组件。</p>
-<h2 id="章节-8">章节 8</h2>
-<p>通过实现<code>Hook</code>数据结构来管理状态，以链表的形式存储多个 hooks，并通过 next 指向下一个 hook ,<br>
-这也是为什么 react 强调函数组件内 hooks 的调用顺序不能变(定义 useState 等 hooks 只在函数组件的顶层定义，不要在条件中定义).</p>
+<h2 id="章节-7"><a href="#章节-7" class="headerlink" title="章节 7"></a>章节 7</h2><p>通过在<code>beginWork</code>流程添加对函数组件的<code>tag</code>类型的判断，并实现<code>renderWithHooks</code>方法执行函数组件并获取函数组件的<code>child</code>对应的<code>HostComponent</code>来实现函数组件。</p>
+<h2 id="章节-8"><a href="#章节-8" class="headerlink" title="章节 8"></a>章节 8</h2><p>通过实现<code>Hook</code>数据结构来管理状态，以链表的形式存储多个 hooks，并通过 next 指向下一个 hook ,<br>这也是为什么 react 强调函数组件内 hooks 的调用顺序不能变(定义 useState 等 hooks 只在函数组件的顶层定义，不要在条件中定义).</p>
 <p>不同生命周期中的 hooks 集合不一样，通过实现<code>内部数据共享层</code>获取当前使用的 hooks 集合</p>
-<h2 id="章节-9">章节 9</h2>
-<p>与逻辑无关，介绍了不同的源码调试方法以及 react 官方测试用例</p>
-<h2 id="章节-10">章节 10</h2>
-<p>这一章节主要介绍了 update 流程中的 beginWork、completeWork 和 commitWork 流程。<br>
-在 beginWork 的<code>reconciler</code>流程中实现了了对单一节点和 text 节点的<code>diff</code>。<br>
-单节点通过<code>key</code>和<code>type</code>判断当前<code>fiber</code>是否可以复用，如果不能复用则会标记删除再创建。<br>
-文本节点是只要<code>currentFiber.tag</code>没有变化都会复用原来的 fiber 结构，只更新<code>workInProgress.pendingProps</code>。<br>
-然后在<code>completeWrok</code>阶段标记更新。最后在<code>commitWork</code>流程中添加了<code>commitUpdate</code>和<code>commitDeleteion</code>方法来分别对应<code>Update</code>和<code>Deletion</code>的副作用操作的执行</p>
-<p>最后就是实现了 update 流程中的<code>useState</code>hook, 实现<code>updateWorkInProgressHook</code>获取存放执行当前 hook 的全局变量<code>workInProgressHook</code>，<br>
-然后计算出新的 state。</p>
-<h2 id="章节-11">章节 11</h2>
-<p>本章是针对浏览器宿主环境模拟实现的事件模型，主要模拟了浏览器事件捕获、冒泡流程,以及合成事件对象</p>
+<h2 id="章节-9"><a href="#章节-9" class="headerlink" title="章节 9"></a>章节 9</h2><p>与逻辑无关，介绍了不同的源码调试方法以及 react 官方测试用例</p>
+<h2 id="章节-10"><a href="#章节-10" class="headerlink" title="章节 10"></a>章节 10</h2><p>这一章节主要介绍了 update 流程中的 beginWork、completeWork 和 commitWork 流程。<br>在 beginWork 的<code>reconciler</code>流程中实现了了对单一节点和 text 节点的<code>diff</code>。<br>单节点通过<code>key</code>和<code>type</code>判断当前<code>fiber</code>是否可以复用，如果不能复用则会标记删除再创建。<br>文本节点是只要<code>currentFiber.tag</code>没有变化都会复用原来的 fiber 结构，只更新<code>workInProgress.pendingProps</code>。<br>然后在<code>completeWrok</code>阶段标记更新。最后在<code>commitWork</code>流程中添加了<code>commitUpdate</code>和<code>commitDeleteion</code>方法来分别对应<code>Update</code>和<code>Deletion</code>的副作用操作的执行</p>
+<p>最后就是实现了 update 流程中的<code>useState</code>hook, 实现<code>updateWorkInProgressHook</code>获取存放执行当前 hook 的全局变量<code>workInProgressHook</code>，<br>然后计算出新的 state。</p>
+<h2 id="章节-11"><a href="#章节-11" class="headerlink" title="章节 11"></a>章节 11</h2><p>本章是针对浏览器宿主环境模拟实现的事件模型，主要模拟了浏览器事件捕获、冒泡流程,以及合成事件对象</p>
 
       </div>
       <div class="post-tags-categories">
@@ -685,9 +667,7 @@
       </div>
       
       <!-- <div class="content">
-        类组件的不足（Hooks 要解决的问题）
-缺少逻辑复用机制
-为了复用逻辑增加无实际渲染效果的组件（高阶组件、渲染属性），
+        类组件的不足（Hooks 要解决的问题）缺少逻辑复用机制为了复用逻辑增加无实际渲染效果的组件（高阶组件、渲染属性），它们
       </div> -->
     </a>
   </div>
