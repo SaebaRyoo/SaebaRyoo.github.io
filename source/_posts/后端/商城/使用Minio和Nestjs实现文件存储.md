@@ -21,7 +21,7 @@ tags:
 
 ## 1.1. **拉取镜像**
 
-`<span class="ne-text">docker pull minio/minio</span>`
+`docker pull minio/minio`
 
 ## 1.2. **创建数据卷并提升权限**
 
@@ -67,13 +67,13 @@ minio/minio server  /data --console-address ":9090" --address ":9000"
 
 # 2. **创建 bucket 和 AccessKey**
 
-**这个直接在很简单，直接在访问 **`<span class="ne-text">http://localhost:9090</span>`在控制台操作即可。
+**这个直接在很简单，直接在访问 **`http://localhost:9090`在控制台操作即可。
 
 **注意，这里生成的 AccessKey 后续在 nestjs 中接入 minio 的 api 时会用到，所以需要记录下来**
 
 # 3. **配置策略**
 
-**经过上面的安装和配置，我们已经可以正常的访问 minio 了。并且我们创建了一个名为**`<span class="ne-text">mall</span>`的 bucket，用于存储商品相关的图片对象。不过，minio 的资源访问，默认是需要通过 AccessKey 或者账号密码来访问的。但是我们是一个 b2c 的商城，在后台管理系统重上传的图需要能在公网访问。
+**经过上面的安装和配置，我们已经可以正常的访问 minio 了。并且我们创建了一个名为**`mall`的 bucket，用于存储商品相关的图片对象。不过，minio 的资源访问，默认是需要通过 AccessKey 或者账号密码来访问的。但是我们是一个 b2c 的商城，在后台管理系统重上传的图需要能在公网访问。
 
 **但是默认的策略，公网无法访问。我们需要自己配置策略**
 
@@ -143,17 +143,17 @@ minio/minio server  /data --console-address ":9090" --address ":9000"
 }
 ```
 
-- ​**Effect**​**: **`<span class="ne-text">Allow</span>` — 允许执行指定的操作。
-- ​**Principal**​**: **`<span class="ne-text">arn:aws:iam::<account_id>:user/<user_name></span>` — 指定这个策略适用的 IAM 用户。`<span class="ne-text"><account_id></span>` 和 `<span class="ne-text"><user_name></span>` 需要替换为实际的 AWS 账户 ID 和用户名。
+- ​**Effect**​**: **`Allow` — 允许执行指定的操作。
+- ​**Principal**​**: **`arn:aws:iam::<account_id>:user/<user_name>` — 指定这个策略适用的 IAM 用户。`<account_id>` 和 `<user_name>` 需要替换为实际的 AWS 账户 ID 和用户名。
 - ​**Action**​**: 允许的操作：**
 
-  - `<span class="ne-text">s3:PutObject</span>` — 允许将对象（如文件）上传到桶中。
-  - `<span class="ne-text">s3:AbortMultipartUpload</span>` — 允许中止一个多部分上传操作。
-  - `<span class="ne-text">s3:DeleteObject</span>` — 允许删除桶中的对象。
+  - `s3:PutObject` — 允许将对象（如文件）上传到桶中。
+  - `s3:AbortMultipartUpload` — 允许中止一个多部分上传操作。
+  - `s3:DeleteObject` — 允许删除桶中的对象。
 
-- ​**Resource**​**: **`<span class="ne-text">arn:aws:s3:::mall/*</span>` — 这个权限作用于 `<span class="ne-text">mall</span>` 存储桶中的所有对象（即桶中的所有文件）。
+- ​**Resource**​**: **`arn:aws:s3:::mall/*` — 这个权限作用于 `mall` 存储桶中的所有对象（即桶中的所有文件）。
 
-​**总结**​**：该声明允许指定的 IAM 用户上传文件、删除文件，以及中止未完成的多部分上传操作，作用于 **`<span class="ne-text">mall</span>` 存储桶中的所有文件。
+​**总结**​**：该声明允许指定的 IAM 用户上传文件、删除文件，以及中止未完成的多部分上传操作，作用于 **`mall` 存储桶中的所有文件。
 
 #### 2. 第二个声明：
 
@@ -168,16 +168,16 @@ minio/minio server  /data --console-address ":9090" --address ":9000"
 }
 ```
 
-- ​**Effect**​**: **`<span class="ne-text">Allow</span>` — 允许执行指定的操作。
-- ​**Principal**​**: **`<span class="ne-text">arn:aws:iam::<account_id>:user/<user_name></span>` — 同样是指定 IAM 用户。
+- ​**Effect**​**: **`Allow` — 允许执行指定的操作。
+- ​**Principal**​**: **`arn:aws:iam::<account_id>:user/<user_name>` — 同样是指定 IAM 用户。
 - ​**Action**​**: 允许的操作：**
 
-  - `<span class="ne-text">s3:ListBucket</span>` — 允许列出存储桶中的对象。
-  - `<span class="ne-text">s3:ListBucketMultipartUploads</span>` — 允许列出正在进行的多部分上传任务。
+  - `s3:ListBucket` — 允许列出存储桶中的对象。
+  - `s3:ListBucketMultipartUploads` — 允许列出正在进行的多部分上传任务。
 
-- ​**Resource**​**: **`<span class="ne-text">arn:aws:s3:::mall</span>` — 这些操作只作用于 `<span class="ne-text">mall</span>` 存储桶本身，而不是桶中的具体文件。
+- ​**Resource**​**: **`arn:aws:s3:::mall` — 这些操作只作用于 `mall` 存储桶本身，而不是桶中的具体文件。
 
-​**总结**​**：该声明允许指定的 IAM 用户列出 **`<span class="ne-text">mall</span>` 存储桶中的文件，或者查看当前正在进行的多部分上传任务。
+​**总结**​**：该声明允许指定的 IAM 用户列出 **`mall` 存储桶中的文件，或者查看当前正在进行的多部分上传任务。
 
 #### 3. 第三个声明：
 
@@ -192,16 +192,16 @@ minio/minio server  /data --console-address ":9090" --address ":9000"
 }
 ```
 
-- ​**Effect**​**: **`<span class="ne-text">Allow</span>` — 允许执行指定的操作。
-- ​**Principal**​**: **`<span class="ne-text">"*"</span>` — 这个策略适用于所有主体，即公开访问。
+- ​**Effect**​**: **`Allow` — 允许执行指定的操作。
+- ​**Principal**​**: **`"*"` — 这个策略适用于所有主体，即公开访问。
 - ​**Action**​**: 允许的操作：**
 
-  - `<span class="ne-text">s3:GetBucketLocation</span>` — 允许获取存储桶的位置。
-  - `<span class="ne-text">s3:ListBucket</span>` — 允许列出存储桶中的对象。
+  - `s3:GetBucketLocation` — 允许获取存储桶的位置。
+  - `s3:ListBucket` — 允许列出存储桶中的对象。
 
-- ​**Resource**​**: **`<span class="ne-text">arn:aws:s3:::mall</span>` — 这些操作作用于 `<span class="ne-text">mall</span>` 存储桶本身。
+- ​**Resource**​**: **`arn:aws:s3:::mall` — 这些操作作用于 `mall` 存储桶本身。
 
-​**总结**​**：该声明允许所有人（公共访问）获取 **`<span class="ne-text">mall</span>` 存储桶的位置和列出桶中的文件列表（列出桶中文件的元数据）。
+​**总结**​**：该声明允许所有人（公共访问）获取 **`mall` 存储桶的位置和列出桶中的文件列表（列出桶中文件的元数据）。
 
 #### 4. 第四个声明：
 
@@ -216,15 +216,15 @@ minio/minio server  /data --console-address ":9090" --address ":9000"
 }
 ```
 
-- ​**Effect**​**: **`<span class="ne-text">Allow</span>` — 允许执行指定的操作。
-- ​**Principal**​**: **`<span class="ne-text">"*"</span>` — 这个策略适用于所有主体，即公开访问。
+- ​**Effect**​**: **`Allow` — 允许执行指定的操作。
+- ​**Principal**​**: **`"*"` — 这个策略适用于所有主体，即公开访问。
 - ​**Action**​**: 允许的操作：**
 
-  - `<span class="ne-text">s3:GetObject</span>` — 允许获取存储桶中的对象。
+  - `s3:GetObject` — 允许获取存储桶中的对象。
 
-- ​**Resource**​**: **`<span class="ne-text">arn:aws:s3:::mall/*</span>` — 这个权限作用于 `<span class="ne-text">mall</span>` 存储桶中的所有对象。
+- ​**Resource**​**: **`arn:aws:s3:::mall/*` — 这个权限作用于 `mall` 存储桶中的所有对象。
 
-​**总结**​**：该声明允许任何人公开访问 **`<span class="ne-text">mall</span>` 存储桶中的所有对象（如图片、文件等）。
+​**总结**​**：该声明允许任何人公开访问 **`mall` 存储桶中的所有对象（如图片、文件等）。
 
 ## 3.3. **配置匿名访问**
 

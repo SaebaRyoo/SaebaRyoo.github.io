@@ -21,7 +21,7 @@ tags:
 
 ## SSR 代码实现思路
 
-具体代码看 [github 仓库](https://github.com/SaebaRyoo/Demos/tree/main/react-ssr)
+具体代码看 [github 仓库](https://github.com/SaebaRyoo/Demos/tree/main/react-hooks-ts-ssr)
 
 ### 服务端
 

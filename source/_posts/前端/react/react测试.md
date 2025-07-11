@@ -460,7 +460,7 @@ export function renderWithProviders(
 它不同于其他 mock service 需要独立运行一个服务且对代码的侵入性比较强。它是利用的 Service Worker API，在网络层进行请求拦截。保证有 mock 和无 mock 的应用程序的行为一致，且不需要为了 mock 而对应用程序的代码做修改。具体说明在[官网](https://mswjs.io/docs/#why-service-workers)
 
 它的工作流如下图
-![](https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG5cdEJyb3dzZXIgLT4-IFNlcnZpY2UgV29ya2VyOiAxLiByZXF1ZXN0XG4gIFNlcnZpY2UgV29ya2VyIC0tPj4gbXN3OiAyLiByZXF1ZXN0IGNsb25lXG4gIG1zdyAtLT4-IG1zdzogMy4gbWF0Y2ggYWdhaW5zdCBtb2Nrc1xuICBtc3cgLS0-PiBTZXJ2aWNlIFdvcmtlcjogNC4gTW9ja2VkIHJlc3BvbnNlXG4gIFNlcnZpY2UgV29ya2VyIC0-PiBCcm93c2VyOiA1LiByZXNwb25kV2l0aChtb2NrZWRSZXNwb25zZSlcblx0XHRcdFx0XHQiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlfQ)
+![](/imgs/react/3.png)
 
 ### 使用 userEvent 来模拟用户操作
 

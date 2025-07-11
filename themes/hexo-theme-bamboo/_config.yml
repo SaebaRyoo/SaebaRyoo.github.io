@@ -14,13 +14,12 @@ menu:
   Tags:
     url: /tags
     icon: fas fa-tags
+  About:
+    # on: true
+    url: https://www.ryozhu.top
+    icon: fas fa-user
   Visual:
     url: /visualization-layout
-  Resume:
-      url: /about/resume
-  # About:
-  #   url: /about
-  #   icon: fas fa-user
   # Friends:
   #   url: /friends
   # 更多: # 这是二级菜单的写法

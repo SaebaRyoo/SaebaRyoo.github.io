@@ -54,9 +54,9 @@ passwd deploy
 
 #### 1.3.1.3. **为用户分配用户组**
 
-**我们创建了 deploy 用户后，它默认就有一个 deploy 组，我们可以通过**`<span class="ne-text">groups deploy</span>`来查看这个用户的组。如果想要查看全部的组就使用`<span class="ne-text">cat /etc/group</span>`。
+**我们创建了 deploy 用户后，它默认就有一个 deploy 组，我们可以通过**`groups deploy`来查看这个用户的组。如果想要查看全部的组就使用`cat /etc/group`。
 
-**因为我们后续会使用 docker 部署，所以为了**确保 `<span class="ne-text">deploy</span>` 用户有权限访问 Docker 守护进程。我们可以使用以下命令
+**因为我们后续会使用 docker 部署，所以为了**确保 `deploy` 用户有权限访问 Docker 守护进程。我们可以使用以下命令
 
 ```bash
 sudo usermod -aG docker deploy
@@ -79,7 +79,7 @@ passwd -l deploy
 ​**限制私钥权限**​**：为 GitHub Actions 使用的 SSH 私钥配置最小权限。例如：**
 
 - **仅允许该私钥访问特定的目录（如部署目录）。**
-- **禁止该私钥执行危险操作（如 **`<span class="ne-text">sudo</span>` 或修改系统文件）。
+- **禁止该私钥执行危险操作（如 **`sudo` 或修改系统文件）。
 
 # 2. **给 nestjs 项目增加 docker 配置**
 
@@ -113,7 +113,7 @@ CMD ["node", "dist/main.js"]
 
 ## 2.2. **创建 docker-compose.yml 部署文件**
 
-**这个**`<span class="ne-text">environment</span>`是按照你.env 文件中的变量来配置的，`<span class="ne-text">.env</span>`后面会讲到
+**这个**`environment`是按照你.env 文件中的变量来配置的，`.env`后面会讲到
 
 ```yaml
 version: "2.5"
@@ -162,7 +162,7 @@ networks:
 
 ## 3.1. **Github Action 简介**
 
-- **GitHub Actions** 部署文件通常以 `<span class="ne-text">xxx.yml</span>` 命名，路径为项目根目录下 `<span class="ne-text">/.github/workflows/xxx.yml</span>` 。
+- **GitHub Actions** 部署文件通常以 `xxx.yml` 命名，路径为项目根目录下 `/.github/workflows/xxx.yml` 。
 - **Jobs 中使用的 Action 可以去 github 的**[macketplace](https://github.com/marketplace)寻找
 
 **一般的 workflow 流程如下**
@@ -240,13 +240,13 @@ jobs:
 
 ## 3.3. **在服务器配置秘钥**
 
-- **使用**`<span class="ne-text">deploy</span>`用户登录我们的服务器，在 `<span class="ne-text">root</span>` 目录下输入，直接回车到底
+- **使用**`deploy`用户登录我们的服务器，在 `root` 目录下输入，直接回车到底
 
 ```yaml
 ssh-keygen -m PEM -t rsa -b 4096
 ```
 
-- **此时， **`<span class="ne-text">~/.ssh/</span>` 下生成了私钥文件 `<span class="ne-text">id_dsa</span>` 、公钥文件`<span class="ne-text">id_dsa.pub</span>` ，然后根据公钥文件生成`<span class="ne-text">authorized_keys</span>` ，
+- **此时， **`~/.ssh/` 下生成了私钥文件 `id_dsa` 、公钥文件`id_dsa.pub` ，然后根据公钥文件生成`authorized_keys` ，
 
 ```bash
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
@@ -278,11 +278,11 @@ chmod 600 ~/.ssh/authorized_keys
 
 ### 3.4.2. **REMOTE_USER**
 
-**填写 **`<span class="ne-text">deploy</span>`用户
+**填写 **`deploy`用户
 
 ### 3.4.3. **SSH_PRIVATE_KEY**
 
-**用于连接服务器的秘钥，你需要在**服务器中 `<span class="ne-text">cat</span>` 密钥，将所有内容复制到上图的 **SSH_PRIVATE_KEY** 中
+**用于连接服务器的秘钥，你需要在**服务器中 `cat` 密钥，将所有内容复制到上图的 **SSH_PRIVATE_KEY** 中
 
 ```c
 cat ~/.ssh/id_rsa
@@ -290,7 +290,7 @@ cat ~/.ssh/id_rsa
 
 # 4. **服务器设置**
 
-**使用**`<span class="ne-text">deploy</span>`用户登录服务器，然后输入`<span class="ne-text">pwd</span>`。我们会发现当前用户的工作目就是我们设置的家目录`<span class="ne-text">/home/deploy</span>`
+**使用**`deploy`用户登录服务器，然后输入`pwd`。我们会发现当前用户的工作目就是我们设置的家目录`/home/deploy`
 
 ![](https://cdn.nlark.com/yuque/0/2025/png/411665/1740295209014-52f4acdc-f863-46c2-ba88-9add391f2d4f.png)
 
@@ -300,9 +300,9 @@ cat ~/.ssh/id_rsa
 mkdir -p ~/work/ibuy-backend
 ```
 
-**这里的**`<span class="ne-text">"~"</span>`指的就是我们的家目录 `<span class="ne-text">/home/deploy</span>`。
+**这里的**`"~"`指的就是我们的家目录 `/home/deploy`。
 
-**因为我们的.env 文件不能外露到 github 上，所需要使用**`<span class="ne-text">vim .env</span>`手动创建以下我们的`<span class="ne-text">.env</span>`文件，将下面的内容拷贝到`<span class="ne-text">.env</span>`中
+**因为我们的.env 文件不能外露到 github 上，所需要使用**`vim .env`手动创建以下我们的`.env`文件，将下面的内容拷贝到`.env`中
 
 **注意：这里要按照你自己的环境变量配置**
 
@@ -342,4 +342,4 @@ ES_PORT=9200
 
 # 5. **其他方案问题**
 
-**在使用 github action 部署时发现 nestjs 的项目在 build 时不会将 node_modules 打包进去，这就导致需要将所有的文件拉到服务器上再执行构建任务。正好有一篇**[文章](https://juejin.cn/post/7065724860688760862#heading-2)也讲到了这个问题。它是自己创建了一个`<span class="ne-text">webpack.config.js</span>`文件，忽略掉`<span class="ne-text">externals</span>`以及一些 nest 提供的插件。但是这有一个很大的隐患：只适用于简单的纯 js 项目，如果遇到了依赖库里有动态加载，二进制依赖，使用了 fs 读写文件，这几种情况打包成一个文件会出问题
+**在使用 github action 部署时发现 nestjs 的项目在 build 时不会将 node_modules 打包进去，这就导致需要将所有的文件拉到服务器上再执行构建任务。正好有一篇**[文章](https://juejin.cn/post/7065724860688760862#heading-2)也讲到了这个问题。它是自己创建了一个`webpack.config.js`文件，忽略掉`externals`以及一些 nest 提供的插件。但是这有一个很大的隐患：只适用于简单的纯 js 项目，如果遇到了依赖库里有动态加载，二进制依赖，使用了 fs 读写文件，这几种情况打包成一个文件会出问题

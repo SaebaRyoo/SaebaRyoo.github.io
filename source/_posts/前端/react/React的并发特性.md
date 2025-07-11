@@ -37,7 +37,7 @@ tags:
 
 我们可以通过下面的图片来了解`主线程`、`事件循环`、`消息队列`和其他线程之间的关系
 
-![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3b8d006695f24b78a0d2b5e567141761~tplv-k3u1fbpfcp-watermark.image?)
+![image.png](/imgs/react/1.png)
 
 但是，`消息队列`是**先进先出**的。`主线程`所有执行任务都来自于`消息队列`。会面临以下两个问题
 
@@ -51,7 +51,7 @@ tags:
 
 ### 2. 如何解决单个任务执行时长过久的问题。
 
-![image.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ced99956039b4f54958888a1516af929~tplv-k3u1fbpfcp-zoom-1.image)
+![image.png](/imgs/react/2.png)
 
 从图中可以看到，所有任务都是在单线程中执行的，而由于每一帧的时间有限，如果某一个 js 任务非常的耗时，那么下面的任务(DOM 解析、JS 事件、布局计算、用户输入事件等)就需要等待很长时间。这也就是我们页面中**卡顿**的由来。
 
