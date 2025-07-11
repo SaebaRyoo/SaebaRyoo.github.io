@@ -1,0 +1,2302 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>nginx服务器详细解析 | Ryo的小站</title>
+
+  <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+    
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+  
+  <!-- 依赖于jquery和vue -->
+  
+    
+<script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+
+  
+
+  
+    
+<script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+
+  
+  
+  <body>
+    <!-- 预加载动画 -->
+    <!-- 页面预加载动画 -->
+
+<div id='loader'>
+  <link rel="stylesheet" href="/js/loaded/index.css" >
+  <div class="loading-left-bg"></div>
+  <div class="loading-right-bg"></div>
+  <div class="spinner-box">
+    <div class="configure-border-1">
+      <div class="configure-core"></div>
+    </div>
+    <div class="configure-border-2">
+      <div class="configure-core"></div>
+    </div>
+    <div class="loading-word">加载中...</div>
+  </div>
+</div>
+
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+  
+</script>
+
+    
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (href, before, media, attributes) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header   "
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">Ryo的小站</h3>
+      <h5 class="drawer-box-head_desc">Ryo的全栈路的学习和生活记录</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/tags" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a target="_blank" rel="noopener" href="https://www.ryozhu.top" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                  
+                  <span class="name">关于</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/visualization-layout" class="drawer-menu-item-link">
+                  
+                  <span class="name">可视化搭建</span>
+                </a>
+              
+            </li>
+          
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">Ryo的小站</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/" class="menu-item-link" title="首页">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/tags" class="menu-item-link" title="标签">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a target="_blank" rel="noopener" href="https://www.ryozhu.top" class="menu-item-link" title="关于">
+                  
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                  
+                  <span class="name">关于</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/visualization-layout" class="menu-item-link" title="可视化搭建">
+                  
+                  <span class="name">可视化搭建</span>
+                </a>
+              
+            </li>
+          
+        
+      </ul>
+
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+</header>
+
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('/medias/12.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        nginx服务器详细解析
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2025-03-17 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E8%BF%90%E7%BB%B4/" class="post-detail-header_category">
+              运维
+            </a>
+          
+        </span>
+      
+
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content row justify-position" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h2 id="1-基础篇"><a href="#1-基础篇" class="headerlink" title="1. 基础篇"></a>1. 基础篇</h2><h3 id="1-1-Nginx介绍"><a href="#1-1-Nginx介绍" class="headerlink" title="1.1 Nginx介绍"></a>1.1 Nginx介绍</h3><p><strong>Nginx是一款轻量级的Web服务器、反向代理服务器，是由俄罗斯的程序设计师Igor Sysoev所开发，使用C语言开发。由于其内存占用少，启动速度极快，具有高并发处理能力，在互联网项目中被广泛应用。</strong></p>
+<h4 id="1-1-1-主要特点"><a href="#1-1-1-主要特点" class="headerlink" title="1.1.1 主要特点"></a>1.1.1 主要特点</h4><ul>
+<li><strong>内存占用少，并发能力强</strong></li>
+<li><strong>高度模块化的设计，具有很好的扩展性</strong></li>
+<li><strong>高可靠性和稳定性</strong></li>
+<li><strong>支持热部署，不停机更新配置和程序版本</strong></li>
+</ul>
+<h4 id="1-1-2-核心功能"><a href="#1-1-2-核心功能" class="headerlink" title="1.1.2 核心功能"></a>1.1.2 核心功能</h4><ul>
+<li><strong>HTTP服务器（静态资源服务器）</strong></li>
+<li><strong>反向代理服务器</strong></li>
+<li><strong>负载均衡</strong></li>
+<li><strong>邮件代理服务器</strong></li>
+<li><strong>支持FastCGI、SSL、Virtual Host、URL Rewrite、Gzip等功能</strong></li>
+<li><strong>支持第三方模块扩展</strong></li>
+</ul>
+<p><strong>目前，Nginx在全球网站中的市场份额超过33.5%，位居第二，仅次于Apache。其优秀的性能和丰富的功能使其成为现代Web架构中不可或缺的组件。</strong></p>
+<h3 id="1-2-Nginx下载安装"><a href="#1-2-Nginx下载安装" class="headerlink" title="1.2 Nginx下载安装"></a>1.2 Nginx下载安装</h3><h4 id="1-2-1-版本选择"><a href="#1-2-1-版本选择" class="headerlink" title="1.2.1 版本选择"></a>1.2.1 版本选择</h4><ul>
+<li><strong>Mainline version：开发版，包含新功能和修复</strong></li>
+<li><strong>Stable version：稳定版，建议生产环境使用</strong></li>
+<li><strong>Legacy versions：老版本</strong></li>
+</ul>
+<h4 id="1-2-2-安装方式"><a href="#1-2-2-安装方式" class="headerlink" title="1.2.2 安装方式"></a>1.2.2 安装方式</h4><ol>
+<li><strong>包管理器安装（推荐）</strong></li>
+</ol>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># CentOS/RHEL</span>
+yum <span class="token function">install</span> nginx
+
+<span class="token comment"># Ubuntu/Debian</span>
+<span class="token function">apt-get</span> <span class="token function">install</span> nginx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li><strong>源码编译安装</strong></li>
+</ol>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 下载源码</span>
+<span class="token function">wget</span> http://nginx.org/download/nginx-1.20.1.tar.gz
+
+<span class="token comment"># 解压</span>
+<span class="token function">tar</span> <span class="token parameter variable">-zxvf</span> nginx-1.20.1.tar.gz
+
+<span class="token comment"># 配置、编译、安装</span>
+./configure
+<span class="token function">make</span>
+<span class="token function">make</span> <span class="token function">install</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li><strong>Docker容器化部署（推荐生产环境）</strong></li>
+</ol>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 拉取nginx镜像</span>
+<span class="token function">docker</span> pull nginx
+
+<span class="token comment"># 创建挂载目录</span>
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> /usr/local/docker-volumes/nginx/<span class="token punctuation">&#123;</span>conf,log,html,cert<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># 运行临时容器并复制配置</span>
+<span class="token function">docker</span> run <span class="token parameter variable">--name</span> nginx <span class="token parameter variable">-d</span> <span class="token parameter variable">-p</span> <span class="token number">80</span>:80 nginx
+<span class="token function">docker</span> <span class="token function">cp</span> nginx:/etc/nginx/nginx.conf /usr/local/docker-volumes/nginx/
+<span class="token function">docker</span> <span class="token function">cp</span> nginx:/etc/nginx/conf.d /usr/local/docker-volumes/nginx/
+<span class="token function">docker</span> <span class="token function">cp</span> nginx:/usr/share/nginx/html /usr/local/docker-volumes/nginx/
+<span class="token function">docker</span> <span class="token function">rm</span> <span class="token parameter variable">-f</span> nginx
+
+<span class="token comment"># 启动正式容器</span>
+<span class="token function">docker</span> run <span class="token parameter variable">--name</span> nginx <span class="token parameter variable">-m</span> 200m <span class="token parameter variable">-p</span> <span class="token number">80</span>:80 <span class="token parameter variable">-p</span> <span class="token number">443</span>:443 <span class="token punctuation">\</span>
+<span class="token parameter variable">-v</span> /usr/local/docker-volumes/nginx/nginx.conf:/etc/nginx/nginx.conf <span class="token punctuation">\</span>
+<span class="token parameter variable">-v</span> /usr/local/docker-volumes/nginx/conf.d:/etc/nginx/conf.d <span class="token punctuation">\</span>
+<span class="token parameter variable">-v</span> /usr/local/docker-volumes/nginx/cert:/etc/nginx/cert <span class="token punctuation">\</span>
+<span class="token parameter variable">-v</span> /usr/local/docker-volumes/nginx/html:/usr/share/nginx/html <span class="token punctuation">\</span>
+<span class="token parameter variable">-v</span> /usr/local/docker-volumes/nginx/log:/var/log/nginx <span class="token punctuation">\</span>
+<span class="token parameter variable">-e</span> <span class="token assign-left variable">TZ</span><span class="token operator">=</span>Asia/Shanghai <span class="token punctuation">\</span>
+<span class="token parameter variable">--restart</span><span class="token operator">=</span>always <span class="token punctuation">\</span>
+<span class="token parameter variable">--network</span> <span class="token function">host</span> <span class="token punctuation">\</span>
+<span class="token parameter variable">--privileged</span><span class="token operator">=</span>true <span class="token parameter variable">-d</span> nginx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="1-3-Nginx基本命令和配置"><a href="#1-3-Nginx基本命令和配置" class="headerlink" title="1.3 Nginx基本命令和配置"></a>1.3 Nginx基本命令和配置</h3><h4 id="1-3-1-常用命令"><a href="#1-3-1-常用命令" class="headerlink" title="1.3.1 常用命令"></a>1.3.1 常用命令</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 强制关闭Nginx，可能不保存相关信息</span>
+nginx <span class="token parameter variable">-s</span> stop
+
+<span class="token comment"># 平稳关闭Nginx，保存相关信息</span>
+nginx <span class="token parameter variable">-s</span> quit
+
+<span class="token comment"># 重新加载配置</span>
+nginx <span class="token parameter variable">-s</span> reload
+
+<span class="token comment"># 重新打开日志文件</span>
+nginx <span class="token parameter variable">-s</span> reopen
+
+<span class="token comment"># 指定配置文件</span>
+nginx <span class="token parameter variable">-c</span> filename
+
+<span class="token comment"># 测试配置文件语法</span>
+nginx <span class="token parameter variable">-t</span>
+
+<span class="token comment"># 显示版本信息</span>
+nginx <span class="token parameter variable">-v</span>
+
+<span class="token comment"># 显示详细版本信息</span>
+nginx <span class="token parameter variable">-V</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="1-3-2-配置文件结构"><a href="#1-3-2-配置文件结构" class="headerlink" title="1.3.2 配置文件结构"></a>1.3.2 配置文件结构</h4><p><strong>Nginx配置文件主要由以下6个部分组成：</strong></p>
+<ol>
+<li><strong>main：用于进行nginx全局信息的配置</strong></li>
+<li><strong>events：用于nginx工作模式的配置</strong></li>
+<li><strong>http：用于进行http协议信息的一些配置</strong></li>
+<li><strong>server：用于进行服务器访问信息的配置</strong></li>
+<li><strong>location：用于进行访问路由的配置</strong></li>
+<li><strong>upstream：用于进行负载均衡的配置</strong><br>整体结构如下：</li>
+</ol>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 全局配置块：影响nginx全局的配置</span>
+<span class="token directive"><span class="token keyword">main</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">worker_processes</span> <span class="token number">4</span></span><span class="token punctuation">;</span>    <span class="token comment"># 工作进程数，通常设置为CPU核心数</span>
+    <span class="token directive"><span class="token keyword">worker_connections</span> <span class="token number">1024</span></span><span class="token punctuation">;</span>    <span class="token comment"># 每个工作进程的最大连接数</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># 事件块：配置影响nginx服务器或与用户的网络连接</span>
+<span class="token directive"><span class="token keyword">events</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">use</span> epoll</span><span class="token punctuation">;</span>    <span class="token comment"># 事件驱动模型，Linux系统推荐使用epoll</span>
+    <span class="token directive"><span class="token keyword">worker_connections</span> <span class="token number">1024</span></span><span class="token punctuation">;</span>    <span class="token comment"># 每个工作进程的最大连接数</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># HTTP块：配置代理、缓存、日志等绝大多数功能</span>
+<span class="token directive"><span class="token keyword">http</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token comment"># 基础配置</span>
+    <span class="token directive"><span class="token keyword">include</span> mime.types</span><span class="token punctuation">;</span>    <span class="token comment"># 文件扩展名与文件类型映射表</span>
+    <span class="token directive"><span class="token keyword">default_type</span> application/octet-stream</span><span class="token punctuation">;</span>    <span class="token comment"># 默认文件类型</span>
+    
+    <span class="token comment"># 服务器块：配置虚拟主机的相关参数</span>
+    <span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">listen</span> <span class="token number">80</span></span><span class="token punctuation">;</span>    <span class="token comment"># 监听端口</span>
+        <span class="token directive"><span class="token keyword">server_name</span> example.com</span><span class="token punctuation">;</span>    <span class="token comment"># 服务器名称</span>
+        
+        <span class="token comment"># location块：配置请求的路由和页面处理</span>
+        <span class="token directive"><span class="token keyword">location</span> /</span> <span class="token punctuation">&#123;</span>
+            <span class="token directive"><span class="token keyword">root</span> /usr/share/nginx/html</span><span class="token punctuation">;</span>    <span class="token comment"># 根目录</span>
+            <span class="token directive"><span class="token keyword">index</span> index.html</span><span class="token punctuation">;</span>    <span class="token comment"># 默认页面</span>
+        <span class="token punctuation">&#125;</span>
+        
+        <span class="token directive"><span class="token keyword">location</span> /api/</span> <span class="token punctuation">&#123;</span>
+            <span class="token directive"><span class="token keyword">proxy_pass</span> http://backend</span><span class="token punctuation">;</span>    <span class="token comment"># 反向代理配置</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    
+        <span class="token comment"># upstream块：配置负载均衡服务器组</span>
+    <span class="token directive"><span class="token keyword">upstream</span> backend</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">server</span> 127.0.0.1:8001 weight=3</span><span class="token punctuation">;</span>    <span class="token comment"># 权重为3</span>
+        <span class="token directive"><span class="token keyword">server</span> 127.0.0.1:8002 weight=2</span><span class="token punctuation">;</span>    <span class="token comment"># 权重为2</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="1-3-3-Location匹配规则"><a href="#1-3-3-Location匹配规则" class="headerlink" title="1.3.3 Location匹配规则"></a>1.3.3 Location匹配规则</h4><pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">location</span> [ = | ~ | ~* | ^~ ] url</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment"># 配置内容</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>匹配修饰符说明：</strong></p>
+<ul>
+<li>​&#x3D;：精确匹配，要求请求的URL与配置的URL完全相同<br>​</li>
+<li>​​^~：前缀匹配，不检查正则表达式**<br>​</li>
+<li>​~：区分大小写的正则匹配**<br>​</li>
+<li>​~：不区分大小写的正则匹配<br>​</li>
+<li>​&#x2F;：通用匹配，所有请求都会匹配到<br>​</li>
+</ul>
+<p><strong>匹配优先级（从高到低）：</strong></p>
+<ol>
+<li>&#x3D; 精确匹配</li>
+<li>​^~ 前缀匹配</li>
+<li>​~ 和 <strong>~正则匹配</strong></li>
+<li>&#x2F; 通用匹配</li>
+</ol>
+<p><strong>配置示例：</strong></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 精确匹配</span>
+<span class="token directive"><span class="token keyword">location</span> = /api</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment"># 只匹配 /api 请求</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># 前缀匹配</span>
+<span class="token directive"><span class="token keyword">location</span> ^~ /static/</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment"># 匹配所有以 /static/ 开头的请求</span>
+    <span class="token directive"><span class="token keyword">root</span> /usr/share/nginx/html</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># 正则匹配（区分大小写）</span>
+<span class="token directive"><span class="token keyword">location</span> ~ \.(gif|jpg|png)$</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment"># 匹配以 .gif、.jpg、.png 结尾的请求</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># 正则匹配（不区分大小写）</span>
+<span class="token directive"><span class="token keyword">location</span> ~* \.(js|css)$</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment"># 匹配以 .js、.css 结尾的请求</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># 通用匹配</span>
+<span class="token directive"><span class="token keyword">location</span> /</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment"># 匹配所有请求</span>
+    <span class="token directive"><span class="token keyword">root</span> /usr/share/nginx/html</span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">index</span> index.html</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>注意事项：</strong></p>
+<ol>
+<li><strong>多个location配置的情况下，匹配顺序优先级很重要</strong></li>
+<li>​<strong>正则表达式中如果包含字符</strong>​<code>^~</code>，不要误认为是前缀匹配</li>
+<li><strong>如果正则表达式与前缀字符串都可以匹配，按照优先级采用第一个匹配的规则</strong><br>root：用于指定访问根目录时，访问虚拟主机的web目录<br>index：在不指定访问具体资源时，默认展示的资源文件列表</li>
+</ol>
+<h3 id="1-4-Nginx核心功能与实际应用"><a href="#1-4-Nginx核心功能与实际应用" class="headerlink" title="1.4 Nginx核心功能与实际应用"></a>1.4 Nginx核心功能与实际应用</h3><h4 id="1-4-1-静态资源服务"><a href="#1-4-1-静态资源服务" class="headerlink" title="1.4.1 静态资源服务"></a>1.4.1 静态资源服务</h4><p><strong>Nginx作为静态资源服务器的性能远优于Tomcat等应用服务器。它可以高效处理如HTML、CSS、JavaScript、图片、视频等静态资源。</strong></p>
+<p><strong>配置示例：</strong></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">listen</span> <span class="token number">80</span></span><span class="token punctuation">;</span>                    <span class="token comment"># 监听80端口</span>
+    <span class="token directive"><span class="token keyword">server_name</span> example.com</span><span class="token punctuation">;</span>       <span class="token comment"># 服务器域名</span>
+    <span class="token directive"><span class="token keyword">charset</span> utf-8</span><span class="token punctuation">;</span>                <span class="token comment"># 设置编码</span>
+    
+    <span class="token comment"># 静态文件配置</span>
+    <span class="token directive"><span class="token keyword">location</span> /</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">root</span> /usr/share/nginx/html</span><span class="token punctuation">;</span>   <span class="token comment"># 静态文件根目录</span>
+        <span class="token directive"><span class="token keyword">index</span> index.html index.htm</span><span class="token punctuation">;</span>    <span class="token comment"># 默认首页</span>
+        <span class="token directive"><span class="token keyword">expires</span> <span class="token number">30d</span></span><span class="token punctuation">;</span>                   <span class="token comment"># 静态文件缓存30天</span>
+        <span class="token directive"><span class="token keyword">add_header</span> Cache-Control <span class="token string">"public, no-transform"</span></span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    
+    <span class="token comment"># 针对不同类型文件的处理</span>
+    <span class="token directive"><span class="token keyword">location</span> ~* \.(jpg|jpeg|png|gif|ico|css|js)$</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">root</span> /usr/share/nginx/html</span><span class="token punctuation">;</span>     <span class="token comment"># 媒体文件目录</span>
+        <span class="token directive"><span class="token keyword">expires</span> <span class="token number">7d</span></span><span class="token punctuation">;</span>                     <span class="token comment"># 缓存7天</span>
+        <span class="token directive"><span class="token keyword">access_log</span> <span class="token boolean">off</span></span><span class="token punctuation">;</span>                 <span class="token comment"># 关闭访问日志</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="1-4-2-反向代理"><a href="#1-4-2-反向代理" class="headerlink" title="1.4.2 反向代理"></a>1.4.2 反向代理</h4><p><strong>反向代理就是隐藏真实的服务器地址，保护真实的服务器，用户在访问时访问的是代理服务器。</strong></p>
+<p><strong>nginx 中常见的反向代理指令有两个：proxy_pass 和 fastcgi_pass，前者使用标准的 HTTP 协议转发，后者使用 FastCGI 协议转发。这里我们以 proxy_pass 为例来做介绍。</strong></p>
+<p><strong>proxy_pass 有两种配置写法：</strong></p>
+<ol>
+<li>**直接指向要代理的地址，可以是一台具体的主机（ip），也可以是一个具体的网址 **</li>
+</ol>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 简单反向代理</span>
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">listen</span> <span class="token number">80</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">server_name</span> example.com</span><span class="token punctuation">;</span>
+    
+    <span class="token comment"># 代理到单一服务器</span>
+    <span class="token directive"><span class="token keyword">location</span> /api/</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">proxy_pass</span> http://backend:8080/</span><span class="token punctuation">;</span>    <span class="token comment"># 后端服务地址</span>
+        
+        <span class="token comment"># 设置代理请求头</span>
+        <span class="token directive"><span class="token keyword">proxy_set_header</span> Host <span class="token variable">$host</span></span><span class="token punctuation">;</span>
+        <span class="token directive"><span class="token keyword">proxy_set_header</span> X-Real-IP <span class="token variable">$remote_addr</span></span><span class="token punctuation">;</span>
+        <span class="token directive"><span class="token keyword">proxy_set_header</span> X-Forwarded-For <span class="token variable">$proxy_add_x_forwarded_for</span></span><span class="token punctuation">;</span>
+        
+        <span class="token comment"># 超时设置</span>
+        <span class="token directive"><span class="token keyword">proxy_connect_timeout</span> <span class="token number">60s</span></span><span class="token punctuation">;</span>
+        <span class="token directive"><span class="token keyword">proxy_send_timeout</span> <span class="token number">60s</span></span><span class="token punctuation">;</span>
+        <span class="token directive"><span class="token keyword">proxy_read_timeout</span> <span class="token number">60s</span></span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li><strong>可以搭配负载均衡指向一组服务器（参考负载均衡）</strong></li>
+</ol>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 负载均衡反向代理</span>
+<span class="token directive"><span class="token keyword">upstream</span> backend_servers</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.10:8080 weight=3</span><span class="token punctuation">;</span>    <span class="token comment"># 权重为3</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.11:8080 weight=2</span><span class="token punctuation">;</span>    <span class="token comment"># 权重为2</span>
+    <span class="token directive"><span class="token keyword">keepalive</span> <span class="token number">32</span></span><span class="token punctuation">;</span>                         <span class="token comment"># 保持连接数</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">listen</span> <span class="token number">80</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">server_name</span> example.com</span><span class="token punctuation">;</span>
+    
+    <span class="token directive"><span class="token keyword">location</span> /api/</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">proxy_pass</span> http://backend_servers</span><span class="token punctuation">;</span>
+        <span class="token directive"><span class="token keyword">proxy_http_version</span> 1.1</span><span class="token punctuation">;</span>            <span class="token comment"># 使用HTTP/1.1</span>
+        <span class="token directive"><span class="token keyword">proxy_set_header</span> Connection <span class="token string">""</span></span><span class="token punctuation">;</span>    <span class="token comment"># 启用keepalive</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>代理配置说明：</strong></p>
+<ol>
+<li>​<strong>proxy_pass</strong>：指定后端服务器地址</li>
+<li>​<strong>proxy_set_header</strong>：设置代理请求头信息</li>
+<li>​<strong>proxy_connect_timeout</strong>：与后端服务器连接超时时间</li>
+<li>​<strong>proxy_send_timeout</strong>：发送请求给后端服务器超时时间</li>
+<li>​<strong>proxy_read_timeout</strong>：从后端服务器读取响应超时时间</li>
+</ol>
+<h4 id="1-4-3-负载均衡"><a href="#1-4-3-负载均衡" class="headerlink" title="1.4.3 负载均衡"></a>1.4.3 负载均衡</h4><p><strong>负载均衡是Nginx的核心功能之一，负载均衡是解决高并发、海量数据问题的常用手段。Nginx提供了多种负载均衡策略，通过反向代理实现请求分发，解决单点服务器性能瓶颈问题,可以根据实际需求选择合适的方案。</strong></p>
+<h5 id="1-4-3-1-基础配置"><a href="#1-4-3-1-基础配置" class="headerlink" title="1.4.3.1 基础配置"></a>1.4.3.1 基础配置</h5><pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 定义后端服务器组</span>
+<span class="token directive"><span class="token keyword">upstream</span> backend</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.10:8080 weight=3</span><span class="token punctuation">;</span>    <span class="token comment"># 权重为3</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.11:8080 weight=2</span><span class="token punctuation">;</span>    <span class="token comment"># 权重为2</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">listen</span> <span class="token number">80</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">server_name</span> example.com</span><span class="token punctuation">;</span>
+    
+    <span class="token directive"><span class="token keyword">location</span> /</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">proxy_pass</span> http://backend</span><span class="token punctuation">;</span>    <span class="token comment"># 代理到服务器组</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h5 id="1-4-3-2-负载均衡策略"><a href="#1-4-3-2-负载均衡策略" class="headerlink" title="1.4.3.2 负载均衡策略"></a>1.4.3.2 负载均衡策略</h5><ol>
+<li><strong>轮询（默认）</strong></li>
+</ol>
+<p><strong>默认方式，按时间顺序逐一分配到不同的后端服务器</strong></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">upstream</span> backend</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.10:8080</span><span class="token punctuation">;</span>    <span class="token comment"># 轮询方式平均分配请求</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.11:8080</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li><strong>加权轮询</strong></li>
+</ol>
+<p><strong>weight值越大，分配到的访问机率越高</strong></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">upstream</span> backend</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.10:8080 weight=3</span><span class="token punctuation">;</span>    <span class="token comment"># 访问比例为3</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.11:8080 weight=2</span><span class="token punctuation">;</span>    <span class="token comment"># 访问比例为2</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li><strong>IP哈希</strong></li>
+</ol>
+<p><strong>根据客户端IP分配，可用于会话保持</strong></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">upstream</span> backend</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">ip_hash</span></span><span class="token punctuation">;</span>    <span class="token comment"># 启用IP哈希</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.10:8080</span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.11:8080</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="4">
+<li><strong>最少连接</strong></li>
+</ol>
+<p><strong>优先分配给连接数最少的服务器</strong></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">upstream</span> backend</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">least_conn</span></span><span class="token punctuation">;</span>    <span class="token comment"># 优先分配给连接数最少的服务器</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.10:8080</span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.11:8080</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="5">
+<li><strong>备份服务器</strong></li>
+</ol>
+<p><strong>当主服务器不可用时才会启用的备份服务器</strong></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">upstream</span> backend</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.10:8080</span><span class="token punctuation">;</span>            <span class="token comment"># 主服务器</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.11:8080 backup</span><span class="token punctuation">;</span>    <span class="token comment"># 备份服务器</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>高级配置参数：</strong></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">upstream</span> backend</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.10:8080 weight=3 max_fails=3 fail_timeout=30s</span><span class="token punctuation">;</span>    <span class="token comment"># 健康检查</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.11:8080 weight=2 max_conns=1000</span><span class="token punctuation">;</span>                  <span class="token comment"># 连接数限制</span>
+    <span class="token directive"><span class="token keyword">keepalive</span> <span class="token number">32</span></span><span class="token punctuation">;</span>    <span class="token comment"># 保持连接数</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>参数说明：</strong></p>
+<ul>
+<li>​<strong>max_fails</strong>：允许请求失败的次数</li>
+<li>​<strong>fail_timeout</strong>：经过max_fails失败后，服务暂停的时间</li>
+<li>​<strong>max_conns</strong>：最大并发连接数</li>
+<li>​<strong>keepalive</strong>：保持的空闲连接数</li>
+</ul>
+<h4 id="1-4-4-限流配置"><a href="#1-4-4-限流配置" class="headerlink" title="1.4.4 限流配置"></a>1.4.4 限流配置</h4><p><strong>Nginx限流是限制用户请求速度的重要机制，用于防止服务器过载。Nginx的限流基于漏桶算法实现，主要包括以下三种：</strong></p>
+<h5 id="1-4-4-1-正常限制访问频率"><a href="#1-4-4-1-正常限制访问频率" class="headerlink" title="1.4.4.1 正常限制访问频率"></a>1.4.4.1 正常限制访问频率</h5><pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 限制每个IP每秒只能发送1个请求</span>
+<span class="token directive"><span class="token keyword">limit_req_zone</span> <span class="token variable">$binary_remote_addr</span> zone=one:10m rate=1r/s</span><span class="token punctuation">;</span>
+
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">location</span> /api/</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">limit_req</span> zone=one</span><span class="token punctuation">;</span>
+        <span class="token directive"><span class="token keyword">proxy_pass</span> http://backend</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h5 id="1-4-4-2-突发限制访问频率"><a href="#1-4-4-2-突发限制访问频率" class="headerlink" title="1.4.4.2 突发限制访问频率"></a>1.4.4.2 突发限制访问频率</h5><pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 允许突发流量，但超过设定值后排队处理</span>
+<span class="token directive"><span class="token keyword">limit_req_zone</span> <span class="token variable">$binary_remote_addr</span> zone=two:10m rate=1r/s</span><span class="token punctuation">;</span>
+
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">location</span> /api/</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">limit_req</span> zone=two burst=5 nodelay</span><span class="token punctuation">;</span>
+        <span class="token directive"><span class="token keyword">proxy_pass</span> http://backend</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h5 id="1-4-4-3-限制并发连接数"><a href="#1-4-4-3-限制并发连接数" class="headerlink" title="1.4.4.3 限制并发连接数"></a>1.4.4.3 限制并发连接数</h5><pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 限制每个IP最多保持3个并发连接</span>
+<span class="token directive"><span class="token keyword">limit_conn_zone</span> <span class="token variable">$binary_remote_addr</span> zone=three:10m</span><span class="token punctuation">;</span>
+
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">location</span> /download/</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">limit_conn</span> three <span class="token number">3</span></span><span class="token punctuation">;</span>
+        <span class="token directive"><span class="token keyword">proxy_pass</span> http://backend</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="2-进阶篇"><a href="#2-进阶篇" class="headerlink" title="2. 进阶篇"></a>2. 进阶篇</h2><h3 id="2-1-性能优化"><a href="#2-1-性能优化" class="headerlink" title="2.1 性能优化"></a>2.1 性能优化</h3><h4 id="2-1-1-Gzip压缩"><a href="#2-1-1-Gzip压缩" class="headerlink" title="2.1.1 Gzip压缩"></a>2.1.1 Gzip压缩</h4><p>以下配置需要添加在 <strong>http 块</strong>中，用于全局启用和配置Gzip压缩：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 启用Gzip压缩 - http块配置</span>
+<span class="token directive"><span class="token keyword">gzip</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>                           <span class="token comment"># 启用Gzip压缩功能</span>
+<span class="token directive"><span class="token keyword">gzip_min_length</span> <span class="token number">1k</span></span><span class="token punctuation">;</span>                <span class="token comment"># 小于1k的文件不压缩，避免压缩很小的文件</span>
+<span class="token directive"><span class="token keyword">gzip_comp_level</span> <span class="token number">6</span></span><span class="token punctuation">;</span>                 <span class="token comment"># 压缩级别1-9，级别越高压缩率越大但CPU消耗也越高</span>
+<span class="token directive"><span class="token keyword">gzip_types</span> text/plain text/css text/javascript application/json application/javascript application/xml</span><span class="token punctuation">;</span>    <span class="token comment"># 指定需要压缩的MIME类型</span>
+<span class="token directive"><span class="token keyword">gzip_vary</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>                      <span class="token comment"># 添加Vary: Accept-Encoding响应头，用于CDN缓存</span>
+<span class="token directive"><span class="token keyword">gzip_proxied</span> any</span><span class="token punctuation">;</span>                  <span class="token comment"># 对所有代理请求进行压缩</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-1-2-缓存配置"><a href="#2-1-2-缓存配置" class="headerlink" title="2.1.2 缓存配置"></a>2.1.2 缓存配置</h4><p>以下配置需要添加在 <strong>server 块</strong>中的 <strong>location 块</strong>内，用于配置静态资源的浏览器缓存：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 静态资源缓存 - server块中的location配置</span>
+<span class="token directive"><span class="token keyword">location</span> ~* \.(jpg|jpeg|png|gif|ico|css|js)$</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">expires</span> <span class="token number">30d</span></span><span class="token punctuation">;</span>                    <span class="token comment"># 设置浏览器缓存过期时间为30天</span>
+    <span class="token directive"><span class="token keyword">add_header</span> Cache-Control <span class="token string">"public, no-transform"</span></span><span class="token punctuation">;</span>    <span class="token comment"># 允许公共缓存，禁止转换</span>
+    <span class="token directive"><span class="token keyword">access_log</span> <span class="token boolean">off</span></span><span class="token punctuation">;</span>                <span class="token comment"># 关闭访问日志以提高性能</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-1-4-连接优化"><a href="#2-1-4-连接优化" class="headerlink" title="2.1.4 连接优化"></a>2.1.4 连接优化</h4><p>以下配置需要添加在 <strong>http 块</strong>中，用于优化客户端连接参数：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 连接超时设置 - http块配置</span>
+<span class="token directive"><span class="token keyword">keepalive_timeout</span> <span class="token number">65</span></span><span class="token punctuation">;</span>              <span class="token comment"># 保持长连接的超时时间，单位秒</span>
+<span class="token directive"><span class="token keyword">keepalive_requests</span> <span class="token number">100</span></span><span class="token punctuation">;</span>            <span class="token comment"># 单个长连接最大请求数</span>
+<span class="token directive"><span class="token keyword">client_body_timeout</span> <span class="token number">10</span></span><span class="token punctuation">;</span>            <span class="token comment"># 读取请求体的超时时间，单位秒</span>
+<span class="token directive"><span class="token keyword">client_header_timeout</span> <span class="token number">10</span></span><span class="token punctuation">;</span>          <span class="token comment"># 读取请求头的超时时间，单位秒</span>
+<span class="token directive"><span class="token keyword">send_timeout</span> <span class="token number">10</span></span><span class="token punctuation">;</span>                   <span class="token comment"># 向客户端发送响应的超时时间，单位秒</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-2-HTTPS和HTTP-2配置"><a href="#2-2-HTTPS和HTTP-2配置" class="headerlink" title="2.2 HTTPS和HTTP&#x2F;2配置"></a>2.2 HTTPS和HTTP&#x2F;2配置</h3><h4 id="2-2-1-基础HTTPS配置"><a href="#2-2-1-基础HTTPS配置" class="headerlink" title="2.2.1 基础HTTPS配置"></a>2.2.1 基础HTTPS配置</h4><p>以下配置需要添加在 <strong>http 块</strong>中，包含两个 <strong>server 块</strong>配置，用于实现HTTP到HTTPS的重定向和HTTPS服务器的安全配置：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># HTTP重定向到HTTPS - http块中的第一个server配置</span>
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">listen</span> <span class="token number">80</span></span><span class="token punctuation">;</span>                    <span class="token comment"># 监听80端口</span>
+    <span class="token directive"><span class="token keyword">server_name</span> example.com</span><span class="token punctuation">;</span>       <span class="token comment"># 域名配置</span>
+    <span class="token directive"><span class="token keyword">return</span> <span class="token number">301</span> https://<span class="token variable">$server_name</span><span class="token variable">$request_uri</span></span><span class="token punctuation">;</span>    <span class="token comment"># 将所有HTTP请求永久重定向到HTTPS</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># HTTPS服务器配置 - http块中的第二个server配置</span>
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">listen</span> <span class="token number">443</span> ssl http2</span><span class="token punctuation">;</span>         <span class="token comment"># 监听443端口并启用SSL和HTTP/2</span>
+    <span class="token directive"><span class="token keyword">server_name</span> example.com</span><span class="token punctuation">;</span>       <span class="token comment"># 域名配置</span>
+    
+    <span class="token comment"># SSL证书配置 - 在server块中配置SSL证书路径</span>
+    <span class="token directive"><span class="token keyword">ssl_certificate</span> /etc/nginx/cert/example.com.pem</span><span class="token punctuation">;</span>        <span class="token comment"># SSL证书公钥</span>
+    <span class="token directive"><span class="token keyword">ssl_certificate_key</span> /etc/nginx/cert/example.com.key</span><span class="token punctuation">;</span>    <span class="token comment"># SSL证书私钥</span>
+    
+    <span class="token comment"># SSL协议和加密套件配置 - 增强HTTPS安全性</span>
+    <span class="token directive"><span class="token keyword">ssl_protocols</span> TLSv1.2 TLSv1.4</span><span class="token punctuation">;</span>    <span class="token comment"># 只允许TLS 1.2和1.4，禁用不安全的协议</span>
+    <span class="token directive"><span class="token keyword">ssl_ciphers</span> ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4</span><span class="token punctuation">;</span>    <span class="token comment"># 配置加密算法</span>
+    <span class="token directive"><span class="token keyword">ssl_prefer_server_ciphers</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>     <span class="token comment"># 优先使用服务器的加密套件配置</span>
+    
+    <span class="token comment"># SSL会话缓存 - 优化SSL握手性能</span>
+    <span class="token directive"><span class="token keyword">ssl_session_cache</span> shared:SSL:10m</span><span class="token punctuation">;</span>    <span class="token comment"># 配置10MB的共享会话缓存</span>
+    <span class="token directive"><span class="token keyword">ssl_session_timeout</span> <span class="token number">10m</span></span><span class="token punctuation">;</span>            <span class="token comment"># 设置SSL会话缓存超时时间</span>
+    
+    <span class="token comment"># HSTS配置 - 强制客户端使用HTTPS</span>
+    <span class="token directive"><span class="token keyword">add_header</span> Strict-Transport-Security <span class="token string">"max-age=31536000"</span></span><span class="token punctuation">;</span>    <span class="token comment"># 启用HSTS，有效期一年</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-2-2-HTTP-2优化"><a href="#2-2-2-HTTP-2优化" class="headerlink" title="2.2.2 HTTP&#x2F;2优化"></a>2.2.2 HTTP&#x2F;2优化</h4><p>以下配置需要添加在 <strong>http 块</strong>或 <strong>server 块</strong>中，用于优化HTTP&#x2F;2性能：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># HTTP/2特定优化 - http块或server块配置</span>
+<span class="token directive"><span class="token keyword">http2_push_preload</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>              <span class="token comment"># 启用服务器推送，支持preload资源预加载</span>
+<span class="token directive"><span class="token keyword">http2_max_concurrent_streams</span> <span class="token number">128</span></span><span class="token punctuation">;</span>    <span class="token comment"># 限制每个连接的最大并发流数量</span>
+<span class="token directive"><span class="token keyword">http2_idle_timeout</span> <span class="token number">3m</span></span><span class="token punctuation">;</span>              <span class="token comment"># 设置空闲连接的超时时间为3分钟</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-3-安全加固"><a href="#2-3-安全加固" class="headerlink" title="2.3 安全加固"></a>2.3 安全加固</h3><h4 id="2-3-1-DDoS防护"><a href="#2-3-1-DDoS防护" class="headerlink" title="2.3.1 DDoS防护"></a>2.3.1 DDoS防护</h4><p>以下配置包含多个层次的DDoS防护措施：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># IP连接限制 - http块配置</span>
+<span class="token directive"><span class="token keyword">limit_conn_zone</span> <span class="token variable">$binary_remote_addr</span> zone=addr:10m</span><span class="token punctuation">;</span>    <span class="token comment"># 在http块中定义共享内存区，用于存储IP连接计数</span>
+<span class="token directive"><span class="token keyword">limit_conn</span> addr <span class="token number">100</span></span><span class="token punctuation">;</span>                                  <span class="token comment"># 在http块或server块中限制每个IP的并发连接数</span>
+
+<span class="token comment"># 请求频率限制 - http块和location块配置</span>
+<span class="token directive"><span class="token keyword">limit_req_zone</span> <span class="token variable">$binary_remote_addr</span> zone=req_limit:10m rate=10r/s</span><span class="token punctuation">;</span>    <span class="token comment"># 在http块中定义请求限制区，限制每秒请求数</span>
+<span class="token directive"><span class="token keyword">location</span> /</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">limit_req</span> zone=req_limit burst=20 nodelay</span><span class="token punctuation">;</span>    <span class="token comment"># 在location块中配置请求限制，允许短时突发20个请求</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># TCP洪水攻击防护 - server块配置</span>
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">listen</span> <span class="token number">80</span> backlog=65535</span><span class="token punctuation">;</span>    <span class="token comment"># 设置等待连接队列大小，防止TCP SYN洪水攻击</span>
+    <span class="token directive"><span class="token keyword">listen</span> <span class="token number">443</span> ssl http2 backlog=65535</span><span class="token punctuation">;</span>    <span class="token comment"># SSL端口同样设置较大的等待队列</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-3-2-访问控制"><a href="#2-3-2-访问控制" class="headerlink" title="2.3.2 访问控制"></a>2.3.2 访问控制</h4><p>以下配置展示了多种访问控制方式，可以添加在 <strong>server 块</strong>中：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 禁止特定User-Agent - server块配置</span>
+<span class="token directive"><span class="token keyword">if</span> (<span class="token variable">$http_user_agent</span> ~* (Scrapy|Curl|WebBench))</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">return</span> <span class="token number">403</span></span><span class="token punctuation">;</span>    <span class="token comment"># 检测到爬虫等工具时返回禁止访问</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># IP访问控制 - server块中的location配置</span>
+<span class="token directive"><span class="token keyword">location</span> /admin/</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">allow</span> 192.168.1.0/24</span><span class="token punctuation">;</span>    <span class="token comment"># 允许特定IP段访问管理界面</span>
+    <span class="token directive"><span class="token keyword">deny</span> all</span><span class="token punctuation">;</span>                <span class="token comment"># 禁止其他所有IP访问</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># 防盗链配置 - server块中的location配置</span>
+<span class="token directive"><span class="token keyword">location</span> ~* \.(gif|jpg|jpeg|png|bmp|swf)$</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">valid_referers</span> none blocked server_names *.example.com</span><span class="token punctuation">;</span>    <span class="token comment"># 设置允许的来源域名</span>
+    <span class="token directive"><span class="token keyword">if</span> (<span class="token variable">$invalid_referer</span>)</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">return</span> <span class="token number">403</span></span><span class="token punctuation">;</span>    <span class="token comment"># 对于非法引用的请求返回禁止访问</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-4-日志管理"><a href="#2-4-日志管理" class="headerlink" title="2.4 日志管理"></a>2.4 日志管理</h3><h4 id="2-4-1-访问日志"><a href="#2-4-1-访问日志" class="headerlink" title="2.4.1 访问日志"></a>2.4.1 访问日志</h4><p>以下配置需要添加在 <strong>http 块</strong>中，用于定义日志格式和配置访问日志：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 日志配置 - http块配置</span>
+<span class="token directive"><span class="token keyword">http</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token comment"># 定义主日志格式，包含客户端IP、访问时间、请求信息等</span>
+    <span class="token directive"><span class="token keyword">log_format</span> main <span class="token string">'<span class="token variable">$remote_addr</span> - <span class="token variable">$remote_user</span> [<span class="token variable">$time_local]</span> "<span class="token variable">$request</span>" '</span>
+                    <span class="token string">'<span class="token variable">$status</span> <span class="token variable">$body_bytes_sent</span> "<span class="token variable">$http_referer</span>" '</span>
+                    <span class="token string">'"<span class="token variable">$http_user_agent</span>" "<span class="token variable">$http_x_forwarded_for</span>"'</span></span><span class="token punctuation">;</span>
+    
+    <span class="token comment"># 配置访问日志</span>
+    <span class="token directive"><span class="token keyword">access_log</span> /var/log/nginx/access.log main buffer=32k flush=5s</span><span class="token punctuation">;</span>    <span class="token comment"># 启用主日志格式，使用32k缓冲，每5秒刷新</span>
+    <span class="token directive"><span class="token keyword">access_log</span> /var/log/nginx/access_json.log json buffer=32k</span><span class="token punctuation">;</span>        <span class="token comment"># 启用JSON格式日志，便于日志分析</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-4-2-错误日志"><a href="#2-4-2-错误日志" class="headerlink" title="2.4.2 错误日志"></a>2.4.2 错误日志</h4><p>以下配置可以添加在 <strong>main 块</strong>、<strong>http 块</strong>、<strong>server 块</strong>或 <strong>location 块</strong>中，用于配置错误日志：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 错误日志配置 - 可在main、http、server或location块中配置</span>
+<span class="token directive"><span class="token keyword">error_log</span> /var/log/nginx/error.log warn</span><span class="token punctuation">;</span>    <span class="token comment"># 设置错误日志级别为warn</span>
+
+<span class="token comment"># 可选的错误日志级别（从详细到简略）</span>
+<span class="token comment"># error_log /var/log/nginx/error.log debug;  # 调试级别：输出所有调试信息</span>
+<span class="token comment"># error_log /var/log/nginx/error.log info;   # 信息级别：输出有用的信息</span>
+<span class="token comment"># error_log /var/log/nginx/error.log notice; # 通知级别：输出普通但重要的信息</span>
+<span class="token comment"># error_log /var/log/nginx/error.log warn;   # 警告级别：输出警告信息</span>
+<span class="token comment"># error_log /var/log/nginx/error.log error;  # 错误级别：输出错误信息</span>
+<span class="token comment"># error_log /var/log/nginx/error.log crit;   # 严重错误级别：输出严重错误信息</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-4-3-日志轮转"><a href="#2-4-3-日志轮转" class="headerlink" title="2.4.3 日志轮转"></a>2.4.3 日志轮转</h4><pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 日志轮转配置（logrotate）</span>
+/var/log/nginx/*.log <span class="token punctuation">&#123;</span>
+    daily                   <span class="token comment"># 每天轮转</span>
+    missingok               <span class="token comment"># 忽略丢失的日志文件</span>
+    rotate 52               <span class="token comment"># 保留52个备份</span>
+    compress                <span class="token comment"># 压缩轮转后的日志</span>
+    delaycompress           <span class="token comment"># 延迟压缩到下一次轮转</span>
+    notifempty              <span class="token comment"># 空文件不轮转</span>
+    create 640 nginx adm    <span class="token comment"># 创建新日志文件的权限和所有者</span>
+    sharedscripts          <span class="token comment"># 所有日志共用一个脚本</span>
+    postrotate
+        <span class="token comment"># 重新打开日志文件</span>
+        [ -f /var/run/nginx.pid ] &amp;&amp; kill -USR1 `cat /var/run/nginx.pid`
+    endscript
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-5-监控和调试"><a href="#2-5-监控和调试" class="headerlink" title="2.5 监控和调试"></a>2.5 监控和调试</h3><h4 id="2-5-1-状态监控"><a href="#2-5-1-状态监控" class="headerlink" title="2.5.1 状态监控"></a>2.5.1 状态监控</h4><p>以下配置需要添加在 <strong>server 块</strong>中的 <strong>location 块</strong>内，用于配置Nginx状态监控页面：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 状态监控配置 - server块中的location配置</span>
+<span class="token directive"><span class="token keyword">location</span> /nginx_status</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">stub_status</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>           <span class="token comment"># 启用状态页，显示连接数等统计信息</span>
+    <span class="token directive"><span class="token keyword">access_log</span> <span class="token boolean">off</span></span><span class="token punctuation">;</span>           <span class="token comment"># 关闭访问日志，减少磁盘IO</span>
+    <span class="token directive"><span class="token keyword">allow</span> 127.0.0.1</span><span class="token punctuation">;</span>          <span class="token comment"># 只允许本地IP访问，提高安全性</span>
+    <span class="token directive"><span class="token keyword">deny</span> all</span><span class="token punctuation">;</span>                 <span class="token comment"># 拒绝其他所有IP访问</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-5-2-调试配置"><a href="#2-5-2-调试配置" class="headerlink" title="2.5.2 调试配置"></a>2.5.2 调试配置</h4><p>以下配置包含两部分：</p>
+<ol>
+<li>调试日志配置（可添加在 <strong>main 块</strong>、<strong>http 块</strong>、<strong>server 块</strong>或 <strong>location 块</strong>中）</li>
+<li>调试信息配置（需要添加在 <strong>server 块</strong>中的 <strong>location 块</strong>内）</li>
+</ol>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 调试日志配置 - 可在main、http、server或location块中配置</span>
+<span class="token directive"><span class="token keyword">error_log</span> /var/log/nginx/debug.log debug</span><span class="token punctuation">;</span>    <span class="token comment"># 启用调试级别的日志记录</span>
+
+<span class="token comment"># 调试信息配置 - server块中的location配置</span>
+<span class="token directive"><span class="token keyword">location</span> /debug/</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">add_header</span> X-Debug-Message <span class="token variable">$request_uri</span></span><span class="token punctuation">;</span>    <span class="token comment"># 在响应头中添加当前请求的URI</span>
+    <span class="token directive"><span class="token keyword">add_header</span> X-Server-Name <span class="token variable">$hostname</span></span><span class="token punctuation">;</span>         <span class="token comment"># 在响应头中添加服务器主机名</span>
+    <span class="token directive"><span class="token keyword">add_header</span> X-Request-ID <span class="token variable">$request_id</span></span><span class="token punctuation">;</span>        <span class="token comment"># 在响应头中添加唯一请求ID</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="3-最佳实践"><a href="#3-最佳实践" class="headerlink" title="3. 最佳实践"></a>3. 最佳实践</h2><h3 id="3-1-性能优化建议"><a href="#3-1-性能优化建议" class="headerlink" title="3.1 性能优化建议"></a>3.1 性能优化建议</h3><ol>
+<li><strong>合理使用缓存</strong></li>
+</ol>
+<p>以下配置需要添加在 <strong>http 块</strong>中，用于优化文件缓存：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 文件缓存配置 - http块配置</span>
+<span class="token directive"><span class="token keyword">open_file_cache</span> max=1000 inactive=20s</span><span class="token punctuation">;</span>    <span class="token comment"># 最多缓存1000个文件，20秒内未被访问则清除</span>
+<span class="token directive"><span class="token keyword">open_file_cache_valid</span> <span class="token number">30s</span></span><span class="token punctuation">;</span>                <span class="token comment"># 每30秒检查一次缓存的有效性</span>
+<span class="token directive"><span class="token keyword">open_file_cache_min_uses</span> <span class="token number">2</span></span><span class="token punctuation">;</span>               <span class="token comment"># 文件被访问2次后才会被缓存</span>
+<span class="token directive"><span class="token keyword">open_file_cache_errors</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>                <span class="token comment"># 缓存文件找不到等错误信息</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li><strong>优化工作进程</strong></li>
+</ol>
+<p>以下配置需要添加在 <strong>main 块</strong>中，用于优化Nginx工作进程：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 工作进程配置 - main块配置</span>
+<span class="token directive"><span class="token keyword">worker_processes</span> auto</span><span class="token punctuation">;</span>           <span class="token comment"># 自动设置工作进程数为CPU核心数</span>
+<span class="token directive"><span class="token keyword">worker_cpu_affinity</span> auto</span><span class="token punctuation">;</span>        <span class="token comment"># 自动绑定工作进程到CPU核心</span>
+
+<span class="token comment"># 进程优先级配置</span>
+<span class="token directive"><span class="token keyword">worker_priority</span> -5</span><span class="token punctuation">;</span>              <span class="token comment"># 提高工作进程优先级（-20到19，值越小优先级越高）</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li><strong>优化事件模型</strong></li>
+</ol>
+<p>以下配置需要添加在 <strong>events 块</strong>中，用于优化连接处理：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 事件模型配置 - events块配置</span>
+<span class="token directive"><span class="token keyword">events</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">use</span> epoll</span><span class="token punctuation">;</span>                <span class="token comment"># 使用epoll事件模型，提高并发处理能力</span>
+    <span class="token directive"><span class="token keyword">worker_connections</span> <span class="token number">10240</span></span><span class="token punctuation">;</span>  <span class="token comment"># 每个工作进程同时处理的最大连接数</span>
+    <span class="token directive"><span class="token keyword">multi_accept</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>           <span class="token comment"># 允许同时接受多个新连接</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="3-2-安全最佳实践"><a href="#3-2-安全最佳实践" class="headerlink" title="3.2 安全最佳实践"></a>3.2 安全最佳实践</h3><ol>
+<li><strong>隐藏版本信息</strong></li>
+</ol>
+<p>以下配置需要添加在 <strong>http 块</strong>中，用于隐藏Nginx版本信息：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 版本信息配置 - http块配置</span>
+<span class="token directive"><span class="token keyword">server_tokens</span> <span class="token boolean">off</span></span><span class="token punctuation">;</span>    <span class="token comment"># 在错误页面和响应头中隐藏Nginx版本号</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li><strong>配置安全响应头</strong></li>
+</ol>
+<p>以下配置需要添加在 <strong>http 块</strong>或 <strong>server 块</strong>中，用于增强安全性：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 安全响应头配置 - http块或server块配置</span>
+<span class="token directive"><span class="token keyword">add_header</span> X-Frame-Options <span class="token string">"SAMEORIGIN"</span></span><span class="token punctuation">;</span>          <span class="token comment"># 防止网站被嵌入恶意iframe中</span>
+<span class="token directive"><span class="token keyword">add_header</span> X-XSS-Protection <span class="token string">"1; mode=block"</span></span><span class="token punctuation">;</span>      <span class="token comment"># 启用浏览器XSS防护</span>
+<span class="token directive"><span class="token keyword">add_header</span> X-Content-Type-Options <span class="token string">"nosniff"</span></span><span class="token punctuation">;</span>      <span class="token comment"># 禁止浏览器猜测内容类型</span>
+<span class="token directive"><span class="token keyword">add_header</span> Content-Security-Policy <span class="token string">"default-src 'self'"</span></span><span class="token punctuation">;</span>  <span class="token comment"># 限制资源只能从本站加载</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li><strong>限制上传文件大小</strong></li>
+</ol>
+<p>以下配置需要添加在 <strong>http 块</strong>、<strong>server 块</strong>或 <strong>location 块</strong>中，用于限制上传文件大小：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 上传限制配置 - http块、server块或location块配置</span>
+<span class="token directive"><span class="token keyword">client_max_body_size</span> <span class="token number">10m</span></span><span class="token punctuation">;</span>    <span class="token comment"># 限制客户端请求体大小为10MB</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/Nginx/" class="">
+              Nginx
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Ryo</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2025/03/17/yun-wei/nginx-fu-wu-qi-xiang-xi-ru-men/" target="_blank" title="nginx服务器详细解析">https://saebaryoo.github.io/2025/03/17/yun-wei/nginx-fu-wu-qi-xiang-xi-ru-men/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/14.jpg" class="lazyload placeholder" data-srcset="/medias/14.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2025/03/18/ai-kai-fa/gai-nian/3.ru-he-li-jie-agent/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">Agent学习（TODO）</div>
+      </div>
+      
+      <!-- <div class="content">
+        什么是Agent目前理解，Agent这个概念最初来自于人工智能领域，人们往往叫它智能代理（Intelligent Age
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/14.jpg" class="lazyload placeholder" data-srcset="/medias/14.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2025/03/16/ai-kai-fa/gai-nian/1.zuo-wei-yi-ge-qian-duan-er-ru-he-liao-jie-llm/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">作为一个前端er如何了解LLM</div>
+      </div>
+      <!-- <div class="content">
+        1. LLM是如何工作的？用一句话总结，LLM就是一个”超级猜词机器”。它通过海量文本数据训练，学习语言规律，然后通过概
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <!-- 文章详情页右侧目录 -->
+
+  <div class="toc-aside">
+    <div class="toc-main">
+      <div class="toc-aside-title">
+        <i class="fas fa-list-ul" aria-hidden="true"></i><span>本文目录</span>
+        
+          <div class="toc-open-close">本文目录</div>
+        
+      </div>
+      <div class="toc-content">
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 手机端目录按钮 -->
+  <div id="toc-mobile-btn">
+    <i class="fas fa-list-ul" aria-hidden="true"></i>
+  </div>
+
+
+<script>
+  function closeToc(init) {
+    $(".toc-aside").css({'width': 0, 'padding': 0, 'transition': init ?  'noe' : 'width 0.3s' });
+    $(".toc-content").css({'width': 0});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'none'});
+    $(".main-content").css({'width': '75%', 'margin-left': 'auto', 'margin-right': 'auto',});
+  };
+  function openToc() {
+    $(".main-content").css({'width': '65%', 'margin-right': '10px', 'margin-left': 'calc(35% - 350px)'});
+    $(".toc-aside").css({'width': '300px', 'padding': '0 10px', 'transition': 'width 0.3s'});
+    $(".toc-content").css({'width': '300px'});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'inline-block'});
+  }
+  function openBtnClickFn () {
+    let openOrCloseBtn = $('.toc-aside .toc-aside-title .toc-open-close');
+    let open = eval('' || 'true');
+    openOrCloseBtn.click(function() {
+      if (open) {
+        closeToc();
+        open = false;
+      } else {
+        openToc();
+        open = true;
+      }
+    });
+  };
+  openBtnClickFn();
+  initCloseTocWidth(true);
+
+  function initCloseTocWidth(init) {
+    if (window.innerWidth >= 992) {
+      let isClose = false;
+      isClose && closeToc(init)
+    }
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    $(".toc-aside").css({'transition': 'no'});
+  })
+  document.addEventListener('pjax:complete', function () {
+    openBtnClickFn();
+  })
+  
+</script>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || '#42b983';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2019 - 2023</p>
+
+          </div>
+        
+      
+        
+          
+            <!-- 不蒜子统计 -->
+            <!-- 不蒜子统计 -->
+<span id="busuanzi_container_site_pv">
+      <i class="fas fa-eye" aria-hidden="true"></i>本站总访问量：<span id="busuanzi_value_site_pv"></span> 次
+</span>
+<span class="post-meta-divider">|</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+      <i class="fas fa-users" aria-hidden="true"></i>本站访客数：<span id="busuanzi_value_site_uv"></span> 人
+</span>
+
+          
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="/js/fancybox/jquery.fancybox.min.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script>
+
+<script>
+  var headerEl = 'h1, h2, h3, h4, h5, h6',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -80,
+    headingsOffset: -($(window).height() * 0.4 - 45),
+    positionFixedSelector: '.toc-main',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 100) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('toc-aside')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  }
+</style> 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const headerMenuTransparent = true;
+    if (!headerMenuTransparent) { return; }
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <script type="text/javascript">
+  var utteranceCommon = {};
+
+  function check_utterance() {
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    if (isDark) {
+      utteranceCommon.Theme = 'github-dark';
+    } else {
+      utteranceCommon.Theme = 'github-light';
+    }
+
+    return document.getElementById("gitment-container");
+  }
+  comment_el = '#gitment-container';
+  load_utterance = function () {
+    if ($(comment_el).length) {
+      // 匿名函数，防止污染全局变量
+      const HEAD = check_utterance();
+
+      var utterances = document.createElement('script');
+      utterances.type = 'text/javascript';
+      utterances.async = true;
+      utterances.setAttribute('issue-term', 'pathname')
+      utterances.setAttribute('theme', utteranceCommon.Theme)
+      utterances.setAttribute('repo', 'SaebaRyoo/SaebaRyoo.github.io')
+      utterances.crossorigin = 'anonymous';
+      utterances.src = 'https://utteranc.es/client.js';
+      // content 是要插入评论的地方
+      document.getElementById('gitment-container').appendChild(utterances);
+
+    }
+  }
+
+  function dark_utterance() {
+    const HEAD = check_utterance();
+    if (!HEAD) return;
+    const message = {
+      type: 'set-theme',
+      theme: utteranceCommon.Theme
+    };
+    const utteranceIframe = document.querySelector('iframe');
+    utteranceIframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+
+  $(document).ready(load_utterance);
+  document.addEventListener('pjax:complete', function () {
+    load_utterance();
+  });
+
+  $('.dark').click(function () {
+    setTimeout(() => {
+      dark_utterance();
+    });
+  })
+
+</script>
+
+<style>
+  .utterances {
+    max-width: inherit !important;
+  }
+</style>
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+  
+    <script src="/js/cursor/fireworks.js"></script>
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>

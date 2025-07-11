@@ -1,0 +1,2600 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>使用Nestjs+ElasticSearch实现电商搜索功能 | Ryo的小站</title>
+
+  <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+    
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+  
+  <!-- 依赖于jquery和vue -->
+  
+    
+<script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+
+  
+
+  
+    
+<script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+
+  
+  
+  <body>
+    <!-- 预加载动画 -->
+    <!-- 页面预加载动画 -->
+
+<div id='loader'>
+  <link rel="stylesheet" href="/js/loaded/index.css" >
+  <div class="loading-left-bg"></div>
+  <div class="loading-right-bg"></div>
+  <div class="spinner-box">
+    <div class="configure-border-1">
+      <div class="configure-core"></div>
+    </div>
+    <div class="configure-border-2">
+      <div class="configure-core"></div>
+    </div>
+    <div class="loading-word">加载中...</div>
+  </div>
+</div>
+
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+  
+</script>
+
+    
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (href, before, media, attributes) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header   "
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">Ryo的小站</h3>
+      <h5 class="drawer-box-head_desc">Ryo的全栈路的学习和生活记录</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/tags" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a target="_blank" rel="noopener" href="https://www.ryozhu.top" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                  
+                  <span class="name">关于</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/visualization-layout" class="drawer-menu-item-link">
+                  
+                  <span class="name">可视化搭建</span>
+                </a>
+              
+            </li>
+          
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">Ryo的小站</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/" class="menu-item-link" title="首页">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/tags" class="menu-item-link" title="标签">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a target="_blank" rel="noopener" href="https://www.ryozhu.top" class="menu-item-link" title="关于">
+                  
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                  
+                  <span class="name">关于</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/visualization-layout" class="menu-item-link" title="可视化搭建">
+                  
+                  <span class="name">可视化搭建</span>
+                </a>
+              
+            </li>
+          
+        
+      </ul>
+
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+</header>
+
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('/medias/11.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        使用Nestjs+ElasticSearch实现电商搜索功能
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2025-03-13 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-detail-header_category">
+              后端
+            </a>
+          
+        </span>
+      
+
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content row justify-position" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1 id="1-ElasticSearch简介"><a href="#1-ElasticSearch简介" class="headerlink" title="1. ElasticSearch简介"></a>1. ElasticSearch简介</h1><p>ElasticSearch（简称ES）是一个开源的分布式搜索引擎，基于强大的搜索和分析能力，它不仅支持全文检索、精确查询和复杂的数据聚合分析，还具备高可用的分布式架构。作为一个成熟的企业级解决方案，ES在日志分析、电商搜索等场景中被广泛应用，能够帮助企业高效处理和分析大规模数据。</p>
+<h2 id="1-1-ES-vs-Solr"><a href="#1-1-ES-vs-Solr" class="headerlink" title="1.1 ES vs Solr"></a>1.1 ES vs Solr</h2><ol>
+<li><p><strong>性能特点</strong></p>
+<ul>
+<li>ES：适合实时搜索，数据更新快</li>
+<li>Solr：适合数据相对稳定的场景</li>
+</ul>
+</li>
+<li><p><strong>使用体验</strong></p>
+<ul>
+<li>ES：RESTful API，JSON交互，易上手</li>
+<li>Solr：配置较复杂，学习成本高</li>
+</ul>
+</li>
+</ol>
+<h1 id="2-ElasticSearch核心概念"><a href="#2-ElasticSearch核心概念" class="headerlink" title="2. ElasticSearch核心概念"></a>2. ElasticSearch核心概念</h1><h2 id="2-1-基本概念对照"><a href="#2-1-基本概念对照" class="headerlink" title="2.1 基本概念对照"></a>2.1 基本概念对照</h2><table>
+<thead>
+<tr>
+<th>关系型数据库</th>
+<th>ElasticSearch</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Database</td>
+<td>Index</td>
+<td>索引</td>
+<td>商品库对应商品索引</td>
+</tr>
+<tr>
+<td>Row</td>
+<td>Document</td>
+<td>文档</td>
+<td>一条商品记录对应一个商品文档</td>
+</tr>
+<tr>
+<td>Column</td>
+<td>Field</td>
+<td>字段</td>
+<td>商品名称、价格等属性</td>
+</tr>
+</tbody></table>
+<p>ElasticSearch是面向文档的搜索引擎，可以存储和索引整个对象或文档。每个索引直接对应关系型数据库中的一个表。</p>
+<blockquote>
+<p>版本说明：自ElasticSearch 7.x起Type概念开始废弃，8.x版本已完全移除。当前文档基于ES 8.14.2版本，采用’索引直接对应表’的表述方式。</p>
+</blockquote>
+<h2 id="2-2-核心概念"><a href="#2-2-核心概念" class="headerlink" title="2.2 核心概念"></a>2.2 核心概念</h2><h3 id="2-2-1-索引（Index）"><a href="#2-2-1-索引（Index）" class="headerlink" title="2.2.1 索引（Index）"></a>2.2.1 索引（Index）</h3><p>类似数据库中的”表”，是文档的逻辑集合。</p>
+<p>关键特性：</p>
+<ul>
+<li>必须明确映射（Mapping） （即数据结构定义）。</li>
+<li>支持动态映射（自动推断字段类型）。</li>
+<li>按时间滚动（如logs-2023-10-01）支持时序数据。</li>
+<li>支持索引别名（Index Alias）用于无缝切换。</li>
+</ul>
+<p>索引命名最佳实践：</p>
+<ul>
+<li>必须全部小写</li>
+<li>建议使用有意义的前缀，如：product_、user_等</li>
+<li>时序数据建议包含日期，如：logs-YYYY-MM-DD</li>
+<li>避免使用特殊字符，推荐使用下划线分隔</li>
+</ul>
+<h3 id="2-2-2-索引别名（Index-Alias）"><a href="#2-2-2-索引别名（Index-Alias）" class="headerlink" title="2.2.2 索引别名（Index Alias）"></a>2.2.2 索引别名（Index Alias）</h3><p>索引别名是指向一个或多个索引的虚拟名称，支持：</p>
+<ul>
+<li>零停机索引切换</li>
+<li>按时间滚动的索引管理</li>
+<li>跨索引搜索</li>
+</ul>
+<p>创建别名示例：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">PUT /logs<span class="token number">-2023</span>/_alias/logs_current<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="2-2-3-字段（Field）"><a href="#2-2-3-字段（Field）" class="headerlink" title="2.2.3 字段（Field）"></a>2.2.3 字段（Field）</h3><p>字段是文档中的数据属性，相当于关系型数据库中的字段。</p>
+<h3 id="2-2-4-映射（Mapping）"><a href="#2-2-4-映射（Mapping）" class="headerlink" title="2.2.4 映射（Mapping）"></a>2.2.4 映射（Mapping）</h3><p>映射定义了数据处理规则，包括：</p>
+<ul>
+<li>字段的数据类型</li>
+<li>默认值</li>
+<li>分析器</li>
+<li>是否被索引</li>
+<li>其他数据处理规则</li>
+</ul>
+<h3 id="2-2-5-文档（Document）"><a href="#2-2-5-文档（Document）" class="headerlink" title="2.2.5 文档（Document）"></a>2.2.5 文档（Document）</h3><p>一个文档是一个可被索引的基础信息单元。比如，你可以拥有某一个客户的文档，某一个产品的一个文档，当然，也可以拥有某个订单的一个文档。文档以JSON（Javascript Object Notation）格式来表示，而JSON是一个到处存在的互联网数据交互格式。</p>
+<p>每个文档都属于一个索引，并且在该索引中具有唯一的标识符（_id）。文档是不可变的，每次更新实际上是创建一个新版本。</p>
+<p>在一个index中，你可以存储任意多的文档。注意，在ES 8.x版本中Type概念已完全移除，每个索引直接对应一种文档类型。</p>
+<h3 id="2-2-6-近实时性（NRT）"><a href="#2-2-6-近实时性（NRT）" class="headerlink" title="2.2.6 近实时性（NRT）"></a>2.2.6 近实时性（NRT）</h3><p>文档写入后，默认 1 秒（refresh_interval）后可被搜索。<br>通过内存缓冲区（In-memory buffer）和分段（Segment）机制实现。</p>
+<h3 id="2-2-7-集群（Cluster）"><a href="#2-2-7-集群（Cluster）" class="headerlink" title="2.2.7 集群（Cluster）"></a>2.2.7 集群（Cluster）</h3><p>集群是一个或多个节点的集合，它们共同持有数据并提供索引和搜索功能。集群通过唯一名称标识，默认为”elasticsearch”。</p>
+<h3 id="2-2-8-节点（Node）"><a href="#2-2-8-节点（Node）" class="headerlink" title="2.2.8 节点（Node）"></a>2.2.8 节点（Node）</h3><p>节点是集群中的单个服务器，负责数据存储和参与集群的索引、搜索功能。每个节点都有唯一的名字。</p>
+<p>节点类型：</p>
+<ol>
+<li><p>主节点（Master Node）</p>
+<ul>
+<li>负责集群管理和配置</li>
+<li>处理节点的添加和移除</li>
+<li>索引的创建和删除</li>
+</ul>
+</li>
+<li><p>数据节点（Data Node）</p>
+<ul>
+<li>存储数据和执行数据相关操作</li>
+<li>执行CRUD、搜索和聚合</li>
+</ul>
+</li>
+<li><p>协调节点（Coordinating Node）</p>
+<ul>
+<li>负责路由搜索和索引请求</li>
+<li>合并各数据节点的结果</li>
+</ul>
+</li>
+<li><p>摄入节点（Ingest Node）</p>
+<ul>
+<li>在索引前对文档进行预处理</li>
+<li>执行管道处理</li>
+</ul>
+</li>
+</ol>
+<pre class="line-numbers language-ascii" data-language="ascii"><code class="language-ascii">+------------------+
+|     Cluster      |
+|   +---------+    |
+|   | Master  |    |
+|   | Node    |    |
+|   +----+----+    |
+|        |         |
+| +------+------+  |
+| |             |  |
+| v             v  |
++------+    +------+
+| Data |    | Data |
+| Node |    | Node |
++------+    +------+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这个ASCII图展示了一个简单的ElasticSearch集群架构，包含一个主节点和两个数据节点。</p>
+<h3 id="2-2-9-分片和副本（Shards-Replicas）"><a href="#2-2-9-分片和副本（Shards-Replicas）" class="headerlink" title="2.2.9 分片和副本（Shards &amp; Replicas）"></a>2.2.9 分片和副本（Shards &amp; Replicas）</h3><p><strong>分片</strong>的主要作用：</p>
+<ul>
+<li>水平分割&#x2F;扩展内容容量</li>
+<li>分布式并行操作，提高性能</li>
+</ul>
+<p><strong>副本</strong>的重要性：</p>
+<ul>
+<li>提供高可用性</li>
+<li>提升搜索性能（并行搜索）</li>
+</ul>
+<p>默认配置：</p>
+<ul>
+<li>每个索引1个主分片（Elasticsearch 7.0+默认）</li>
+<li>每个主分片1个副本</li>
+<li>双节点集群共有10个分片（5主 + 5副本）</li>
+</ul>
+<h1 id="3-使用Docker安装ElasticSearch-8-14-2-非安全"><a href="#3-使用Docker安装ElasticSearch-8-14-2-非安全" class="headerlink" title="3. 使用Docker安装ElasticSearch 8.14.2 (非安全)"></a>3. 使用Docker安装ElasticSearch 8.14.2 (非安全)</h1><p>注意：以下安装说明仅适用于开发环境。在生产环境中，需要启用SSL加密并配置适当的安全策略。</p>
+<h2 id="3-1-环境准备"><a href="#3-1-环境准备" class="headerlink" title="3.1 环境准备"></a>3.1 环境准备</h2><ol>
+<li><p>设置环境变量</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># vim ~/.bash_profile 将下面两个变量添加到系统环境变量中</span>
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">ELASTIC_PASSWORD</span><span class="token operator">=</span><span class="token string">"123456"</span>  <span class="token comment"># elastic用户密码</span>
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">KIBANA_PASSWORD</span><span class="token operator">=</span><span class="token string">"123456"</span>   <span class="token comment"># Kibana系统用户密码</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>然后运行 <code>source ~/.bash_profile</code> 使配置生效</p>
+</li>
+<li><p>创建Docker网络</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> network create es-net<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ol>
+<h2 id="3-2-运行ElasticSearch"><a href="#3-2-运行ElasticSearch" class="headerlink" title="3.2 运行ElasticSearch"></a>3.2 运行ElasticSearch</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">--name</span> es-dev <span class="token punctuation">\</span>
+  <span class="token parameter variable">-p</span> <span class="token number">127.0</span>.0.1:9200:9200 <span class="token punctuation">\</span>
+  <span class="token parameter variable">--network</span> es-net <span class="token punctuation">\</span>
+  <span class="token parameter variable">-v</span> es-data:/usr/share/elasticsearch/data <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token assign-left variable">ELASTIC_PASSWORD</span><span class="token operator">=</span><span class="token variable">$ELASTIC_PASSWORD</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token string">"discovery.type=single-node"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token string">"xpack.security.http.ssl.enabled=false"</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token string">"xpack.license.self_generated.type=basic"</span> <span class="token punctuation">\</span>
+  elasticsearch:8.14.2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="3-3-运行Kibana（可选）"><a href="#3-3-运行Kibana（可选）" class="headerlink" title="3.3 运行Kibana（可选）"></a>3.3 运行Kibana（可选）</h2><ol>
+<li><p>设置kibana_system用户密码</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">curl</span> <span class="token parameter variable">-u</span> elastic:<span class="token variable">$ELASTIC_PASSWORD</span> <span class="token parameter variable">-X</span> POST <span class="token punctuation">\</span>
+  http://localhost:9200/_security/user/kibana_system/_password <span class="token punctuation">\</span>
+  <span class="token parameter variable">-H</span> <span class="token string">'Content-Type: application/json'</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-d</span> <span class="token string">'&#123;"password":"'</span><span class="token variable">$KIBANA_PASSWORD</span><span class="token string">'"&#125;'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>启动Kibana容器</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> run <span class="token parameter variable">-d</span> <span class="token parameter variable">--name</span> kibana-dev <span class="token punctuation">\</span>
+  <span class="token parameter variable">-p</span> <span class="token number">127.0</span>.0.1:5601:5601 <span class="token punctuation">\</span>
+  <span class="token parameter variable">--network</span> es-net <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token assign-left variable">ELASTICSEARCH_HOSTS</span><span class="token operator">=</span>http://es-dev:9200 <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token assign-left variable">ELASTICSEARCH_USERNAME</span><span class="token operator">=</span>kibana_system <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token assign-left variable">ELASTICSEARCH_PASSWORD</span><span class="token operator">=</span><span class="token variable">$KIBANA_PASSWORD</span> <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token string">"xpack.security.enabled=false"</span> <span class="token punctuation">\</span>
+  kibana:8.14.2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ol>
+<h2 id="3-4-许可证配置"><a href="#3-4-许可证配置" class="headerlink" title="3.4 许可证配置"></a>3.4 许可证配置</h2><ol>
+<li><p>检查许可证状态</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">curl</span> <span class="token parameter variable">-u</span> elastic:<span class="token variable">$ELASTIC_PASSWORD</span> <span class="token parameter variable">-X</span> GET <span class="token string">"http://localhost:9200/_license"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>激活基础许可证</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">curl</span> <span class="token parameter variable">-u</span> elastic:<span class="token variable">$ELASTIC_PASSWORD</span> <span class="token parameter variable">-X</span> POST <span class="token string">"http://localhost:9200/_license/start_basic?acknowledge=true"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ol>
+<h2 id="3-5-安装IK分词器"><a href="#3-5-安装IK分词器" class="headerlink" title="3.5 安装IK分词器"></a>3.5 安装IK分词器</h2><ol>
+<li><p>进入容器</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> <span class="token builtin class-name">exec</span> <span class="token parameter variable">-it</span> es-dev <span class="token function">bash</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>安装分词器</p>
+</li>
+</ol>
+<pre class="line-numbers language-none"><code class="language-none">.&#x2F;bin&#x2F;elasticsearch-plugin install https:&#x2F;&#x2F;get.infini.cloud&#x2F;elasticsearch&#x2F;analysis-ik&#x2F;8.14.2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ol start="3">
+<li>重启容器</li>
+</ol>
+<pre class="line-numbers language-none"><code class="language-none">docker restart es-dev<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="3-6-验证安装"><a href="#3-6-验证安装" class="headerlink" title="3.6 验证安装"></a>3.6 验证安装</h2><ol>
+<li>使用curl验证</li>
+</ol>
+<pre class="line-numbers language-none"><code class="language-none">curl -u elastic:$ELASTIC_PASSWORD -X GET &quot;http:&#x2F;&#x2F;localhost:9200&#x2F;_analyze&quot; -H &#39;Content-Type: application&#x2F;json&#39; -d &#39;
+&#123;
+  &quot;analyzer&quot;: &quot;ik_max_word&quot;,
+  &quot;text&quot;: &quot;中国足球真是太烂了&quot;
+&#125;&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li>使用Kibana Dev Tools验证</li>
+</ol>
+<pre class="line-numbers language-none"><code class="language-none">GET &#x2F;_analyze
+&#123;
+  &quot;analyzer&quot;: &quot;ik_max_word&quot;,
+  &quot;text&quot;: &quot;中国足球真是太烂了&quot;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>注意：9300端口用于节点间通信，9200端口用于HTTP API访问。</p>
+<h1 id="4-生产环境安装-Elasticsearch（启用ssl）"><a href="#4-生产环境安装-Elasticsearch（启用ssl）" class="headerlink" title="4. 生产环境安装 Elasticsearch（启用ssl）"></a>4. 生产环境安装 Elasticsearch（启用ssl）</h1><p>这部分可以参考官网的文档</p>
+<p><a target="_blank" rel="noopener" href="https://elastic.ac.cn/guide/en/elasticsearch/reference/8.17/docker.html#docker-cli-run-dev-mode">https://elastic.ac.cn/guide/en/elasticsearch/reference/8.17/docker.html#docker-cli-run-dev-mode</a></p>
+<p>主要是需要生成SSL证书</p>
+<h4 id="1-将ca-crt-SSL证书从容器复制到本地机器。"><a href="#1-将ca-crt-SSL证书从容器复制到本地机器。" class="headerlink" title="1. 将ca.crt SSL证书从容器复制到本地机器。"></a>1. 将ca.crt SSL证书从容器复制到本地机器。</h4><p><code>docker cp ibuy-service-es01:/usr/share/elasticsearch/config/certs/ca/ca.crt .</code></p>
+<h4 id="2-请求一个REST-API，确保更够通过ca访问elastic"><a href="#2-请求一个REST-API，确保更够通过ca访问elastic" class="headerlink" title="2. 请求一个REST API，确保更够通过ca访问elastic"></a>2. 请求一个REST API，确保更够通过ca访问elastic</h4><p><code>curl --cacert ca.crt -u elastic:[ELASTIC_PASSWORD] https://localhost:9200</code></p>
+<p><strong>这里的</strong> <strong>[ELASTIC_PASSWORD]要替换成你自己.env文件中设置的密码</strong></p>
+<p>如果一切正常，你会看到如下内容:</p>
+<pre class="line-numbers language-none"><code class="language-none">&#123;
+  &quot;name&quot; : &quot;es01&quot;,
+  &quot;cluster_name&quot; : &quot;docker-cluster&quot;,
+  &quot;cluster_uuid&quot; : &quot;t5DlPYalRAm_tceqPUo7gw&quot;,
+  &quot;version&quot; : &#123;
+    &quot;number&quot; : &quot;8.14.2&quot;,
+    &quot;build_flavor&quot; : &quot;default&quot;,
+    &quot;build_type&quot; : &quot;docker&quot;,
+    &quot;build_hash&quot; : &quot;2afe7caceec8a26ff53817e5ed88235e90592a1b&quot;,
+    &quot;build_date&quot; : &quot;2024-07-01T22:06:58.515911606Z&quot;,
+    &quot;build_snapshot&quot; : false,
+    &quot;lucene_version&quot; : &quot;9.10.0&quot;,
+    &quot;minimum_wire_compatibility_version&quot; : &quot;7.17.0&quot;,
+    &quot;minimum_index_compatibility_version&quot; : &quot;7.0.0&quot;
+  &#125;,
+  &quot;tagline&quot; : &quot;You Know, for Search&quot;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="5-基于Kibana掌握DSL语句"><a href="#5-基于Kibana掌握DSL语句" class="headerlink" title="5. 基于Kibana掌握DSL语句"></a>5. 基于Kibana掌握DSL语句</h1><p>Kibana 是一款开源的数据分析和可视化平台，它是 Elastic Stack 成员之一，设计用于和 Elasticsearch 协作。您可以使用 Kibana 对 Elasticsearch 索引中的数据进行搜索、查看、交互操作。您可以很方便的利用图表、表格及地图对数据进行多元化的分析和呈现。</p>
+<p>Kibana 可以使大数据通俗易懂。它很简单，基于浏览器的界面便于您快速创建和分享动态数据仪表板来追踪 Elasticsearch 的实时数据变化。</p>
+<p>这一章主要是通过Kibana来熟悉ElasticSearch相关的DSL语句，只简单介绍了一下Kibana，并不深入。我们也可以通过<code>curl</code>命令或者 <code>postman</code>来访问ElasticSearch</p>
+<h2 id="5-1-DSL语句使用"><a href="#5-1-DSL语句使用" class="headerlink" title="5.1 DSL语句使用"></a>5.1 DSL语句使用</h2><p>在登录了Kibana后，点开左上角菜单栏，点击 <strong>Management</strong> 下的 <strong>Dev Tools</strong>, 然后即可进行下面的练习。</p>
+<h3 id="5-1-1-Query-DSL结构化查询介绍"><a href="#5-1-1-Query-DSL结构化查询介绍" class="headerlink" title="5.1.1 Query DSL结构化查询介绍"></a>5.1.1 Query DSL结构化查询介绍</h3><p>Query DSL是一个Java开源框架用于构建类型安全的SQL查询语句。采用API代替传统的拼接字符串来构造查询语句。</p>
+<p>目前Querydsl支持的平台包括：</p>
+<ul>
+<li>JPA</li>
+<li>JDO</li>
+<li>SQL</li>
+<li>Java Collections</li>
+<li>RDF</li>
+<li>Lucene</li>
+<li>Hibernate Search</li>
+</ul>
+<p>Elasticsearch提供了一整套基于JSON的查询DSL语言来定义查询。Query DSL当作是一系列的抽象的查询表达式树(AST)特定查询能够包含其它的查询，(如 bool ), 有些查询能够包含过滤器(如 constant_score), 还有的可以同时包含查询和过滤器 (如 filtered). 都能够从ES支持查询集合里面选择任意一个查询或者是从过滤器集合里面挑选出任意一个过滤器, 这样的话，我们就可以构造出任意复杂（maybe 非常有趣）的查询了。</p>
+<h3 id="5-1-2-基础使用"><a href="#5-1-2-基础使用" class="headerlink" title="5.1.2 基础使用"></a>5.1.2 基础使用</h3><h4 id="5-1-2-1-基本索引操作"><a href="#5-1-2-1-基本索引操作" class="headerlink" title="5.1.2.1 基本索引操作"></a>5.1.2.1 基本索引操作</h4><ol>
+<li><strong>查询所有索引</strong></li>
+</ol>
+<pre class="line-numbers language-none"><code class="language-none">GET &#x2F;_cat&#x2F;indices?v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ol start="2">
+<li><strong>删除某个索引</strong></li>
+</ol>
+<pre class="line-numbers language-none"><code class="language-none">DELETE &#x2F;user<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ol start="3">
+<li><strong>新增索引</strong></li>
+</ol>
+<pre class="line-numbers language-none"><code class="language-none">PUT &#x2F;user<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ol start="4">
+<li><strong>创建映射</strong></li>
+</ol>
+<pre class="line-numbers language-none"><code class="language-none">PUT &#x2F;user&#x2F;_mapping
+&#123;
+  &quot;properties&quot;: &#123;
+    &quot;name&quot;:&#123;
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;analyzer&quot;: &quot;ik_smart&quot;,
+      &quot;search_analyzer&quot;: &quot;ik_smart&quot;,
+      &quot;store&quot;: false
+    &#125;,
+    &quot;city&quot;:&#123;
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;analyzer&quot;: &quot;ik_smart&quot;,
+      &quot;search_analyzer&quot;: &quot;ik_smart&quot;,
+      &quot;store&quot;: false
+    &#125;,
+    &quot;age&quot;:&#123;
+      &quot;type&quot;: &quot;long&quot;,
+      &quot;store&quot;: false
+    &#125;,
+    &quot;description&quot;:&#123;
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;analyzer&quot;: &quot;ik_smart&quot;,
+      &quot;search_analyzer&quot;: &quot;ik_smart&quot;,
+      &quot;store&quot;: false
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="5-1-2-2-文档操作"><a href="#5-1-2-2-文档操作" class="headerlink" title="5.1.2.2 文档操作"></a>5.1.2.2 文档操作</h4><h5 id="5-1-2-2-1-新增文档"><a href="#5-1-2-2-1-新增文档" class="headerlink" title="5.1.2.2.1 新增文档"></a>5.1.2.2.1 新增文档</h5><pre class="line-numbers language-none"><code class="language-none"># 手动指定id用put方法
+PUT &#x2F;user&#x2F;_doc&#x2F;1
+&#123;
+  &quot;name&quot;:&quot;李四&quot;,
+  &quot;age&quot;:22,
+  &quot;city&quot;:&quot;深圳&quot;,
+  &quot;description&quot;:&quot;李四来自湖北武汉！&quot;
+&#125;
+
+# 自生成id用POST
+POST &#x2F;user&#x2F;_doc
+&#123;
+  &quot;name&quot;:&quot;李四&quot;,
+  &quot;age&quot;:22,
+  &quot;city&quot;:&quot;深圳&quot;,
+  &quot;description&quot;:&quot;李四来自湖北武汉！&quot;
+&#125;
+
+#新增文档数据 id&#x3D;2
+PUT &#x2F;user&#x2F;_doc&#x2F;2
+&#123;
+  &quot;name&quot;:&quot;王五&quot;,
+  &quot;age&quot;:35,
+  &quot;city&quot;:&quot;深圳&quot;,
+  &quot;description&quot;:&quot;王五家住在深圳！&quot;
+&#125;
+
+#新增文档数据 id&#x3D;3
+PUT &#x2F;user&#x2F;_doc&#x2F;3
+&#123;
+  &quot;name&quot;:&quot;张三&quot;,
+  &quot;age&quot;:19,
+  &quot;city&quot;:&quot;深圳&quot;,
+  &quot;description&quot;:&quot;在深圳打工，来自湖北武汉&quot;
+&#125;
+
+#新增文档数据 id&#x3D;4
+PUT &#x2F;user&#x2F;_doc&#x2F;4
+&#123;
+  &quot;name&quot;:&quot;张三丰&quot;,
+  &quot;age&quot;:66,
+  &quot;city&quot;:&quot;武汉&quot;,
+  &quot;description&quot;:&quot;在武汉读书，家在武汉！&quot;
+&#125;
+
+#新增文档数据 id&#x3D;5
+PUT &#x2F;user&#x2F;_doc&#x2F;5
+&#123;
+  &quot;name&quot;:&quot;赵子龙&quot;,
+  &quot;age&quot;:77,
+  &quot;city&quot;:&quot;广州&quot;,
+  &quot;description&quot;:&quot;赵子龙来自深圳宝安，但是在广州工作！&quot;,
+  &quot;address&quot;:&quot;广东省茂名市&quot;
+&#125;
+
+#新增文档数据 id&#x3D;6
+PUT &#x2F;user&#x2F;_doc&#x2F;6
+&#123;
+  &quot;name&quot;:&quot;赵毅&quot;,
+  &quot;age&quot;:55,
+  &quot;city&quot;:&quot;广州&quot;,
+  &quot;description&quot;:&quot;赵毅来自广州白云区，从事电子商务8年！&quot;
+&#125;
+
+#新增文档数据 id&#x3D;7
+PUT &#x2F;user&#x2F;_doc&#x2F;7
+&#123;
+  &quot;name&quot;:&quot;赵哈哈&quot;,
+  &quot;age&quot;:57,
+  &quot;city&quot;:&quot;武汉&quot;,
+  &quot;description&quot;:&quot;武汉赵哈哈，在深圳打工已有半年了，月薪7500！&quot;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h5 id="5-1-2-2-2-修改文档"><a href="#5-1-2-2-2-修改文档" class="headerlink" title="5.1.2.2.2 修改文档"></a>5.1.2.2.2 修改文档</h5><h6 id="5-1-2-2-2-1-替换操作"><a href="#5-1-2-2-2-1-替换操作" class="headerlink" title="5.1.2.2.2.1 替换操作"></a>5.1.2.2.2.1 替换操作</h6><p>使用GET命令查看：</p>
+<pre class="line-numbers language-none"><code class="language-none">#查询user索引下所有的文档
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;match_all&quot;: &#123;&#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>更新数据可以使用之前的增加操作,这种操作会将整个数据替换掉，代码如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">#替换id&#x3D;4的数据
+PUT &#x2F;user&#x2F;_doc&#x2F;4
+&#123;
+  &quot;name&quot;:&quot;张三丰&quot;,
+  &quot;description&quot;:&quot;在武汉读书，家在武汉！在深圳工作！&quot;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后再查询数据</p>
+<pre class="line-numbers language-none"><code class="language-none">#查询id为4的数据
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;term&quot;: &#123;
+      &quot;_id&quot;: &quot;4&quot;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h6 id="5-1-2-2-2-2-更新操作"><a href="#5-1-2-2-2-2-更新操作" class="headerlink" title="5.1.2.2.2.2 更新操作"></a>5.1.2.2.2.2 更新操作</h6><p>我们先使用下面命令恢复数据：</p>
+<pre class="line-numbers language-none"><code class="language-none">#恢复文档数据 id&#x3D;4
+PUT &#x2F;user&#x2F;_doc&#x2F;4
+&#123;
+  &quot;name&quot;:&quot;张三丰&quot;,
+  &quot;age&quot;:66,
+  &quot;city&quot;:&quot;武汉&quot;,
+  &quot;description&quot;:&quot;在武汉读书，家在武汉！&quot;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>使用POST更新某个列的数据</p>
+<pre class="line-numbers language-none"><code class="language-none">#使用POST更新某个域的数据
+POST &#x2F;user&#x2F;_update&#x2F;4
+&#123;
+  &quot;doc&quot;:&#123;
+    &quot;name&quot;:&quot;张三丰&quot;,
+    &quot;description&quot;:&quot;在武汉读书，家在武汉！在深圳工作！&quot;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在使用GET命令验证一下：</p>
+<pre class="line-numbers language-none"><code class="language-none">#根据ID查询
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;term&quot;: &#123;
+      &quot;_id&quot;: &quot;4&quot;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h5 id="5-1-2-2-3-删除文档"><a href="#5-1-2-2-3-删除文档" class="headerlink" title="5.1.2.2.3 删除文档"></a>5.1.2.2.3 删除文档</h5><pre class="line-numbers language-none"><code class="language-none">#删除数据
+DELETE user&#x2F;_doc&#x2F;7<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="5-1-3-数据查询"><a href="#5-1-3-数据查询" class="headerlink" title="5.1.3 数据查询"></a>5.1.3 数据查询</h3><h4 id="5-1-3-1-查询所有数据"><a href="#5-1-3-1-查询所有数据" class="headerlink" title="5.1.3.1 查询所有数据"></a>5.1.3.1 查询所有数据</h4><pre class="line-numbers language-none"><code class="language-none">#查询所有
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;match_all&quot;: &#123;&#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="5-1-3-2-根据ID查询"><a href="#5-1-3-2-根据ID查询" class="headerlink" title="5.1.3.2 根据ID查询"></a>5.1.3.2 根据ID查询</h4><pre class="line-numbers language-none"><code class="language-none">#根据ID查询
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;term&quot;: &#123;
+      &quot;_id&quot;: &quot;4&quot;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="5-1-3-3-排序查询"><a href="#5-1-3-3-排序查询" class="headerlink" title="5.1.3.3 排序查询"></a>5.1.3.3 排序查询</h4><pre class="line-numbers language-none"><code class="language-none">#搜索排序
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;:&#123;
+    &quot;match_all&quot;: &#123;&#125;
+  &#125;,
+  &quot;sort&quot;:&#123;
+    &quot;age&quot;:&#123;
+      &quot;order&quot;:&quot;desc&quot;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="5-1-3-4-分页查询"><a href="#5-1-3-4-分页查询" class="headerlink" title="5.1.3.4 分页查询"></a>5.1.3.4 分页查询</h4><pre class="line-numbers language-none"><code class="language-none">#分页实现
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;:&#123;
+    &quot;match_all&quot;: &#123;&#125;
+  &#125;,
+  &quot;sort&quot;:&#123;
+    &quot;age&quot;:&#123;
+      &quot;order&quot;:&quot;desc&quot;
+    &#125;
+  &#125;,
+  &quot;from&quot;: 0,
+  &quot;size&quot;: 2
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>解释：<br>from:从下N的记录开始查询<br>size:每页显示条数</p>
+<h3 id="5-1-4-过滤查询"><a href="#5-1-4-过滤查询" class="headerlink" title="5.1.4 过滤查询"></a>5.1.4 过滤查询</h3><h4 id="5-1-4-1-简单term过滤"><a href="#5-1-4-1-简单term过滤" class="headerlink" title="5.1.4.1 简单term过滤"></a>5.1.4.1 简单term过滤</h4><p>term主要用于分词精确匹配，如字符串、数值、日期等<br>会计算相关性评分<br>以下情况不适用：<br>1.列中除英文字符外有其它值<br>2.字符串值中有冒号或中文<br>3.系统自带属性如_version</p>
+<p>如下案例：</p>
+<pre class="line-numbers language-none"><code class="language-none">#过滤查询-term
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+      &quot;term&quot;: &#123;
+        &quot;city&quot;: &quot;深圳&quot;
+      &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="5-1-4-2-简单terms过滤"><a href="#5-1-4-2-简单terms过滤" class="headerlink" title="5.1.4.2 简单terms过滤"></a>5.1.4.2 简单terms过滤</h4><p>terms 跟 term 有点类似，但 terms 允许指定多个匹配条件。 如果某个字段指定了多个值，那么文档需要一起去做匹配 。</p>
+<p>案例如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">#过滤查询-terms 允许多个Term
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;:&#123;
+    &quot;terms&quot;:&#123;
+      &quot;city&quot;:
+        [
+          &quot;武汉&quot;,
+          &quot;广州&quot;
+        ]
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="5-1-4-3-range过滤"><a href="#5-1-4-3-range过滤" class="headerlink" title="5.1.4.3 range过滤"></a>5.1.4.3 range过滤</h4><p>range过滤允许我们按照指定范围查找一批数据。例如我们查询年龄范围</p>
+<p>案例如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">#过滤-range 范围过滤
+#gt表示&gt; gte表示&#x3D;&gt;
+#lt表示&lt; lte表示&lt;&#x3D;
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;:&#123;
+    &quot;range&quot;: &#123;
+      &quot;age&quot;: &#123;
+        &quot;gte&quot;: 30,
+        &quot;lte&quot;: 57
+      &#125;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="5-1-4-4-exists过滤"><a href="#5-1-4-4-exists过滤" class="headerlink" title="5.1.4.4 exists过滤"></a>5.1.4.4 exists过滤</h4><p>exists 过滤可以用于查找拥有某个域的数据</p>
+<p>案例如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">#过滤搜索 exists：是指包含某个域的数据检索
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;exists&quot;:&#123;
+      &quot;field&quot;:&quot;address&quot;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="5-1-4-5-match-all查询"><a href="#5-1-4-5-match-all查询" class="headerlink" title="5.1.4.5 match_all查询"></a>5.1.4.5 match_all查询</h4><p>可以查询到所有文档，是没有查询条件下的默认语句。</p>
+<p>案例如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">#查询所有 match_all
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;match_all&quot;: &#123;&#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="5-1-4-6-match查询"><a href="#5-1-4-6-match查询" class="headerlink" title="5.1.4.6 match查询"></a>5.1.4.6 match查询</h4><p>match查询是一个标准查询，不管你需要全文本查询还是精确查询基本上都要用到它。</p>
+<p>如果你使用 match 查询一个全文本字段，它会在真正查询之前用分析器先分析match一下查询字符：</p>
+<p>案例如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">#字符串匹配
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;match&quot;: &#123;
+      &quot;description&quot;: &quot;武汉&quot;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="5-1-4-7-prefix查询"><a href="#5-1-4-7-prefix查询" class="headerlink" title="5.1.4.7 prefix查询"></a>5.1.4.7 prefix查询</h4><p>以什么字符开头的，可以更简单地用 prefix ,例如查询所有以张开始的用户描述</p>
+<p>案例如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">#前缀匹配 prefix
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;prefix&quot;: &#123;
+      &quot;name&quot;: &#123;
+        &quot;value&quot;: &quot;赵&quot;
+      &#125;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="5-1-4-8-multi-match查询"><a href="#5-1-4-8-multi-match查询" class="headerlink" title="5.1.4.8 multi_match查询"></a>5.1.4.8 multi_match查询</h4><p>multi_match查询允许你做match查询的基础上同时搜索多个字段，在多个字段中同时查一个</p>
+<p>案例如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">#多个域匹配搜索
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;multi_match&quot;: &#123;
+      &quot;query&quot;: &quot;深圳&quot;,
+      &quot;fields&quot;: [
+        &quot;city&quot;,
+        &quot;description&quot;
+      ]
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="5-1-4-9-bool过滤"><a href="#5-1-4-9-bool过滤" class="headerlink" title="5.1.4.9 bool过滤"></a>5.1.4.9 bool过滤</h4><p>bool 过滤可以用来合并多个过滤条件查询结果的布尔逻辑，它包含一下操作符：</p>
+<ul>
+<li>must : 多个查询条件的完全匹配,相当于 and。</li>
+<li>must_not : 多个查询条件的相反匹配，相当于 not。</li>
+<li>should : 至少有一个查询条件匹配, 相当于 or。</li>
+<li>filter 子句也要求查询条件 必须 匹配，但与 must 不同，filter 不会影响文档的相关性评分。它仅仅是一个过滤器，用于限制符合条件的文档，而不会对文档进行评分计算</li>
+</ul>
+<p>这些参数可以分别继承一个过滤条件或者一个过滤条件的数组：</p>
+<p>案例如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">#过滤搜索 bool 
+#must : 多个查询条件的完全匹配,相当于 and。
+#must_not : 多个查询条件的相反匹配，相当于 not。
+#should : 至少有一个查询条件匹配, 相当于 or。
+GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;bool&quot;: &#123;
+      &quot;must&quot;: [
+        &#123;
+          &quot;term&quot;: &#123;
+            &quot;city&quot;: &#123;
+              &quot;value&quot;: &quot;深圳&quot;
+            &#125;
+          &#125;
+        &#125;,
+        &#123;
+          &quot;range&quot;:&#123;
+            &quot;age&quot;:&#123;
+              &quot;gte&quot;:20,
+              &quot;lte&quot;:99
+            &#125;
+          &#125;
+        &#125;
+      ]
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="5-1-4-10-bool-filter过滤"><a href="#5-1-4-10-bool-filter过滤" class="headerlink" title="5.1.4.10 bool.filter过滤"></a>5.1.4.10 bool.filter过滤</h4><ul>
+<li>作用：filter 子句也要求查询条件 必须 匹配，但与 must 不同，filter 不会影响文档的相关性评分。它仅仅是一个过滤器，用于限制符合条件的文档，而不会对文档进行评分计算。</li>
+<li>打分（评分）：filter 不参与相关性评分的计算，因此它比 must 更快，适合用来过滤大量数据，而不需要进行复杂的打分计算。</li>
+<li>适用场景：在你只需要过滤出符合某些条件的文档，而不关心它们的相关性评分时使用</li>
+</ul>
+<p>在这个例子中，文档必须有 city 为 “深圳”，并且 price 在 100 到 200 之间。由于使用了 filter，查询不会对文档进行打分计算，而是直接返回匹配的文档。</p>
+<pre class="line-numbers language-none"><code class="language-none">GET &#x2F;user&#x2F;_search
+&#123;
+  &quot;query&quot;: &#123;
+    &quot;bool&quot;: &#123;
+      &quot;filter&quot;: [
+        &#123;
+          &quot;term&quot;: &#123;
+            &quot;city&quot;: &#123;
+              &quot;value&quot;: &quot;深圳&quot;
+            &#125;
+          &#125;
+        &#125;,
+        &#123;
+          &quot;range&quot;:&#123;
+            &quot;age&quot;:&#123;
+              &quot;gte&quot;:20,
+              &quot;lte&quot;:99
+            &#125;
+          &#125;
+        &#125;
+      ]
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="5-2-配置Data-View-可选"><a href="#5-2-配置Data-View-可选" class="headerlink" title="5.2 配置Data View (可选)"></a>5.2 配置Data View (可选)</h2><p>后续当我们需要通过Kibana进行可视化分析时（如监控商品访问量、分析用户搜索热词），才需配置Data View。</p>
+<h3 id="5-2-1-左侧菜单选择Management"><a href="#5-2-1-左侧菜单选择Management" class="headerlink" title="5.2.1 左侧菜单选择Management"></a>5.2.1 左侧菜单选择Management</h3><p><img src="/imgs/hou-duan/1.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/1.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h3 id="5-2-2-选择Kibana-Data-Views"><a href="#5-2-2-选择Kibana-Data-Views" class="headerlink" title="5.2.2 选择Kibana -&gt; Data Views"></a>5.2.2 选择Kibana -&gt; Data Views</h3><p><img src="/imgs/hou-duan/2.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/2.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h3 id="5-2-3-创建data-view"><a href="#5-2-3-创建data-view" class="headerlink" title="5.2.3 创建data view"></a>5.2.3 创建data view</h3><p>点击右上角 <code>Create data view</code>按钮创建</p>
+<p><img src="/imgs/hou-duan/3.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/3.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<p><strong>比如我要创建一个索引</strong> <code>blog1</code> <strong>的视图</strong></p>
+<ul>
+<li><strong>Name：表示视图名称，可以叫</strong> <code>blog1-view</code></li>
+<li><strong>Index pattern: 你需要先创建索引，然后再选择索引。这里我们已经有了blog1的索引就直接填</strong> <code>blog1*</code></li>
+</ul>
+<h3 id="5-2-4-查看视图"><a href="#5-2-4-查看视图" class="headerlink" title="5.2.4 查看视图"></a>5.2.4 查看视图</h3><p>在菜单栏点击Discover后选择我们刚刚创建的视图名就可以看到了</p>
+<p><img src="/imgs/hou-duan/4.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/4.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<p><img src="/imgs/hou-duan/5.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/5.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h1 id="6-商品搜索功能"><a href="#6-商品搜索功能" class="headerlink" title="6. 商品搜索功能"></a>6. 商品搜索功能</h1><h2 id="6-1-功能概述"><a href="#6-1-功能概述" class="headerlink" title="6.1 功能概述"></a>6.1 功能概述</h2><p>商品搜索服务是一个基于Elasticsearch的高性能搜索解决方案，提供商品的全文检索、过滤、排序和聚合等功能。该服务支持商品数据的自动同步，并提供灵活的搜索接口。</p>
+<h2 id="6-2-技术栈"><a href="#6-2-技术栈" class="headerlink" title="6.2 技术栈"></a>6.2 技术栈</h2><h3 id="6-2-1-核心依赖"><a href="#6-2-1-核心依赖" class="headerlink" title="6.2.1 核心依赖"></a>6.2.1 核心依赖</h3><ul>
+<li><code>@nestjs/elasticsearch</code>: Elasticsearch的NestJS集成模块</li>
+<li><code>@elastic/elasticsearch</code>: Elasticsearch官方Node.js客户端</li>
+<li><code>@nestjs/schedule</code>: 用于定时任务的NestJS模块</li>
+<li><code>nest-winston</code>: 用于日志记录的Winston集成</li>
+</ul>
+<h3 id="6-2-2-相关模块"><a href="#6-2-2-相关模块" class="headerlink" title="6.2.2 相关模块"></a>6.2.2 相关模块</h3><ul>
+<li><code>mall-service-goods/sku</code>: SKU服务模块，提供商品数据源</li>
+<li><code>common/utils/Result</code>: 统一响应结果处理工具</li>
+</ul>
+<h2 id="6-3-功能实现"><a href="#6-3-功能实现" class="headerlink" title="6.3 功能实现"></a>6.3 功能实现</h2><h3 id="6-3-1-数据同步机制"><a href="#6-3-1-数据同步机制" class="headerlink" title="6.3.1 数据同步机制"></a>6.3.1 数据同步机制</h3><h4 id="6-3-1-1-自动同步"><a href="#6-3-1-1-自动同步" class="headerlink" title="6.3.1.1 自动同步"></a>6.3.1.1 自动同步</h4><p>使用<code>@nestjs/schedule</code>的<code>@Cron</code>装饰器实现每天凌晨2点的自动同步：</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token decorator"><span class="token at operator">@</span><span class="token function">Cron</span></span><span class="token punctuation">(</span><span class="token string">'0 0 2 * * *'</span><span class="token punctuation">)</span>
+<span class="token keyword">async</span> <span class="token function">syncSkuData</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'info'</span><span class="token punctuation">,</span> <span class="token string">'开始同步SKU数据到Elasticsearch...'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">importSku</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'info'</span><span class="token punctuation">,</span> <span class="token string">'SKU数据同步完成'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'SKU数据同步失败:'</span><span class="token punctuation">,</span> error<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="6-3-1-2-分批导入"><a href="#6-3-1-2-分批导入" class="headerlink" title="6.3.1.2 分批导入"></a>6.3.1.2 分批导入</h4><p>为了提高数据导入的可靠性和性能，实现了分批处理机制：</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">async</span> <span class="token function">importSku</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span><span class="token keyword">void</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 1. 检查索引是否存在，不存在则创建</span>
+    <span class="token keyword">const</span> indexExists <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>elasticsearchService<span class="token punctuation">.</span>indices<span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+      index<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">ES_INDEX</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>indexExists<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">createSkuIndex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">// 2. 获取所有SKU数据</span>
+    <span class="token keyword">const</span> result <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>skuService<span class="token punctuation">.</span><span class="token function">findAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> skuInfos <span class="token operator">=</span> result<span class="token punctuation">.</span>data<span class="token punctuation">;</span>
+
+    <span class="token comment">// 3. 分批处理数据</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> skuInfos<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i <span class="token operator">+=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">BATCH_SIZE</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">const</span> batch <span class="token operator">=</span> skuInfos<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> i <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">BATCH_SIZE</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">processBatch</span><span class="token punctuation">(</span>batch<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>
+        <span class="token string">'info'</span><span class="token punctuation">,</span>
+        <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">已处理 </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>i <span class="token operator">+</span> batch<span class="token punctuation">.</span>length<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>skuInfos<span class="token punctuation">.</span>length<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string"> 条数据</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'导入SKU数据失败:'</span><span class="token punctuation">,</span> error<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">throw</span> error<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="6-3-1-3-重试机制"><a href="#6-3-1-3-重试机制" class="headerlink" title="6.3.1.3 重试机制"></a>6.3.1.3 重试机制</h4><p>实现了带有指数退避的重试机制，最大重试次数为3次：</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">private</span> <span class="token keyword">async</span> <span class="token function">processBatch</span><span class="token punctuation">(</span>
+  batch<span class="token operator">:</span> SkuEntity<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  retryCount<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span><span class="token keyword">void</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">const</span> operations <span class="token operator">=</span> batch<span class="token punctuation">.</span><span class="token function">flatMap</span><span class="token punctuation">(</span><span class="token punctuation">(</span>skuInfo<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">[</span>
+      <span class="token punctuation">&#123;</span> index<span class="token operator">:</span> <span class="token punctuation">&#123;</span> _index<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">ES_INDEX</span><span class="token punctuation">,</span> _id<span class="token operator">:</span> skuInfo<span class="token punctuation">.</span>id <span class="token punctuation">&#125;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      skuInfo<span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">const</span> <span class="token punctuation">&#123;</span> errors<span class="token punctuation">,</span> items <span class="token punctuation">&#125;</span> <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>elasticsearchService<span class="token punctuation">.</span><span class="token function">bulk</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+      operations<span class="token punctuation">,</span>
+      refresh<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>errors<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token comment">// 收集失败的项</span>
+      <span class="token keyword">const</span> failedItems <span class="token operator">=</span> items
+        <span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span> <span class="token operator">=></span> item<span class="token punctuation">.</span>index<span class="token operator">?.</span>error<span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+          id<span class="token operator">:</span> item<span class="token punctuation">.</span>index<span class="token operator">?.</span>_id<span class="token punctuation">,</span>
+          error<span class="token operator">:</span> item<span class="token punctuation">.</span>index<span class="token operator">?.</span>error<span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>failedItems<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> retryCount <span class="token operator">&lt;</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">MAX_RETRIES</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">const</span> failedSkus <span class="token operator">=</span> batch<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token punctuation">(</span>sku<span class="token punctuation">)</span> <span class="token operator">=></span>
+          failedItems<span class="token punctuation">.</span><span class="token function">some</span><span class="token punctuation">(</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span> <span class="token operator">=></span> item<span class="token punctuation">.</span>id <span class="token operator">===</span> sku<span class="token punctuation">.</span>id<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">processBatch</span><span class="token punctuation">(</span>failedSkus<span class="token punctuation">,</span> retryCount <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>retryCount <span class="token operator">&lt;</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">MAX_RETRIES</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">await</span> <span class="token keyword">new</span> <span class="token class-name"><span class="token builtin">Promise</span></span><span class="token punctuation">(</span><span class="token punctuation">(</span>resolve<span class="token punctuation">)</span> <span class="token operator">=></span>
+        <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> <span class="token number">1000</span> <span class="token operator">*</span> <span class="token punctuation">(</span>retryCount <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">processBatch</span><span class="token punctuation">(</span>batch<span class="token punctuation">,</span> retryCount <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">throw</span> error<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="6-3-2-索引结构"><a href="#6-3-2-索引结构" class="headerlink" title="6.3.2 索引结构"></a>6.3.2 索引结构</h3><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">mappings<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+  properties<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    name<span class="token operator">:</span> <span class="token punctuation">&#123;</span> type<span class="token operator">:</span> <span class="token string">'text'</span><span class="token punctuation">,</span> analyzer<span class="token operator">:</span> <span class="token string">'ik_max_word'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    price<span class="token operator">:</span> <span class="token punctuation">&#123;</span> type<span class="token operator">:</span> <span class="token string">'double'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    categoryName<span class="token operator">:</span> <span class="token punctuation">&#123;</span> type<span class="token operator">:</span> <span class="token string">'keyword'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    brandName<span class="token operator">:</span> <span class="token punctuation">&#123;</span> type<span class="token operator">:</span> <span class="token string">'keyword'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    spec<span class="token operator">:</span> <span class="token punctuation">&#123;</span> type<span class="token operator">:</span> <span class="token string">'keyword'</span> <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="6-3-3-搜索功能"><a href="#6-3-3-搜索功能" class="headerlink" title="6.3.3 搜索功能"></a>6.3.3 搜索功能</h3><h4 id="6-3-3-1-关键词搜索"><a href="#6-3-3-1-关键词搜索" class="headerlink" title="6.3.3.1 关键词搜索"></a>6.3.3.1 关键词搜索</h4><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// 关键字查询</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>keywords<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  boolQuery<span class="token punctuation">.</span>bool<span class="token punctuation">.</span>must<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+    match<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      name<span class="token operator">:</span> keywords<span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="6-3-3-2-过滤条件"><a href="#6-3-3-2-过滤条件" class="headerlink" title="6.3.3.2 过滤条件"></a>6.3.3.2 过滤条件</h4><p>支持多种过滤条件：</p>
+<ul>
+<li><p>分类过滤</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">if</span> <span class="token punctuation">(</span>searchMap<span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_CATEGORY</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  boolQuery<span class="token punctuation">.</span>bool<span class="token punctuation">.</span>filter<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+    term<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token punctuation">[</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_CATEGORY</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">.keyword</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">]</span><span class="token operator">:</span> searchMap<span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_CATEGORY</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>品牌过滤</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">if</span> <span class="token punctuation">(</span>searchMap<span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_BRAND</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  boolQuery<span class="token punctuation">.</span>bool<span class="token punctuation">.</span>filter<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+    term<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token punctuation">[</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_BRAND</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">.keyword</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">]</span><span class="token operator">:</span> searchMap<span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_BRAND</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>规格过滤</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>searchMap<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>key<span class="token punctuation">.</span><span class="token function">startsWith</span><span class="token punctuation">(</span><span class="token string">'spec_'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> searchMap<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">===</span> <span class="token string">'string'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      boolQuery<span class="token punctuation">.</span>bool<span class="token punctuation">.</span>filter<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        term<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+          <span class="token punctuation">[</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">spec.</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>key<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">.keyword</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">]</span><span class="token operator">:</span> searchMap<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token builtin">Array</span><span class="token punctuation">.</span><span class="token function">isArray</span><span class="token punctuation">(</span>searchMap<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      boolQuery<span class="token punctuation">.</span>bool<span class="token punctuation">.</span>filter<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+        terms<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+          <span class="token punctuation">[</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">spec.</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>key<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">.keyword</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">]</span><span class="token operator">:</span> searchMap<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>价格区间过滤</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">const</span> price <span class="token operator">=</span> searchMap<span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_PRICE</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>price<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">const</span> <span class="token punctuation">[</span>minPrice<span class="token punctuation">,</span> maxPrice<span class="token punctuation">]</span> <span class="token operator">=</span> price<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">'-'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>maxPrice <span class="token operator">!==</span> <span class="token string">'*'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    boolQuery<span class="token punctuation">.</span>bool<span class="token punctuation">.</span>filter<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+      range<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        price<span class="token operator">:</span> <span class="token punctuation">&#123;</span> gte<span class="token operator">:</span> minPrice<span class="token punctuation">,</span> lte<span class="token operator">:</span> maxPrice <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+    boolQuery<span class="token punctuation">.</span>bool<span class="token punctuation">.</span>filter<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+      range<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        price<span class="token operator">:</span> <span class="token punctuation">&#123;</span> gte<span class="token operator">:</span> minPrice <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+<h4 id="6-3-3-3-排序"><a href="#6-3-3-3-排序" class="headerlink" title="6.3.3.3 排序"></a>6.3.3.3 排序</h4><p>支持自定义字段排序：</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">const</span> sortField <span class="token operator">=</span> searchMap<span class="token punctuation">[</span><span class="token string">'sortField'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> sortRule <span class="token operator">=</span> searchMap<span class="token punctuation">[</span><span class="token string">'sortRule'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>sortField <span class="token operator">&amp;&amp;</span> sortRule<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  searchRequest<span class="token punctuation">.</span>sort<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+    <span class="token punctuation">[</span>sortField<span class="token punctuation">]</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      order<span class="token operator">:</span> sortRule<span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">'desc'</span> <span class="token operator">?</span> <span class="token string">'desc'</span> <span class="token operator">:</span> <span class="token string">'asc'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="6-3-3-4-聚合"><a href="#6-3-3-4-聚合" class="headerlink" title="6.3.3.4 聚合"></a>6.3.3.4 聚合</h4><p>支持分类、品牌和规格的聚合统计：</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">searchRequest<span class="token punctuation">.</span>aggregations <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">// 分类聚合</span>
+  <span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">ES_CATEGORY_AGR</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    terms<span class="token operator">:</span> <span class="token punctuation">&#123;</span> field<span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_CATEGORY</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">.keyword</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span> size<span class="token operator">:</span> <span class="token number">50</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token comment">// 品牌聚合</span>
+  <span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">ES_BRAND_AGR</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    terms<span class="token operator">:</span> <span class="token punctuation">&#123;</span> field<span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">SEARCH_BRAND</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">.keyword</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span> size<span class="token operator">:</span> <span class="token number">50</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token comment">// 商品规格聚合</span>
+  <span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token constant">ES_SPEC_MAP_AGR</span><span class="token punctuation">]</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    terms<span class="token operator">:</span> <span class="token punctuation">&#123;</span> field<span class="token operator">:</span> <span class="token string">'spec.keyword'</span><span class="token punctuation">,</span> size<span class="token operator">:</span> <span class="token number">10000</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h2 id="6-4-完整代码实现"><a href="#6-4-完整代码实现" class="headerlink" title="6.4 完整代码实现"></a>6.4 完整代码实现</h2><p>完整的搜索服务实现请参考 该<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/ibuy-admin-backend">仓库</a> 的<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/ibuy-portal-backend/blob/main/src/mall-service/mall-service-search/search.service.ts">search.service.ts</a> 文件。</p>
+<blockquote>
+<p>正常是导入逻辑和搜索逻辑分在不同的项目，这里为了方便演示，将导入逻辑和搜索逻辑放在了同一个项目中。<br>搜索逻辑也可以在<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/ibuy-portal-backend">portal</a> 项目中查看</p>
+</blockquote>
+<h2 id="6-5-API使用示例"><a href="#6-5-API使用示例" class="headerlink" title="6.5 API使用示例"></a>6.5 API使用示例</h2><h3 id="6-5-1-基础搜索"><a href="#6-5-1-基础搜索" class="headerlink" title="6.5.1 基础搜索"></a>6.5.1 基础搜索</h3><pre class="line-numbers language-none"><code class="language-none">GET &#x2F;search&#x2F;query?keywords&#x3D;手机<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="6-5-2-带过滤的搜索"><a href="#6-5-2-带过滤的搜索" class="headerlink" title="6.5.2 带过滤的搜索"></a>6.5.2 带过滤的搜索</h3><pre class="line-numbers language-none"><code class="language-none">GET &#x2F;search&#x2F;query?keywords&#x3D;手机&amp;categoryName&#x3D;智能手机&amp;price&#x3D;1000-2000<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="6-5-3-带排序的搜索"><a href="#6-5-3-带排序的搜索" class="headerlink" title="6.5.3 带排序的搜索"></a>6.5.3 带排序的搜索</h3><pre class="line-numbers language-none"><code class="language-none">GET &#x2F;search&#x2F;query?keywords&#x3D;手机&amp;sortField&#x3D;price&amp;sortRule&#x3D;desc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="6-5-4-带规格过滤的搜索"><a href="#6-5-4-带规格过滤的搜索" class="headerlink" title="6.5.4 带规格过滤的搜索"></a>6.5.4 带规格过滤的搜索</h3><pre class="line-numbers language-none"><code class="language-none">GET &#x2F;search&#x2F;query?keywords&#x3D;手机&amp;spec_颜色&#x3D;黑色&amp;spec_内存&#x3D;8GB<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/Nest-js/" class="">
+              Nest.js
+            </a>
+          
+            <a href="/tags/ElasticSearch/" class="">
+              ElasticSearch
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Ryo</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2025/03/13/hou-duan/shang-cheng/shi-yong-nestjs-elasticsearch-shi-xian-dian-shang-sou-suo-gong-neng/" target="_blank" title="使用Nestjs+ElasticSearch实现电商搜索功能">https://saebaryoo.github.io/2025/03/13/hou-duan/shang-cheng/shi-yong-nestjs-elasticsearch-shi-xian-dian-shang-sou-suo-gong-neng/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/8.jpg" class="lazyload placeholder" data-srcset="/medias/8.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2025/03/14/hou-duan/shang-cheng/shi-xian-shang-cheng-zhi-fu-gong-neng/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">Nestjs+RabbitMQ+支付宝沙盒 实现电商支付功能</div>
+      </div>
+      
+      <!-- <div class="content">
+        1. 前言在电商系统中，支付功能是整个交易流程中最为关键的环节之一。一个完善的支付系统不仅要保证交易的安全性和可靠性，还
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/8.jpg" class="lazyload placeholder" data-srcset="/medias/8.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2025/03/12/hou-duan/shu-ju-ku/mysql/3.mysql-yue-shu-he-shu-ju-ku-she-ji/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">MySQL约束和数据库设计</div>
+      </div>
+      <!-- <div class="content">
+        在数据库开发中，约束和数据库设计是确保数据完整性和系统性能的关键要素。MySQL约束通过限制数据的输入和修改，保证数据的
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <!-- 文章详情页右侧目录 -->
+
+  <div class="toc-aside">
+    <div class="toc-main">
+      <div class="toc-aside-title">
+        <i class="fas fa-list-ul" aria-hidden="true"></i><span>本文目录</span>
+        
+          <div class="toc-open-close">本文目录</div>
+        
+      </div>
+      <div class="toc-content">
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 手机端目录按钮 -->
+  <div id="toc-mobile-btn">
+    <i class="fas fa-list-ul" aria-hidden="true"></i>
+  </div>
+
+
+<script>
+  function closeToc(init) {
+    $(".toc-aside").css({'width': 0, 'padding': 0, 'transition': init ?  'noe' : 'width 0.3s' });
+    $(".toc-content").css({'width': 0});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'none'});
+    $(".main-content").css({'width': '75%', 'margin-left': 'auto', 'margin-right': 'auto',});
+  };
+  function openToc() {
+    $(".main-content").css({'width': '65%', 'margin-right': '10px', 'margin-left': 'calc(35% - 350px)'});
+    $(".toc-aside").css({'width': '300px', 'padding': '0 10px', 'transition': 'width 0.3s'});
+    $(".toc-content").css({'width': '300px'});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'inline-block'});
+  }
+  function openBtnClickFn () {
+    let openOrCloseBtn = $('.toc-aside .toc-aside-title .toc-open-close');
+    let open = eval('' || 'true');
+    openOrCloseBtn.click(function() {
+      if (open) {
+        closeToc();
+        open = false;
+      } else {
+        openToc();
+        open = true;
+      }
+    });
+  };
+  openBtnClickFn();
+  initCloseTocWidth(true);
+
+  function initCloseTocWidth(init) {
+    if (window.innerWidth >= 992) {
+      let isClose = false;
+      isClose && closeToc(init)
+    }
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    $(".toc-aside").css({'transition': 'no'});
+  })
+  document.addEventListener('pjax:complete', function () {
+    openBtnClickFn();
+  })
+  
+</script>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || '#42b983';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2019 - 2023</p>
+
+          </div>
+        
+      
+        
+          
+            <!-- 不蒜子统计 -->
+            <!-- 不蒜子统计 -->
+<span id="busuanzi_container_site_pv">
+      <i class="fas fa-eye" aria-hidden="true"></i>本站总访问量：<span id="busuanzi_value_site_pv"></span> 次
+</span>
+<span class="post-meta-divider">|</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+      <i class="fas fa-users" aria-hidden="true"></i>本站访客数：<span id="busuanzi_value_site_uv"></span> 人
+</span>
+
+          
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="/js/fancybox/jquery.fancybox.min.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script>
+
+<script>
+  var headerEl = 'h1, h2, h3, h4, h5, h6',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -80,
+    headingsOffset: -($(window).height() * 0.4 - 45),
+    positionFixedSelector: '.toc-main',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 100) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('toc-aside')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  }
+</style> 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const headerMenuTransparent = true;
+    if (!headerMenuTransparent) { return; }
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <script type="text/javascript">
+  var utteranceCommon = {};
+
+  function check_utterance() {
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    if (isDark) {
+      utteranceCommon.Theme = 'github-dark';
+    } else {
+      utteranceCommon.Theme = 'github-light';
+    }
+
+    return document.getElementById("gitment-container");
+  }
+  comment_el = '#gitment-container';
+  load_utterance = function () {
+    if ($(comment_el).length) {
+      // 匿名函数，防止污染全局变量
+      const HEAD = check_utterance();
+
+      var utterances = document.createElement('script');
+      utterances.type = 'text/javascript';
+      utterances.async = true;
+      utterances.setAttribute('issue-term', 'pathname')
+      utterances.setAttribute('theme', utteranceCommon.Theme)
+      utterances.setAttribute('repo', 'SaebaRyoo/SaebaRyoo.github.io')
+      utterances.crossorigin = 'anonymous';
+      utterances.src = 'https://utteranc.es/client.js';
+      // content 是要插入评论的地方
+      document.getElementById('gitment-container').appendChild(utterances);
+
+    }
+  }
+
+  function dark_utterance() {
+    const HEAD = check_utterance();
+    if (!HEAD) return;
+    const message = {
+      type: 'set-theme',
+      theme: utteranceCommon.Theme
+    };
+    const utteranceIframe = document.querySelector('iframe');
+    utteranceIframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+
+  $(document).ready(load_utterance);
+  document.addEventListener('pjax:complete', function () {
+    load_utterance();
+  });
+
+  $('.dark').click(function () {
+    setTimeout(() => {
+      dark_utterance();
+    });
+  })
+
+</script>
+
+<style>
+  .utterances {
+    max-width: inherit !important;
+  }
+</style>
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+  
+    <script src="/js/cursor/fireworks.js"></script>
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>

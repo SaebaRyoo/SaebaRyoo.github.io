@@ -1,0 +1,2254 @@
+<!DOCTYPE html>
+<html>
+  <!-- meta/link... -->
+  
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+  <title>Nestjs+RabbitMQ+支付宝沙盒 实现电商支付功能 | Ryo的小站</title>
+
+  <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
+  <link href="https://unpkg.com/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link href="/js/swiper/swiper@5.4.1.min.css" rel="stylesheet">
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/animate.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/js/shareJs/share.min.css">
+
+  
+  <style>
+        @media (max-width: 992px) {
+            #waifu {
+                display: none;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+    
+
+    <!-- import link -->
+    
+        
+            
+        
+            
+        
+    
+    <!-- import script -->
+    
+        
+            
+        
+            
+        
+    
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+  
+  <!-- 依赖于jquery和vue -->
+  
+    
+<script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+
+  
+
+  
+    
+<script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+
+  
+  
+  <body>
+    <!-- 预加载动画 -->
+    <!-- 页面预加载动画 -->
+
+<div id='loader'>
+  <link rel="stylesheet" href="/js/loaded/index.css" >
+  <div class="loading-left-bg"></div>
+  <div class="loading-right-bg"></div>
+  <div class="spinner-box">
+    <div class="configure-border-1">
+      <div class="configure-core"></div>
+    </div>
+    <div class="configure-border-2">
+      <div class="configure-core"></div>
+    </div>
+    <div class="loading-word">加载中...</div>
+  </div>
+</div>
+
+<script>
+  var endLoading = function () {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loader').classList.add("loading");
+  }
+  window.addEventListener('DOMContentLoaded',endLoading);
+  
+</script>
+
+    
+    <!-- 判断是否为暗黑风格 -->
+    <!-- 判断是否为黑夜模式 -->
+<script>
+  let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+
+  if (isDark) {
+    $(document.body).addClass('darkModel');
+  }
+</script>
+
+    <!-- 需要在上面加载的js -->
+    <script>
+  function loadScript(src, cb) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+
+  //https://github.com/filamentgroup/loadCSS
+  var loadCSS = function (href, before, media, attributes) {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  };
+
+</script> 
+
+<!-- 轮播图所需要的js -->
+<script src="/js/swiper/swiper.min.js"></script>
+<script src="/js/swiper/vue-awesome-swiper.js"></script>
+<script src="/js/swiper/swiper.animate1.0.3.min.js"></script>
+
+<script type="text/javascript">
+  Vue.use(window.VueAwesomeSwiper)
+</script>
+
+
+  <script src="/js/vue-typed-js/index.js"></script>
+
+
+<!-- 首页的公告滚动插件的js需要重新加载 -->
+<script src="/js/vue-seamless-scroll/index.js"></script>
+
+<!-- 打字机效果js -->
+<script src="https://unpkg.com/typed.js@2.0.11"></script>
+
+
+    <div id="safearea">
+      <main class="main" id="pjax-container">
+        <!-- 头部导航 -->
+        
+<header class="header   "
+  id="navHeader"
+  style="position: fixed;
+  left: 0; top: 0; z-index: 10;width: 100%;"
+>
+  <div class="header-content">
+    <div class="bars">
+      <div id="appDrawer" class="sidebar-image">
+  <div class="drawer-box-icon">
+    <i class="fas fa-bars" aria-hidden="true" @click="showDialogDrawer"></i>
+  </div>
+
+  <transition name="fade">
+    <div class="drawer-box_mask" v-cloak style="display: none;" v-show="visible" @click.self="cancelDialogDrawer">
+    </div>
+  </transition>
+  <div class="drawer-box" :class="{'active': visible}">
+    <div class="drawer-box-head bg-color">
+      <img class="drawer-box-head_logo lazyload placeholder" src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+      <h3 class="drawer-box-head_title">Ryo的小站</h3>
+      <h5 class="drawer-box-head_desc">Ryo的全栈路的学习和生活记录</h5>
+    </div>
+    
+    <div class="drawer-box-content">
+      <ul class="drawer-box-content_menu">
+        
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/archives" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/categories" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/tags" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a target="_blank" rel="noopener" href="https://www.ryozhu.top" class="drawer-menu-item-link">
+                  
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                  
+                  <span class="name">关于</span>
+                </a>
+              
+            </li>
+          
+            <li class="drawer-box-content_item" style="position: relative;">
+              
+                <a href="/visualization-layout" class="drawer-menu-item-link">
+                  
+                  <span class="name">可视化搭建</span>
+                </a>
+              
+            </li>
+          
+        
+        
+          <li class="drawer-box-content_item">
+            <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">
+              <i class="fas fa-github" aria-hidden="true"></i>
+              <span>Github</span>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appDrawer',
+    data: {
+      visible: false,
+      top: 0,
+      openArr: [],
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      isOpen(index) {
+        if (this.openArr.includes(index)) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      openOrCloseMenu(curIndex) {
+        const index = this.openArr.indexOf(curIndex);
+        if (index !== -1) {
+          this.openArr.splice(index, 1);
+        } else {
+          this.openArr.push(curIndex);
+        }
+      },
+      showDialogDrawer() {
+        this.visible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'width: 100%; height: 100%;overflow: hidden;';
+      },
+      cancelDialogDrawer() {
+        this.visible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      }
+    },
+    created() {}
+  })
+</script>
+
+    </div>
+    <div class="blog-title" id="author-avatar">
+      
+        <div class="avatar">
+          <img src="/medias/logo.png" class="lazyload placeholder" data-srcset="/medias/logo.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="logo">
+        </div>
+      
+      <a href="/" class="logo">Ryo的小站</a>
+    </div>
+    <nav class="navbar">
+      <ul class="menu">
+        
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/" class="menu-item-link" title="首页">
+                  
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                  
+                  <span class="name">首页</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/archives" class="menu-item-link" title="归档">
+                  
+                    <i class="fas fa-archive" aria-hidden="true"></i>
+                  
+                  <span class="name">归档</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/categories" class="menu-item-link" title="分类">
+                  
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                  
+                  <span class="name">分类</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/tags" class="menu-item-link" title="标签">
+                  
+                    <i class="fas fa-tags" aria-hidden="true"></i>
+                  
+                  <span class="name">标签</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a target="_blank" rel="noopener" href="https://www.ryozhu.top" class="menu-item-link" title="关于">
+                  
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                  
+                  <span class="name">关于</span>
+                </a>
+              
+            </li>
+          
+            <li class="menu-item" style="position: relative;">
+              
+                <a href="/visualization-layout" class="menu-item-link" title="可视化搭建">
+                  
+                  <span class="name">可视化搭建</span>
+                </a>
+              
+            </li>
+          
+        
+      </ul>
+
+      
+        <div id="appSearch">
+  <div class="search"  @click="showDialog()"><i class="fas fa-search" aria-hidden="true"></i></div>
+  <transition name="fade">
+    <div class="message-box_wrapper" style="display: none;" v-cloak v-show="dialogVisible" @click.self="cancelDialogVisible()">
+      <div class="message-box animated bounceInDown">
+        <h2>
+          <span>
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="title">本地搜索</span>
+          </span>
+          <i class="fas fa-times close" pointer style="float:right;" aria-hidden="true" @click.self="cancelDialogVisible()"></i>
+        </h2>
+        <form class="site-search-form">
+          <input type="text"
+            placeholder="请输入关键字"
+            id="local-search-input" 
+            @click="getSearchFile()"
+            class="st-search-input"
+            v-model="searchInput"
+          />
+        </form>
+        <div class="result-wrapper">
+          <div id="local-search-result" class="local-search-result-cls"></div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+<script src="/js/local_search.js"></script>
+<script>
+  var body = document.body || document.documentElement || window;
+  var vm = new Vue({
+    el: '#appSearch',
+    data: {
+      dialogVisible: false,
+      searchInput: '',
+      top: 0,
+    },
+    computed: {
+    },
+    mounted() {
+      window.addEventListener('pjax:complete', () => {
+        this.cancelDialogVisible();
+      })
+    },
+    methods: {
+      showDialog() {
+        this.dialogVisible = true;
+        // 防止页面滚动，只能让弹框滚动
+        this.top = $(document).scrollTop()
+        body.style.cssText = 'overflow: hidden;';
+      },
+      getSearchFile() {
+        if (!this.searchInput) {
+          getSearchFile("/search.xml");
+        }
+      },
+      cancelDialogVisible() {
+        this.dialogVisible = false;
+        body.removeAttribute('style');
+        $(document).scrollTop(this.top)
+      },
+    },
+    created() {}
+  })
+</script>
+<!-- 解决刷新页面闪烁问题，可以在元素上添加display: none, 或者用vue.extend方法，详情：https://blog.csdn.net/qq_31393401/article/details/81017912 -->
+<!-- 下面是搜索基本写法 -->
+<!-- <script type="text/javascript" id="local.search.active">
+  var inputArea = document.querySelector("#local-search-input");
+  inputArea.onclick   = function(){ getSearchFile(); this.onclick = null }
+  inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
+</script> -->
+
+      
+
+    </nav>
+  </div>
+  
+    <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo" class="github-corner color-primary" aria-label="View source on GitHub"><svg width="60" height="60" viewBox="0 0 250 250" style="fill:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+  
+  
+</header>
+
+        <!-- 内容区域 -->
+        
+ <!-- prismjs 代码高亮 -->
+ 
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
+  
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('/medias/8.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        Nestjs+RabbitMQ+支付宝沙盒 实现电商支付功能
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2025-03-14 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E5%90%8E%E7%AB%AF/" class="post-detail-header_category">
+              后端
+            </a>
+          
+        </span>
+      
+
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content row justify-position" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. <strong>前言</strong></h1><p>在电商系统中，支付功能是整个交易流程中最为关键的环节之一。一个完善的支付系统不仅要保证交易的安全性和可靠性，还需要具备良好的用户体验和高效的系统性能。本文将详细介绍如何在商城系统中集成支付宝支付功能，并通过RabbitMQ消息队列来优化支付流程。</p>
+<p>在实现过程中，我们将重点关注以下几个方面：首先，通过RabbitMQ实现支付流程的异步处理，提高系统的并发处理能力；其次，利用死信队列来优雅处理支付超时等异常情况；最后，通过同步和异步通知机制，确保支付状态的及时更新和订单流程的顺利进行。</p>
+<p>通过本文的学习，你将深入理解RabbitMQ在实际业务场景中的应用，以及如何构建一个可靠的支付系统。</p>
+<h1 id="2-安装RabbitMQ"><a href="#2-安装RabbitMQ" class="headerlink" title="2. 安装RabbitMQ"></a>2. <strong>安装RabbitMQ</strong></h1><h2 id="2-1-使用docker安装-如果你看了前面使用docker-compose管理所有容器，这一步就可以省略"><a href="#2-1-使用docker安装-如果你看了前面使用docker-compose管理所有容器，这一步就可以省略" class="headerlink" title="2.1. 使用docker安装(如果你看了前面使用docker-compose管理所有容器，这一步就可以省略)"></a>2.1. <strong>使用docker安装(如果你看了前面使用docker-compose管理所有容器，这一步就可以省略)</strong></h2><h3 id="2-1-1-拉取镜像"><a href="#2-1-1-拉取镜像" class="headerlink" title="2.1.1. 拉取镜像"></a>2.1.1. <strong>拉取镜像</strong></h3><p><code>docker pull rabbitmq::4.0</code></p>
+<h3 id="2-1-2-运行容器"><a href="#2-1-2-运行容器" class="headerlink" title="2.1.2. 运行容器"></a>2.1.2. <strong>运行容器</strong></h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> run <span class="token parameter variable">-it</span> <span class="token parameter variable">--d</span> <span class="token parameter variable">--name</span> rabbitmq <span class="token parameter variable">-p</span> <span class="token number">5552</span>:5552 <span class="token parameter variable">-p</span> <span class="token number">15672</span>:15672 <span class="token parameter variable">-p</span> <span class="token number">5672</span>:5672  <span class="token punctuation">\</span>
+    <span class="token parameter variable">-e</span> <span class="token assign-left variable">RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS</span><span class="token operator">=</span><span class="token string">'-rabbitmq_stream advertised_host localhost'</span> <span class="token punctuation">\</span>
+    rabbitmq:4.0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-1-3-等待服务器启动，然后启用流和流管理插件："><a href="#2-1-3-等待服务器启动，然后启用流和流管理插件：" class="headerlink" title="2.1.3. 等待服务器启动，然后启用流和流管理插件："></a>2.1.3. <strong>等待服务器启动，然后启用流和流管理插件：</strong></h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">docker</span> <span class="token builtin class-name">exec</span> rabbitmq rabbitmq-plugins <span class="token builtin class-name">enable</span> rabbitmq_stream rabbitmq_stream_management<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="2-1-4-以root权限进入docker"><a href="#2-1-4-以root权限进入docker" class="headerlink" title="2.1.4. 以root权限进入docker"></a>2.1.4. <strong>以root权限进入docker</strong></h3><p><code>docker exec -u root -it rabbitmq /bin/bash</code></p>
+<h3 id="2-1-5-添加一个用户"><a href="#2-1-5-添加一个用户" class="headerlink" title="2.1.5. 添加一个用户"></a>2.1.5. <strong>添加一个用户</strong></h3><p><code>rabbitmqctl add_user [username] [password]</code></p>
+<h3 id="2-1-6-创建一个Virtualhost"><a href="#2-1-6-创建一个Virtualhost" class="headerlink" title="2.1.6. 创建一个Virtualhost"></a>2.1.6. <strong>创建一个</strong>Virtualhost</h3><p><code>rabbitmqctl add_vhost /ibuy</code></p>
+<h3 id="2-1-7-给用户访问权限"><a href="#2-1-7-给用户访问权限" class="headerlink" title="2.1.7. 给用户访问权限"></a>2.1.7. <strong>给用户访问权限</strong></h3><p><code>rabbitmqctl set_permissions -p /ibuy [username]  &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</code></p>
+<h4 id="2-1-7-1-检查权限"><a href="#2-1-7-1-检查权限" class="headerlink" title="2.1.7.1. 检查权限"></a>2.1.7.1. <strong>检查权限</strong></h4><p><strong>如果你已经有用户，但提示没有管理权限，你可以使用以下命令查看用户权限：</strong></p>
+<p><code>rabbitmqctl list_users</code></p>
+<p>**该命令会列出所有用户及其角色。确保你登录的用户拥有 **<code>administrator</code> 标签。如果没有，则可以使用以下命令为用户分配管理权限</p>
+<p><code>rabbitmqctl set_user_tags [username] administrator</code></p>
+<h4 id="2-1-7-2-访问rabbitmq界面"><a href="#2-1-7-2-访问rabbitmq界面" class="headerlink" title="2.1.7.2. 访问rabbitmq界面"></a>2.1.7.2. <strong>访问rabbitmq界面</strong></h4><p><strong>接着，就可以通过</strong><a target="_blank" rel="noopener" href="http://120.26.69.48:15672/#/queues">http://localhost:15672/#/queues</a>管理你的rabbitmq</p>
+<h1 id="3-RabbitMQ介绍"><a href="#3-RabbitMQ介绍" class="headerlink" title="3. RabbitMQ介绍"></a>3. <strong>RabbitMQ介绍</strong></h1><h2 id="3-1-什么是MQ"><a href="#3-1-什么是MQ" class="headerlink" title="3.1. 什么是MQ"></a>3.1. <strong>什么是MQ</strong></h2><p><strong>MQ全称为Message Queue，消息队列是应用程序和应用程序之间的通信方法。</strong></p>
+<h3 id="3-1-1-为什么使用MQ"><a href="#3-1-1-为什么使用MQ" class="headerlink" title="3.1.1. 为什么使用MQ"></a>3.1.1. <strong>为什么使用MQ</strong></h3><pre><code>在项目中，可将一些无需即时返回且耗时的操作提取出来，进行​**异步处理**​**，而这种异步处理的方式大大的节省了服务器的请求响应时间，从而****提高**了**系统**的​**吞吐量**​**。 **
+</code></pre>
+<h3 id="3-1-2-MQ的优势："><a href="#3-1-2-MQ的优势：" class="headerlink" title="3.1.2. MQ的优势："></a>3.1.2. <strong>MQ的优势：</strong></h3><p><strong>1、任务****异步</strong>处理<br>将不需要同步处理的并且耗时长的操作由消息队列通知消息接收方进行异步处理。提高了应用程序的响应时间。<br>2、应用程序<strong>解耦合</strong><br>MQ相当于一个中介，生产方通过MQ与消费方交互，它将应用程序进行解耦合。<br>3、<strong>削峰填谷</strong><br>如订单系统，在下单的时候就会往数据库写数据。但是数据库只能支撑每秒1000左右的并发写入，并发量再高就容易宕机。低峰期的时候并发也就100多个，但是在高峰期时候，并发量会突然激增到5000以上，这个时候数据库肯定卡死了。<br><img src="/imgs/hou-duan/6.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/6.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"><br>消息被MQ保存起来了，然后系统就可以按照自己的消费能力来消费，比如每秒1000个数据，这样慢慢写入数据库，这样就不会卡死数据库了。<br><img src="/imgs/hou-duan/7.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/7.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"><br>但是使用了MQ之后，限制消费消息的速度为1000，但是这样一来，高峰期产生的数据势必会被积压在MQ中，高峰就被“削”掉了。但是因为消息积压，在高峰期过后的一段时间内，消费消息的速度还是会维持在1000QPS，直到消费完积压的消息,这就叫做“填谷”<br><img src="/imgs/hou-duan/8.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/8.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h3 id="3-1-3-MQ的劣势"><a href="#3-1-3-MQ的劣势" class="headerlink" title="3.1.3. MQ的劣势"></a>3.1.3. <strong>MQ的劣势</strong></h3><p>**  	**<strong>1、 可用性降低</strong></p>
+<p><strong>系统引入的外部依赖越多没系统稳定性越差。一旦MQ宕机，就会对业务造成影响。如何保证MQ的高可用，就是这个系统设计的关键</strong></p>
+<p><strong>2、系统复杂度提高</strong></p>
+<p>**  MQ的加入大大增加了系统的复杂度，以前系统间是同步的远程调用，现在是通过MQ进行异步调用。如何保证消息没有被重复消费？怎么处理消息丢失情况？怎么保证消息传递的顺序性？**</p>
+<p><strong>3、 一致性问题</strong></p>
+<p><strong>A系统处理完业务，通过MQ给 B、C、D三个系统发送消息数据，如果B系统、C系统处理成功，D系统处理失败。如何保证消息数据处理的一致性？</strong></p>
+<h2 id="3-2-AMQP-和-JMS"><a href="#3-2-AMQP-和-JMS" class="headerlink" title="3.2. AMQP 和 JMS"></a>3.2. <strong>AMQP 和 JMS</strong></h2><p><strong>MQ是消息通信的模型；实现MQ的大致有两种主流方式：AMQP、JMS。</strong></p>
+<h3 id="3-2-1-AMQP"><a href="#3-2-1-AMQP" class="headerlink" title="3.2.1. AMQP"></a>3.2.1. <strong>AMQP</strong></h3><p><strong>AMQP是一种协议，更准确的说是一种binary wire-level protocol（链接协议）。这是其和JMS的本质差别，AMQP不从API层进行限定，而是直接定义网络交换的数据格式。</strong></p>
+<h3 id="3-2-2-JMS"><a href="#3-2-2-JMS" class="headerlink" title="3.2.2. JMS"></a>3.2.2. <strong>JMS</strong></h3><p><strong>JMS即Java消息服务（JavaMessage Service）应用程序接口，是一个Java平台中关于面向消息中间件（MOM）的API，用于在两个应用程序之间，或分布式系统中发送消息，进行异步通信。</strong></p>
+<h3 id="3-2-3-AMQP-与-JMS-区别"><a href="#3-2-3-AMQP-与-JMS-区别" class="headerlink" title="3.2.3. AMQP 与 JMS 区别"></a>3.2.3. <strong>AMQP 与 JMS 区别</strong></h3><ul>
+<li><strong>JMS是定义了统一的接口，来对消息操作进行统一；AMQP是通过规定协议来统一数据交互的格式</strong></li>
+<li><strong>JMS限定了必须使用Java语言；AMQP只是协议，不规定实现方式，因此是跨语言的。</strong></li>
+<li><strong>JMS规定了两种消息模式；而AMQP的消息模式更加丰富</strong></li>
+</ul>
+<h2 id="3-3-消息队列产品"><a href="#3-3-消息队列产品" class="headerlink" title="3.3. 消息队列产品"></a>3.3. <strong>消息队列产品</strong></h2><p><strong>市场上常见的消息队列有如下：</strong></p>
+<ul>
+<li><strong>ActiveMQ：基于JMS</strong></li>
+<li><strong>ZeroMQ：基于C语言开发</strong></li>
+<li><strong>RabbitMQ：基于AMQP协议，erlang语言开发，稳定性好</strong></li>
+<li><strong>RocketMQ：基于JMS，阿里巴巴产品</strong></li>
+<li><strong>Kafka：类似MQ的产品；分布式消息系统，高吞吐量</strong></li>
+</ul>
+<p><img src="/imgs/hou-duan/9.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/9.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h2 id="3-4-RabbitMQ"><a href="#3-4-RabbitMQ" class="headerlink" title="3.4. RabbitMQ"></a>3.4. <strong>RabbitMQ</strong></h2><p><strong>RabbitMQ是由erlang语言开发，基于AMQP（Advanced Message Queue 高级消息队列协议）协议实现的消息队列，它是一种应用程序之间的通信方法，它在分布式系统中用于解耦生产者（发送消息的程序）和消费者（接收消息的程序），提供可靠的消息传输和灵活的路由机制。</strong></p>
+<p><strong>RabbitMQ官方地址：</strong><a target="_blank" rel="noopener" href="http://www.rabbitmq.com/">http://www.rabbitmq.com/</a></p>
+<h3 id="3-4-1-rabbitmq几个核心组件"><a href="#3-4-1-rabbitmq几个核心组件" class="headerlink" title="3.4.1. rabbitmq几个核心组件"></a>3.4.1. <strong>rabbitmq几个核心组件</strong></h3><h4 id="3-4-1-1-生产者（Producer）"><a href="#3-4-1-1-生产者（Producer）" class="headerlink" title="3.4.1.1. 生产者（Producer）"></a>3.4.1.1. <strong>生产者（Producer）</strong></h4><p><strong>负责发送消息到 RabbitMQ。</strong></p>
+<h4 id="3-4-1-2-消费者（Consumer）"><a href="#3-4-1-2-消费者（Consumer）" class="headerlink" title="3.4.1.2. 消费者（Consumer）"></a>3.4.1.2. <strong>消费者（Consumer）</strong></h4><p><strong>从 RabbitMQ 队列中接收消息并进行处理。</strong></p>
+<h4 id="3-4-1-3-交换器（Exchange）"><a href="#3-4-1-3-交换器（Exchange）" class="headerlink" title="3.4.1.3. 交换器（Exchange）"></a>3.4.1.3. <strong>交换器（Exchange）</strong></h4><p><strong>RabbitMQ 消息传递模型的核心思想是生产者从不直接向队列发送任何消息。生产者只将消息发送到 Exchange 交换器中，并不知道消息是否会被传送到队列。交换器负责接收生产者生产的消息，并通过一定路由规则将消息发送到指定的队列，起到一个传递的作用</strong></p>
+<p><strong>它有多种类型的交换机</strong></p>
+<ul>
+<li>​<strong>Direct</strong>​**：按照路由键精确匹配将消息发送到指定队列。**</li>
+<li>​<strong>Fanout</strong>​**：广播消息给所有绑定到该交换机的队列。**</li>
+<li>​<strong>Topic</strong>​**：通过模式匹配路由键来转发消息。**</li>
+<li>​<strong>Headers</strong>​**：通过消息头的值来路由消息。**</li>
+</ul>
+<h4 id="3-4-1-4-队列（Queue）"><a href="#3-4-1-4-队列（Queue）" class="headerlink" title="3.4.1.4. 队列（Queue）"></a>3.4.1.4. <strong>队列（Queue）</strong></h4><p><strong>消息的存储位置，消费者从队列中消费消息</strong></p>
+<h4 id="3-4-1-5-绑定（Binding）"><a href="#3-4-1-5-绑定（Binding）" class="headerlink" title="3.4.1.5. 绑定（Binding）"></a>3.4.1.5. <strong>绑定（Binding）</strong></h4><p><strong>用于将队列与交换机连接，并根据路由键来定义消息的转发规则。</strong></p>
+<h3 id="3-4-2-RabbitMQ消息模式"><a href="#3-4-2-RabbitMQ消息模式" class="headerlink" title="3.4.2. RabbitMQ消息模式"></a>3.4.2. <strong>RabbitMQ消息模式</strong></h3><h4 id="3-4-2-1-简单队列模式（Simple-Queue-Model）"><a href="#3-4-2-1-简单队列模式（Simple-Queue-Model）" class="headerlink" title="3.4.2.1. 简单队列模式（Simple Queue Model）"></a>3.4.2.1. <strong>简单队列模式（Simple Queue Model）</strong></h4><p>这是最基本的模式，生产者发送消息到队列，消费者从队列中接收并处理消息。消息在队列中是 FIFO（先进先出）顺序处理的。<br>特点：只涉及一个生产者、一个消费者和一个队列，适合简单的任务处理场景。</p>
+<h4 id="3-4-2-2-工作队列模式（Work-Queue-Model）"><a href="#3-4-2-2-工作队列模式（Work-Queue-Model）" class="headerlink" title="3.4.2.2. 工作队列模式（Work Queue Model）"></a>3.4.2.2. <strong>工作队列模式（Work Queue Model）</strong></h4><p><strong>在此模式下，一个生产者发送消息到一个队列，多个消费者可以同时从同一个队列中消费消息。这种模式常用于分布式任务处理，旨在平衡消费者之间的工作负载。</strong><br>特点：消费者之间竞争接收消息，负载可以自动分配，适合高并发环境。</p>
+<h4 id="3-4-2-3-发布-订阅模式（Publish-Subscribe-Model）"><a href="#3-4-2-3-发布-订阅模式（Publish-Subscribe-Model）" class="headerlink" title="3.4.2.3. 发布&#x2F;订阅模式（Publish&#x2F;Subscribe Model）"></a>3.4.2.3. <strong>发布&#x2F;订阅模式（Publish&#x2F;Subscribe Model）</strong></h4><p>生产者将消息发送到交换机（Exchange），交换机会将消息广播到多个绑定的队列，消费者订阅这些队列以接收消息。常用的交换机类型是 fanout，可以将消息广播到所有绑定的队列。<br>特点：消息可以同时传递给多个消费者，适合广播类通知，如日志、事件推送。</p>
+<h4 id="3-4-2-4-路由模式（Routing-Model）"><a href="#3-4-2-4-路由模式（Routing-Model）" class="headerlink" title="3.4.2.4. 路由模式（Routing Model）"></a>3.4.2.4. <strong>路由模式（Routing Model）</strong></h4><p><strong>此模式依赖于 direct 类型的交换机，生产者在发送消息时会指定一个路由键（Routing Key），交换机会根据该路由键将消息发送到对应的队列。不同的队列可以绑定到同一个交换机并指定不同的路由键。</strong><br>特点：消息路由更灵活，适合有条件过滤的消息投递，如根据消息类型或优先级分发消息。</p>
+<h4 id="3-4-2-5-主题模式（Topic-Model）"><a href="#3-4-2-5-主题模式（Topic-Model）" class="headerlink" title="3.4.2.5. 主题模式（Topic Model）"></a>3.4.2.5. <strong>主题模式（Topic Model）</strong></h4><p><strong>这是基于 topic 交换机的模式。生产者发送带有主题（Topic）的消息，交换机会根据消息主题匹配绑定的队列，支持模糊匹配。路由键支持通配符（如 * 和 #）用于匹配不同类型的队列。</strong><br>特点：支持复杂的路由规则，适合按主题分类的消息投递，如新闻系统、日志系统等。</p>
+<h4 id="3-4-2-6-头交换模式（Headers-Exchange-Model）"><a href="#3-4-2-6-头交换模式（Headers-Exchange-Model）" class="headerlink" title="3.4.2.6. 头交换模式（Headers Exchange Model）"></a>3.4.2.6. <strong>头交换模式（Headers Exchange Model）</strong></h4><p><strong>这种模式下，交换机会根据消息的头部属性来决定将消息发送到哪个队列，而不是依赖于路由键。消费者通过消息头部属性的值来接收特定消息。</strong><br>特点：基于消息头进行路由的方式更加灵活，适合需要多条件匹配的场景。</p>
+<h4 id="3-4-2-7-RPC-模式（Remote-Procedure-Call-Model）"><a href="#3-4-2-7-RPC-模式（Remote-Procedure-Call-Model）" class="headerlink" title="3.4.2.7. RPC 模式（Remote Procedure Call Model）"></a>3.4.2.7. <strong>RPC 模式（Remote Procedure Call Model）</strong></h4><p><strong>在此模式下，RabbitMQ 被用作远程过程调用的中介。客户端发送一个请求到队列，服务器从队列中取出请求并处理后，返回结果到另一个队列，客户端从该队列中获取结果。</strong><br>特点：适用于分布式系统中的远程服务调用，适合高并发下的请求-响应场景。<br>每种模式都有其特定的应用场景，RabbitMQ 通过灵活的交换机和队列绑定，支持多种消息路由和处理机制，满足不同业务需求。这些模式不仅提高了系统的可扩展性和解耦性，也为高并发场景下的消息处理提供了保障。</p>
+<h3 id="3-4-3-有关死信队列和延迟队列"><a href="#3-4-3-有关死信队列和延迟队列" class="headerlink" title="3.4.3. 有关死信队列和延迟队列"></a>3.4.3. <strong>有关死信队列和延迟队列</strong></h3><h4 id="3-4-3-1-死信队列-Dead-Letter-Queue"><a href="#3-4-3-1-死信队列-Dead-Letter-Queue" class="headerlink" title="3.4.3.1. 死信队列(Dead Letter Queue)"></a>3.4.3.1. <strong>死信队列(Dead Letter Queue)</strong></h4><p>**是一种用于存储和管理无法正常处理的消息的特殊队列。**这些无法处理的消息可能是由于各种原因，例如消息过期、队列已满、消息无法路由等。</p>
+<p><strong>通常是在正常队列上添加</strong><code>x-dead-letter-exchange</code> 和 <code>x-dead-letter-routing-key</code> 参数，将死信消息路由到指定的死信交换机和队列。</p>
+<h4 id="3-4-3-2-延迟队列（Delay-Queue）"><a href="#3-4-3-2-延迟队列（Delay-Queue）" class="headerlink" title="3.4.3.2. 延迟队列（Delay Queue）"></a>3.4.3.2. <strong>延迟队列（Delay Queue）</strong></h4><p><strong>延迟队列用于在指定的时间之后再处理消息。在发送消息时，生产者可以为消息设置一个延迟时间（TTL，Time To Live），消息在队列中到达过期时间后才会变为可消费状态。</strong></p>
+<p><strong>有两种实现方式:</strong></p>
+<ul>
+<li>​<strong>TTL + 死信队列</strong>​**：通过设置消息的TTL（过期时间）和绑定到死信队列实现的。当消息在原队列中过期后，自动进入死信队列，死信队列再路由到目标队列进行处理。**</li>
+<li>​<strong>专门的插件</strong>​**：RabbitMQ 提供了 **<code>rabbitmq-delayed-message-exchange</code> 插件，可以直接支持延迟队列功能。</li>
+</ul>
+<h4 id="3-4-3-3-区别"><a href="#3-4-3-3-区别" class="headerlink" title="3.4.3.3. 区别"></a>3.4.3.3. <strong>区别</strong></h4><ul>
+<li>​<strong>目的不同</strong>​**：死信队列的主要目的是处理无法正常消费的消息，而延迟队列的目的是让消息在特定的延迟时间之后才被处理。**</li>
+<li>​<strong>实现方式不同</strong>​**：死信队列通过设置 <strong><code>x-dead-letter-exchange</code> 和 <code>x-dead-letter-routing-key</code> 实现，而延迟队列通常</strong>通过TTL（消息或队列的过期时间）和死信机制<strong>或者</strong>延迟插件**来实现。</li>
+<li>​<strong>触发条件不同</strong>​**：**<ul>
+<li>​<strong>死信队列</strong>​**：当消息被拒绝、超时或队列满时触发。**</li>
+<li>​<strong>延迟队列</strong>​**：消息在特定的延迟时间后自动变为可消费状态。**</li>
+</ul>
+</li>
+</ul>
+<h1 id="4-创建延迟队列-和-支付队列"><a href="#4-创建延迟队列-和-支付队列" class="headerlink" title="4. 创建延迟队列 和 支付队列"></a>4. <strong>创建延迟队列 和 支付队列</strong></h1><h4 id="4-1-1-1-基于TTL-死信队列实现延迟队列"><a href="#4-1-1-1-基于TTL-死信队列实现延迟队列" class="headerlink" title="4.1.1.1. 基于TTL + 死信队列实现延迟队列"></a>4.1.1.1. <strong>基于TTL + 死信队列实现延迟队列</strong></h4><p><strong>在完成上述配置后，就可以通过</strong><a target="_blank" rel="noopener" href="http://120.26.69.48:15672/#/queues">http://localhost:15672/#/queues</a>管理你的rabbitmq。</p>
+<p><strong>我们的延迟队列用于处理用户提交订单后，超时未支付的情况。</strong></p>
+<p><strong>我们先通过一张图来了解一下rabbitqm的延迟队列的工作流程, 具体逻辑请看下图</strong></p>
+<p><img src="/imgs/hou-duan/10.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/10.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h5 id="4-1-1-1-1-创建queue-order-check消费队列"><a href="#4-1-1-1-1-创建queue-order-check消费队列" class="headerlink" title="4.1.1.1.1. 创建queue.order.check消费队列"></a>4.1.1.1.1. <strong>创建</strong><code>queue.order.check</code>消费队列</h5><p><strong>下图中已有的队列是所有队列创建完后的样子</strong></p>
+<p><img src="/imgs/hou-duan/11.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/11.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h5 id="4-1-1-1-2-创建死信交换机exchange-order-delay"><a href="#4-1-1-1-2-创建死信交换机exchange-order-delay" class="headerlink" title="4.1.1.1.2. 创建死信交换机exchange.order.delay"></a>4.1.1.1.2. <strong>创建死信交换机</strong><code>exchange.order.delay</code></h5><p><strong>切换到Exchanges的tab创建一个死信交换机</strong><code>exchange.order.delay</code>，type选择<code>direct</code><br><img src="/imgs/hou-duan/12.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/12.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<p><strong>然后点进</strong><code>exchange.order.delay</code>交换机，并绑定消费队列<code>queue.order.check</code>，并设置routing key 为<code>queue.order.check</code></p>
+<p><img src="/imgs/hou-duan/13.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/13.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h5 id="4-1-1-1-3-创建死信队列queue-order-delay"><a href="#4-1-1-1-3-创建死信队列queue-order-delay" class="headerlink" title="4.1.1.1.3. 创建死信队列queue.order.delay"></a>4.1.1.1.3. <strong>创建死信队列</strong><code>queue.order.delay</code></h5><p><img src="/imgs/hou-duan/14.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/14.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"><br>这里，我们将死信队列的消息通过配置参数发送到了<code>queue.order.check</code>消费队列中。</p>
+<p><code>&lt;strong&gt;x-message-ttl=10000&lt;/strong&gt;</code>​**，这个参数最好是在代码中配置<strong>​</strong>。**</p>
+<p><strong>最后就是在死信交换机</strong><code>exchange.order.delay</code>中绑定<code>queue.order.delay</code></p>
+<p><img src="/imgs/hou-duan/15.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/15.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h5 id="4-1-1-1-4-验证"><a href="#4-1-1-1-4-验证" class="headerlink" title="4.1.1.1.4. 验证"></a>4.1.1.1.4. <strong>验证</strong></h5><p>**然后，我们可以回到exchange中，点进我们的 **<code>exchange.order.delay</code>交换机，然后向 <code>queu.order.delay</code>这个死信队列发送一条消息</p>
+<p><img src="/imgs/hou-duan/16.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/16.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<p><strong>在发送完成后，赶快点到</strong><code>queue.order.check</code>这个消费队列去查看，你会发现是查不到信息的。等过了10秒后就会接收到死信队列传过来的数据。到这里，我们基于rabbitmq的延迟队列就实现了。</p>
+<p><img src="/imgs/hou-duan/17.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/17.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h4 id="4-1-1-2-创建支付队列"><a href="#4-1-1-2-创建支付队列" class="headerlink" title="4.1.1.2. 创建支付队列"></a>4.1.1.2. <strong>创建支付队列</strong></h4><p><strong>这里的队列使用主要有以下两点原因</strong></p>
+<ol>
+<li><strong>异步处理支付结果、解耦支付处理流程，以及通过消息队列保证消息的可靠传递，防止消息丢失。</strong></li>
+<li>​<strong>削峰填谷</strong>​**：在订单系统中，下单的时候直接往数据库中写数据时，只能支撑每秒1000左右的并发写入，并发量再高就容易宕机。如果在高峰期时候，并发量突然激增到1000以上，或者更多，这个时候数据库就会可能卡死了，所以通过增加mq这个中间件来对写入数据进行缓存。**</li>
+</ol>
+<h5 id="4-1-1-2-1-创建一个支付队列queue-order-pay"><a href="#4-1-1-2-1-创建一个支付队列queue-order-pay" class="headerlink" title="4.1.1.2.1. 创建一个支付队列queue.order.pay"></a>4.1.1.2.1. <strong>创建一个支付队列queue.order.pay</strong></h5><p><strong>不用加任何arguments</strong></p>
+<p><img src="/imgs/hou-duan/18.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/18.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h5 id="4-1-1-2-2-创建支付队列交换机exchange-order-pay"><a href="#4-1-1-2-2-创建支付队列交换机exchange-order-pay" class="headerlink" title="4.1.1.2.2. 创建支付队列交换机exchange.order.pay"></a>4.1.1.2.2. <strong>创建支付队列交换机exchange.order.pay</strong></h5><p><img src="/imgs/hou-duan/19.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/19.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<p><strong>点进去再绑定到支付队列</strong><code>queue.order.pay</code></p>
+<p><img src="/imgs/hou-duan/20.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/20.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h1 id="5-使用-cpolar-实现内网穿透"><a href="#5-使用-cpolar-实现内网穿透" class="headerlink" title="5. **使用 **cpolar 实现内网穿透"></a>5. **使用 **cpolar 实现内网穿透</h1><p><strong>因为我们在开发支付功能时，需要接入支付宝。在对应的沙箱应用接入时，需要提供用于接收支付宝沙箱异步通知消息，需要传入http(s)公网可访问的网页地址。若不设置，则无法接收相应的异步通知消息。所以，我们在开发阶段需要将本机地址映射到公网</strong></p>
+<h2 id="5-1-安装homebrew（选填）"><a href="#5-1-安装homebrew（选填）" class="headerlink" title="5.1. 安装homebrew（选填）"></a>5.1. <strong>安装homebrew（选填）</strong></h2><p><strong>如果已经安装，则跳过</strong></p>
+<p><code>/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;</code></p>
+<h2 id="5-2-安装cpolar"><a href="#5-2-安装cpolar" class="headerlink" title="5.2. 安装cpolar"></a>5.2. <strong>安装cpolar</strong></h2><p><code>brew tap probezy/core &amp;&amp; brew install cpolar</code></p>
+<h2 id="5-3-token验证"><a href="#5-3-token验证" class="headerlink" title="5.3. token验证"></a>5.3. <strong>token验证</strong></h2><p><strong>需要在</strong><a target="_blank" rel="noopener" href="https://i.cpolar.com/m/5b6L"><strong>cpolar</strong></a><strong>注册账号</strong></p>
+<p><strong>登录cpolar官网，点击左侧的验证，查看自己的认证token，之后将token贴在命令行里</strong></p>
+<h2 id="5-4-4-安装服务"><a href="#5-4-4-安装服务" class="headerlink" title="5.4. 4.安装服务"></a>5.4. <strong>4.安装服务</strong></h2><p><code>sudo cpolar service install</code></p>
+<h3 id="5-4-1-修改默认端口号"><a href="#5-4-1-修改默认端口号" class="headerlink" title="5.4.1. 修改默认端口号"></a>5.4.1. <strong>修改默认端口号</strong></h3><p><strong>因为我们本机上还有elasticsearch的服务已经占用了9200端口，所以需要修改一下cpolar的默认端口号</strong></p>
+<ol>
+<li><strong>找到cpolar配置文件</strong></li>
+</ol>
+<ul>
+<li>**windows系统: **<code>c:\Users\用户名.cpolar\cpolar.yml</code>，右键点击“打开方式”——“记事本”，选择使用记事本打开</li>
+<li><strong>linux系统：执行命令</strong><code>nano /usr/local/etc/cpolar/cpolar.yml</code></li>
+<li><strong>mac：如果没有配置指定的配置文件，则在</strong><code>~/.cpolar/cpolar.yml</code></li>
+</ul>
+<ol start="2">
+<li><strong>在配置文件中增加一行参数:</strong><code>client_dashboard_addr: 127.0.0.1:9300</code>。这一行与<code>authtoken是同一级别</code></li>
+<li><strong>保存cpolar配置文件</strong></li>
+<li><strong>如果你已经使用</strong><code>sudo cpolar service start</code>启动了服务，则再运行一下<code>sudo cpolar service restart</code>重启一下。然后就可以在9300上访问了</li>
+</ol>
+<h3 id="5-4-2-启动服务"><a href="#5-4-2-启动服务" class="headerlink" title="5.4.2. 启动服务"></a>5.4.2. <strong>启动服务</strong></h3><p><code>sudo cpolar service start</code></p>
+<h3 id="5-4-3-访问"><a href="#5-4-3-访问" class="headerlink" title="5.4.3. 访问"></a>5.4.3. <strong>访问</strong></h3><p><strong>在浏览器上访问本地9300端口 127.0.0.1:9300，使用cpolar邮箱账号登录cpolar web UI管理界面，即可开始使用cpolar。</strong></p>
+<h3 id="5-4-4-创建隧道"><a href="#5-4-4-创建隧道" class="headerlink" title="5.4.4. 创建隧道"></a>5.4.4. <strong>创建隧道</strong></h3><p><strong>点击左侧仪表盘的隧道管理——创建隧道，我们来创建一条隧道，将在本地15672端口下的rabbitmq服务映射到公网：</strong><img src="/imgs/hou-duan/21.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/21.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<p>提示隧道创建成功后，页面自动跳转至隧道列表，可以看到刚刚创建成功的“本机rabbitmq”，状态<code>active</code>，表示为正常在线，注意无需再次点击启动。<img src="/imgs/hou-duan/22.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/22.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<p><strong>点击左侧仪表盘的状态——在线隧道列表，可以看到本机rabbitmq隧道已经有生成了相应的公网地址，一个http协议，一个https协议（免去配置ssl证书的繁琐步骤），均可以访问到本地web服务，复制公网地址。</strong></p>
+<p><img src="/imgs/hou-duan/23.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/23.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h3 id="5-4-5-测试访问公网地址"><a href="#5-4-5-测试访问公网地址" class="headerlink" title="5.4.5. 测试访问公网地址"></a>5.4.5. <strong>测试访问公网地址</strong></h3><p><img src="/imgs/hou-duan/24.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/24.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h3 id="5-4-6-配置固定二级域名"><a href="#5-4-6-配置固定二级域名" class="headerlink" title="5.4.6. 配置固定二级域名"></a>5.4.6. <strong>配置固定二级域名</strong></h3><p>**使用免费的cpolar生成的公网地址为随机临时地址，**24小时内会发生变化，对于需要长期访问的用户不是很方便。为此，我们可以为其配置一个容易记忆的固定二级子域名，同时提高带宽，实现更为流畅的访问。</p>
+<p><em>如果需要升级套餐，可以在</em><a target="_blank" rel="noopener" href="https://i.cpolar.com/m/5b6L"><em>官网</em></a><em>升级套餐</em></p>
+<h3 id="5-4-7-保留一个二级子域名"><a href="#5-4-7-保留一个二级子域名" class="headerlink" title="5.4.7. 保留一个二级子域名"></a>5.4.7. <strong>保留一个二级子域名</strong></h3><p><strong>登录</strong><a target="_blank" rel="noopener" href="https://dashboard.cpolar.com/reserved">cpolar官网后台</a>，点击左侧的预留，找到保留二级子域名：</p>
+<ul>
+<li><strong>地区：选择China VIP</strong></li>
+<li><strong>二级域名：可自定义填写</strong></li>
+<li><strong>描述：即备注，可自定义填写</strong></li>
+</ul>
+<p><strong>点击</strong><code>保留</code></p>
+<p><img src="/imgs/hou-duan/25.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/25.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<p><strong>提示子域名保留成功，复制所保留的二级子域名</strong></p>
+<p><img src="/imgs/hou-duan/26.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/26.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h3 id="5-4-8-配置二级子域名"><a href="#5-4-8-配置二级子域名" class="headerlink" title="5.4.8. 配置二级子域名"></a>5.4.8. <strong>配置二级子域名</strong></h3><p><strong>访问</strong><a target="_blank" rel="noopener" href="http://127.0.0.1:9200/">http://127.0.0.1:9200/</a>登录cpolar web UI管理界面，点击左侧仪表盘的隧道管理——隧道列表，找到所要配置的隧道，点击右侧的<code>编辑</code></p>
+<p><img src="/imgs/hou-duan/27.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/27.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<p><strong>修改隧道信息，将保留成功的二级子域名配置到隧道中</strong></p>
+<ul>
+<li><strong>域名类型：选择</strong><code>二级子域名</code></li>
+<li><strong>Sub Domain：填写保留成功的二级子域名，本例为</strong><code>test01</code></li>
+</ul>
+<p><strong>点击</strong><code>更新</code></p>
+<p><img src="/imgs/hou-duan/28.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/28.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<p><strong>提示更新隧道成功，点击左侧仪表盘的状态——在线隧道列表，可以看到公网地址已经更新为保留成功的二级子域名，将其复制下来。</strong></p>
+<p><img src="/imgs/hou-duan/29.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/29.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h3 id="5-4-9-测试访问公网固定二级子域名"><a href="#5-4-9-测试访问公网固定二级子域名" class="headerlink" title="5.4.9. 测试访问公网固定二级子域名"></a>5.4.9. <strong>测试访问公网固定二级子域名</strong></h3><p><strong>在浏览器上访问固定二级子域名，测试访问成功，现在该公网地址不会随机变化了。</strong></p>
+<p><img src="/imgs/hou-duan/30.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/30.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<p><strong>如果您想要使用自己的域名来访问本地web服务，cpolar也支持该项功能，详细可以参考下一篇文章教程：</strong></p>
+<ul>
+<li><strong>为本地web服务配置自己的域名</strong></li>
+</ul>
+<h1 id="6-使用Nestjs接入支付宝支付"><a href="#6-使用Nestjs接入支付宝支付" class="headerlink" title="6. 使用Nestjs接入支付宝支付"></a>6. <strong>使用Nestjs接入支付宝支付</strong></h1><h2 id="6-1-登录支付宝开放平台，创建应用"><a href="#6-1-登录支付宝开放平台，创建应用" class="headerlink" title="6.1. 登录支付宝开放平台，创建应用"></a>6.1. <strong>登录支付宝开放平台，创建应用</strong></h2><p><strong>因为我使用的是支付宝的沙箱支付，所以先跳过这一步</strong></p>
+<h2 id="6-2-沙箱接入"><a href="#6-2-沙箱接入" class="headerlink" title="6.2. 沙箱接入"></a>6.2. <strong>沙箱接入</strong></h2><p><strong>登入控制台，找到开发工具推荐-&gt; 沙箱</strong></p>
+<p><strong>开发信息选择</strong>自定义秘钥**，开启<strong>公钥模式</strong>。然后通过支付宝开放平台助手，生成应用公私钥。再通过应用公钥生成支付宝公钥**</p>
+<p><a target="_blank" rel="noopener" href="https://opendocs.alipay.com/open/02np9g?pathHash=b87f0c98">https://opendocs.alipay.com/open/02np9g?pathHash=b87f0c98</a></p>
+<h2 id="6-3-梳理实现流程"><a href="#6-3-梳理实现流程" class="headerlink" title="6.3. 梳理实现流程"></a>6.3. <strong>梳理实现流程</strong></h2><p><strong>下图是支付宝的支付调用流程</strong></p>
+<p><img src="/imgs/hou-duan/31.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/31.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<p><strong>但是，在项目中，我们还有别的业务，不能直接在某个业务逻辑中接入支付宝的支付功能，我们新建一个支付服务，并且通过mq来管信息。</strong></p>
+<p><strong>使用mq的好处就是，增加一个消息中间件，解除多个服务之间的耦合度。因为，在这个电商项目中，每卖掉一个商品，就需要减库存，****​而且一旦用户支付后，需要修改订单状态，并且通知物流进行发货，有的还需要短信通知等等。​</strong>如果不添加消息中间件，​<strong>那么就需要在支付服务或者订单服务中统一进行这一系列的操作。那么这些服务之间的耦合度会很高，当业务进行横向扩展的时候，新接入一个服务，都需要对支付&#x2F;订单服务进行修改，这就增加了出错的可能</strong>​**，且负责这两个服务的工作人员也会很累。那么通过添加消息中间件，当用户支付完成后，直接将第三方的支付信息添加到mq队列中，哪一个服务需要用到这个信息，就去mq中监听即可。这样，程序更健壮，更易于维护**</p>
+<p><strong>所以，改进后的流程如下</strong>​**（PS: 暂时未用到微服务，还是先按照模块拆分的方式来实该时序图<strong>​</strong>）**</p>
+<p><img src="/imgs/hou-duan/32.png" class="lazyload placeholder" data-srcset="/imgs/hou-duan/32.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h2 id="6-4-实现步骤"><a href="#6-4-实现步骤" class="headerlink" title="6.4. 实现步骤"></a>6.4. <strong>实现步骤</strong></h2><h3 id="6-4-1-支付模块配置"><a href="#6-4-1-支付模块配置" class="headerlink" title="6.4.1. 支付模块配置"></a>6.4.1. <strong>支付模块配置</strong></h3><ul>
+<li><strong>配置支付宝SDK，包括应用ID、商户私钥、支付宝公钥等</strong></li>
+<li><strong>设置RabbitMQ消息队列，定义交换机和队列</strong></li>
+<li><strong>配置支付回调接口，处理支付结果通知</strong></li>
+</ul>
+<h4 id="6-4-1-1-支付宝SDK环境变量配置"><a href="#6-4-1-1-支付宝SDK环境变量配置" class="headerlink" title="6.4.1.1. 支付宝SDK环境变量配置"></a>6.4.1.1. <strong>支付宝SDK环境变量配置</strong></h4><pre class="line-numbers language-plain" data-language="plain"><code class="language-plain"># 支付相关
+# 商户id
+ALIPAY_APP_ID: xxx
+# 商户秘钥
+ALIPAY_MERCHANT_PRIVATE_KEY: xxx
+# 支付宝公钥
+ALIPAY_PUBLIC_KEY: xxx
+
+#支付状态异步通知
+ALIPAY_NOTIFY_URL: xxx/alipay/alipayNotifyNotice
+#支付状态同步通知
+ALIPAY_RETURN_URL: xxx/alipay/alipayReturnNotice
+#支付宝开发环境网关 用的沙箱的网关
+ALIPAY_GATEWAY_URL: https://openapi-sandbox.dl.alipaydev.com/gateway.do
+
+#签名方式
+ALIPAY_SIGN_TYPE: RSA2
+#ALIPAY_CHARSET: utf-8
+#ALIPAY_FORMAT: json<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="6-4-1-2-RabbitMQ环境变量配置"><a href="#6-4-1-2-RabbitMQ环境变量配置" class="headerlink" title="6.4.1.2. RabbitMQ环境变量配置"></a>6.4.1.2. <strong>RabbitMQ环境变量配置</strong></h4><pre class="line-numbers language-plain" data-language="plain"><code class="language-plain"># 开发环境配置
+# rabbitmq
+RMQ_HOST=localhost
+RMQ_PORT=5672
+RMQ_USERNAME=xxx
+RMQ_PASSWORD=xxx
+RMQ_VIRTUAL_HOST=/ibuy<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="6-4-2-订单创建流程"><a href="#6-4-2-订单创建流程" class="headerlink" title="6.4.2. 订单创建流程"></a>6.4.2. <strong>订单创建流程</strong></h3><ul>
+<li><strong>用户从购物车下单，系统生成订单号</strong></li>
+<li><strong>创建订单主表记录和订单明细记录</strong></li>
+<li><strong>扣减商品库存</strong></li>
+<li><strong>清空用户购物车缓存</strong></li>
+<li><strong>发送延时消息到RabbitMQ，用于后续订单状态检查</strong></li>
+</ul>
+<h4 id="6-4-2-1-订单实体定义"><a href="#6-4-2-1-订单实体定义" class="headerlink" title="6.4.2.1. 订单实体定义"></a>6.4.2.1. <strong>订单实体定义</strong></h4><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// src/mall-service/mall-service-order/entities/order.entity.ts</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Entity</span></span><span class="token punctuation">(</span><span class="token string">'tb_order'</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">OrderEntity</span> <span class="token punctuation">&#123;</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">PrimaryColumn</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  id<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Column</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  username<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Column</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  totalNum<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Column</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  totalMoney<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Column</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  payMoney<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Column</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  createTime<span class="token operator">:</span> Date<span class="token punctuation">;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Column</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  updateTime<span class="token operator">:</span> Date<span class="token punctuation">;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Column</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  payTime<span class="token operator">:</span> Date<span class="token punctuation">;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Column</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  consignTime<span class="token operator">:</span> Date<span class="token punctuation">;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Column</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  endTime<span class="token operator">:</span> Date<span class="token punctuation">;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Column</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  closeTime<span class="token operator">:</span> Date<span class="token punctuation">;</span>
+
+  <span class="token comment">// 订单状态：0-未完成，1-已完成，2-已退货</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Column</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  orderStatus<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// 支付状态：0-未支付，1-已支付，2-支付失败</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Column</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  payStatus<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// 支付类型：1-在线支付，2-货到付款</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Column</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  payType<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// 订单来源：1-PC端，2-移动端</span>
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Column</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  sourceType<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Column</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  transactionId<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="6-4-2-2-订单创建服务"><a href="#6-4-2-2-订单创建服务" class="headerlink" title="6.4.2.2. 订单创建服务"></a>6.4.2.2. <strong>订单创建服务</strong></h4><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// src/mall-service/mall-service-order/services/order.service.ts</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Injectable</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">OrderService</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span>
+    <span class="token decorator"><span class="token at operator">@</span><span class="token function">InjectRepository</span></span><span class="token punctuation">(</span>OrderEntity<span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> orderRepository<span class="token operator">:</span> Repository<span class="token operator">&lt;</span>OrderEntity<span class="token operator">></span><span class="token punctuation">,</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> cartService<span class="token operator">:</span> CartService<span class="token punctuation">,</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> goodsService<span class="token operator">:</span> GoodsService<span class="token punctuation">,</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> amqpConnection<span class="token operator">:</span> AmqpConnection<span class="token punctuation">,</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> dataSource<span class="token operator">:</span> DataSource
+  <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">async</span> <span class="token function">createOrder</span><span class="token punctuation">(</span>orderDto<span class="token operator">:</span> CreateOrderDto<span class="token punctuation">,</span> user<span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span>Result<span class="token operator">&lt;</span><span class="token builtin">any</span><span class="token operator">>></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">const</span> queryRunner <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>dataSource<span class="token punctuation">.</span><span class="token function">createQueryRunner</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">await</span> queryRunner<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">await</span> queryRunner<span class="token punctuation">.</span><span class="token function">startTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+      <span class="token comment">// 1. 获取购物车数据</span>
+      <span class="token keyword">const</span> cartItems <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>cartService<span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span>username<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>cartItems <span class="token operator">||</span> cartItems<span class="token punctuation">.</span>length <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">BadRequestException</span><span class="token punctuation">(</span><span class="token string">'购物车为空'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+
+      <span class="token comment">// 2. 计算订单金额</span>
+      <span class="token keyword">let</span> totalMoney <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+      <span class="token keyword">let</span> totalNum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> item <span class="token keyword">of</span> cartItems<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        totalMoney <span class="token operator">+=</span> item<span class="token punctuation">.</span>price <span class="token operator">*</span> item<span class="token punctuation">.</span>num<span class="token punctuation">;</span>
+        totalNum <span class="token operator">+=</span> item<span class="token punctuation">.</span>num<span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+
+      <span class="token comment">// 3. 创建订单</span>
+      <span class="token keyword">const</span> order <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OrderEntity</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      order<span class="token punctuation">.</span>id <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">ORDER_</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>Date<span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">_</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token number">36</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">substr</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+      order<span class="token punctuation">.</span>username <span class="token operator">=</span> user<span class="token punctuation">.</span>username<span class="token punctuation">;</span>
+      order<span class="token punctuation">.</span>totalMoney <span class="token operator">=</span> totalMoney<span class="token punctuation">;</span>
+      order<span class="token punctuation">.</span>totalNum <span class="token operator">=</span> totalNum<span class="token punctuation">;</span>
+      order<span class="token punctuation">.</span>createTime <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      order<span class="token punctuation">.</span>orderStatus <span class="token operator">=</span> <span class="token string">'0'</span><span class="token punctuation">;</span>
+      order<span class="token punctuation">.</span>payStatus <span class="token operator">=</span> <span class="token string">'0'</span><span class="token punctuation">;</span>
+      order<span class="token punctuation">.</span>payType <span class="token operator">=</span> <span class="token string">'1'</span><span class="token punctuation">;</span>
+      order<span class="token punctuation">.</span>sourceType <span class="token operator">=</span> orderDto<span class="token punctuation">.</span>sourceType<span class="token punctuation">;</span>
+
+      <span class="token keyword">await</span> queryRunner<span class="token punctuation">.</span>manager<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>OrderEntity<span class="token punctuation">,</span> order<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token comment">// 4. 创建订单明细</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> item <span class="token keyword">of</span> cartItems<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">const</span> orderItem <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OrderItemEntity</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        orderItem<span class="token punctuation">.</span>orderId <span class="token operator">=</span> order<span class="token punctuation">.</span>id<span class="token punctuation">;</span>
+        orderItem<span class="token punctuation">.</span>goodsId <span class="token operator">=</span> item<span class="token punctuation">.</span>goodsId<span class="token punctuation">;</span>
+        orderItem<span class="token punctuation">.</span>num <span class="token operator">=</span> item<span class="token punctuation">.</span>num<span class="token punctuation">;</span>
+        orderItem<span class="token punctuation">.</span>price <span class="token operator">=</span> item<span class="token punctuation">.</span>price<span class="token punctuation">;</span>
+        <span class="token keyword">await</span> queryRunner<span class="token punctuation">.</span>manager<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>OrderItemEntity<span class="token punctuation">,</span> orderItem<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 5. 扣减库存</span>
+        <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>goodsService<span class="token punctuation">.</span><span class="token function">decreaseStock</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span>goodsId<span class="token punctuation">,</span> item<span class="token punctuation">.</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+
+      <span class="token comment">// 6. 清空购物车</span>
+      <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>cartService<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span>username<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token comment">// 7. 发送延时消息</span>
+      <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">sendDelayMessage</span><span class="token punctuation">(</span>order<span class="token punctuation">.</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token keyword">await</span> queryRunner<span class="token punctuation">.</span><span class="token function">commitTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Result</span><span class="token punctuation">(</span>order<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">await</span> queryRunner<span class="token punctuation">.</span><span class="token function">rollbackTransaction</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">throw</span> error<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">finally</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">await</span> queryRunner<span class="token punctuation">.</span><span class="token function">release</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">private</span> <span class="token keyword">async</span> <span class="token function">sendDelayMessage</span><span class="token punctuation">(</span>orderId<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>amqpConnection<span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>
+      RabbitMQConstants<span class="token punctuation">.</span><span class="token constant">EXCHANGE_ORDER_DELAY</span><span class="token punctuation">,</span>
+      RabbitMQConstants<span class="token punctuation">.</span><span class="token constant">QUEUE_ORDER_DELAY</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#123;</span> orderId <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="6-4-3-支付流程"><a href="#6-4-3-支付流程" class="headerlink" title="6.4.3. 支付流程"></a>6.4.3. <strong>支付流程</strong></h3><ul>
+<li><strong>前端调用支付接口，获取支付宝支付链接</strong></li>
+<li><strong>用户跳转到支付宝完成支付</strong></li>
+<li><strong>支付宝异步通知商城支付结果</strong></li>
+<li><strong>系统接收通知，验证签名，发送消息到支付队列</strong></li>
+<li><strong>支付监听器消费消息，更新订单状态</strong></li>
+</ul>
+<h4 id="6-4-3-1-支付服务实现"><a href="#6-4-3-1-支付服务实现" class="headerlink" title="6.4.3.1. 支付服务实现"></a>6.4.3.1. <strong>支付服务实现</strong></h4><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// src/mall-service/alipay/services/alipay.service.ts</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Injectable</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">AlipayService</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">private</span> <span class="token keyword">readonly</span> alipaySdk<span class="token operator">:</span> AlipaySdk<span class="token punctuation">;</span>
+
+  <span class="token function">constructor</span><span class="token punctuation">(</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> configService<span class="token operator">:</span> ConfigService<span class="token punctuation">,</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> orderService<span class="token operator">:</span> OrderService<span class="token punctuation">,</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> amqpConnection<span class="token operator">:</span> AmqpConnection
+  <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>alipaySdk <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AlipaySdk</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+      appId<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>configService<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'ALIPAY_APP_ID'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      privateKey<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>configService<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'ALIPAY_MERCHANT_PRIVATE_KEY'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      alipayPublicKey<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>configService<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'ALIPAY_PUBLIC_KEY'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      gateway<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>configService<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'ALIPAY_GATEWAY_URL'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      signType<span class="token operator">:</span> <span class="token string">'RSA2'</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">async</span> <span class="token function">createPayment</span><span class="token punctuation">(</span>orderId<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span>Result<span class="token operator">&lt;</span><span class="token builtin">string</span><span class="token operator">>></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">const</span> order <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>orderService<span class="token punctuation">.</span><span class="token function">findById</span><span class="token punctuation">(</span>orderId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>order<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">NotFoundException</span><span class="token punctuation">(</span><span class="token string">'订单不存在'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>order<span class="token punctuation">.</span>payStatus <span class="token operator">===</span> <span class="token string">'1'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">BadRequestException</span><span class="token punctuation">(</span><span class="token string">'订单已支付'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">const</span> paymentUrl <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>alipaySdk<span class="token punctuation">.</span><span class="token function">pageExecute</span><span class="token punctuation">(</span><span class="token string">'alipay.trade.page.pay'</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+      notifyUrl<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>configService<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'ALIPAY_NOTIFY_URL'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      returnUrl<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>configService<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string">'ALIPAY_RETURN_URL'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      bizContent<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        outTradeNo<span class="token operator">:</span> order<span class="token punctuation">.</span>id<span class="token punctuation">,</span>
+        totalAmount<span class="token operator">:</span> order<span class="token punctuation">.</span>totalMoney<span class="token punctuation">.</span><span class="token function">toFixed</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        subject<span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">订单</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>order<span class="token punctuation">.</span>id<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+        productCode<span class="token operator">:</span> <span class="token string">'FAST_INSTANT_TRADE_PAY'</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Result</span><span class="token punctuation">(</span>paymentUrl<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">async</span> <span class="token function">handlePaymentNotify</span><span class="token punctuation">(</span>params<span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span><span class="token builtin">string</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">const</span> signVerified <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>alipaySdk<span class="token punctuation">.</span><span class="token function">checkNotifySign</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>signVerified<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">return</span> <span class="token string">'failure'</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>params<span class="token punctuation">.</span>trade_status <span class="token operator">===</span> <span class="token string">'TRADE_SUCCESS'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>amqpConnection<span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>
+        RabbitMQConstants<span class="token punctuation">.</span><span class="token constant">EXCHANGE_ORDER_PAY</span><span class="token punctuation">,</span>
+        RabbitMQConstants<span class="token punctuation">.</span><span class="token constant">QUEUE_ORDER_PAY</span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#123;</span>
+          orderId<span class="token operator">:</span> params<span class="token punctuation">.</span>out_trade_no<span class="token punctuation">,</span>
+          tradeNo<span class="token operator">:</span> params<span class="token punctuation">.</span>trade_no<span class="token punctuation">,</span>
+          payTime<span class="token operator">:</span> params<span class="token punctuation">.</span>gmt_payment
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">return</span> <span class="token string">'success'</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="6-4-4-订单状态管理"><a href="#6-4-4-订单状态管理" class="headerlink" title="6.4.4. 订单状态管理"></a>6.4.4. <strong>订单状态管理</strong></h3><ul>
+<li><strong>使用延时队列检查订单支付状态</strong></li>
+<li><strong>对于超时未支付的订单，自动关闭并回滚库存</strong></li>
+<li><strong>支付成功的订单，更新状态为待发货</strong></li>
+</ul>
+<h4 id="6-4-4-1-订单支付消息监听器"><a href="#6-4-4-1-订单支付消息监听器" class="headerlink" title="6.4.4.1. 订单支付消息监听器"></a>6.4.4.1. <strong>订单支付消息监听器</strong></h4><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// src/mall-service/mall-service-order/listeners/order-pay.listener.ts</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Injectable</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">OrderPayListener</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> orderService<span class="token operator">:</span> OrderService<span class="token punctuation">,</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> goodsService<span class="token operator">:</span> GoodsService
+  <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">RabbitSubscribe</span></span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+    exchange<span class="token operator">:</span> RabbitMQConstants<span class="token punctuation">.</span><span class="token constant">EXCHANGE_ORDER_PAY</span><span class="token punctuation">,</span>
+    routingKey<span class="token operator">:</span> RabbitMQConstants<span class="token punctuation">.</span><span class="token constant">QUEUE_ORDER_PAY</span><span class="token punctuation">,</span>
+    queue<span class="token operator">:</span> RabbitMQConstants<span class="token punctuation">.</span><span class="token constant">QUEUE_ORDER_PAY</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token keyword">async</span> <span class="token function">handlePaymentSuccess</span><span class="token punctuation">(</span>msg<span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">const</span> <span class="token punctuation">&#123;</span> orderId<span class="token punctuation">,</span> tradeNo<span class="token punctuation">,</span> payTime <span class="token punctuation">&#125;</span> <span class="token operator">=</span> msg<span class="token punctuation">;</span>
+
+    <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>orderService<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>orderId<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+      payStatus<span class="token operator">:</span> <span class="token string">'1'</span><span class="token punctuation">,</span>
+      payTime<span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span>payTime<span class="token punctuation">)</span><span class="token punctuation">,</span>
+      transactionId<span class="token operator">:</span> tradeNo<span class="token punctuation">,</span>
+      orderStatus<span class="token operator">:</span> <span class="token string">'1'</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="6-4-4-2-订单超时检查监听器"><a href="#6-4-4-2-订单超时检查监听器" class="headerlink" title="6.4.4.2. 订单超时检查监听器"></a>6.4.4.2. <strong>订单超时检查监听器</strong></h4><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// src/mall-service/mall-service-order/listeners/order-check.listener.ts</span>
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Injectable</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">OrderCheckListener</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> orderService<span class="token operator">:</span> OrderService<span class="token punctuation">,</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> goodsService<span class="token operator">:</span> GoodsService<span class="token punctuation">,</span>
+    <span class="token keyword">private</span> <span class="token keyword">readonly</span> alipayService<span class="token operator">:</span> AlipayService
+  <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">RabbitSubscribe</span></span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+    exchange<span class="token operator">:</span> RabbitMQConstants<span class="token punctuation">.</span><span class="token constant">EXCHANGE_ORDER_DLX</span><span class="token punctuation">,</span>
+    routingKey<span class="token operator">:</span> RabbitMQConstants<span class="token punctuation">.</span><span class="token constant">QUEUE_ORDER_CHECK</span><span class="token punctuation">,</span>
+    queue<span class="token operator">:</span> RabbitMQConstants<span class="token punctuation">.</span><span class="token constant">QUEUE_ORDER_CHECK</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token keyword">async</span> <span class="token function">handleOrderCheck</span><span class="token punctuation">(</span>msg<span class="token operator">:</span> <span class="token builtin">any</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">const</span> <span class="token punctuation">&#123;</span> orderId <span class="token punctuation">&#125;</span> <span class="token operator">=</span> msg<span class="token punctuation">;</span>
+    <span class="token keyword">const</span> order <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>orderService<span class="token punctuation">.</span><span class="token function">findById</span><span class="token punctuation">(</span>orderId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>order <span class="token operator">||</span> order<span class="token punctuation">.</span>payStatus <span class="token operator">===</span> <span class="token string">'1'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">// 关闭支付宝交易</span>
+    <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>alipayService<span class="token punctuation">.</span><span class="token function">closePayment</span><span class="token punctuation">(</span>orderId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 更新订单状态</span>
+    <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>orderService<span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>orderId<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+      orderStatus<span class="token operator">:</span> <span class="token string">'2'</span><span class="token punctuation">,</span>
+      payStatus<span class="token operator">:</span> <span class="token string">'2'</span><span class="token punctuation">,</span>
+      closeTime<span class="token operator">:</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 回滚库存</span>
+    <span class="token keyword">const</span> orderItems <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>orderService<span class="token punctuation">.</span><span class="token function">findOrderItems</span><span class="token punctuation">(</span>orderId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">const</span> item <span class="token keyword">of</span> orderItems<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>goodsService<span class="token punctuation">.</span><span class="token function">increaseStock</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span>goodsId<span class="token punctuation">,</span> item<span class="token punctuation">.</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="6-5-流程描述"><a href="#6-5-流程描述" class="headerlink" title="6.5. 流程描述"></a>6.5. <strong>流程描述</strong></h2><h3 id="6-5-1-下单支付流程"><a href="#6-5-1-下单支付流程" class="headerlink" title="6.5.1. 下单支付流程"></a>6.5.1. <strong>下单支付流程</strong></h3><ol>
+<li><strong>用户在购物车中选择商品并下单</strong></li>
+<li><strong>系统创建订单记录，生成唯一订单号</strong></li>
+<li><strong>系统扣减相应商品库存，清空用户购物车</strong></li>
+<li><strong>系统向RabbitMQ发送延时消息，设置35分钟后检查订单状态</strong></li>
+<li><strong>用户点击支付按钮，系统调用支付宝SDK生成支付链接</strong></li>
+<li><strong>用户跳转到支付宝页面，完成支付操作</strong></li>
+<li><strong>支付宝通过异步通知接口通知商城支付结果</strong></li>
+<li><strong>系统验证支付宝通知的签名，确认支付成功</strong></li>
+<li><strong>系统将支付结果消息发送到支付队列</strong></li>
+<li><strong>支付监听器消费消息，更新订单状态为已支付、待发货</strong></li>
+</ol>
+<h3 id="6-5-2-订单超时处理流程"><a href="#6-5-2-订单超时处理流程" class="headerlink" title="6.5.2. 订单超时处理流程"></a>6.5.2. <strong>订单超时处理流程</strong></h3><ol>
+<li><strong>用户下单后，系统发送延时消息到RabbitMQ</strong></li>
+<li><strong>35分钟后，延时消息过期，转发到订单检查队列</strong></li>
+<li><strong>订单检查监听器消费消息，检查订单支付状态</strong></li>
+<li><strong>如果订单未支付，系统自动关闭订单</strong></li>
+<li><strong>系统回滚商品库存，恢复库存数量</strong></li>
+<li><strong>系统调用支付宝接口关闭交易</strong></li>
+</ol>
+<h3 id="6-5-3-技术实现细节"><a href="#6-5-3-技术实现细节" class="headerlink" title="6.5.3. 技术实现细节"></a>6.5.3. <strong>技术实现细节</strong></h3><ol>
+<li>​<strong>延时队列实现</strong>​**：**</li>
+</ol>
+<ul>
+<li><strong>使用RabbitMQ的消息过期机制实现延时队列</strong></li>
+<li><strong>消息发送到延时交换机，设置过期时间</strong></li>
+<li><strong>消息过期后，转发到实际消费队列</strong></li>
+</ul>
+<ol start="2">
+<li>​<strong>事务管理</strong>​**：**</li>
+</ol>
+<ul>
+<li><strong>使用TypeORM的事务功能确保订单创建的原子性</strong></li>
+<li><strong>订单创建、订单明细添加、库存扣减在同一事务中完成</strong></li>
+<li><strong>任何步骤失败，整个事务回滚</strong></li>
+</ul>
+<ol start="3">
+<li>​<strong>支付宝集成</strong>​**：**</li>
+</ol>
+<ul>
+<li><strong>使用支付宝SDK生成支付链接</strong></li>
+<li><strong>配置异步通知接口，处理支付结果</strong></li>
+<li><strong>验证支付宝通知签名，确保通知真实性</strong></li>
+</ul>
+<ol start="4">
+<li>​<strong>消息队列应用</strong>​**：**</li>
+</ol>
+<ul>
+<li><strong>使用RabbitMQ实现系统间解耦</strong></li>
+<li><strong>定义不同的交换机和队列处理不同类型的消息</strong></li>
+<li><strong>支持普通订单和秒杀订单的不同处理流程</strong></li>
+</ul>
+<p><strong>通过以上技术和流程，我们实现了一个商城系统的支付功能。</strong></p>
+
+      </div>
+      <div class="post-tags-categories">
+        
+        <div class="tags">
+          
+            <a href="/tags/Nest-js/" class="">
+              Nest.js
+            </a>
+          
+            <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" class="">
+              消息队列
+            </a>
+          
+        </div>
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Ryo</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2025/03/14/hou-duan/shang-cheng/shi-xian-shang-cheng-zhi-fu-gong-neng/" target="_blank" title="Nestjs+RabbitMQ+支付宝沙盒 实现电商支付功能">https://saebaryoo.github.io/2025/03/14/hou-duan/shang-cheng/shi-xian-shang-cheng-zhi-fu-gong-neng/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/12.jpg" class="lazyload placeholder" data-srcset="/medias/12.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2025/03/14/hou-duan/shang-cheng/shi-yong-nestjs-shi-xian-ji-yu-jwt-rbac-de-ren-zheng-shou-quan-xi-tong/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">使用Nestjs实现基于JWT + RBAC的认证授权系统</div>
+      </div>
+      
+      <!-- <div class="content">
+        前言这篇文章使用Nestjs实现了一个基于JWT+RBAC（Role-Based Access Control）的认证授
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/11.jpg" class="lazyload placeholder" data-srcset="/medias/11.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2025/03/13/hou-duan/shang-cheng/shi-yong-nestjs-elasticsearch-shi-xian-dian-shang-sou-suo-gong-neng/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">使用Nestjs+ElasticSearch实现电商搜索功能</div>
+      </div>
+      <!-- <div class="content">
+        1. ElasticSearch简介ElasticSearch（简称ES）是一个开源的分布式搜索引擎，基于强大的搜索和分
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <!-- 文章详情页右侧目录 -->
+
+  <div class="toc-aside">
+    <div class="toc-main">
+      <div class="toc-aside-title">
+        <i class="fas fa-list-ul" aria-hidden="true"></i><span>本文目录</span>
+        
+          <div class="toc-open-close">本文目录</div>
+        
+      </div>
+      <div class="toc-content">
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 手机端目录按钮 -->
+  <div id="toc-mobile-btn">
+    <i class="fas fa-list-ul" aria-hidden="true"></i>
+  </div>
+
+
+<script>
+  function closeToc(init) {
+    $(".toc-aside").css({'width': 0, 'padding': 0, 'transition': init ?  'noe' : 'width 0.3s' });
+    $(".toc-content").css({'width': 0});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'none'});
+    $(".main-content").css({'width': '75%', 'margin-left': 'auto', 'margin-right': 'auto',});
+  };
+  function openToc() {
+    $(".main-content").css({'width': '65%', 'margin-right': '10px', 'margin-left': 'calc(35% - 350px)'});
+    $(".toc-aside").css({'width': '300px', 'padding': '0 10px', 'transition': 'width 0.3s'});
+    $(".toc-content").css({'width': '300px'});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'inline-block'});
+  }
+  function openBtnClickFn () {
+    let openOrCloseBtn = $('.toc-aside .toc-aside-title .toc-open-close');
+    let open = eval('' || 'true');
+    openOrCloseBtn.click(function() {
+      if (open) {
+        closeToc();
+        open = false;
+      } else {
+        openToc();
+        open = true;
+      }
+    });
+  };
+  openBtnClickFn();
+  initCloseTocWidth(true);
+
+  function initCloseTocWidth(init) {
+    if (window.innerWidth >= 992) {
+      let isClose = false;
+      isClose && closeToc(init)
+    }
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    $(".toc-aside").css({'transition': 'no'});
+  })
+  document.addEventListener('pjax:complete', function () {
+    openBtnClickFn();
+  })
+  
+</script>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
+  <script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
+  
+</script>
+
+
+      </main>
+    </div>
+
+    <!-- 页脚 -->
+    
+  
+  
+    <!-- 底部鱼儿跳动效果，依赖于jquery-->
+<div id="j-fish-skip" style=" position: relative;height: 153px;width: auto;"></div>
+<script>
+  var RENDERER = {
+    POINT_INTERVAL: 5,
+    FISH_COUNT: 3,
+    MAX_INTERVAL_COUNT: 50,
+    INIT_HEIGHT_RATE: .5,
+    THRESHOLD: 50,
+    FISH_COLOR: '',
+    init: function () {
+      this.setFishColor(); this.setParameters(), this.reconstructMethods(), this.setup(), this.bindEvent(), this.render()
+    },
+    setFishColor: function () {
+      let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+      if (isDark) {
+        this.FISH_COLOR = '#222'; // 暗黑色，有时间把这整成一个变量
+      } else {
+        this.FISH_COLOR = '' || '#42b983';
+      }
+    },
+    setParameters: function () {
+      this.$window = $(window), this.$container = $("#j-fish-skip"), this.$canvas = $("<canvas />"), this.context = this.$canvas.appendTo(this.$container).get(0).getContext("2d"), this.points = [], this.fishes = [], this.watchIds = []
+    },
+    createSurfacePoints: function () {
+      var t = Math.round(this.width / this.POINT_INTERVAL);
+      this.pointInterval = this.width / (t - 1), this.points.push(new SURFACE_POINT(this, 0));
+      for (var i = 1; i < t; i++) {
+        var e = new SURFACE_POINT(this, i * this.pointInterval),
+          h = this.points[i - 1];
+        e.setPreviousPoint(h), h.setNextPoint(e), this.points.push(e)
+      }
+    },
+    reconstructMethods: function () {
+      this.watchWindowSize = this.watchWindowSize.bind(this), this.jdugeToStopResize = this.jdugeToStopResize.bind(this), this.startEpicenter = this.startEpicenter.bind(this), this.moveEpicenter = this.moveEpicenter.bind(this), this.reverseVertical = this.reverseVertical.bind(this), this.render = this.render.bind(this)
+    },
+    setup: function () {
+      this.points.length = 0, this.fishes.length = 0, this.watchIds.length = 0, this.intervalCount = this.MAX_INTERVAL_COUNT, this.width = this.$container.width(), this.height = this.$container.height(), this.fishCount = this.FISH_COUNT * this.width / 500 * this.height / 500, this.$canvas.attr({
+        width: this.width,
+        height: this.height
+      }), this.reverse = !1, this.fishes.push(new FISH(this)), this.createSurfacePoints()
+    },
+    watchWindowSize: function () {
+      this.clearTimer(), this.tmpWidth = this.$window.width(), this.tmpHeight = this.$window.height(), this.watchIds.push(setTimeout(this.jdugeToStopResize, this.WATCH_INTERVAL))
+    },
+    clearTimer: function () {
+      for (; this.watchIds.length > 0;) clearTimeout(this.watchIds.pop())
+    },
+    jdugeToStopResize: function () {
+      var t = this.$window.width(),
+        i = this.$window.height(),
+        e = t == this.tmpWidth && i == this.tmpHeight;
+      this.tmpWidth = t, this.tmpHeight = i, e && this.setup()
+    },
+    bindEvent: function () {
+      this.$window.on("resize", this.watchWindowSize), this.$container.on("mouseenter", this.startEpicenter), this.$container.on("mousemove", this.moveEpicenter)
+    },
+    getAxis: function (t) {
+      var i = this.$container.offset();
+      return {
+        x: t.clientX - i.left + this.$window.scrollLeft(),
+        y: t.clientY - i.top + this.$window.scrollTop()
+      }
+    },
+    startEpicenter: function (t) {
+      this.axis = this.getAxis(t)
+    },
+    moveEpicenter: function (t) {
+      var i = this.getAxis(t);
+      this.axis || (this.axis = i), this.generateEpicenter(i.x, i.y, i.y - this.axis.y), this.axis = i
+    },
+    generateEpicenter: function (t, i, e) {
+      if (!(i < this.height / 2 - this.THRESHOLD || i > this.height / 2 + this.THRESHOLD)) {
+        var h = Math.round(t / this.pointInterval);
+        h < 0 || h >= this.points.length || this.points[h].interfere(i, e)
+      }
+    },
+    reverseVertical: function () {
+      this.reverse = !this.reverse;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].reverseVertical()
+    },
+    controlStatus: function () {
+      for (var t = 0, i = this.points.length; t < i; t++) this.points[t].updateSelf();
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].updateNeighbors();
+      this.fishes.length < this.fishCount && 0 == --this.intervalCount && (this.intervalCount = this.MAX_INTERVAL_COUNT, this.fishes.push(new FISH(this)))
+    },
+    render: function () {
+      requestAnimationFrame(this.render), this.controlStatus(), this.context.clearRect(0, 0, this.width, this.height), this.context.fillStyle = this.FISH_COLOR;
+      for (var t = 0, i = this.fishes.length; t < i; t++) this.fishes[t].render(this.context);
+      this.context.save(), this.context.globalCompositeOperation = "xor", this.context.beginPath(), this.context.moveTo(0, this.reverse ? 0 : this.height);
+      for (t = 0, i = this.points.length; t < i; t++) this.points[t].render(this.context);
+      this.context.lineTo(this.width, this.reverse ? 0 : this.height), this.context.closePath(), this.context.fill(), this.context.restore()
+    }
+  },
+  SURFACE_POINT = function (t, i) {
+    this.renderer = t, this.x = i, this.init()
+  };
+  SURFACE_POINT.prototype = {
+    SPRING_CONSTANT: .03,
+    SPRING_FRICTION: .9,
+    WAVE_SPREAD: .3,
+    ACCELARATION_RATE: .01,
+    init: function () {
+      this.initHeight = this.renderer.height * this.renderer.INIT_HEIGHT_RATE, this.height = this.initHeight, this.fy = 0, this.force = {
+        previous: 0,
+        next: 0
+      }
+    },
+    setPreviousPoint: function (t) {
+      this.previous = t
+    },
+    setNextPoint: function (t) {
+      this.next = t
+    },
+    interfere: function (t, i) {
+      this.fy = this.renderer.height * this.ACCELARATION_RATE * (this.renderer.height - this.height - t >= 0 ? -1 : 1) * Math.abs(i)
+    },
+    updateSelf: function () {
+      this.fy += this.SPRING_CONSTANT * (this.initHeight - this.height), this.fy *= this.SPRING_FRICTION, this.height += this.fy
+    },
+    updateNeighbors: function () {
+      this.previous && (this.force.previous = this.WAVE_SPREAD * (this.height - this.previous.height)), this.next && (this.force.next = this.WAVE_SPREAD * (this.height - this.next.height))
+    },
+    render: function (t) {
+      this.previous && (this.previous.height += this.force.previous, this.previous.fy += this.force.previous), this.next && (this.next.height += this.force.next, this.next.fy += this.force.next), t.lineTo(this.x, this.renderer.height - this.height)
+    }
+  };
+  var FISH = function (t) {
+    this.renderer = t, this.init()
+  };
+  FISH.prototype = {
+    GRAVITY: .4,
+    init: function () {
+      this.direction = Math.random() < .5, this.x = this.direction ? this.renderer.width + this.renderer.THRESHOLD : -this.renderer.THRESHOLD, this.previousY = this.y, this.vx = this.getRandomValue(4, 10) * (this.direction ? -1 : 1), this.renderer.reverse ? (this.y = this.getRandomValue(1 * this.renderer.height / 10, 4 * this.renderer.height / 10), this.vy = this.getRandomValue(2, 5), this.ay = this.getRandomValue(.05, .2)) : (this.y = this.getRandomValue(6 * this.renderer.height / 10, 9 * this.renderer.height / 10), this.vy = this.getRandomValue(-5, -2), this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1, this.theta = 0, this.phi = 0
+    },
+    getRandomValue: function (t, i) {
+      return t + (i - t) * Math.random()
+    },
+    reverseVertical: function () {
+      this.isOut = !this.isOut, this.ay *= -1
+    },
+    controlStatus: function (t) {
+      this.previousY = this.y, this.x += this.vx, this.y += this.vy, this.vy += this.ay, this.renderer.reverse ? this.y > this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy -= this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(.05, .2)), this.isOut = !1) : this.y < this.renderer.height * this.renderer.INIT_HEIGHT_RATE ? (this.vy += this.GRAVITY, this.isOut = !0) : (this.isOut && (this.ay = this.getRandomValue(-.2, -.05)), this.isOut = !1), this.isOut || (this.theta += Math.PI / 20, this.theta %= 2 * Math.PI, this.phi += Math.PI / 30, this.phi %= 2 * Math.PI), this.renderer.generateEpicenter(this.x + (this.direction ? -1 : 1) * this.renderer.THRESHOLD, this.y, this.y - this.previousY), (this.vx > 0 && this.x > this.renderer.width + this.renderer.THRESHOLD || this.vx < 0 && this.x < -this.renderer.THRESHOLD) && this.init()
+    },
+    render: function (t) {
+      t.save(), t.translate(this.x, this.y), t.rotate(Math.PI + Math.atan2(this.vy, this.vx)), t.scale(1, this.direction ? 1 : -1), t.beginPath(), t.moveTo(-30, 0), t.bezierCurveTo(-20, 15, 15, 10, 40, 0), t.bezierCurveTo(15, -10, -20, -15, -30, 0), t.fill(), t.save(), t.translate(40, 0), t.scale(.9 + .2 * Math.sin(this.theta), 1), t.beginPath(), t.moveTo(0, 0), t.quadraticCurveTo(5, 10, 20, 8), t.quadraticCurveTo(12, 5, 10, 0), t.quadraticCurveTo(12, -5, 20, -8), t.quadraticCurveTo(5, -10, 0, 0), t.fill(), t.restore(), t.save(), t.translate(-3, 0), t.rotate((Math.PI / 3 + Math.PI / 10 * Math.sin(this.phi)) * (this.renderer.reverse ? -1 : 1)), t.beginPath(), this.renderer.reverse ? (t.moveTo(5, 0), t.bezierCurveTo(10, 10, 10, 30, 0, 40), t.bezierCurveTo(-12, 25, -8, 10, 0, 0)) : (t.moveTo(-5, 0), t.bezierCurveTo(-10, -10, -10, -30, 0, -40), t.bezierCurveTo(12, -25, 8, -10, 0, 0)), t.closePath(), t.fill(), t.restore(), t.restore(), this.controlStatus(t)
+    }
+  }, $(function () {
+    RENDERER.init()
+    $('.dark').click(function () {
+      setTimeout(() => {
+        RENDERER.setFishColor();
+        RENDERER.context.fill();
+      });
+    })
+  });
+</script>
+  
+  <div class="footer bg-color">
+    <div class="footer-main">
+      
+        
+          <div class="link">
+            
+          </div>
+        
+      
+        
+          <div class="footer-copyright">
+            <p>Copyright © 2019 - 2023</p>
+
+          </div>
+        
+      
+        
+          
+            <!-- 不蒜子统计 -->
+            <!-- 不蒜子统计 -->
+<span id="busuanzi_container_site_pv">
+      <i class="fas fa-eye" aria-hidden="true"></i>本站总访问量：<span id="busuanzi_value_site_pv"></span> 次
+</span>
+<span class="post-meta-divider">|</span>
+<span id="busuanzi_container_site_uv" style='display:none'>
+      <i class="fas fa-users" aria-hidden="true"></i>本站访客数：<span id="busuanzi_value_site_uv"></span> 人
+</span>
+
+          
+        
+      
+        
+          <div class="footer-custom">
+            
+          </div>
+        
+      
+    </div>
+  </div>
+
+
+
+    <!-- 渲染暗黑按钮 -->
+    
+      <div class="dark">
+  <div class="dark-content">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+    <!-- <span>关灯</span> -->
+  </div>
+  
+</div>
+
+<script>
+  $(function() {
+    let isDark = JSON.parse(localStorage.getItem('dark'))  || JSON.parse('false');
+    if (isDark) {
+      $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+    }
+    $('.dark').click(function() {
+      if ($(document.body).is('.darkModel')) {
+        $(document.body).removeClass('darkModel');
+        localStorage.setItem('dark', false);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-moon" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      } else {
+        $(document.body).addClass('darkModel');
+        localStorage.setItem('dark', true);
+        $(".dark-content").replaceWith(
+          `
+          <div class='dark-content'>
+            <i class="fas fa-lightbulb" aria-hidden="true"></i>
+          </div>
+          `
+        );
+      }
+    })
+  })
+</script>
+    
+    <!-- 渲染回到顶部按钮 -->
+    
+      <div class="goTop top-btn-color" pointer>
+  <i class="fas fa-arrow-up" aria-hidden="true"></i>
+</div>
+<script src="/js/goTop.js"></script>
+
+    
+    <!-- 渲染左下角音乐播放器 -->
+    
+
+    <!-- 图片放大 -->
+    
+      <script src="/js/fancybox/jquery.fancybox.min.js"></script>
+    
+
+    <!-- 百度解析 -->
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <!-- 背景彩带 -->
+    
+      <script type="text/javascript" size="100" alpha='0.4' zIndex="-1" src="/js/ribbon.min.js"></script>
+    
+
+    <script src="/js/utils/index.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- 文章目录所需js -->
+<link href="/js/tocbot/tocbot.css" rel="stylesheet">
+<script src="/js/tocbot/tocbot.min.js"></script>
+
+<script>
+  var headerEl = 'h1, h2, h3, h4, h5, h6',  //headers 
+    content = '.post-detail',//文章容器
+    idArr = {};  //标题数组以确定是否增加索引id
+  //add #id
+  var option = {
+    // Where to render the table of contents.
+    tocSelector: '.toc',
+    // Where to grab the headings to build the table of contents.
+    contentSelector: content,
+    // Which headings to grab inside of the contentSelector element.
+    headingSelector: headerEl,
+    scrollSmooth: true,
+    scrollSmoothOffset: -80,
+    headingsOffset: -($(window).height() * 0.4 - 45),
+    positionFixedSelector: '.toc-main',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+    activeLinkClass: 'is-active-link',
+    // onClick: function (e) {},
+  }
+  if ($('.toc').length > 0) {
+
+    $(content).children(headerEl).each(function () {
+      //去除空格以及多余标点
+      var headerId = $(this).text().replace(/[\s|\~|`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\=|\||\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\：|\，|\。]/g, '');
+
+      headerId = headerId.toLowerCase();
+      if (idArr[headerId]) {
+        //id已经存在
+        $(this).attr('id', headerId + '-' + idArr[headerId]);
+        idArr[headerId]++;
+      }
+      else {
+        //id未存在
+        idArr[headerId] = 1;
+        $(this).attr('id', headerId);
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      tocbot.init(option);
+      mobileTocClick();
+    });
+
+  }
+
+  window.tocScrollFn = function () {
+    return bamboo.throttle(function () {
+      findHeadPosition();
+    }, 100)()
+  }
+  window.addEventListener('scroll', tocScrollFn);
+
+  const findHeadPosition = function (top) {
+    if ($('.toc-list').length <= 0) {
+      return false;
+    }
+    setTimeout(() => {  // or DOMContentLoaded 
+      autoScrollToc();
+    }, 0);
+  }
+
+  const autoScrollToc = function () {
+    const $activeItem = document.querySelector('.is-active-link');
+    const $cardToc = document.querySelector('.toc-content');
+    const activePosition = $activeItem.getBoundingClientRect().top
+    const sidebarScrollTop = $cardToc.scrollTop
+    if (activePosition > (document.documentElement.clientHeight - 100)) {
+      $cardToc.scrollTop = sidebarScrollTop + 150
+    }
+    if (activePosition < 100) {
+      $cardToc.scrollTop = sidebarScrollTop - 150
+    }
+  }
+
+  document.addEventListener('pjax:send', function () {
+    if ($('.toc').length) {
+      tocbot.destroy();
+    }
+  });
+
+  document.addEventListener('pjax:complete', function () {
+    if ($('.toc').length) {
+      tocbot.init(option);
+      mobileTocClick();
+    }
+  });
+  
+  // 手机端toc按钮点击出现目录
+  const mobileTocClick = function () {
+    const $cardTocLayout = document.getElementsByClassName('toc-aside')[0];
+    const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
+    let right = '45px';
+    if (window.innerWidth >= 551 && window.innerWidth <= 992) {
+      right = '100px'
+    }
+    const mobileToc = {
+      open: () => {
+        $cardTocLayout.style.cssText = 'animation: toc-open .3s; opacity: 1; right: ' + right
+      },
+
+      close: () => {
+        $cardTocLayout.style.animation = 'toc-close .2s'
+        setTimeout(() => {
+          $cardTocLayout.style.cssText = "opacity:''; animation: ''; right: ''"
+        }, 100)
+      }
+    }
+    document.getElementById('toc-mobile-btn').addEventListener('click', () => {
+      if (window.getComputedStyle($cardTocLayout).getPropertyValue('opacity') === '0') mobileToc.open()
+      else mobileToc.close()
+    })
+
+    $cardToc.addEventListener('click', (e) => {
+      if (window.innerWidth < 992) { // 小于992px的时候
+        mobileToc.close()
+      }
+    })
+  }
+</script>
+
+<style>
+  .is-position-fixed {
+    position: sticky !important;
+    top: 74px;
+  }
+
+  .toc-main ul {
+    counter-reset: show-list;
+  }
+
+  .toc-main ul li::before {
+    content: counter(item)".";
+    display: block;
+    position: absolute;
+    left: 12px;
+    top: 0;
+  }
+</style> 
+
+<!-- 设置导航背景 -->
+<script>
+  let setHeaderClass = () => {
+    const headerMenuTransparent = true;
+    if (!headerMenuTransparent) { return; }
+    const nav = $('#navHeader');
+    const navTop = nav.outerHeight();
+    const winTop = $(window).scrollTop();
+    if(winTop > navTop) {
+      nav.addClass('header-bg-color');
+    }
+    else {
+      nav.removeClass('header-bg-color');
+    }
+  };
+
+  let scrollCollect = () => {
+    return bamboo.throttle(function (e) {
+      setHeaderClass();
+    }, 200)()
+  }
+
+  let initHeaderBg = () => {
+    setHeaderClass();
+  }
+
+  setHeaderClass();
+  window.addEventListener('scroll', scrollCollect);
+
+  document.addEventListener('pjax:send', function () {
+    window.removeEventListener('scroll', scrollCollect)
+  })
+  document.addEventListener('pjax:complete', function () {
+    window.addEventListener('scroll', scrollCollect);
+    setHeaderClass();
+  })
+</script> 
+
+<!-- 渲染issues标签里的内容 -->
+<script>
+  function loadIssuesJS() {
+    if ($(".post-detail").find(".issues-api").length == 0) {
+      return;
+    } 
+    loadScript('/js/issues/index.js');
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  document.addEventListener('pjax:complete', function () {
+    if (typeof IssuesAPI == "undefined") {
+      loadIssuesJS();
+    }
+  })
+</script>
+
+<!-- 输入框打字特效 -->
+<!-- 输入框打字特效 -->
+
+  <script src="/js/activate-power-mode.js"></script>
+  <script>
+    POWERMODE.colorful = true;  // 打开随机颜色特效
+    POWERMODE.shake = false;    // 关闭输入框抖动
+    document.body.addEventListener('input', POWERMODE);//监听打字事件
+  </script>
+
+
+<!-- markdown代码一键复制功能 -->
+
+  <link rel="stylesheet" href="https://unpkg.com/v-plugs-ayu/lib/ayu.css">
+  <script src="https://unpkg.com/v-plugs-ayu/lib/ayu.umd.min.js"></script>
+  <script src="/js/clipboard/clipboard.min.js"></script>
+  <div id="appCopy">
+  </div>
+  <script data-pjax>
+    var vm = new Vue({
+      el: '#appCopy',
+      data: {
+      },
+      computed: {
+      },
+      mounted() {
+        const that = this;
+        var copy = '复制';
+        /* code */
+        var initCopyCode = function () {
+          var copyHtml = '';
+          copyHtml += '<button class="btn-copy" data-clipboard-snippet="" style="position:absolute;top:0;right:0;z-index:1;">';
+          copyHtml += '<i class="fas fa-copy"></i><span>' + copy + '</span>';
+          copyHtml += '</button>';
+          $(".post-detail pre").not('.gutter pre').wrap("<div class='codeBox' style='position:relative;width:100%;'></div>")
+          $(".post-detail pre").not('.gutter pre').before(copyHtml);
+          new ClipboardJS('.btn-copy', {
+            target: function (trigger) {
+              return trigger.nextElementSibling;
+            }
+          });
+        }
+        initCopyCode();
+        $('.btn-copy').unbind('click').bind('click', function () {
+          doSomething();
+        })
+        $(document).unbind('keypress').bind('keypress', function (e) {
+          if (e.ctrlKey && e.keyCode == 67) {
+            doSomething();
+          }
+        })
+
+        function doSomething() {
+          that.$notify({
+            title: "成功",
+            content: "代码已复制，请遵守相关授权协议。",
+            type: 'success'
+          })
+        }
+      },
+      methods: {
+      },
+      created() { }
+    })
+  </script>
+  
+
+<!-- 图片懒加载 -->
+<script defer src="https://unpkg.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+<!-- 卡片滚动动画 -->
+   
+
+<!-- 评论所需js -->
+
+  
+    <script type="text/javascript">
+  var utteranceCommon = {};
+
+  function check_utterance() {
+    let isDark = JSON.parse(localStorage.getItem('dark')) || JSON.parse('false');
+    if (isDark) {
+      utteranceCommon.Theme = 'github-dark';
+    } else {
+      utteranceCommon.Theme = 'github-light';
+    }
+
+    return document.getElementById("gitment-container");
+  }
+  comment_el = '#gitment-container';
+  load_utterance = function () {
+    if ($(comment_el).length) {
+      // 匿名函数，防止污染全局变量
+      const HEAD = check_utterance();
+
+      var utterances = document.createElement('script');
+      utterances.type = 'text/javascript';
+      utterances.async = true;
+      utterances.setAttribute('issue-term', 'pathname')
+      utterances.setAttribute('theme', utteranceCommon.Theme)
+      utterances.setAttribute('repo', 'SaebaRyoo/SaebaRyoo.github.io')
+      utterances.crossorigin = 'anonymous';
+      utterances.src = 'https://utteranc.es/client.js';
+      // content 是要插入评论的地方
+      document.getElementById('gitment-container').appendChild(utterances);
+
+    }
+  }
+
+  function dark_utterance() {
+    const HEAD = check_utterance();
+    if (!HEAD) return;
+    const message = {
+      type: 'set-theme',
+      theme: utteranceCommon.Theme
+    };
+    const utteranceIframe = document.querySelector('iframe');
+    utteranceIframe.contentWindow.postMessage(message, 'https://utteranc.es');
+  }
+
+  $(document).ready(load_utterance);
+  document.addEventListener('pjax:complete', function () {
+    load_utterance();
+  });
+
+  $('.dark').click(function () {
+    setTimeout(() => {
+      dark_utterance();
+    });
+  })
+
+</script>
+
+<style>
+  .utterances {
+    max-width: inherit !important;
+  }
+</style>
+  
+
+
+<!-- 鼠标点击特效 -->
+<!-- 爱心点击 -->
+
+  
+    <script src="/js/cursor/fireworks.js"></script>
+  
+
+
+
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" data-pjax></script>
+
+
+    <!-- pjax -->
+    
+
+<!-- pjax -->
+
+
+  <script src="/js/pjax@0.2.8/index.js"></script>
+  
+    <!-- 样式位于：source/css/_third-party/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <div class="loading-circle"><div id="loader-circle"></div></div>
+    <script>
+      window.ShowLoading = function() {
+        $(".loading-circle").css("display", "block");
+      };
+      window.HideLoading = function() {
+        $(".loading-circle").css("display", "none");
+      }
+    </script>
+  
+	<script>
+    document.addEventListener('pjax:complete', function () {
+      window.HideLoading();
+    })
+    document.addEventListener('pjax:send', function () {
+      window.ShowLoading();
+    })
+    document.addEventListener('pjax:error', function () {
+      window.HideLoading();
+    })
+	</script>
+</div>
+
+  
+
+  <script>
+    var pjax = new Pjax({
+      elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([no-pjax])',   // 拦截正常带链接的 a 标签
+      selectors: ["#pjax-container","title"],                                   // 根据实际需要确认重载区域
+      cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+      timeout: 5000
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+
+    })
+    
+    document.addEventListener('pjax:complete', function () {
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      window.location.href = e.triggerElement.href;
+    })
+    
+    // 刷新不从顶部开始
+    document.addEventListener("DOMContentLoaded", function () {
+      history.scrollRestoration = 'auto';
+    })
+  </script>
+
+
+
+  </body>
+</html>
