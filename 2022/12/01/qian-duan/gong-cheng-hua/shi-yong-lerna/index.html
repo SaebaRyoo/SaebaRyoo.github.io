@@ -567,15 +567,19 @@
     <article class="post post-detail">
       <div class="post-content">
         <p>lerna 是一个 monorepo 工具，用来在一个仓库中管理多个项目。而我最近向造个轮子，这个轮子需要抽离出一些组件库，且自身也会用到。而 lerna 就非常适合这种场景。</p>
-<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><ol>
-<li><p>全局下载 <code>yarn global add lerna</code> 或 <code>npm install lerna -g</code></p>
+<h2 id="下载">下载</h2>
+<ol>
+<li>
+<p>全局下载 <code>yarn global add lerna</code> 或 <code>npm install lerna -g</code></p>
 </li>
-<li><p>初始化项目 <code>cd lerna-demo &amp;&amp; cd lerna-demo</code>然后<code>lerna init</code></p>
+<li>
+<p>初始化项目 <code>cd lerna-demo &amp;&amp; cd lerna-demo</code>然后<code>lerna init</code></p>
 </li>
 </ol>
 <p>执行完 init 后会多出一个<code>packages</code>目录和<code>lerna.json</code>，并且会配置一个<code>workspace</code></p>
 <ol start="3">
-<li>创建不同的项目<br>然后我们可以在 packages 中创建不同的项目,具体代码可以查看<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/Demos/tree/main/lerna-demo/packages">lerna-demo</a></li>
+<li>创建不同的项目<br>
+然后我们可以在 packages 中创建不同的项目,具体代码可以查看<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/Demos/tree/main/lerna-demo/packages">lerna-demo</a></li>
 </ol>
 <blockquote>
 <p>代码里有个需要注意的点就是打包配置中设置的打包方式要和你引入的方式是一致的，或者直接在打包配置中设置<code>esm</code>、<code>cjs</code>和<code>umd</code>三种方式，然后根据不同的规范去引入不同的代码。</p>
@@ -590,14 +594,15 @@
     <span class="token property">"footer"</span><span class="token operator">:</span> <span class="token string">"*"</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>这样就相当于告诉 lerna 去 link workspace 中的<code>header</code>和<code>footer</code>，就像<code>npm install</code>了一样。</p>
 <p>然后再<code>yarn</code>执行一下命令</p>
-<h2 id="打包项目"><a href="#打包项目" class="headerlink" title="打包项目"></a>打包项目</h2><p>如果需要打包所有的项目则直接运行<code>lerna run build</code></p>
+<h2 id="打包项目">打包项目</h2>
+<p>如果需要打包所有的项目则直接运行<code>lerna run build</code></p>
 <p>lerna 会按照依赖顺序，先打包<code>header</code>和<code>footer</code>，最好再打包<code>website</code></p>
 <p>也可以使用<code>--scope</code>配置 指定需要打包的项目<code>lerna run build --scope header --scope footer</code>,这样，website 项目就不会被打包。</p>
 <p>运行单元测试也同上。</p>
-<h2 id="项目运行"><a href="#项目运行" class="headerlink" title="项目运行"></a>项目运行</h2><p>打包好了两个依赖项目后，就可以运行<code>website</code>了，</p>
+<h2 id="项目运行">项目运行</h2>
+<p>打包好了两个依赖项目后，就可以运行<code>website</code>了，</p>
 <p><code>lerna run dev --scope=website</code></p>
 <p>也可以不加<code>--scope</code>,因为其他两个项目中并没有<code>dev</code>这个运行命令。</p>
 <p>最后就可以直接访问了</p>
@@ -653,7 +658,7 @@
       </div>
       
       <!-- <div class="content">
-        今天在部署 hexo 时报了一个错误，**” WARNING: REMOTE HOST IDENTIFICATION H
+        今天在部署 hexo 时报了一个错误，&quot; WARNING: REMOTE HOST IDENTIFICATIO
       </div> -->
     </a>
   </div>
@@ -673,8 +678,9 @@
       </div>
       <!-- <div class="content">
         为什么要写单元测试
+
 帮助开发者完善异常逻辑，提高程序健壮性
-降低代码耦合度，防止在项目中出现修改了一处代码后，却影响了其
+降低代码耦合度，防止在项目中出现修改了一处代码后，却影响了
       </div> -->
     </a>
   </div>

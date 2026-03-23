@@ -566,30 +566,30 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="Cookie-相关知识"><a href="#Cookie-相关知识" class="headerlink" title="Cookie 相关知识"></a>Cookie 相关知识</h2><ul>
+        <h2 id="Cookie-相关知识">Cookie 相关知识</h2>
+<ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/mqyqingfeng/Blog/issues/157">github</a></li>
 <li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000038824618#item-2-3">掘金</a></li>
 </ul>
-<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="主域名可以访问子域名的-cookie-吗？"><a href="#主域名可以访问子域名的-cookie-吗？" class="headerlink" title="主域名可以访问子域名的 cookie 吗？"></a>主域名可以访问子域名的 cookie 吗？</h3><p>在浏览器中，主域名是无法直接访问子域名的 cookie 的，这是由<strong>同源策略</strong>所限制的。<strong>同源策略</strong>要求两个页面只有在<strong>协议</strong>、<strong>主机</strong>和<strong>端口号</strong>都相同的情况下，才能互相访问对方的数据，这样可以保护用户的隐私安全。</p>
+<h2 id="常见问题">常见问题</h2>
+<h3 id="主域名可以访问子域名的-cookie-吗？">主域名可以访问子域名的 cookie 吗？</h3>
+<p>在浏览器中，主域名是无法直接访问子域名的 cookie 的，这是由<strong>同源策略</strong>所限制的。<strong>同源策略</strong>要求两个页面只有在<strong>协议</strong>、<strong>主机</strong>和<strong>端口号</strong>都相同的情况下，才能互相访问对方的数据，这样可以保护用户的隐私安全。</p>
 <p>例如，在主域名为  <code>example.com</code>  的情况下，子域名  <code>www.example.com</code>  和  <code>api.example.com</code>  的 cookie 不能相互访问。</p>
 <p>然而，由于<strong>同源策略</strong>允许设置文档的域名（<code>document.domain</code>），通过设置该属性可以使主域名允许访问子域名的 cookie。具体实现方法如下：</p>
 <ol>
 <li>在所有需要进行 cookie 共享的页面中设置：</li>
 </ol>
 <pre class="line-numbers language-none"><code class="language-none">document.domain &#x3D; &quot;example.com&quot;;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <p>这样就使得所有子域名和主域名的  <code>document.domain</code>  都相同，从而实现了跨域共享 cookie。</p>
 <ol start="2">
 <li>在任意一个子域名中创建一个 cookie，例如：</li>
 </ol>
 <pre class="line-numbers language-none"><code class="language-none">document.cookie &#x3D; &quot;mycookie&#x3D;myvalue; domain&#x3D;example.com; expires&#x3D;Fri, 31 Jul 2022 23:59:59 GMT; path&#x3D;&#x2F;&quot;;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <p>在上面的代码中，使用了  <code>domain</code>  参数来指定 cookie 的父域名为  <code>example.com</code>。</p>
 <ol start="3">
 <li>在其他子域名的页面中可以读取这个 cookie，并进行相关操作，例如：</li>
 </ol>
 <pre class="line-numbers language-none"><code class="language-none">console.log(document.cookie); &#x2F;&#x2F; 输出：&quot;mycookie&#x3D;myvalue&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <p>需要注意的是，通过设置  <code>document.domain</code>  属性来实现 cookie 共享需要满足以下条件：</p>
 <ul>
 <li>主域名和子域名的  <code>document.domain</code>  值必须相同；</li>
@@ -597,21 +597,24 @@
 <li>当前页面的域名必须是完整的（含有顶级域名）。</li>
 </ul>
 <p>如果不满足以上条件的话，将无法完成 cookie 共享。</p>
-<h3 id="子域名是否可以访问主域名的-cookie？"><a href="#子域名是否可以访问主域名的-cookie？" class="headerlink" title="子域名是否可以访问主域名的 cookie？"></a>子域名是否可以访问主域名的 cookie？</h3><p>子域名可以访问父域名下的 cookie，因为在同一个主域名下，子域名和父域名共享同一个 cookie 存储机制。也就是说，当在  <code>example.com</code>  域名下创建一个 cookie 时，其子域名  <code>www.example.com</code>  和  <code>api.example.com</code>  也能够通过 JavaScript 对其进行读取或修改，只要这些子域名没有设置自己的 cookie。</p>
+<h3 id="子域名是否可以访问主域名的-cookie？">子域名是否可以访问主域名的 cookie？</h3>
+<p>子域名可以访问父域名下的 cookie，因为在同一个主域名下，子域名和父域名共享同一个 cookie 存储机制。也就是说，当在  <code>example.com</code>  域名下创建一个 cookie 时，其子域名  <code>www.example.com</code>  和  <code>api.example.com</code>  也能够通过 JavaScript 对其进行读取或修改，只要这些子域名没有设置自己的 cookie。</p>
 <p>这是因为在同一个主域名下，所有的子域名都属于同一个域，浏览器会默认将 cookie 的域名设置为主域名，未指定的子域名会自动与主域名进行共享。例如，在主域名  <code>example.com</code>  中设置了一个名为  <code>mycookie</code>  的 cookie：</p>
 <pre class="line-numbers language-none"><code class="language-none">document.cookie &#x3D; &quot;mycookie&#x3D;test; domain&#x3D;example.com&quot;;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <p>那么在  <code>www.example.com</code>  和  <code>api.example.com</code>  下直接访问时，都可以通过 JavaScript 读取到该 cookie：</p>
 <pre class="line-numbers language-none"><code class="language-none">console.log(document.cookie);  &#x2F;&#x2F; 输出：&quot;mycookie&#x3D;test&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <p>需要注意的是，<strong>在不同主域名下的子域名之间是不能共享 cookie 的，因为主域名不同，它们的域也不同，不受同源策略限制</strong>。为了解决这个问题，可以使用<strong>跨域通信技术</strong>，如 CORS、JSONP、postMessage 等。</p>
-<h3 id="cookie-与-web-安全"><a href="#cookie-与-web-安全" class="headerlink" title="cookie 与 web 安全"></a>cookie 与 web 安全</h3><h4 id="cookie-如何应对-XSS-漏洞"><a href="#cookie-如何应对-XSS-漏洞" class="headerlink" title="cookie 如何应对 XSS 漏洞"></a>cookie 如何应对 XSS 漏洞</h4><p>XSS 漏洞的原理是，由于未对用户提交的表单数据或者 url 参数等数据做处理就显示在了页面上，导致用户提交的内容在页面上被做为 html 解析执行。</p>
-<p><strong>常规方案</strong>：对特殊字符进行处理，如”&lt;”和”&gt;”等进行转义。</p>
+<h3 id="cookie-与-web-安全">cookie 与 web 安全</h3>
+<h4 id="cookie-如何应对-XSS-漏洞">cookie 如何应对 XSS 漏洞</h4>
+<p>XSS 漏洞的原理是，由于未对用户提交的表单数据或者 url 参数等数据做处理就显示在了页面上，导致用户提交的内容在页面上被做为 html 解析执行。</p>
+<p><strong>常规方案</strong>：对特殊字符进行处理，如&quot;&lt;“和”&gt;&quot;等进行转义。</p>
 <p><strong>cookie 的应对方案</strong>：对于用户利用 script 脚本来采集 cookie 信息，我们可以将重要的 cookie 信息设置为 HttpOnly 来避免 cookie 被 js 采集。</p>
-<h4 id="cookie-如何应对-CSRF-攻击"><a href="#cookie-如何应对-CSRF-攻击" class="headerlink" title="cookie 如何应对 CSRF 攻击"></a>cookie 如何应对 CSRF 攻击</h4><p>CSRF，中文名叫跨站请求伪造，原理是，用户登陆了 A 网站，然后因为某些原因访问了 B 网站（比如跳转等），B 网站直接发送一个 A 网站的请求进行一些危险操作，由于 A 网站处于登陆状态，就发生了 CSRF 攻击（核心就是利用了 cookie 信息可以被跨站携带）！</p>
+<h4 id="cookie-如何应对-CSRF-攻击">cookie 如何应对 CSRF 攻击</h4>
+<p>CSRF，中文名叫跨站请求伪造，原理是，用户登陆了 A 网站，然后因为某些原因访问了 B 网站（比如跳转等），B 网站直接发送一个 A 网站的请求进行一些危险操作，由于 A 网站处于登陆状态，就发生了 CSRF 攻击（核心就是利用了 cookie 信息可以被跨站携带）！</p>
 <p><strong>常规方案</strong>：采用验证码或 token 等。</p>
 <p><strong>cookie 的应对方案</strong>：由于 CSRF 攻击核心就是利用了 cookie 信息可以被跨站携带，那么我们可以对核心 cookie 的 SameSite 设置为 Strict 或 Lax 来避免。</p>
-<h3 id="cookie、sessionStorage、localStorage-的区别"><a href="#cookie、sessionStorage、localStorage-的区别" class="headerlink" title="cookie、sessionStorage、localStorage 的区别"></a>cookie、sessionStorage、localStorage 的区别</h3><table>
+<h3 id="cookie、sessionStorage、localStorage-的区别">cookie、sessionStorage、localStorage 的区别</h3>
+<table>
 <thead>
 <tr>
 <th>列头</th>
@@ -620,7 +623,8 @@
 <th>localStorage</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>请求方式</td>
 <td>cookie 始终在同源的 http 请求中被携带</td>
 <td>请求中不主动携带</td>
@@ -644,8 +648,10 @@
 <td>所有同源窗口中共享</td>
 <td>不在不同的浏览器窗口中共享，即使是同一个页面</td>
 </tr>
-</tbody></table>
-<h3 id="哪些信息适合放到-cookie-中"><a href="#哪些信息适合放到-cookie-中" class="headerlink" title="哪些信息适合放到 cookie 中"></a>哪些信息适合放到 cookie 中</h3><p>cookie 的增多无疑会<strong>加重网络请求的开销</strong>，而且每次请求都会将 cookie 完整的带上，因此对于那些“每次请求都必须要携带的信息（如<code>身份信息</code>、<code>A/B分桶信息</code>等）”，才适合放进 cookie 中，其他类型的数据建议放进 localStorage 中。</p>
+</tbody>
+</table>
+<h3 id="哪些信息适合放到-cookie-中">哪些信息适合放到 cookie 中</h3>
+<p>cookie 的增多无疑会<strong>加重网络请求的开销</strong>，而且每次请求都会将 cookie 完整的带上，因此对于那些“每次请求都必须要携带的信息（如<code>身份信息</code>、<code>A/B分桶信息</code>等）”，才适合放进 cookie 中，其他类型的数据建议放进 localStorage 中。</p>
 
       </div>
       <div class="post-tags-categories">
@@ -698,7 +704,8 @@
       </div>
       
       <!-- <div class="content">
-        什么是 websocket？websocket 是一种网络传输协议，它和 http 一样，都位于 OSI 模型的应用层。
+        什么是 websocket？
+websocket 是一种网络传输协议，它和 http 一样，都位于 OSI 模型的应用层
       </div> -->
     </a>
   </div>
@@ -717,10 +724,11 @@
         <div class="title-text">HTTPS总结</div>
       </div>
       <!-- <div class="content">
-        HTTPShttps 采用对称加密和非对称加密+数字证书的方式，对传输数据进行加密
+        HTTPS
+https 采用对称加密和非对称加密+数字证书的方式，对传输数据进行加密
 对称加密方式如下
 
-客户端发送加密套
+客户端发送加密
       </div> -->
     </a>
   </div>

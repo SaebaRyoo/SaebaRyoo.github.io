@@ -566,24 +566,26 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="浏览器的工作原理"><a href="#浏览器的工作原理" class="headerlink" title="浏览器的工作原理"></a>浏览器的工作原理</h2><p><a target="_blank" rel="noopener" href="https://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/">https://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/</a></p>
-<h2 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h2><ol>
+        <h2 id="浏览器的工作原理">浏览器的工作原理</h2>
+<p><a target="_blank" rel="noopener" href="https://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/">https://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/</a></p>
+<h2 id="CSS">CSS</h2>
+<ol>
 <li>css 外部资源的由独立的线程异步加载</li>
 <li>css 会阻塞 DOM 渲染，不会阻塞解析。因为渲染依赖 css 样式，如果不阻塞，网页的样式会在渲染过程中变化，且可能会造成重绘和回流。</li>
 </ol>
-<h2 id="Script-元素"><a href="#Script-元素" class="headerlink" title="Script 元素"></a>Script 元素</h2><h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><ol>
+<h2 id="Script-元素">Script 元素</h2>
+<h3 id="工作原理">工作原理</h3>
+<ol>
 <li>如果 DOM 树解析到外联**<script>**时会阻塞住，在它加载并且执行完之前，不会往下解析 DOM 树。</li>
 </ol>
 <pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; test2.js
 const num &#x3D; 100000 * 50000;
 for (let i &#x3D; 0; i &lt; num ;i++) &#123;
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
 <pre class="line-numbers language-none"><code class="language-none">&lt;script src&#x3D;&quot;.&#x2F;test2.js&quot;&gt;&lt;&#x2F;script&gt;
 &lt;body&gt;
     &lt;div&gt;我会在外部js脚本加载完成后执行&lt;&#x2F;div&gt;
 &lt;&#x2F;body&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ol start="2">
 <li>给外部脚本添加上<strong>defer</strong>，则会延迟脚本执行。</li>
 </ol>
@@ -592,7 +594,6 @@ for (let i &#x3D; 0; i &lt; num ;i++) &#123;
     &lt;div&gt;我会在外部js脚本加载前执行&lt;&#x2F;div&gt;
 &lt;&#x2F;body&gt;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ol start="3">
 <li>js 引擎执行完毕。控制权交还给渲染引擎，恢复解析 DOM。</li>
 <li>内联 script 中的 js 代码阻塞页面的渲染。</li>
@@ -606,16 +607,39 @@ for (let i &#x3D; 0; i &lt; num ;i++) &#123;
     &lt;&#x2F;script&gt;
 &lt;&#x2F;body&gt;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="如何减少重排和重绘"><a href="#如何减少重排和重绘" class="headerlink" title="如何减少重排和重绘"></a>如何减少重排和重绘</h3><blockquote>
+<h3 id="如何减少重排和重绘">如何减少重排和重绘</h3>
+<blockquote>
 <p>首先要了解的是什么是重排或者叫回流，什么是重绘；</p>
 </blockquote>
 <ol>
-<li>重排： 重排必定伴随着重绘 1) 当页面首次渲染时 2) 当元素的尺寸、位置发生变化时， 3) 当 字体大小发生变化时 4) 浏览器窗口发生变化 5) 设置 style 样式 6) 新增和删除可见元素 7) 激活 CSS 伪类（例如：:hover） 8) 查询某些属性或者方法时会触发重排<br>常见的属性如下：<br>offsetTop、offsetLeft、 offsetWidth、offsetHeight、<br>scrollTop、scrollLeft、scrollWidth、scrollHeight<br>clientTop、clientLeft、clientWidth、clientHeight<br>常见的方法：<br>getComputedStyle、currentStyle。主要是为了确保准确性。</li>
-<li>重绘：重绘不一定会造成重排<br>color<br>border-style<br>visibility<br>background<br>text-decoration<br>background-image<br>background-position<br>background-repeat<br>outline-color<br>outline<br>outline-style<br>border-radius<br>outline-width<br>box-shadow<br>background-size</li>
+<li>重排： 重排必定伴随着重绘 1) 当页面首次渲染时 2) 当元素的尺寸、位置发生变化时， 3) 当 字体大小发生变化时 4) 浏览器窗口发生变化 5) 设置 style 样式 6) 新增和删除可见元素 7) 激活 CSS 伪类（例如：:hover） 8) 查询某些属性或者方法时会触发重排<br>
+常见的属性如下：<br>
+offsetTop、offsetLeft、 offsetWidth、offsetHeight、<br>
+scrollTop、scrollLeft、scrollWidth、scrollHeight<br>
+clientTop、clientLeft、clientWidth、clientHeight<br>
+常见的方法：<br>
+getComputedStyle、currentStyle。主要是为了确保准确性。</li>
+<li>重绘：重绘不一定会造成重排<br>
+color<br>
+border-style<br>
+visibility<br>
+background<br>
+text-decoration<br>
+background-image<br>
+background-position<br>
+background-repeat<br>
+outline-color<br>
+outline<br>
+outline-style<br>
+border-radius<br>
+outline-width<br>
+box-shadow<br>
+background-size</li>
 </ol>
-<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><ol>
-<li>读写分离<br>以下的代码会造成 4 次重排和 4 次重绘，因为在 console 中你请求的这几个样式信息，无论何时浏览器都会立即执行渲染队列的任务，即使该值与你操作中修改的值没关联。</li>
+<h4 id="解决方法">解决方法</h4>
+<ol>
+<li>读写分离<br>
+以下的代码会造成 4 次重排和 4 次重绘，因为在 console 中你请求的这几个样式信息，无论何时浏览器都会立即执行渲染队列的任务，即使该值与你操作中修改的值没关联。</li>
 </ol>
 <p><strong>因为队列中，可能会有影响到这些值的操作，为了给我们最精确的值，浏览器会立即重排+重绘</strong></p>
 <pre class="line-numbers language-none"><code class="language-none">div.style.left &#x3D; &#39;10px&#39;;
@@ -626,7 +650,6 @@ div.style.width &#x3D; &#39;20px&#39;;
 console.log(div.offsetWidth);
 div.style.height &#x3D; &#39;20px&#39;;
 console.log(div.offsetHeight);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>将代码改成如下，则只会造成一次重排。因为在第一个 console 的时候，浏览器把之前上面四个写操作的渲染队列都给清空了。剩下的 console，因为渲染队列本来就是空的，所以并没有触发重排，仅仅拿值而已。</p>
 <pre class="line-numbers language-none"><code class="language-none">div.style.left &#x3D; &#39;10px&#39;;
 div.style.top &#x3D; &#39;10px&#39;;
@@ -637,7 +660,6 @@ console.log(div.offsetTop);
 console.log(div.offsetWidth);
 console.log(div.offsetHeight);
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ol start="2">
 <li>样式集中改变</li>
 </ol>
@@ -645,8 +667,8 @@ console.log(div.offsetHeight);
 div.style.top &#x3D; &#39;10px&#39;;
 div.style.width &#x3D; &#39;20px&#39;;
 div.style.height &#x3D; &#39;20px&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>虽然现在大部分浏览器有渲染队列优化，不排除有些浏览器以及老版本的浏览器效率仍然低下：<br>建议通过改变 class 或者 csstext 属性集中改变样式</p>
+<p>虽然现在大部分浏览器有渲染队列优化，不排除有些浏览器以及老版本的浏览器效率仍然低下：<br>
+建议通过改变 class 或者 csstext 属性集中改变样式</p>
 <pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; bad
 var left &#x3D; 10;
 var top &#x3D; 10;
@@ -656,7 +678,6 @@ el.style.top  &#x3D; top  + &quot;px&quot;;
 el.className +&#x3D; &quot; theclassname&quot;;
 &#x2F;&#x2F; good
 el.style.cssText +&#x3D; &quot;; left: &quot; + left + &quot;px; top: &quot; + top + &quot;px;&quot;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ol start="3">
 <li>缓存布局信息</li>
 </ol>
@@ -669,25 +690,34 @@ var curLeft &#x3D; div.offsetLeft;
 var curTop &#x3D; div.offsetTop;
 div.style.left &#x3D; curLeft + 1 + &#39;px&#39;;
 div.style.top &#x3D; curTop + 1 + &#39;px&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ol start="4">
-<li><p>离线改变 dom</p>
+<li>
+<p>离线改变 dom</p>
 <ul>
-<li>隐藏要操作的 dom<br>在要操作 dom 之前，通过 display 隐藏 dom，当操作完成之后，才将元素的 display 属性为可见，因为<br>不可见的元素不会触发重排和重绘。<br>`              dom.display = 'none'<br>// 修改dom样式<br>dom.display = 'block'</li>
-</ul>
-</li>
-</ol>
-<p>  `</p>
-<ul>
+<li>隐藏要操作的 dom<br>
+在要操作 dom 之前，通过 display 隐藏 dom，当操作完成之后，才将元素的 display 属性为可见，因为<br>
+不可见的元素不会触发重排和重绘。<br>
+<code>             dom.display = 'none'     // 修改dom样式     dom.display = 'block'</code></li>
 <li>通过使用 DocumentFragment 创建一个 dom 碎片,在它上面批量操作 dom，操作完成之后，再添加到文档中，这样只会触发一次重排。</li>
 <li>复制节点，在副本上工作，然后替换它！</li>
 </ul>
-<ol start="5">
-<li>position 属性为 absolute 或 fixed<br>position 属性为 absolute 或 fixed 的元素，重排开销比较小，不用考虑它对其他元素的影响</li>
-<li>优化动画</li>
+</li>
+<li>
+<p>position 属性为 absolute 或 fixed<br>
+position 属性为 absolute 或 fixed 的元素，重排开销比较小，不用考虑它对其他元素的影响</p>
+</li>
+<li>
+<p>优化动画</p>
+</li>
 </ol>
-<p>可以把动画效果应用到 position 属性为 absolute 或 fixed 的元素上，这样对其他元素影响较小<br>动画效果还应牺牲一些平滑，来换取速度，这中间的度自己衡量：<br>比如实现一个动画，以 1 个像素为单位移动这样最平滑，但是 reflow 就会过于频繁，大量消耗 CPU 资源，如果以 3 个像素为单位移动则会好很多。</p>
-<p>启用 GPPU 加速<br>此部分来自优化 CSS 重排重绘与浏览器性能<br>GPU(图像加速器)：<br>GPU 硬件加速是指应用 GPU 的图形性能对浏览器中的一些图形操作交给 GPU 来完成，因为 GPU 是专门为处理图形而设计，所以它在速度和能耗上更有效率。<br>GPU 加速通常包括以下几个部分：Canvas2D，布局合成, CSS3 转换（transitions），CSS3 3D 变换（transforms），WebGL 和视频(video)。</p>
+<p>可以把动画效果应用到 position 属性为 absolute 或 fixed 的元素上，这样对其他元素影响较小<br>
+动画效果还应牺牲一些平滑，来换取速度，这中间的度自己衡量：<br>
+比如实现一个动画，以 1 个像素为单位移动这样最平滑，但是 reflow 就会过于频繁，大量消耗 CPU 资源，如果以 3 个像素为单位移动则会好很多。</p>
+<p>启用 GPPU 加速<br>
+此部分来自优化 CSS 重排重绘与浏览器性能<br>
+GPU(图像加速器)：<br>
+GPU 硬件加速是指应用 GPU 的图形性能对浏览器中的一些图形操作交给 GPU 来完成，因为 GPU 是专门为处理图形而设计，所以它在速度和能耗上更有效率。<br>
+GPU 加速通常包括以下几个部分：Canvas2D，布局合成, CSS3 转换（transitions），CSS3 3D 变换（transforms），WebGL 和视频(video)。</p>
 <pre class="line-numbers language-none"><code class="language-none">&#x2F;*
  * 根据上面的结论
  * 将 2d transform 换成 3d
@@ -697,20 +727,27 @@ div.style.top &#x3D; curTop + 1 + &#39;px&#39;;<span aria-hidden="true" class="l
 div &#123;
   transform: translate3d(10px, 10px, 0);
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h3><p>V8 中，将堆内存分为<strong>新生代（副垃圾回收器）</strong>，<strong>老生代（主垃圾回收器）</strong>。<strong>新生代</strong>组要存储一些存活时间短的对象，<strong>老生代</strong>存储存活时间长的对象。</p>
-<h4 id="工作机制"><a href="#工作机制" class="headerlink" title="工作机制"></a>工作机制</h4><ol>
+<h3 id="垃圾回收机制">垃圾回收机制</h3>
+<p>V8 中，将堆内存分为<strong>新生代（副垃圾回收器）</strong>，<strong>老生代（主垃圾回收器）</strong>。<strong>新生代</strong>组要存储一些存活时间短的对象，<strong>老生代</strong>存储存活时间长的对象。</p>
+<h4 id="工作机制">工作机制</h4>
+<ol>
 <li>标记空间中活动对象和非活动对象。活动对象就是还在使用的对象，非活动对象就是可以进行回收的对象</li>
 <li>回收非活动对象占据的内存。即在标记完成之后，统一清理非活动对象的内存</li>
 <li>做内存整理，一般在频繁的垃圾回收后，会出现大量不连贯的内存空间，叫做<strong>内存碎片</strong>。当内存中出现大量的内存碎片后，就可能出现内存不足的情况。所以需要整理。但这一步是可选的，因为有的垃圾回收器不会产生<strong>内存碎片</strong>，如<strong>副垃圾回收器</strong></li>
 </ol>
-<h4 id="副垃圾回收器"><a href="#副垃圾回收器" class="headerlink" title="副垃圾回收器"></a>副垃圾回收器</h4><p><strong>新生代</strong>采用<strong>Scavenge 算法</strong> ，即将<strong>新生代</strong>一分为二，分别为对象区域，空闲区域。如下图：<br><img src="https://user-images.githubusercontent.com/18700225/72214201-4b8a0a80-3538-11ea-9916-e134c94a3896.png" class="lazyload placeholder" data-srcset="https://user-images.githubusercontent.com/18700225/72214201-4b8a0a80-3538-11ea-9916-e134c94a3896.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="scavenge"></p>
+<h4 id="副垃圾回收器">副垃圾回收器</h4>
+<p><strong>新生代</strong>采用<strong>Scavenge 算法</strong> ，即将<strong>新生代</strong>一分为二，分别为对象区域，空闲区域。如下图：<br>
+<img src="https://user-images.githubusercontent.com/18700225/72214201-4b8a0a80-3538-11ea-9916-e134c94a3896.png" class="lazyload placeholder" data-srcset="https://user-images.githubusercontent.com/18700225/72214201-4b8a0a80-3538-11ea-9916-e134c94a3896.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="scavenge"></p>
 <p>当对象区域快要占满时，就会执行一次垃圾回收操作。在垃圾回收的过程中标记非活动对象，标记完成后就进入垃圾清理阶段，副垃圾回收器会将存活的对象复制到空闲区域，并进行有序的排列。这个过程中就已经进行了内存整理。</p>
 <p>然后对象区域和空闲区域的角色对换。</p>
 <p>因为新生区的空间不大，所以很容易被存活的对象装满整个区域。为了解决这个问题，JavaScript 引擎采用了对象晋升策略，也就是经过两次垃圾回收依然还存活的对象，会被移动到老生区中</p>
-<h4 id="主垃圾回收器"><a href="#主垃圾回收器" class="headerlink" title="主垃圾回收器"></a>主垃圾回收器</h4><p>V8 中的主垃圾回收器采用<strong>Mark-Sweep（标记-清除）</strong>，该算法会产生大量不连续的内存碎片。<br>所以又有了<strong>标记 - 整理（Mark-Compact）</strong> 它会先将所有存活的对象排列在一起，然后清理端另一边的非存活对象</p>
-<h4 id="全停顿（Stop-The-World）"><a href="#全停顿（Stop-The-World）" class="headerlink" title="全停顿（Stop - The - World）"></a>全停顿（Stop - The - World）</h4><p>由于 js 是运行在主线程上的，一旦执行垃圾回收算法，会阻塞所有 js 脚本执行。在清理过程中，主线程无法执行任何操作，会明显的影响到用户体验。</p>
-<p>为了降低老生代的垃圾回收而造成的卡顿，V8 将标记过程分为一个个的子标记过程，同时让垃圾回收标记和 JavaScript 应用逻辑交替进行，直到标记阶段完成，我们把这个算法称为增量标记（Incremental Marking）算法<br><img src="https://user-images.githubusercontent.com/18700225/72214337-c2c09e00-353a-11ea-8bde-9ffb891a53ef.png" class="lazyload placeholder" data-srcset="https://user-images.githubusercontent.com/18700225/72214337-c2c09e00-353a-11ea-8bde-9ffb891a53ef.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="increase"></p>
+<h4 id="主垃圾回收器">主垃圾回收器</h4>
+<p>V8 中的主垃圾回收器采用<strong>Mark-Sweep（标记-清除）</strong>，该算法会产生大量不连续的内存碎片。<br>
+所以又有了<strong>标记 - 整理（Mark-Compact）</strong> 它会先将所有存活的对象排列在一起，然后清理端另一边的非存活对象</p>
+<h4 id="全停顿（Stop-The-World）">全停顿（Stop - The - World）</h4>
+<p>由于 js 是运行在主线程上的，一旦执行垃圾回收算法，会阻塞所有 js 脚本执行。在清理过程中，主线程无法执行任何操作，会明显的影响到用户体验。</p>
+<p>为了降低老生代的垃圾回收而造成的卡顿，V8 将标记过程分为一个个的子标记过程，同时让垃圾回收标记和 JavaScript 应用逻辑交替进行，直到标记阶段完成，我们把这个算法称为增量标记（Incremental Marking）算法<br>
+<img src="https://user-images.githubusercontent.com/18700225/72214337-c2c09e00-353a-11ea-8bde-9ffb891a53ef.png" class="lazyload placeholder" data-srcset="https://user-images.githubusercontent.com/18700225/72214337-c2c09e00-353a-11ea-8bde-9ffb891a53ef.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="increase"></p>
 <p>使用增量标记算法，可以把一个完整的垃圾回收任务拆分为很多小的任务，这些小的任务执行时间比较短，可以穿插在其他的 JavaScript 任务中间执行，这样当执行上述动画效果时，就不会让用户因为垃圾回收任务而感受到页面的卡顿了。</p>
 
       </div>
@@ -755,22 +792,19 @@ div &#123;
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/9.jpg" class="lazyload placeholder" data-srcset="/medias/9.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2023/09/04/wang-luo/qing-qiu-url-fa-sheng-liao-shi-me/" class="post-nav-link">
+    <a href="/2023/09/04/wang-luo/tu-jie-zheng-fan-xiang-dai-li/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">请求一个url时发生了什么?</div>
+        <div class="title-text">图解正反向代理</div>
       </div>
       
       <!-- <div class="content">
         
 我的掘金
 
-网上的信息都比较碎片化，所以想自己画一张完整的图并总结
-宏观分析下图为网络连接的大致流程
-
-TODO: 步
+我看到网上有很多关于正向代理和反向代理的解释，不过大多都是文字描述，很少有画图的。不妨通过下面的图片来了解
       </div> -->
     </a>
   </div>
@@ -781,15 +815,22 @@ TODO: 步
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/3.jpg" class="lazyload placeholder" data-srcset="/medias/3.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/9.jpg" class="lazyload placeholder" data-srcset="/medias/9.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2023/06/24/kai-fa-wen-ti-ji-lu/ru-he-jie-jue-vscode-qia-dun-wen-ti/" class="post-nav-link">
+    <a href="/2023/09/04/wang-luo/qing-qiu-url-fa-sheng-liao-shi-me/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">记一次关于vscode在mac中卡顿的问题</div>
+        <div class="title-text">请求一个url时发生了什么?</div>
       </div>
       <!-- <div class="content">
-        公司发的机器是 19 款 MacBook Pro Intel i7 的，一开始就是在 vscode 官网下载的默认的 U
+        
+我的掘金
+
+网上的信息都比较碎片化，所以想自己画一张完整的图并总结
+宏观分析
+下图为网络连接的大致流程
+
+TODO: 
       </div> -->
     </a>
   </div>

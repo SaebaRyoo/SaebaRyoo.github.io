@@ -566,34 +566,44 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="传参方式"><a href="#传参方式" class="headerlink" title="传参方式"></a>传参方式</h1><h3 id="HashRouter"><a href="#HashRouter" class="headerlink" title="HashRouter"></a>HashRouter</h3><ol>
+        <h1>传参方式</h1>
+<h3 id="HashRouter">HashRouter</h3>
+<ol>
 <li>通过在url中增加<strong>查询字符串</strong>。如 <code>&lt;Link to=&#123;&#123;pathname: '/test', search: '?id=1'&#125;&#125;&gt;</code>或者<code>&lt;Link to=&quot;/test?id=1&quot;&gt;</code>(浏览器刷新后，数据不丢 。获取方式：<code>this.props.location.search</code>)</li>
 <li>通过<strong>params</strong>，表现形式<code>&lt;Link to=&quot;/test/:id&quot;&gt;</code>(浏览器刷新后，数据不丢。获取方式：<code>this.props.params</code>)</li>
 <li>通过<strong>query</strong>(<strong>query</strong>是一个自定义属性，你可以写成test，对应的取也用test即可)属性，<code>&lt;Link to=&#123;&#123;pathname: '/test', query: &#123;id: 1&#125;&#125;&#125;&gt;</code>(浏览器刷新后，数据丢失， 获取方式：<code>this.props.location.query</code>。 )</li>
 </ol>
-<h3 id="BrowserRouter"><a href="#BrowserRouter" class="headerlink" title="BrowserRouter"></a>BrowserRouter</h3><ol>
+<h3 id="BrowserRouter">BrowserRouter</h3>
+<ol>
 <li><strong>通过在url中增加查询字符串</strong>。如 <code>&lt;Link to=&#123;&#123;pathname: '/test', search: '?id=1'&#125;&#125;&gt;</code>或者<code>&lt;Link to=&quot;/test?id=1&quot;&gt;</code>(浏览器刷新后，数据不丢。获取方式：<code>this.props.location.search</code>)</li>
 <li>通过<strong>params</strong>，表现形式<code>&lt;Link to=&quot;/test/:id&quot;&gt;</code>(浏览器刷新后，数据不丢。  获取方式：<code>this.props.params</code>)</li>
 <li>通过<strong>state</strong>，如<code>&lt;Link to=&#123;&#123;pathname: '/test', state: &#123;id: 1&#125;&#125;&#125;&gt;</code>(浏览器刷新后，数据不丢 获取方式：this.props.location.state)</li>
 </ol>
-<h1 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h1><h3 id="HashRouter-1"><a href="#HashRouter-1" class="headerlink" title="HashRouter"></a>HashRouter</h3><ol>
+<h1>区别</h1>
+<h3 id="HashRouter-2">HashRouter</h3>
+<ol>
 <li><strong>HashRouter</strong>使用URL（即window.location.hash）的哈希部分来保持UI与URL同步的。在地址栏显示样式会增加一个#前缀，如：**<a target="_blank" rel="noopener" href="http://www.some.com/#/demo/**%E8%BF%99%E7%A7%8D%E5%BD%A2%E5%BC%8F">http://www.some.com/#/demo/**这种形式</a></li>
 <li>HashRouter的主要作用是兼容低版本浏览器</li>
 <li>当hash变化时，并不会再一次产生资源请求</li>
 <li>通过<strong>window.onhashchange</strong>监听变化</li>
 </ol>
-<h3 id="BrowserRouter-1"><a href="#BrowserRouter-1" class="headerlink" title="BrowserRouter"></a>BrowserRouter</h3><ol>
+<h3 id="BrowserRouter-2">BrowserRouter</h3>
+<ol>
 <li>使用的是基于HTML5规范的<strong>window.history</strong>来管理路由状态，并且react-router中通过 <strong>pushState， popState，replaceState</strong>来同步ui的变化</li>
 <li>IE10+及以上浏览器支持HTML5的history api</li>
-<li>生产中服务器需要配置，并且url变化会向服务器请求资源。比如用nginx作为web服务器时，需要配置以下规则来重定向到<strong>index.html(单页面入口)</strong><pre class="line-numbers language-none"><code class="language-none">location &#x2F; &#123;
-    try_files $uri $uri&#x2F; &#x2F;index.html;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li>
+<li>生产中服务器需要配置，并且url变化会向服务器请求资源。比如用nginx作为web服务器时，需要配置以下规则来重定向到<strong>index.html(单页面入口)</strong></li>
 </ol>
-<h1 id="疑问"><a href="#疑问" class="headerlink" title="疑问"></a>疑问</h1><h3 id="为什么history-state可以在刷新页面后依然保存数据"><a href="#为什么history-state可以在刷新页面后依然保存数据" class="headerlink" title="为什么history.state可以在刷新页面后依然保存数据"></a>为什么history.state可以在刷新页面后依然保存数据</h3><blockquote>
+<pre class="line-numbers language-none"><code class="language-none">location &#x2F; &#123;
+    try_files $uri $uri&#x2F; &#x2F;index.html;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1>疑问</h1>
+<h3 id="为什么history-state可以在刷新页面后依然保存数据">为什么history.state可以在刷新页面后依然保存数据</h3>
+<blockquote>
 <p>浏览器会将在history过程中传入的state对象序列化以后保留在本地，所以当重新载入这个页面的时候，可以拿到这个对象。</p>
 </blockquote>
-<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ol>
-<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/History_API#%E8%A7%84%E8%8C%83">https://developer.mozilla.org/zh-CN/docs/Web/API/History_API#%E8%A7%84%E8%8C%83</a></li>
+<h1>参考链接</h1>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/History_API#%E8%A7%84%E8%8C%83">https://developer.mozilla.org/zh-CN/docs/Web/API/History_API#规范</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.impressivewebs.com/html5-history-api-syntax/">https://www.impressivewebs.com/html5-history-api-syntax/</a></li>
 </ol>
 
@@ -652,14 +662,16 @@
 
 
 
+
 客户端渲染
 服务端渲染
 
 
 
+
 请求
 多个请求(HTML, 数据等)
-1 个请求(HT
+1 个请求(
       </div> -->
     </a>
   </div>

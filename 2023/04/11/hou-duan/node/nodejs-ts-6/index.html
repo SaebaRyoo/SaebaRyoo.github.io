@@ -573,7 +573,8 @@
 <blockquote>
 <p>本文介绍了使用原生 Node.js 中进行 HTTP 请求的方法。其他可行的解决方案是使用<a target="_blank" rel="noopener" href="https://github.com/axios/axios">axios</a>这样的库。</p>
 </blockquote>
-<h2 id="发送一个-http-请求"><a href="#发送一个-http-请求" class="headerlink" title="发送一个 http 请求"></a>发送一个 http 请求</h2><p>想要发送一个 http 请求，我们需要使用<code>http</code>模块。它包含了请求方法。</p>
+<h2 id="发送一个-http-请求">发送一个 http 请求</h2>
+<p>想要发送一个 http 请求，我们需要使用<code>http</code>模块。它包含了请求方法。</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> request <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"http"</span><span class="token punctuation">;</span>
 
 <span class="token keyword">const</span> req <span class="token operator">=</span> <span class="token function">request</span><span class="token punctuation">(</span>
@@ -588,7 +589,6 @@
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 req<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p><code>request</code>方法的第一个参数是一个对象，他们的意思都比较好理解。</p>
 <p>最后一个参数是一个回调函数，这个回调的第一个参数是服务端的<code>response</code>实例。它包含了我们想得到的一些响应信息，比如<code>statusCode(状态码)</code>。</p>
 <p>还有一个重要的东西就是<strong>readable stream</strong>。由于我们在之前的文章中就已经介绍过了，这里就不再赘述，直接上代码。</p>
@@ -607,7 +607,6 @@ req<span class="token punctuation">.</span><span class="token function">end</spa
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
 req<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>在上面这个代码中，我们读取了<code>jsonplaceholder.typicode.com/todos/1</code>这个路径下的<code>json</code>资源，然后我们创建了一个可写流，并且将 json 资源的<strong>可读流</strong>写入到了<code>file.txt</code>中</p>
 <pre class="line-numbers language-none"><code class="language-none">&#123;
   &quot;userId&quot;: 1,
@@ -615,7 +614,6 @@ req<span class="token punctuation">.</span><span class="token function">end</spa
   &quot;title&quot;: &quot;delectus aut autem&quot;,
   &quot;completed&quot;: false
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>另一个我们可能会用到的就是在一个变量中存储<strong>请求 body</strong>。因为它是一个可读流，我们只需要解析它的<code>chunks</code>即可。</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">const</span> req <span class="token operator">=</span> <span class="token function">request</span><span class="token punctuation">(</span>
   <span class="token punctuation">&#123;</span>
@@ -636,7 +634,6 @@ req<span class="token punctuation">.</span><span class="token function">end</spa
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 req<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>在这当中有很多操作，我们可以通过<code>Promise</code>来简化这一流程</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">interface</span> <span class="token class-name">Response</span> <span class="token punctuation">&#123;</span>
   data<span class="token operator">:</span> object<span class="token punctuation">;</span>
@@ -677,14 +674,13 @@ req<span class="token punctuation">.</span><span class="token function">end</spa
   <span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
     <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>这里会返回一个<code>Not Found</code>的错误信息，因为我们故意将资源的路径写成了<code>todo1</code>。这是为了展示一下通过封装可以处理一些通用的信息。</p>
-<h2 id="http-ClientRequest"><a href="#http-ClientRequest" class="headerlink" title="http.ClientRequest"></a>http.ClientRequest</h2><p><code>request</code>函数返回一个继承与<code>Stream</code>的<code>ClientRequest</code>的实例。我们可以用它来发送一些<code>POST</code>请求。</p>
+<h2 id="http-ClientRequest">http.ClientRequest</h2>
+<p><code>request</code>函数返回一个继承与<code>Stream</code>的<code>ClientRequest</code>的实例。我们可以用它来发送一些<code>POST</code>请求。</p>
 <p>在测试这个功能前，我们先用<code>express</code>实现搭建一个 server</p>
 <p>首先先自己创建另一个项目<code>express-demo</code></p>
 <pre class="line-numbers language-none"><code class="language-none">yarn init -y
 yarn add typescript express ts-node<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
 <p>然后配置<code>tsconfig.json</code>:</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
   <span class="token property">"compilerOptions"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
@@ -696,12 +692,10 @@ yarn add typescript express ts-node<span aria-hidden="true" class="line-numbers-
   <span class="token property">"include"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"src/**/*.ts"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
   <span class="token property">"exclude"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"node_modules"</span><span class="token punctuation">]</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>在<code>package.json</code>添加脚本</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
   <span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"ts-node ./src/server.ts"</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
 <p>然后，在<code>src/server.ts</code>中编写接口</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> express <span class="token keyword">from</span> <span class="token string">"express"</span><span class="token punctuation">;</span>
 
@@ -712,7 +706,6 @@ app<span class="token punctuation">.</span><span class="token function">post</sp
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>到这，一个基础的服务就完成了。</p>
 <hr>
 <p>然后，回到之前的项目中，在<code>index.ts</code>写下请求相关代码</p>
@@ -740,9 +733,9 @@ req<span class="token punctuation">.</span><span class="token function">write</s
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 req<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>你会发现每个例子都需要以<code>end</code>函数结尾，这是用来表示请求已经结束。</p>
-<h2 id="使用multipart-form-data上传文件"><a href="#使用multipart-form-data上传文件" class="headerlink" title="使用multipart/form-data上传文件"></a>使用<code>multipart/form-data</code>上传文件</h2><p>另一个需要将请求作为流的就是上传文件。我们需要使用<code>multipart/form-data</code>来上传文件。</p>
+<h2 id="使用multipart-form-data上传文件">使用<code>multipart/form-data</code>上传文件</h2>
+<p>另一个需要将请求作为流的就是上传文件。我们需要使用<code>multipart/form-data</code>来上传文件。</p>
 <p><code>FormData</code>提供了一个方法去构造<code>key/value对</code>来作为 form 对象的<code>字段</code>和<code>值</code>。当我们在浏览器环境时，我们可以很简单的使用<code>FormData()</code>构造函数来创建爱你。但 Node 中并没有提供，我们使用一个第三方包<code>form-data</code>来完成。</p>
 <p><code>npm install @typings/form-data form-data</code></p>
 <p><code>Multipart</code>来源于<code>MIME</code>，一个扩展电子邮件格式的标准，代表多用途互联网邮件扩展。该类型的请求将一组或多组数据合并到一个<code>body</code>，并以 <strong>boundary(随机字符串)</strong> 分隔。通常，在发送文件时，我们使用<code>multipart/form-data</code>,这是<code>Multipart</code>的一个子类型，在网络上被广泛支持</p>
@@ -770,9 +763,9 @@ form<span class="token punctuation">.</span><span class="token function">append<
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 form<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>req<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p><code>form-data</code>库创建了可读流，我们将其与请求一起发送。上面的代码中有一个有趣的部分是<code>form.getHeaders()</code>。</p>
-<h2 id="Boundary"><a href="#Boundary" class="headerlink" title="Boundary"></a>Boundary</h2><p>当发送<code>multipart/form-data</code>时，我们需要使用适当的 headers。我们可以通过以下示例来看<code>form-data</code>库为我们生成了什么：</p>
+<h2 id="Boundary">Boundary</h2>
+<p>当发送<code>multipart/form-data</code>时，我们需要使用适当的 headers。我们可以通过以下示例来看<code>form-data</code>库为我们生成了什么：</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> FormData <span class="token keyword">from</span> <span class="token string">"form-data"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> createReadStream <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"fs"</span><span class="token punctuation">;</span>
 
@@ -784,12 +777,10 @@ form<span class="token punctuation">.</span><span class="token function">append<
 form<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"lastName"</span><span class="token punctuation">,</span> <span class="token string">"Wanago"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>form<span class="token punctuation">.</span><span class="token function">getHeaders</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>上面这段代码输出如下:</p>
 <pre class="line-numbers language-none"><code class="language-none">&#123;
   &#39;content-type&#39;: &#39;multipart&#x2F;form-data; boundary&#x3D;--------------------------898552055688392969814829&#39;
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
 <p>如你所见，他将内容的类型设置为<code>multipart/form-data</code>，并在其中设置一个每次都不同的随机字符串的<code>boundary</code>。它被传递到<code>headers</code>中去定义一个字符串来划分表单数据的不同部分。</p>
 <p>为了充分理解它，我们需要将我们的<code>form</code>通过<code>pipe</code>写入到一个文件中去读取</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> FormData <span class="token keyword">from</span> <span class="token string">"form-data"</span><span class="token punctuation">;</span>
@@ -805,12 +796,10 @@ form<span class="token punctuation">.</span><span class="token function">append<
 <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>form<span class="token punctuation">.</span><span class="token function">getHeaders</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 form<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>writeStream<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>上面首先会输出</p>
 <pre class="line-numbers language-none"><code class="language-none">&#123;
   &#39;content-type&#39;: &#39;multipart&#x2F;form-data; boundary&#x3D;--------------------------966991448654339731356450&#39;
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
 <p>最终，我们可以看到<code>file.txt</code>中的文件如下</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token number">966991448654339731356450</span>
 Content<span class="token operator">-</span>Disposition<span class="token operator">:</span> form<span class="token operator">-</span>data<span class="token punctuation">;</span> name<span class="token operator">=</span><span class="token string">"photo"</span><span class="token punctuation">;</span> filename<span class="token operator">=</span><span class="token string">"photo.jpg"</span>
@@ -830,9 +819,9 @@ Content<span class="token operator">-</span>Disposition<span class="token operat
 
 Wanago
 <span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token operator">--</span><span class="token number">966991448654339731356450</span><span class="token operator">--</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p><code>form</code>的每一部分都使用生成的<code>boundary</code>来划分，最后一个<code>boundary</code>在最后有两个额外的破折号。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在这篇文章中，我们介绍了如何在 Node 中进行 http 请求，要做到这点，需要我们前面所学的关于流的知识。我们实现的功能之一就是上传文件。为了实现这一点，我们解释了<code>multipart/form-data</code>格式。这些知识也适用于前端。</p>
+<h2 id="总结">总结</h2>
+<p>在这篇文章中，我们介绍了如何在 Node 中进行 http 请求，要做到这点，需要我们前面所学的关于流的知识。我们实现的功能之一就是上传文件。为了实现这一点，我们解释了<code>multipart/form-data</code>格式。这些知识也适用于前端。</p>
 
       </div>
       <div class="post-tags-categories">
@@ -885,8 +874,9 @@ Wanago
       </div>
       
       <!-- <div class="content">
-        架构为啥取名为 Node 呢？
-因为 Node 的架构主要分为 4 大部分，Node Standard Library,
+        架构
+为啥取名为 Node 呢？
+因为 Node 的架构主要分为 4 大部分，Node Standard Library
       </div> -->
     </a>
   </div>

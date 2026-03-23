@@ -566,66 +566,86 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="前端脚手架是什么？"><a href="#前端脚手架是什么？" class="headerlink" title="前端脚手架是什么？"></a>前端脚手架是什么？</h2><p>它将常用的开发流程抽象为 template，通过 cli 的交互形式帮助我们对开发过程进行提效。</p>
-<p>比如<code>npm install</code>就是 npm 这个脚手架工具的一个命令，它帮助我们解决了依赖下载和安装问题。<br>你可以想象一下，一个中大型的项目，没有依赖文件，你只能一个个在 npm 网站中手动下载依赖，先不谈会不会出错，就问你累不累？</p>
-<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><p>想要知道脚手架的工作原理，我们可以从以下三个问题入手</p>
+        <h2 id="前端脚手架是什么？">前端脚手架是什么？</h2>
+<p>它将常用的开发流程抽象为 template，通过 cli 的交互形式帮助我们对开发过程进行提效。</p>
+<p>比如<code>npm install</code>就是 npm 这个脚手架工具的一个命令，它帮助我们解决了依赖下载和安装问题。<br>
+你可以想象一下，一个中大型的项目，没有依赖文件，你只能一个个在 npm 网站中手动下载依赖，先不谈会不会出错，就问你累不累？</p>
+<h2 id="工作原理">工作原理</h2>
+<p>想要知道脚手架的工作原理，我们可以从以下三个问题入手</p>
 <ol>
-<li><p>全局安装<code>create-react-app</code>时发生了什么？<br>在使用<code>npm install -g create-react-app</code>安装时，解析 package.json 中的 bin 字段，然后在全局 npm 包的 bin 目录下添加一个<code>create-react-app</code>指令 软链接到<code>../lib/node_module</code>下的包</p>
+<li>
+<p>全局安装<code>create-react-app</code>时发生了什么？<br>
+在使用<code>npm install -g create-react-app</code>安装时，解析 package.json 中的 bin 字段，然后在全局 npm 包的 bin 目录下添加一个<code>create-react-app</code>指令 软链接到<code>../lib/node_module</code>下的包</p>
 </li>
-<li><p>为什么全局安装<code>create-react-app</code>后，会添加新的命令<code>create-react-app</code>？</p>
+<li>
+<p>为什么全局安装<code>create-react-app</code>后，会添加新的命令<code>create-react-app</code>？</p>
 </li>
 </ol>
 <p>我们通过<code>which create-react-app</code>找到指令对应的位置为<code> /Users/xxx/.nvm/versions/node/v14.19.1/bin/create-react-app</code></p>
-<p>cd 到<code>/Users/xxx/.nvm/versions/node/v14.19.1/bin</code> 目录下使用<code>ll</code>命令，我们发现如下输出<br><code>create-react-app -&gt; ../lib/node_modules/create-react-app/index.js</code></p>
+<p>cd 到<code>/Users/xxx/.nvm/versions/node/v14.19.1/bin</code> 目录下使用<code>ll</code>命令，我们发现如下输出<br>
+<code>create-react-app -&gt; ../lib/node_modules/create-react-app/index.js</code></p>
 <p>说明<code>create-react-app</code>指令是一个软链接，它指向上个文件夹中的<code>../lib/node_modules/create-react-app</code>。</p>
-<p>进入到<code>../lib/node_modules/create-react-app</code>文件夹后<code>cat package.json</code>发现一个<code>bin</code>字段的值为<code>&quot;create-react-app&quot;: &quot;./index.js&quot;</code>，<br>这指定了命令行中<code>主命令名称</code>的字段，以及运行 cli 命令对应的 js 文件</p>
+<p>进入到<code>../lib/node_modules/create-react-app</code>文件夹后<code>cat package.json</code>发现一个<code>bin</code>字段的值为<code>&quot;create-react-app&quot;: &quot;./index.js&quot;</code>，<br>
+这指定了命令行中<code>主命令名称</code>的字段，以及运行 cli 命令对应的 js 文件</p>
 <ol start="3">
-<li>为什么<code>create-react-app</code>指向了一个 js 文件，我们却可以通过<code>create-react-app</code>命令直接去执行它？<br>在<code>../lib/node_modules/create-react-app</code>我们会发现文件顶部有一行<code>#!/usr/bin/env node</code>这就是告诉操作系统到当前环境变量下找 node 来执行该代码</li>
+<li>为什么<code>create-react-app</code>指向了一个 js 文件，我们却可以通过<code>create-react-app</code>命令直接去执行它？<br>
+在<code>../lib/node_modules/create-react-app</code>我们会发现文件顶部有一行<code>#!/usr/bin/env node</code>这就是告诉操作系统到当前环境变量下找 node 来执行该代码</li>
 </ol>
 <p>所以，根据以上疑问，我们可以画出脚手架的工作流程如下:</p>
-<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/05070896fb4649acb7834dd942f87fde~tplv-k3u1fbpfcp-watermark.image" class="lazyload placeholder" data-srcset="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/05070896fb4649acb7834dd942f87fde~tplv-k3u1fbpfcp-watermark.image" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="cli.png"></p>
-<h2 id="脚手架搭建"><a href="#脚手架搭建" class="headerlink" title="脚手架搭建"></a>脚手架搭建</h2><h3 id="开发流程"><a href="#开发流程" class="headerlink" title="开发流程"></a>开发流程</h3><ul>
+<p><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/05070896fb4649acb7834dd942f87fde~tplv-k3u1fbpfcp-watermark.image?" class="lazyload placeholder" data-srcset="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/05070896fb4649acb7834dd942f87fde~tplv-k3u1fbpfcp-watermark.image?" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="cli.png"></p>
+<h2 id="脚手架搭建">脚手架搭建</h2>
+<h3 id="开发流程">开发流程</h3>
+<ul>
 <li>创建<code>npm</code>项目</li>
 <li>创建脚手架入口文件，最上方添加<code>#!/usr/bin/env node</code></li>
 <li>配置<code>package.json</code>,添加<code>bin</code>属性</li>
 <li>编写脚手架代码</li>
 <li>将脚手架发布到<code>npm</code></li>
 </ul>
-<h3 id="使用流程"><a href="#使用流程" class="headerlink" title="使用流程"></a>使用流程</h3><ul>
+<h3 id="使用流程">使用流程</h3>
+<ul>
 <li>安装脚手架 <code>npm install -g your-cli</code></li>
 <li>使用脚手架</li>
 </ul>
-<h3 id="开发难点解析"><a href="#开发难点解析" class="headerlink" title="开发难点解析"></a>开发难点解析</h3><ul>
+<h3 id="开发难点解析">开发难点解析</h3>
+<ul>
 <li>分包: 将 复杂的系统拆分成若干模块</li>
 <li>命令注册</li>
 <li>参数解析</li>
 <li>命令行交互</li>
 <li>日志打印</li>
 <li>网络通信</li>
-<li>文件处理<br>等…</li>
+<li>文件处理<br>
+等…</li>
 </ul>
-<h3 id="搭建一个最简-cli"><a href="#搭建一个最简-cli" class="headerlink" title="搭建一个最简 cli"></a>搭建一个最简 cli</h3><ol>
-<li><p><code>mkdir demo</code>创建一个目录</p>
+<h3 id="搭建一个最简-cli">搭建一个最简 cli</h3>
+<ol>
+<li>
+<p><code>mkdir demo</code>创建一个目录</p>
 </li>
-<li><p><code>npm init</code></p>
+<li>
+<p><code>npm init</code></p>
 </li>
-<li><p>添加<code>bin/index.js</code>文件，并修改 package.json 中的<code>bin</code>-&gt; <code>&#123; &quot;react-cli&quot;: &quot;bin/index.js&quot; &#125;</code></p>
+<li>
+<p>添加<code>bin/index.js</code>文件，并修改 package.json 中的<code>bin</code>-&gt; <code>&#123; &quot;react-cli&quot;: &quot;bin/index.js&quot; &#125;</code></p>
 </li>
-<li><p>npm login 然后 npm publish<br>我使用的 scoped package, 所以发布的命令需要加参数<code>npm publish --access=public</code></p>
+<li>
+<p>npm login 然后 npm publish<br>
+我使用的 scoped package, 所以发布的命令需要加参数<code>npm publish --access=public</code></p>
 </li>
-<li><p><code>npm install -g your-cli</code>安装</p>
+<li>
+<p><code>npm install -g your-cli</code>安装</p>
 </li>
 </ol>
-<h3 id="脚手架本地-link-标准流程"><a href="#脚手架本地-link-标准流程" class="headerlink" title="脚手架本地 link 标准流程"></a>脚手架本地 link 标准流程</h3><p>链接本地脚手架</p>
+<h3 id="脚手架本地-link-标准流程">脚手架本地 link 标准流程</h3>
+<p>链接本地脚手架</p>
 <pre class="line-numbers language-none"><code class="language-none">cd your-cli-dir
 npm link<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
 <p>链接本地库文件（当功能比较多，做分包时用）</p>
 <pre class="line-numbers language-none"><code class="language-none">cd your-lib-dir
 npm link
 cd your-cli-dir
 npm link your-lib<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>取消链接本地库文件</p>
 <pre class="line-numbers language-none"><code class="language-none">cd your-lib-dir
 npm unlink
@@ -706,8 +726,10 @@ npm unlink your-lib<span aria-hidden="true" class="line-numbers-rows"><span></sp
         <div class="title-text">关于查看React源码使用flow，却提示ts类型检查的错误</div>
       </div>
       <!-- <div class="content">
-        问题在看 React 源码时，因为 React 使用的是 flow,但是一直会报 TS 的类型错误
-解决首先是查询到了先
+        问题
+在看 React 源码时，因为 React 使用的是 flow,但是一直会报 TS 的类型错误
+解决
+首先是查询到
       </div> -->
     </a>
   </div>

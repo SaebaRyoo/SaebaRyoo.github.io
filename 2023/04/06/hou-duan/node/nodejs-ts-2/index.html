@@ -570,7 +570,8 @@
 <p>这个系列是翻译文章，虽然是翻译，但有些地方还是做了一些修改。如果你想要看原版，那可以根据这个<a target="_blank" rel="noopener" href="https://wanago.io/2019/02/18/typescript-node-js-eventemitter/">链接</a>去查找。</p>
 </blockquote>
 <p>在这篇文章中，我们继续讲与 Node.js 有关的主要概念。这次我们深入探讨<code>EventEmitter</code>的概念。我们解释了它的同步性和工作原理，这有助于理解 Node.js 的其他功能，因为其中一些功能在底层使用了<code>EventEmitter</code>。</p>
-<h2 id="EventEmitter"><a href="#EventEmitter" class="headerlink" title="EventEmitter"></a>EventEmitter</h2><p>事件是 JavaScript 的一个重要部分，因为很多 Node.js 核心功能都依赖于事件驱动架构。你会发现很多对象都继承自 EventEmitter。</p>
+<h2 id="EventEmitter">EventEmitter</h2>
+<p>事件是 JavaScript 的一个重要部分，因为很多 Node.js 核心功能都依赖于事件驱动架构。你会发现很多对象都继承自 EventEmitter。</p>
 <p>某些对象可以发出事件，我们称它们为<code>事件发射器（emitters）</code>。我们可以监听这些事件，并使用称为<code>监听器（listeners）</code>的回调函数来做出反应。</p>
 <p>EventEmitter 的实例有一个<code>on</code>方法，可以将一个或多个函数附加到该对象上。EventEmitter 的实例还有一个<code>emit</code>方法，用于发出事件并导致所有<code>EventEmitter</code>调用所有监听器。</p>
 <p><code>demo2/index.ts</code></p>
@@ -601,7 +602,6 @@ eventEmitter<span class="token punctuation">.</span><span class="token function"
 <span class="token comment">// two</span>
 <span class="token comment">// three</span>
 <span class="token comment">// 4</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>通过上面的输出，我们可以发现。所有通过<code>on</code>方法监听的名为<code>event</code>的事件的回调函数，在<code>emit</code>触发<code>event</code>事件后会同步调用。</p>
 <blockquote>
 <p><code>on</code>函数是<code>addEventListener</code>的别名，两个函数的作用方式相同。</p>
@@ -612,9 +612,9 @@ eventEmitter<span class="token punctuation">.</span><span class="token function"
 eventEmitter<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"event"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Event occured!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// not logged into the console</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>这是一个需要牢牢记住的点。</p>
-<h2 id="向监听器传输额外的数据"><a href="#向监听器传输额外的数据" class="headerlink" title="向监听器传输额外的数据"></a>向监听器传输额外的数据</h2><p><code>emit</code>方法允许你发送数据到<code>listener</code>函数。在<code>listener</code>函数内部，<code>this</code>指向<code>EventEmitter</code>的实例</p>
+<h2 id="向监听器传输额外的数据">向监听器传输额外的数据</h2>
+<p><code>emit</code>方法允许你发送数据到<code>listener</code>函数。在<code>listener</code>函数内部，<code>this</code>指向<code>EventEmitter</code>的实例</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">eventEmitter<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"event"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// &#123; key: value &#125;</span>
   <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token operator">===</span> eventEmitter<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// true</span>
@@ -623,7 +623,6 @@ eventEmitter<span class="token punctuation">.</span><span class="token function"
 eventEmitter<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">"event"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
   key<span class="token operator">:</span> <span class="token string">"value"</span><span class="token punctuation">,</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>你遇到的很多<code>emitter(发射器)</code>都会向<code>listeners(监听器)</code>传递额外的参数。</p>
 <p>如果你使用箭头函数，<code>this</code>的指向就不在是<code>EventEmitter</code>的实例，而是一个空对象<code>&#123;&#125;</code>。</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">const</span> _self <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
@@ -634,9 +633,9 @@ eventEmitter<span class="token punctuation">.</span><span class="token function"
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 eventEmitter<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">"event"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>这是因为箭头函数的 this 是继承自父级作用域，而在 node 中顶层作用域的 this 就是一个空对象<code>&#123;&#125;</code></p>
-<h2 id="移除-listeners"><a href="#移除-listeners" class="headerlink" title="移除 listeners"></a>移除 listeners</h2><p>如果你不希望某个监听器再被调用，你可以使用<code>removeListener</code>函数。通过它，你从一个特定的事件中移除监听器。要做到这一点，你需要向<code>removeListener</code>函数提供事件的名称，以及对回调函数的引用。</p>
+<h2 id="移除-listeners">移除 listeners</h2>
+<p>如果你不希望某个监听器再被调用，你可以使用<code>removeListener</code>函数。通过它，你从一个特定的事件中移除监听器。要做到这一点，你需要向<code>removeListener</code>函数提供事件的名称，以及对回调函数的引用。</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">function</span> <span class="token function">listener</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Event occurred!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
@@ -647,8 +646,8 @@ eventEmitter<span class="token punctuation">.</span><span class="token function"
 eventEmitter<span class="token punctuation">.</span><span class="token function">removeListener</span><span class="token punctuation">(</span><span class="token string">"event"</span><span class="token punctuation">,</span> listener<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 eventEmitter<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">"event"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/// Nothing happened</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="事件的同步性质"><a href="#事件的同步性质" class="headerlink" title="事件的同步性质"></a>事件的同步性质</h2><p>如上所述，EventEmitter 同步的调用所有<code>listener</code>。我们可以通过将它们之间互相调用来观察:</p>
+<h2 id="事件的同步性质">事件的同步性质</h2>
+<p>如上所述，EventEmitter 同步的调用所有<code>listener</code>。我们可以通过将它们之间互相调用来观察:</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">eventEmitter<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"event1"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
   <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"First event here!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   eventEmitter<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">"event2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -665,7 +664,6 @@ eventEmitter<span class="token punctuation">.</span><span class="token function"
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 eventEmitter<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">"event1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>在打印了一堆信息后，你会看到一个错误:</p>
 <blockquote>
 <p>RangeError: Maximum call stack size exceeded</p>
@@ -687,7 +685,6 @@ eventEmitter<span class="token punctuation">.</span><span class="token function"
 <span class="token punctuation">&#125;</span>
 
 <span class="token function">event1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p><code>emitter</code>以同步方式执行所有回调函数。每次调用函数时，其上下文都会推送到调用堆栈的顶部。当函数结束时，上下文从堆栈中取出。如果在另一个函数内部调用一个函数，数据可能会在调用堆栈中积累，并最终导致溢出。</p>
 <p>你可以通过使用 setTimeout 函数来改变这种行为。当 Node.js 执行到 setTimeout 函数时，它会设置一个计时器。当计时器到期时，它会将回调函数放到事件循环中<code>timer</code>阶段的队列中去执行（这里原文讲的比较模糊，所以我添加了自己的理解，如果感觉不对，可以去看原文）。由于这样，一个函数就不会在另一个函数内部调用，调用栈也不会超过限制。</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">eventEmitter<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"event1"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
@@ -712,8 +709,8 @@ eventEmitter<span class="token punctuation">.</span><span class="token function"
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 eventEmitter<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">"event1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="只执行一次事件"><a href="#只执行一次事件" class="headerlink" title="只执行一次事件"></a>只执行一次事件</h2><p>当你使用<code>on</code>或<code>addEventListener</code>方法注册监听器时，Node.js EventEmitter 在每次发出事件时都会调用它。</p>
+<h2 id="只执行一次事件">只执行一次事件</h2>
+<p>当你使用<code>on</code>或<code>addEventListener</code>方法注册监听器时，Node.js EventEmitter 在每次发出事件时都会调用它。</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> EventEmitter <span class="token keyword">from</span> <span class="token string">"events"</span><span class="token punctuation">;</span>
 
 <span class="token keyword">class</span> <span class="token class-name">MyEventEmitter</span> <span class="token keyword">extends</span> <span class="token class-name">EventEmitter</span> <span class="token punctuation">&#123;</span>
@@ -729,7 +726,6 @@ eventEmitter<span class="token punctuation">.</span><span class="token function"
 eventEmitter<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">"event"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 0</span>
 eventEmitter<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">"event"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 1</span>
 eventEmitter<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">"event"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 2</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>使用<code>once</code>代替<code>on</code>，可以让你注册的监听器在某个事件中只被调用一次</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> EventEmitter <span class="token keyword">from</span> <span class="token string">"events"</span><span class="token punctuation">;</span>
 
@@ -746,8 +742,8 @@ eventEmitter<span class="token punctuation">.</span><span class="token function"
 eventEmitter<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">"event"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 0</span>
 eventEmitter<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">"event"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// nothing happens</span>
 eventEmitter<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">"event"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// nothing happens</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文介绍了 Node.js EventEmitter 的最重要的特性。由于它在 Node.js 的其他核心功能中被广泛使用，因此我们在接下来的系列文章中会遇到它，例如流（streams）等重要概念。</p>
+<h2 id="总结">总结</h2>
+<p>本文介绍了 Node.js EventEmitter 的最重要的特性。由于它在 Node.js 的其他核心功能中被广泛使用，因此我们在接下来的系列文章中会遇到它，例如流（streams）等重要概念。</p>
 
       </div>
       <div class="post-tags-categories">
@@ -800,15 +796,21 @@ eventEmitter<span class="token punctuation">.</span><span class="token function"
       </div>
       
       <!-- <div class="content">
-        常用名词解释市场行情
+        常用名词解释
+市场行情
+
+
 数字货币
+
 
 K 线图
 
+
 Spot-现货交易
 
-trade-币币交易&#x2F;交易对
-https:
+trade-币币交易/交易对
+
+https
       </div> -->
     </a>
   </div>

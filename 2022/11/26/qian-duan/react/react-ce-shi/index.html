@@ -566,19 +566,23 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="为什么要写单元测试"><a href="#为什么要写单元测试" class="headerlink" title="为什么要写单元测试"></a>为什么要写单元测试</h2><ul>
+        <h2 id="为什么要写单元测试">为什么要写单元测试</h2>
+<ul>
 <li>帮助开发者完善异常逻辑，提高程序健壮性</li>
 <li>降低代码耦合度，防止在项目中出现修改了一处代码后，却影响了其他代码的尴尬场景</li>
 <li>提高项目组件的职责的单一性，防止在组件内出现业务逻辑，降低复用效率</li>
 <li>作为文档：在一个中大型项目中，随着时间的增长，一些组件的代码和逻辑会越来越复杂。而通过覆盖业务的单测，可以清晰呈现业务逻辑，从而降低上手成本</li>
 </ul>
-<h3 id="基础测试框架"><a href="#基础测试框架" class="headerlink" title="基础测试框架"></a>基础测试框架</h3><p>Jest，用于完成基础的函数测试</p>
-<h3 id="辅助库"><a href="#辅助库" class="headerlink" title="辅助库"></a>辅助库</h3><p>前端的测试不同于常规的后端逻辑测试，前端的单测设计到 DOM 和事件的模拟，所以需要一个辅助库来完成</p>
-<h4 id="React-Testing-Library（推荐）"><a href="#React-Testing-Library（推荐）" class="headerlink" title="React Testing Library（推荐）"></a>React Testing Library（推荐）</h4><p>这是官方推荐的测试库，主要有以下三个依赖：</p>
+<h3 id="基础测试框架">基础测试框架</h3>
+<p>Jest，用于完成基础的函数测试</p>
+<h3 id="辅助库">辅助库</h3>
+<p>前端的测试不同于常规的后端逻辑测试，前端的单测设计到 DOM 和事件的模拟，所以需要一个辅助库来完成</p>
+<h4 id="React-Testing-Library（推荐）">React Testing Library（推荐）</h4>
+<p>这是官方推荐的测试库，主要有以下三个依赖：</p>
 <ul>
-<li>@testing-library&#x2F;jest-dom：用于 dom、样式类型等元素的选取。</li>
-<li>@testing-library&#x2F;react：提供针对 React 的单测渲染能力。</li>
-<li>@testing-library&#x2F;user-event：用于单测场景下事件的模拟。</li>
+<li>@testing-library/jest-dom：用于 dom、样式类型等元素的选取。</li>
+<li>@testing-library/react：提供针对 React 的单测渲染能力。</li>
+<li>@testing-library/user-event：用于单测场景下事件的模拟。</li>
 </ul>
 <p>为什么推荐使用？</p>
 <ol>
@@ -590,8 +594,8 @@
   <span class="token keyword">const</span> linkElement <span class="token operator">=</span> screen<span class="token punctuation">.</span><span class="token function">getByText</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">learn react test</span><span class="token regex-delimiter">/</span><span class="token regex-flags">i</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token function">expect</span><span class="token punctuation">(</span>linkElement<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toBeInTheDocument</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="Enzyme"><a href="#Enzyme" class="headerlink" title="Enzyme"></a>Enzyme</h4><p>Enzyme 有以下三个依赖需要安装</p>
+<h4 id="Enzyme">Enzyme</h4>
+<p>Enzyme 有以下三个依赖需要安装</p>
 <ul>
 <li>enzyme：基础库。</li>
 <li>enzyme-adapter-react：对 React 的适配器，需要安装对应 React 版本的适配器。</li>
@@ -600,26 +604,32 @@
 <p>为什么不推荐使用 Enzyme？主要有以下几个原因</p>
 <ol>
 <li>Enzyme 依赖是配置 enzyme-adapter-react,但目前迭代速度停止在 16，后续版本都是开发者自己实现的。这对于公司开发一个项目来说非常不稳定。且现在对 Enzyme 进行维护的开发者很少</li>
-<li>测试思路， Enzyme 是基于 component 的 props 展开，从代码实现的层面验证组件<br>如下：</li>
+<li>测试思路， Enzyme 是基于 component 的 props 展开，从代码实现的层面验证组件<br>
+如下：</li>
 </ol>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function">it</span><span class="token punctuation">(</span><span class="token string">"input with custom className &amp; style"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">const</span> wrapper <span class="token operator">=</span> <span class="token function">shallow</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>Input className<span class="token operator">=</span><span class="token string">"test"</span> style<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">color</span><span class="token operator">:</span> <span class="token string">"red"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span> <span class="token operator">/</span><span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token function">expect</span><span class="token punctuation">(</span>wrapper<span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span><span class="token string">".test"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toEqual</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token function">expect</span><span class="token punctuation">(</span>wrapper<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token string">"div.test"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toHaveStyle</span><span class="token punctuation">(</span><span class="token string">"color"</span><span class="token punctuation">,</span> <span class="token string">"red"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>上面的代码更像是为的 developer 用户</p>
 <p>所以对于需求可能会频繁变动的业务场景，相对来说比较脆弱。因为开发人员需要随着业务的变动频繁的修改单元测试。</p>
-<p>比如，当某一业务组件的最终输出内容不变，但是因为一些原因后台数据结构的调整，或者我们在开发过程中需要调整业务组件的结构，那么我们业务组件中传入的 props 也会跟着改变。<br>这样，与之对应的单测也会随之废弃。可是在 UI 逻辑上并没有变化，这时候就会极大的增加业务开发的工作量，并且单元测试也失去了意义</p>
-<h2 id="react-testing-library-Api"><a href="#react-testing-library-Api" class="headerlink" title="react-testing-library Api"></a>react-testing-library Api</h2><p>react-testing-library 根据行为分类可以分为 3 大类 api，<strong>它们决定了查询 api 命名的前缀</strong>。查询的<strong>参照物</strong>决定了 api 的后缀。如 getByText，它使用 get 查询行为，以 Text 为参照物进行单独查询</p>
-<h3 id="以查询行为分类"><a href="#以查询行为分类" class="headerlink" title="以查询行为分类"></a>以查询行为分类</h3><ul>
+<p>比如，当某一业务组件的最终输出内容不变，但是因为一些原因后台数据结构的调整，或者我们在开发过程中需要调整业务组件的结构，那么我们业务组件中传入的 props 也会跟着改变。<br>
+这样，与之对应的单测也会随之废弃。可是在 UI 逻辑上并没有变化，这时候就会极大的增加业务开发的工作量，并且单元测试也失去了意义</p>
+<h2 id="react-testing-library-Api">react-testing-library Api</h2>
+<p>react-testing-library 根据行为分类可以分为 3 大类 api，<strong>它们决定了查询 api 命名的前缀</strong>。查询的<strong>参照物</strong>决定了 api 的后缀。如 getByText，它使用 get 查询行为，以 Text 为参照物进行单独查询</p>
+<h3 id="以查询行为分类">以查询行为分类</h3>
+<ul>
 <li>get</li>
 <li>query</li>
 <li>find</li>
 </ul>
-<h3 id="以参照物划分"><a href="#以参照物划分" class="headerlink" title="以参照物划分"></a>以参照物划分</h3><p>在 Enzyme 中是按照 css 类名或者 id 来查询</p>
-<h4 id="1-角色-Role-（元素定义）"><a href="#1-角色-Role-（元素定义）" class="headerlink" title="1. 角色 Role （元素定义）"></a>1. 角色 Role （元素定义）</h4><ul>
-<li>aria 属性（元素状态，属性）<ul>
+<h3 id="以参照物划分">以参照物划分</h3>
+<p>在 Enzyme 中是按照 css 类名或者 id 来查询</p>
+<h4 id="1-角色-Role-（元素定义）">1. 角色 Role （元素定义）</h4>
+<ul>
+<li>aria 属性（元素状态，属性）
+<ul>
 <li>aria-hidden： 不在 DOM 树上访问的元素；</li>
 <li>aria-selected: 元素是否被选中；</li>
 <li>aria-checked: 元素是否被勾选；</li>
@@ -631,7 +641,8 @@
 </ul>
 </li>
 </ul>
-<h4 id="2-标签文本-LabelText"><a href="#2-标签文本-LabelText" class="headerlink" title="2. 标签文本 LabelText"></a>2. 标签文本 LabelText</h4><p>针对 label 标签的 text 查询，通过这个可以查询到对应 label 的输入节点（比如 input):</p>
+<h4 id="2-标签文本-LabelText">2. 标签文本 LabelText</h4>
+<p>针对 label 标签的 text 查询，通过这个可以查询到对应 label 的输入节点（比如 input):</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// DomQuery.tsx</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> <span class="token constant">FC</span> <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"react"</span><span class="token punctuation">;</span>
 
@@ -648,7 +659,6 @@
     <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
   <span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// DomQuery.test.tsx</span>
 <span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">"react"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> render<span class="token punctuation">,</span> screen <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@testing-library/react"</span><span class="token punctuation">;</span>
@@ -662,8 +672,8 @@
     screen<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span>label<span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="3-占位符文本-PlaceholderText"><a href="#3-占位符文本-PlaceholderText" class="headerlink" title="3. 占位符文本 PlaceholderText"></a>3. 占位符文本 PlaceholderText</h4><p>通过 placeholder 来查询，也可以有效查到对应的表单元素，如果你没有使用 label 标签的时候，可以使用这个来作为替代</p>
+<h4 id="3-占位符文本-PlaceholderText">3. 占位符文本 PlaceholderText</h4>
+<p>通过 placeholder 来查询，也可以有效查到对应的表单元素，如果你没有使用 label 标签的时候，可以使用这个来作为替代</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// ./src/components/DomQuery/index.tsx</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> <span class="token constant">FC</span> <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"react"</span><span class="token punctuation">;</span>
 
@@ -693,8 +703,9 @@
     screen<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span>placeholderInput<span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="4-文本-Text"><a href="#4-文本-Text" class="headerlink" title="4. 文本 Text"></a>4. 文本 Text</h4><h4 id="5-表单值-DisplayValue"><a href="#5-表单值-DisplayValue" class="headerlink" title="5. 表单值 DisplayValue"></a>5. 表单值 DisplayValue</h4><p>根据表单元素的值来查询，也就是对应的 value 属性，当然不仅仅是通过 value，表单 onchange 进来或者是 defaultValue 也是同样可以生效的</p>
+<h4 id="4-文本-Text">4. 文本 Text</h4>
+<h4 id="5-表单值-DisplayValue">5. 表单值 DisplayValue</h4>
+<p>根据表单元素的值来查询，也就是对应的 value 属性，当然不仅仅是通过 value，表单 onchange 进来或者是 defaultValue 也是同样可以生效的</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// ./src/components/DomQuery/index.tsx</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> <span class="token constant">FC</span> <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"react"</span><span class="token punctuation">;</span>
 
@@ -720,8 +731,8 @@
     screen<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span>valueInput<span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="6-图片-AltText"><a href="#6-图片-AltText" class="headerlink" title="6. 图片 AltText"></a>6. 图片 AltText</h4><p>这个则是根据 img 的 alt 来查询，相比之前的一些查询方式，这种从用户视角上就需要满足一定情况才能看见了（图片不能正常加载）</p>
+<h4 id="6-图片-AltText">6. 图片 AltText</h4>
+<p>这个则是根据 img 的 alt 来查询，相比之前的一些查询方式，这种从用户视角上就需要满足一定情况才能看见了（图片不能正常加载）</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// ./src/components/DomQuery/index.tsx</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> <span class="token constant">FC</span> <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"react"</span><span class="token punctuation">;</span>
 
@@ -748,8 +759,9 @@
     screen<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span>altImg<span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="7-标题-Title-基本不会用"><a href="#7-标题-Title-基本不会用" class="headerlink" title="7. 标题 Title (基本不会用)"></a>7. 标题 Title (基本不会用)</h4><h4 id="8-后门-TestId"><a href="#8-后门-TestId" class="headerlink" title="8. 后门 TestId"></a>8. 后门 TestId</h4><p>这个就特殊点了，这个其实是一个后门的查询方式，通过新增 data-testid 属性来进行查询，这个对整个页面的语义和功能是没有任何影响的，相当于只是我们单独加的一个标识来确定指定的区域，一般只有实在不知道怎么选取需要的区域，才会去使用它</p>
+<h4 id="7-标题-Title-基本不会用">7. 标题 Title (基本不会用)</h4>
+<h4 id="8-后门-TestId">8. 后门 TestId</h4>
+<p>这个就特殊点了，这个其实是一个后门的查询方式，通过新增 data-testid 属性来进行查询，这个对整个页面的语义和功能是没有任何影响的，相当于只是我们单独加的一个标识来确定指定的区域，一般只有实在不知道怎么选取需要的区域，才会去使用它</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// ./src/components/DomQuery/index.tsx</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> <span class="token constant">FC</span> <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"react"</span><span class="token punctuation">;</span>
 
@@ -776,18 +788,23 @@
     screen<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span>testidItem<span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ul>
-<li><p>使用<code>yarn init vite react-test-demo</code> 创建一个项目</p>
+<h3 id="安装">安装</h3>
+<ul>
+<li>
+<p>使用<code>yarn init vite react-test-demo</code> 创建一个项目</p>
 </li>
-<li><p>安装 jest 相关<code>yarn add jest babel-jest @testing-library/react @testing-library/user-event @testing-library/jest-dom jest-environment-jsdom -D</code></p>
+<li>
+<p>安装 jest 相关<code>yarn add jest babel-jest @testing-library/react @testing-library/user-event @testing-library/jest-dom jest-environment-jsdom -D</code></p>
 </li>
-<li><p>安装对应的 babel 插件解析文件 <code>yarn add @babel/preset-react @babel/preset-typescript @babel/preset-env -D</code></p>
+<li>
+<p>安装对应的 babel 插件解析文件 <code>yarn add @babel/preset-react @babel/preset-typescript @babel/preset-env -D</code></p>
 </li>
-<li><p><code>yarn add identity-obj-proxy -D</code></p>
+<li>
+<p><code>yarn add identity-obj-proxy -D</code></p>
 </li>
 </ul>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><ol>
+<h3 id="配置">配置</h3>
+<ol>
 <li>创建一个 jest-setup.ts 用来帮助每个测试文件导入 jest-dom</li>
 </ol>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// jest-dom adds custom jest matchers for asserting on DOM nodes.</span>
@@ -795,7 +812,6 @@
 <span class="token comment">// expect(element).toHaveTextContent(/react/i)</span>
 <span class="token comment">// learn more: https://github.com/testing-library/jest-dom</span>
 <span class="token keyword">import</span> <span class="token string">"@testing-library/jest-dom"</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ol start="2">
 <li>使用<code>npx jest --init</code>创建一个 jest 配置文件,选项可以按如下选择</li>
 </ol>
@@ -807,7 +823,6 @@
 ✔ Do you want Jest to add coverage reports? … no
 ✔ Which provider should be used to instrument code for coverage? › babel
 ✔ Automatically clear mock calls, instances, contexts and results before every test? … yes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ol start="3">
 <li>修改 jest 配置文件</li>
 </ol>
@@ -832,9 +847,9 @@
     <span class="token string-property property">"^.+.(js|ts|tsx)$"</span><span class="token operator">:</span> <span class="token string">"babel-jest"</span><span class="token punctuation">,</span> <span class="token comment">// 给jest添加一个转换器</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ol start="4">
-<li>修改 babel 配置帮助我们解析文件<br>.babelrc</li>
+<li>修改 babel 配置帮助我们解析文件<br>
+.babelrc</li>
 </ol>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token punctuation">&#123;</span>
   <span class="token string-property property">"presets"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
@@ -855,11 +870,10 @@
     <span class="token string">"@babel/preset-typescript"</span>
   <span class="token punctuation">]</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ol start="5">
 <li>编写一个测试用例</li>
 </ol>
-<p>src&#x2F;App.test.tsx</p>
+<p>src/App.test.tsx</p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx"><span class="token keyword">import</span> App <span class="token keyword">from</span> <span class="token string">"./App"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> render<span class="token punctuation">,</span> screen <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@testing-library/react"</span><span class="token punctuation">;</span>
 
@@ -869,7 +883,6 @@
     <span class="token function">expect</span><span class="token punctuation">(</span>screen<span class="token punctuation">.</span><span class="token function">getByText</span><span class="token punctuation">(</span><span class="token string">"Vite + React"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toBeInTheDocument</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>然后就会看到如下结果</p>
 <pre class="line-numbers language-none"><code class="language-none"> PASS  src&#x2F;App.test.tsx
   unit test of &lt;App&#x2F;&gt;
@@ -880,8 +893,8 @@ Tests:       1 passed, 1 total
 Snapshots:   0 total
 Time:        1.369 s
 Ran all test suites.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="如何测试-Provider-包裹的组件"><a href="#如何测试-Provider-包裹的组件" class="headerlink" title="如何测试 Provider 包裹的组件"></a>如何测试 Provider 包裹的组件</h3><blockquote>
+<h3 id="如何测试-Provider-包裹的组件">如何测试 Provider 包裹的组件</h3>
+<blockquote>
 <p>代码在<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/Demos/tree/main/react-test-demo">react-test-demo 仓库</a></p>
 </blockquote>
 <p>先写一个用于创建测试 store 的 setupStore 方法, 默认使用项目中的 reducer</p>
@@ -894,8 +907,7 @@ Ran all test suites.<span aria-hidden="true" class="line-numbers-rows"><span></s
     preloadedState<span class="token punctuation">,</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>然后再创建一个 src&#x2F;test&#x2F;testUitls.tsx 用于 Provider 包裹组件，并暴露一些方法</p>
+<p>然后再创建一个 src/test/testUitls.tsx 用于 Provider 包裹组件，并暴露一些方法</p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx"><span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">"react"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token keyword">type</span> <span class="token punctuation">&#123;</span> PropsWithChildren <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"react"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> setupStore <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"../stores/store"</span><span class="token punctuation">;</span>
@@ -932,12 +944,15 @@ Ran all test suites.<span aria-hidden="true" class="line-numbers-rows"><span></s
     <span class="token operator">...</span><span class="token function">render</span><span class="token punctuation">(</span>ui<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> wrapper<span class="token operator">:</span> Wrapper<span class="token punctuation">,</span> <span class="token operator">...</span>renderOptions <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="组件中的-http-请求如何-mock"><a href="#组件中的-http-请求如何-mock" class="headerlink" title="组件中的 http 请求如何 mock"></a>组件中的 http 请求如何 mock</h3><p>使用 <code>msw（mock service worker）</code>来 mock 网络请求。</p>
+<h3 id="组件中的-http-请求如何-mock">组件中的 http 请求如何 mock</h3>
+<p>使用 <code>msw（mock service worker）</code>来 mock 网络请求。</p>
 <p>它不同于其他 mock service 需要独立运行一个服务且对代码的侵入性比较强。它是利用的 Service Worker API，在网络层进行请求拦截。保证有 mock 和无 mock 的应用程序的行为一致，且不需要为了 mock 而对应用程序的代码做修改。具体说明在<a target="_blank" rel="noopener" href="https://mswjs.io/docs/#why-service-workers">官网</a></p>
-<p>它的工作流如下图<br><img src="/imgs/react/3.png" class="lazyload placeholder" data-srcset="/imgs/react/3.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
-<h3 id="使用-userEvent-来模拟用户操作"><a href="#使用-userEvent-来模拟用户操作" class="headerlink" title="使用 userEvent 来模拟用户操作"></a>使用 userEvent 来模拟用户操作</h3><p>为什么使用 user-event 而不是 fire-event？这在<a target="_blank" rel="noopener" href="https://testing-library.com/docs/user-event/intro/#differences-from-fireevent">官方的介绍</a>中说的比较明确。这里只强调一下重点：</p>
-<p>因为用户在操作一个 dom 的时候，并不一定是只触发一个事件，而是可能会触发多个事件。<br>比如当用户在一个文本框内输入时，input 首先会是会触发 focus，然后是键盘和 onchange。</p>
+<p>它的工作流如下图<br>
+<img src="/imgs/react/3.png" class="lazyload placeholder" data-srcset="/imgs/react/3.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<h3 id="使用-userEvent-来模拟用户操作">使用 userEvent 来模拟用户操作</h3>
+<p>为什么使用 user-event 而不是 fire-event？这在<a target="_blank" rel="noopener" href="https://testing-library.com/docs/user-event/intro/#differences-from-fireevent">官方的介绍</a>中说的比较明确。这里只强调一下重点：</p>
+<p>因为用户在操作一个 dom 的时候，并不一定是只触发一个事件，而是可能会触发多个事件。<br>
+比如当用户在一个文本框内输入时，input 首先会是会触发 focus，然后是键盘和 onchange。</p>
 <p><code>fireEvent</code>派发一个 DOM 事件，而<code>userEvent</code>模拟的是整个交互。它允许你描述一个用户交互来替代一个具体的事件。</p>
 
       </div>

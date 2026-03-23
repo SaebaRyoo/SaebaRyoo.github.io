@@ -566,16 +566,18 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="分类说明"><a href="#分类说明" class="headerlink" title="分类说明"></a>分类说明</h2><table>
+        <h2 id="分类说明">分类说明</h2>
+<table>
 <thead>
 <tr>
 <th>维度</th>
 <th>标签</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><strong>场景</strong></td>
-<td><code>git push</code> &#x2F; <code>pull</code> &#x2F; <code>clone</code>，远程为 <code>git@github.com:...</code></td>
+<td><code>git push</code> / <code>pull</code> / <code>clone</code>，远程为 <code>git@github.com:...</code></td>
 </tr>
 <tr>
 <td><strong>工具</strong></td>
@@ -583,11 +585,13 @@
 </tr>
 <tr>
 <td><strong>问题类型</strong></td>
-<td>网络 &#x2F; 代理、SSH 连通性（易被误判为「权限不足」）</td>
+<td>网络 / 代理、SSH 连通性（易被误判为「权限不足」）</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <hr>
-<h2 id="一、问题现象"><a href="#一、问题现象" class="headerlink" title="一、问题现象"></a>一、问题现象</h2><p>远程仓库使用 <strong>SSH 地址</strong>（<code>git@github.com:用户/仓库.git</code>）时，<code>git push</code>、<code>git pull</code>、<code>git clone</code> 等可能在 <strong>与 GitHub 建连阶段</strong> 失败。</p>
+<h2 id="一、问题现象">一、问题现象</h2>
+<p>远程仓库使用 <strong>SSH 地址</strong>（<code>git@github.com:用户/仓库.git</code>）时，<code>git push</code>、<code>git pull</code>、<code>git clone</code> 等可能在 <strong>与 GitHub 建连阶段</strong> 失败。</p>
 <p>典型输出包含：</p>
 <ul>
 <li><code>Connection closed by ... port 22</code></li>
@@ -596,16 +600,24 @@
 </ul>
 <p>即使本地 <strong><code>git commit</code> 已成功</strong>，只要在 <strong><code>git push</code> 时需要与 GitHub 建立 SSH 连接</strong>，仍可能在上述报错处失败；根因是 <strong>push 阶段的 SSH 连通性</strong>，而不是本地仓库是否已有提交。</p>
 <hr>
-<h2 id="二、原因说明（根因）"><a href="#二、原因说明（根因）" class="headerlink" title="二、原因说明（根因）"></a>二、原因说明（根因）</h2><ol>
-<li><p><strong>失败点在 SSH 传输层</strong><br>本地提交、对象打包可以正常完成；问题出在 <strong>本机通过 SSH 访问 GitHub 默认入口（<code>github.com:22</code>）</strong> 时，连接被对端或中间网络提前关闭。</p>
+<h2 id="二、原因说明（根因）">二、原因说明（根因）</h2>
+<ol>
+<li>
+<p><strong>失败点在 SSH 传输层</strong><br>
+本地提交、对象打包可以正常完成；问题出在 <strong>本机通过 SSH 访问 GitHub 默认入口（<code>github.com:22</code>）</strong> 时，连接被对端或中间网络提前关闭。</p>
 </li>
-<li><p><strong>常见网络环境</strong><br>若 <code>ssh -vT git@github.com</code> 中出现类似 <code>198.18.x.x</code> 的地址，或日志停在 <code>Connecting to github.com port 22</code> 后很快出现 <code>kex_exchange_identification: Connection closed by remote host</code>，多与 <strong>代理 &#x2F; VPN &#x2F; TUN（如部分代理透明接管）</strong> 对 <strong>22 端口</strong> 的处理有关：TCP 能建立，但在密钥交换或认证前被断开。</p>
+<li>
+<p><strong>常见网络环境</strong><br>
+若 <code>ssh -vT git@github.com</code> 中出现类似 <code>198.18.x.x</code> 的地址，或日志停在 <code>Connecting to github.com port 22</code> 后很快出现 <code>kex_exchange_identification: Connection closed by remote host</code>，多与 <strong>代理 / VPN / TUN（如部分代理透明接管）</strong> 对 <strong>22 端口</strong> 的处理有关：TCP 能建立，但在密钥交换或认证前被断开。</p>
 </li>
-<li><p><strong>配置误区</strong><br>仅把 <code>~/.ssh/config</code> 里 <code>Host github.com</code> 的 <strong><code>User</code> 设为 <code>git</code><strong>（GitHub 要求如此）</strong>不能替代</strong>「改端口 &#x2F; 改 HostName」；只要实际仍连 **<code>github.com:22</code>**，现象可能依旧。</p>
+<li>
+<p><strong>配置误区</strong><br>
+仅把 <code>~/.ssh/config</code> 里 <code>Host github.com</code> 的 <strong><code>User</code> 设为 <code>git</code></strong>（GitHub 要求如此）<strong>不能替代</strong>「改端口 / 改 HostName」；只要实际仍连 <strong><code>github.com:22</code></strong>，现象可能依旧。</p>
 </li>
 </ol>
 <hr>
-<h2 id="三、解决方案（推荐：SSH-走-443）"><a href="#三、解决方案（推荐：SSH-走-443）" class="headerlink" title="三、解决方案（推荐：SSH 走 443）"></a>三、解决方案（推荐：SSH 走 443）</h2><p>GitHub 支持 <strong>在 443 端口上使用 SSH</strong>，适合 22 被拦或只允许 HTTPS 出网的网络。</p>
+<h2 id="三、解决方案（推荐：SSH-走-443）">三、解决方案（推荐：SSH 走 443）</h2>
+<p>GitHub 支持 <strong>在 443 端口上使用 SSH</strong>，适合 22 被拦或只允许 HTTPS 出网的网络。</p>
 <p>在 <code>~/.ssh/config</code> 中为 <strong><code>Host github.com</code></strong> 配置例如：</p>
 <pre class="line-numbers language-sshconfig" data-language="sshconfig"><code class="language-sshconfig">Host github.com
   HostName ssh.github.com
@@ -615,64 +627,69 @@
   IdentitiesOnly yes
   AddKeysToAgent yes
   IgnoreUnknown UseKeychain<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p>要点：</p>
 <ul>
-<li>**<code>HostName ssh.github.com</code> + <code>Port 443</code>**：走 GitHub 的 SSH-over-HTTPS 入口，避开被干扰的 22。</li>
-<li>**<code>User git</code>**：与 <code>git@github.com:仓库</code> 一致；身份由 <strong>URL 路径 + 私钥对应 GitHub 公钥</strong> 决定，不是把 <code>User</code> 写成 GitHub 用户名。</li>
-<li>**<code>IdentitiesOnly yes</code>**：配合显式 <code>IdentityFile</code>，减少多钥尝试带来的混乱或限流。</li>
+<li><strong><code>HostName ssh.github.com</code> + <code>Port 443</code></strong>：走 GitHub 的 SSH-over-HTTPS 入口，避开被干扰的 22。</li>
+<li><strong><code>User git</code></strong>：与 <code>git@github.com:仓库</code> 一致；身份由 <strong>URL 路径 + 私钥对应 GitHub 公钥</strong> 决定，不是把 <code>User</code> 写成 GitHub 用户名。</li>
+<li><strong><code>IdentitiesOnly yes</code></strong>：配合显式 <code>IdentityFile</code>，减少多钥尝试带来的混乱或限流。</li>
 </ul>
-<p>若用 <strong>自定义 Host 别名</strong> 指向 GitHub（如 <code>Host work.com</code> 且原 <code>HostName</code> 为 <code>github.com</code>），在同样环境下也应改为 **<code>HostName ssh.github.com</code> 与 <code>Port 443</code>**，否则仍会走 22。</p>
+<p>若用 <strong>自定义 Host 别名</strong> 指向 GitHub（如 <code>Host work.com</code> 且原 <code>HostName</code> 为 <code>github.com</code>），在同样环境下也应改为 <strong><code>HostName ssh.github.com</code> 与 <code>Port 443</code></strong>，否则仍会走 22。</p>
 <p>验证：</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">ssh</span> <span class="token parameter variable">-vT</span> git@github.com<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>日志中应出现 **<code>Connecting to ssh.github.com port 443</code>**，并完成认证。通过后再执行 <code>git push</code> 等。</p>
+<p>日志中应出现 <strong><code>Connecting to ssh.github.com port 443</code></strong>，并完成认证。通过后再执行 <code>git push</code> 等。</p>
 <p>官方说明：<a target="_blank" rel="noopener" href="https://docs.github.com/en/authentication/troubleshooting-ssh/using-ssh-over-the-https-port">Using SSH over the HTTPS port</a></p>
 <hr>
-<h2 id="四、其他可选方案"><a href="#四、其他可选方案" class="headerlink" title="四、其他可选方案"></a>四、其他可选方案</h2><table>
+<h2 id="四、其他可选方案">四、其他可选方案</h2>
+<table>
 <thead>
 <tr>
 <th>方案</th>
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><strong>调整代理</strong></td>
-<td>对 <code>github.com</code> &#x2F; <code>ssh.github.com</code> 直连或合理分流，避免错误劫持 SSH。</td>
+<td>对 <code>github.com</code> / <code>ssh.github.com</code> 直连或合理分流，避免错误劫持 SSH。</td>
 </tr>
 <tr>
 <td><strong>远程改为 HTTPS</strong></td>
 <td><code>git remote set-url origin https://github.com/...</code>，用 PAT 或凭据管理器；不经过上述 SSH <code>Host github.com</code> 配置。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <hr>
-<h2 id="五、与-HTTPS-远程的关系"><a href="#五、与-HTTPS-远程的关系" class="headerlink" title="五、与 HTTPS 远程的关系"></a>五、与 HTTPS 远程的关系</h2><p><strong>不会影响</strong> 已使用 <code>https://github.com/...</code> 的仓库。</p>
+<h2 id="五、与-HTTPS-远程的关系">五、与 HTTPS 远程的关系</h2>
+<p><strong>不会影响</strong> 已使用 <code>https://github.com/...</code> 的仓库。</p>
 <p><code>~/.ssh/config</code> 只作用于 <strong>SSH 远程</strong>；HTTPS 走 TLS 与 Git 凭据，与 OpenSSH 里 <code>Host github.com</code> 无关。</p>
 <hr>
-<h2 id="六、小结"><a href="#六、小结" class="headerlink" title="六、小结"></a>六、小结</h2><table>
+<h2 id="六、小结">六、小结</h2>
+<table>
 <thead>
 <tr>
 <th>项目</th>
 <th>内容</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><strong>表象</strong></td>
-<td><code>git</code> 报远程不可读、权限&#x2F;仓库提示，常为 <strong>SSH 连通失败</strong> 而非真的没权限。</td>
+<td><code>git</code> 报远程不可读、权限/仓库提示，常为 <strong>SSH 连通失败</strong> 而非真的没权限。</td>
 </tr>
 <tr>
 <td><strong>根因</strong></td>
-<td><strong>GitHub SSH 默认 22</strong> 在当前网络&#x2F;代理下不可用或被中断。</td>
+<td><strong>GitHub SSH 默认 22</strong> 在当前网络/代理下不可用或被中断。</td>
 </tr>
 <tr>
 <td><strong>关键修复</strong></td>
-<td><code>Host github.com</code> 使用 **<code>HostName ssh.github.com</code><strong>、</strong><code>Port 443</code>**，并确认 <strong><code>User git</code></strong> 与 **<code>IdentityFile</code>**。</td>
+<td><code>Host github.com</code> 使用 <strong><code>HostName ssh.github.com</code></strong>、<strong><code>Port 443</code></strong>，并确认 <strong><code>User git</code></strong> 与 <strong><code>IdentityFile</code></strong>。</td>
 </tr>
 <tr>
 <td><strong>范围</strong></td>
 <td>仅影响 <strong>SSH 地址</strong> 访问 GitHub；<strong>HTTPS 远程不受影响</strong>。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 
       </div>
       <div class="post-tags-categories">
@@ -720,6 +737,24 @@
 
 
 
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/14.jpg" class="lazyload placeholder" data-srcset="/medias/14.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2026/03/23/qian-duan/react/zustand-yuan-li/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">Zustand原理</div>
+      </div>
+      
+      <!-- <div class="content">
+        Zustand 是一个轻量级的状态管理库，它利用 外部存储 + 发布订阅 + React Hooks 实现了简单而强大的
+      </div> -->
+    </a>
+  </div>
+
 
 
   
@@ -735,7 +770,8 @@
       </div>
       <!-- <div class="content">
         
-1. Nest.js 概述Nest.js 是一个用于构建高效、可扩展的 Node.js 服务器端应用程序的框架。它使用
+1. Nest.js 概述
+Nest.js 是一个用于构建高效、可扩展的 Node.js 服务器端应用程序的框架。它使
       </div> -->
     </a>
   </div>

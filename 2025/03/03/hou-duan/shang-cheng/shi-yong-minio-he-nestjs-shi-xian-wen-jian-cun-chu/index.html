@@ -576,13 +576,16 @@
 </ol>
 <p>通过本文的实践，你将学会如何搭建一个完整的文件存储服务，适用于电商等需要文件存储的业务场景。</p>
 </blockquote>
-<h1 id="1-使用-docker-安装-Minio"><a href="#1-使用-docker-安装-Minio" class="headerlink" title="1. 使用 docker 安装 Minio"></a>1. <strong>使用 docker 安装 Minio</strong></h1><h2 id="1-1-拉取镜像"><a href="#1-1-拉取镜像" class="headerlink" title="1.1. 拉取镜像"></a>1.1. <strong>拉取镜像</strong></h2><p><code>docker pull minio/minio</code></p>
-<h2 id="1-2-创建数据卷并提升权限"><a href="#1-2-创建数据卷并提升权限" class="headerlink" title="1.2. 创建数据卷并提升权限"></a>1.2. <strong>创建数据卷并提升权限</strong></h2><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">mkdir <span class="token operator">-</span>p <span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>minio<span class="token operator">/</span>data <span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>minio<span class="token operator">/</span>config
+<h1>1. <strong>使用 docker 安装 Minio</strong></h1>
+<h2 id="1-1-拉取镜像">1.1. <strong>拉取镜像</strong></h2>
+<p><code>docker pull minio/minio</code></p>
+<h2 id="1-2-创建数据卷并提升权限">1.2. <strong>创建数据卷并提升权限</strong></h2>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">mkdir <span class="token operator">-</span>p <span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>minio<span class="token operator">/</span>data <span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>minio<span class="token operator">/</span>config
 
 chmod <span class="token operator">-</span><span class="token constant">R</span> <span class="token number">777</span> <span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>minio<span class="token operator">/</span>data
 chmod <span class="token operator">-</span><span class="token constant">R</span> <span class="token number">777</span> <span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>minio<span class="token operator">/</span>config<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="1-3-使用-minio-minio-镜像启动容器"><a href="#1-3-使用-minio-minio-镜像启动容器" class="headerlink" title="1.3. 使用 minio&#x2F;minio 镜像启动容器"></a>1.3. <strong>使用 minio&#x2F;minio 镜像启动容器</strong></h2><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">docker run \
+<h2 id="1-3-使用-minio-minio-镜像启动容器">1.3. <strong>使用 minio/minio 镜像启动容器</strong></h2>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">docker run \
 <span class="token operator">--</span>name minio \
 <span class="token operator">-</span>p <span class="token number">9000</span><span class="token operator">:</span><span class="token number">9000</span>  \
 <span class="token operator">-</span>p <span class="token number">9090</span><span class="token operator">:</span><span class="token number">9090</span>  \
@@ -592,30 +595,33 @@ chmod <span class="token operator">-</span><span class="token constant">R</span>
 <span class="token operator">-</span>v <span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>minio<span class="token operator">/</span>data<span class="token operator">:</span><span class="token operator">/</span>data \
 <span class="token operator">-</span>v <span class="token operator">/</span>usr<span class="token operator">/</span>local<span class="token operator">/</span>minio<span class="token operator">/</span>config<span class="token operator">:</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">root</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">.</span>minio \
 minio<span class="token operator">/</span>minio server  <span class="token operator">/</span>data <span class="token operator">--</span><span class="token builtin">console</span><span class="token operator">-</span>address <span class="token string">":9090"</span> <span class="token operator">--</span>address <span class="token string">":9000"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ul>
 <li><strong>docker run：这是 Docker 命令行工具用来运行一个新容器的命令。</strong></li>
 <li><strong>–name minio：这个参数为容器指定了一个名称，这里名称被设置为 minio。使用名称可以更方便地管理容器。</strong></li>
 <li><strong>-p 9000:9000：这个参数将容器内的 9000 端口映射到宿主机的 9000 端口。MinIO 服务默认使用 9000 端口提供 API 服务。</strong></li>
 <li><strong>-p 9090:9090：这个参数将容器内的 9090 端口映射到宿主机的 9090 端口。这是 MinIO 的控制台（Console）端口，用于访问 MinIO 的图形用户界面。</strong></li>
 <li><strong>-d：这个参数告诉 Docker 以“detached”模式运行容器，即在后台运行。</strong></li>
-<li><strong>-e “MINIO_ROOT_USER&#x3D;minio”：设置环境变量 MINIO_ROOT_USER，这是访问 MinIO 服务的用户名称，这里设置为 minio。</strong></li>
-<li><strong>-e “MINIO_ROOT_PASSWORD&#x3D;minio123”：设置环境变量 MINIO_ROOT_PASSWORD，这是访问 MinIO 服务的用户密码，这里设置为 minio123。</strong></li>
-<li><strong>-v &#x2F;usr&#x2F;local&#x2F;minio&#x2F;data:&#x2F;data：这个参数将宿主机的目录&#x2F;usr&#x2F;local&#x2F;minio&#x2F;data 挂载到容器的&#x2F;data 目录。MinIO 会将所有数据存储在这个目录。</strong></li>
-<li><strong>-v &#x2F;usr&#x2F;local&#x2F;minio&#x2F;config:&#x2F;root&#x2F;.minio：这个参数将宿主机的目录&#x2F;usr&#x2F;local&#x2F;minio-config 挂载到容器的&#x2F;root&#x2F;.minio 目录。这个目录用于存储 MinIO 的配置文件和数据。</strong></li>
-<li><strong>minio&#x2F;minio：这是要运行的 Docker 镜像的名称，这里使用的是官方发布的 MinIO 镜像。</strong></li>
-<li><strong>server &#x2F;data：这是传递给 MinIO 程序的命令行参数，告诉 MinIO 以服务器模式运行，并且使用&#x2F;data 目录作为其数据存储位置。</strong></li>
+<li><strong>-e “MINIO_ROOT_USER=minio”：设置环境变量 MINIO_ROOT_USER，这是访问 MinIO 服务的用户名称，这里设置为 minio。</strong></li>
+<li><strong>-e “MINIO_ROOT_PASSWORD=minio123”：设置环境变量 MINIO_ROOT_PASSWORD，这是访问 MinIO 服务的用户密码，这里设置为 minio123。</strong></li>
+<li><strong>-v /usr/local/minio/data:/data：这个参数将宿主机的目录/usr/local/minio/data 挂载到容器的/data 目录。MinIO 会将所有数据存储在这个目录。</strong></li>
+<li><strong>-v /usr/local/minio/config:/root/.minio：这个参数将宿主机的目录/usr/local/minio-config 挂载到容器的/root/.minio 目录。这个目录用于存储 MinIO 的配置文件和数据。</strong></li>
+<li><strong>minio/minio：这是要运行的 Docker 镜像的名称，这里使用的是官方发布的 MinIO 镜像。</strong></li>
+<li><strong>server /data：这是传递给 MinIO 程序的命令行参数，告诉 MinIO 以服务器模式运行，并且使用/data 目录作为其数据存储位置。</strong></li>
 <li><strong>–console-address “:9090”：这个参数指定 MinIO 控制台服务的监听地址和端口。在这个例子中，它设置为监听所有接口上的 9090 端口。</strong></li>
 <li><strong>–address “:9000”：这个参数指定 MinIO API 服务的监听地址和端口。在这个例子中，它设置为监听所有接口上的 9000 端口。</strong></li>
 </ul>
-<p><strong>然后就可以访问 <a target="_blank" rel="noopener" href="http://localhost:9090/">http://localhost:9090</a> 查看控制台</strong></p>
+<p><strong>然后就可以访问 <a target="_blank" rel="noopener" href="http://localhost:9090">http://localhost:9090</a> 查看控制台</strong></p>
 <p><strong>在使用 127.0.0.1:9090 时无法访问，应该是没有设置跨域。</strong></p>
-<h1 id="2-创建-bucket-和-AccessKey"><a href="#2-创建-bucket-和-AccessKey" class="headerlink" title="2. 创建 bucket 和 AccessKey"></a>2. <strong>创建 bucket 和 AccessKey</strong></h1><p>**这个直接在很简单，直接在访问 **<code>http://localhost:9090</code>在控制台操作即可。</p>
+<h1>2. <strong>创建 bucket 和 AccessKey</strong></h1>
+<p>**这个直接在很简单，直接在访问 **<code>http://localhost:9090</code>在控制台操作即可。</p>
 <p><strong>注意，这里生成的 AccessKey 后续在 nestjs 中接入 minio 的 api 时会用到，所以需要记录下来</strong></p>
-<h1 id="3-配置策略"><a href="#3-配置策略" class="headerlink" title="3. 配置策略"></a>3. <strong>配置策略</strong></h1><p><strong>经过上面的安装和配置，我们已经可以正常的访问 minio 了。并且我们创建了一个名为</strong><code>mall</code>的 bucket，用于存储商品相关的图片对象。不过，minio 的资源访问，默认是需要通过 AccessKey 或者账号密码来访问的。但是我们是一个 b2c 的商城，在后台管理系统重上传的图需要能在公网访问。</p>
+<h1>3. <strong>配置策略</strong></h1>
+<p><strong>经过上面的安装和配置，我们已经可以正常的访问 minio 了。并且我们创建了一个名为</strong><code>mall</code>的 bucket，用于存储商品相关的图片对象。不过，minio 的资源访问，默认是需要通过 AccessKey 或者账号密码来访问的。但是我们是一个 b2c 的商城，在后台管理系统重上传的图需要能在公网访问。</p>
 <p><strong>但是默认的策略，公网无法访问。我们需要自己配置策略</strong></p>
-<h2 id="3-1-进入-bucket-配置-策略"><a href="#3-1-进入-bucket-配置-策略" class="headerlink" title="3.1. 进入 bucket 配置 策略"></a>3.1. <strong>进入 bucket 配置 策略</strong></h2><p><img src="https://cdn.nlark.com/yuque/0/2024/png/411665/1730862358097-b2cdf644-e332-450e-9ada-75e26882dc71.png" class="lazyload placeholder" data-srcset="https://cdn.nlark.com/yuque/0/2024/png/411665/1730862358097-b2cdf644-e332-450e-9ada-75e26882dc71.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
-<p>**修改策略选择为****Custom**<br><img src="https://cdn.nlark.com/yuque/0/2024/png/411665/1730862421791-77078017-9f00-4eab-a224-66d65e54fa3a.png" class="lazyload placeholder" data-srcset="https://cdn.nlark.com/yuque/0/2024/png/411665/1730862421791-77078017-9f00-4eab-a224-66d65e54fa3a.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
+<h2 id="3-1-进入-bucket-配置-策略">3.1. <strong>进入 bucket 配置 策略</strong></h2>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/411665/1730862358097-b2cdf644-e332-450e-9ada-75e26882dc71.png" class="lazyload placeholder" data-srcset="https://cdn.nlark.com/yuque/0/2024/png/411665/1730862358097-b2cdf644-e332-450e-9ada-75e26882dc71.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<p>**修改策略选择为****Custom**<br>
+<img src="https://cdn.nlark.com/yuque/0/2024/png/411665/1730862421791-77078017-9f00-4eab-a224-66d65e54fa3a.png" class="lazyload placeholder" data-srcset="https://cdn.nlark.com/yuque/0/2024/png/411665/1730862421791-77078017-9f00-4eab-a224-66d65e54fa3a.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
 <p><strong>然后配置如下</strong></p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
   <span class="token property">"Version"</span><span class="token operator">:</span> <span class="token string">"2012-10-17"</span><span class="token punctuation">,</span>
@@ -654,9 +660,10 @@ minio<span class="token operator">/</span>minio server  <span class="token opera
     <span class="token punctuation">&#125;</span>
   <span class="token punctuation">]</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="3-2-策略解析"><a href="#3-2-策略解析" class="headerlink" title="3.2. 策略解析"></a>3.2. <strong>策略解析</strong></h2><p><strong>这个策略一共有 4 个声明，主要做了以下事情</strong></p>
-<h4 id="3-2-1-1-1-第一个声明："><a href="#3-2-1-1-1-第一个声明：" class="headerlink" title="3.2.1.1. 1. 第一个声明："></a>3.2.1.1. <strong>1. 第一个声明：</strong></h4><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+<h2 id="3-2-策略解析">3.2. <strong>策略解析</strong></h2>
+<p><strong>这个策略一共有 4 个声明，主要做了以下事情</strong></p>
+<h4 id="3-2-1-1-1-第一个声明：">3.2.1.1. <strong>1. 第一个声明：</strong></h4>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
   <span class="token property">"Effect"</span><span class="token operator">:</span> <span class="token string">"Allow"</span><span class="token punctuation">,</span>
   <span class="token property">"Principal"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
     <span class="token property">"AWS"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"arn:aws:iam::&lt;account_id>:user/&lt;user_name>"</span><span class="token punctuation">]</span>
@@ -664,24 +671,28 @@ minio<span class="token operator">/</span>minio server  <span class="token opera
   <span class="token property">"Action"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"s3:PutObject"</span><span class="token punctuation">,</span> <span class="token string">"s3:AbortMultipartUpload"</span><span class="token punctuation">,</span> <span class="token string">"s3:DeleteObject"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
   <span class="token property">"Resource"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"arn:aws:s3:::mall/*"</span><span class="token punctuation">]</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ul>
-<li><p>​<strong>Effect</strong>​**: **<code>Allow</code> — 允许执行指定的操作。</p>
+<li>
+<p>​<strong>Effect</strong>​**: **<code>Allow</code> — 允许执行指定的操作。</p>
 </li>
-<li><p>​<strong>Principal</strong>​**: **<code>arn:aws:iam::&lt;account_id&gt;:user/&lt;user_name&gt;</code> — 指定这个策略适用的 IAM 用户。<code>&lt;account_id&gt;</code> 和 <code>&lt;user_name&gt;</code> 需要替换为实际的 AWS 账户 ID 和用户名。</p>
+<li>
+<p>​<strong>Principal</strong>​**: **<code>arn:aws:iam::&lt;account_id&gt;:user/&lt;user_name&gt;</code> — 指定这个策略适用的 IAM 用户。<code>&lt;account_id&gt;</code> 和 <code>&lt;user_name&gt;</code> 需要替换为实际的 AWS 账户 ID 和用户名。</p>
 </li>
-<li><p>​<strong>Action</strong>​**: 允许的操作：**</p>
+<li>
+<p>​<strong>Action</strong>​**: 允许的操作：**</p>
 <ul>
 <li><code>s3:PutObject</code> — 允许将对象（如文件）上传到桶中。</li>
 <li><code>s3:AbortMultipartUpload</code> — 允许中止一个多部分上传操作。</li>
 <li><code>s3:DeleteObject</code> — 允许删除桶中的对象。</li>
 </ul>
 </li>
-<li><p>​<strong>Resource</strong>​**: **<code>arn:aws:s3:::mall/*</code> — 这个权限作用于 <code>mall</code> 存储桶中的所有对象（即桶中的所有文件）。</p>
+<li>
+<p>​<strong>Resource</strong>​**: **<code>arn:aws:s3:::mall/*</code> — 这个权限作用于 <code>mall</code> 存储桶中的所有对象（即桶中的所有文件）。</p>
 </li>
 </ul>
 <p>​<strong>总结</strong>​**：该声明允许指定的 IAM 用户上传文件、删除文件，以及中止未完成的多部分上传操作，作用于 **<code>mall</code> 存储桶中的所有文件。</p>
-<h4 id="2-第二个声明："><a href="#2-第二个声明：" class="headerlink" title="2. 第二个声明："></a>2. 第二个声明：</h4><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+<h4 id="2-第二个声明：">2. 第二个声明：</h4>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
   <span class="token property">"Effect"</span><span class="token operator">:</span> <span class="token string">"Allow"</span><span class="token punctuation">,</span>
   <span class="token property">"Principal"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
     <span class="token property">"AWS"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"arn:aws:iam::&lt;account_id>:user/&lt;user_name>"</span><span class="token punctuation">]</span>
@@ -689,23 +700,27 @@ minio<span class="token operator">/</span>minio server  <span class="token opera
   <span class="token property">"Action"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"s3:ListBucket"</span><span class="token punctuation">,</span> <span class="token string">"s3:ListBucketMultipartUploads"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
   <span class="token property">"Resource"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"arn:aws:s3:::mall"</span><span class="token punctuation">]</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ul>
-<li><p>​<strong>Effect</strong>​**: **<code>Allow</code> — 允许执行指定的操作。</p>
+<li>
+<p>​<strong>Effect</strong>​**: **<code>Allow</code> — 允许执行指定的操作。</p>
 </li>
-<li><p>​<strong>Principal</strong>​**: **<code>arn:aws:iam::&lt;account_id&gt;:user/&lt;user_name&gt;</code> — 同样是指定 IAM 用户。</p>
+<li>
+<p>​<strong>Principal</strong>​**: **<code>arn:aws:iam::&lt;account_id&gt;:user/&lt;user_name&gt;</code> — 同样是指定 IAM 用户。</p>
 </li>
-<li><p>​<strong>Action</strong>​**: 允许的操作：**</p>
+<li>
+<p>​<strong>Action</strong>​**: 允许的操作：**</p>
 <ul>
 <li><code>s3:ListBucket</code> — 允许列出存储桶中的对象。</li>
 <li><code>s3:ListBucketMultipartUploads</code> — 允许列出正在进行的多部分上传任务。</li>
 </ul>
 </li>
-<li><p>​<strong>Resource</strong>​**: **<code>arn:aws:s3:::mall</code> — 这些操作只作用于 <code>mall</code> 存储桶本身，而不是桶中的具体文件。</p>
+<li>
+<p>​<strong>Resource</strong>​**: **<code>arn:aws:s3:::mall</code> — 这些操作只作用于 <code>mall</code> 存储桶本身，而不是桶中的具体文件。</p>
 </li>
 </ul>
 <p>​<strong>总结</strong>​**：该声明允许指定的 IAM 用户列出 **<code>mall</code> 存储桶中的文件，或者查看当前正在进行的多部分上传任务。</p>
-<h4 id="3-第三个声明："><a href="#3-第三个声明：" class="headerlink" title="3. 第三个声明："></a>3. 第三个声明：</h4><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+<h4 id="3-第三个声明：">3. 第三个声明：</h4>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
   <span class="token property">"Effect"</span><span class="token operator">:</span> <span class="token string">"Allow"</span><span class="token punctuation">,</span>
   <span class="token property">"Principal"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
     <span class="token property">"AWS"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"*"</span><span class="token punctuation">]</span>
@@ -713,23 +728,27 @@ minio<span class="token operator">/</span>minio server  <span class="token opera
   <span class="token property">"Action"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"s3:GetBucketLocation"</span><span class="token punctuation">,</span> <span class="token string">"s3:ListBucket"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
   <span class="token property">"Resource"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"arn:aws:s3:::mall"</span><span class="token punctuation">]</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ul>
-<li><p>​<strong>Effect</strong>​**: **<code>Allow</code> — 允许执行指定的操作。</p>
+<li>
+<p>​<strong>Effect</strong>​**: **<code>Allow</code> — 允许执行指定的操作。</p>
 </li>
-<li><p>​<strong>Principal</strong>​**: **<code>&quot;*&quot;</code> — 这个策略适用于所有主体，即公开访问。</p>
+<li>
+<p>​<strong>Principal</strong>​**: **<code>&quot;*&quot;</code> — 这个策略适用于所有主体，即公开访问。</p>
 </li>
-<li><p>​<strong>Action</strong>​**: 允许的操作：**</p>
+<li>
+<p>​<strong>Action</strong>​**: 允许的操作：**</p>
 <ul>
 <li><code>s3:GetBucketLocation</code> — 允许获取存储桶的位置。</li>
 <li><code>s3:ListBucket</code> — 允许列出存储桶中的对象。</li>
 </ul>
 </li>
-<li><p>​<strong>Resource</strong>​**: **<code>arn:aws:s3:::mall</code> — 这些操作作用于 <code>mall</code> 存储桶本身。</p>
+<li>
+<p>​<strong>Resource</strong>​**: **<code>arn:aws:s3:::mall</code> — 这些操作作用于 <code>mall</code> 存储桶本身。</p>
 </li>
 </ul>
 <p>​<strong>总结</strong>​**：该声明允许所有人（公共访问）获取 **<code>mall</code> 存储桶的位置和列出桶中的文件列表（列出桶中文件的元数据）。</p>
-<h4 id="4-第四个声明："><a href="#4-第四个声明：" class="headerlink" title="4. 第四个声明："></a>4. 第四个声明：</h4><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+<h4 id="4-第四个声明：">4. 第四个声明：</h4>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
   <span class="token property">"Effect"</span><span class="token operator">:</span> <span class="token string">"Allow"</span><span class="token punctuation">,</span>
   <span class="token property">"Principal"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
     <span class="token property">"AWS"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"*"</span><span class="token punctuation">]</span>
@@ -737,23 +756,28 @@ minio<span class="token operator">/</span>minio server  <span class="token opera
   <span class="token property">"Action"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"s3:GetObject"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
   <span class="token property">"Resource"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"arn:aws:s3:::mall/*"</span><span class="token punctuation">]</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ul>
-<li><p>​<strong>Effect</strong>​**: **<code>Allow</code> — 允许执行指定的操作。</p>
+<li>
+<p>​<strong>Effect</strong>​**: **<code>Allow</code> — 允许执行指定的操作。</p>
 </li>
-<li><p>​<strong>Principal</strong>​**: **<code>&quot;*&quot;</code> — 这个策略适用于所有主体，即公开访问。</p>
+<li>
+<p>​<strong>Principal</strong>​**: **<code>&quot;*&quot;</code> — 这个策略适用于所有主体，即公开访问。</p>
 </li>
-<li><p>​<strong>Action</strong>​**: 允许的操作：**</p>
+<li>
+<p>​<strong>Action</strong>​**: 允许的操作：**</p>
 <ul>
 <li><code>s3:GetObject</code> — 允许获取存储桶中的对象。</li>
 </ul>
 </li>
-<li><p>​<strong>Resource</strong>​**: **<code>arn:aws:s3:::mall/*</code> — 这个权限作用于 <code>mall</code> 存储桶中的所有对象。</p>
+<li>
+<p>​<strong>Resource</strong>​**: **<code>arn:aws:s3:::mall/*</code> — 这个权限作用于 <code>mall</code> 存储桶中的所有对象。</p>
 </li>
 </ul>
 <p>​<strong>总结</strong>​**：该声明允许任何人公开访问 **<code>mall</code> 存储桶中的所有对象（如图片、文件等）。</p>
-<h2 id="3-3-配置匿名访问"><a href="#3-3-配置匿名访问" class="headerlink" title="3.3. 配置匿名访问"></a>3.3. <strong>配置匿名访问</strong></h2><p>**进入**<strong>Anonymous,** <strong>点击右上角的**<strong>Add Access Rule** <strong>为 mall 添加一个</strong>​</strong>只读匿名策略</strong>​</strong>，无需验证身份。这样就可以通过 **<a target="_blank" rel="noopener" href="http://loclahost:9000/mall/file.png">http://loclahost:9000/mall/file.png</a> 来访问资源了<img src="https://cdn.nlark.com/yuque/0/2024/png/411665/1730863434678-77d86df1-2b22-483d-b50c-a2facc2b9c04.png" class="lazyload placeholder" data-srcset="https://cdn.nlark.com/yuque/0/2024/png/411665/1730863434678-77d86df1-2b22-483d-b50c-a2facc2b9c04.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp"></p>
-<h1 id="4-使用-nestjs-接入-minio"><a href="#4-使用-nestjs-接入-minio" class="headerlink" title="4. 使用 nestjs 接入 minio"></a>4. <strong>使用 nestjs 接入 minio</strong></h1><p><strong>在这个 File 模块中我们需要提供</strong></p>
+<h2 id="3-3-配置匿名访问">3.3. <strong>配置匿名访问</strong></h2>
+<p>**进入**<strong>Anonymous,** <strong>点击右上角的**<strong>Add Access Rule** <strong>为 mall 添加一个</strong>​</strong>只读匿名策略</strong>​</strong>，无需验证身份。这样就可以通过 **<a target="_blank" rel="noopener" href="http://loclahost:9000/mall/file.png">http://loclahost:9000/mall/file.png</a> 来访问资源了<img src="https://cdn.nlark.com/yuque/0/2024/png/411665/1730863434678-77d86df1-2b22-483d-b50c-a2facc2b9c04.png" class="lazyload placeholder" data-srcset="https://cdn.nlark.com/yuque/0/2024/png/411665/1730863434678-77d86df1-2b22-483d-b50c-a2facc2b9c04.png" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt=""></p>
+<h1>4. <strong>使用 nestjs 接入 minio</strong></h1>
+<p><strong>在这个 File 模块中我们需要提供</strong></p>
 <ul>
 <li><strong>文件上传</strong></li>
 <li><strong>下载</strong></li>
@@ -761,20 +785,23 @@ minio<span class="token operator">/</span>minio server  <span class="token opera
 <li><strong>获取目录结构</strong></li>
 </ul>
 <p><strong>等功能。</strong></p>
-<h2 id="4-1-配置说明"><a href="#4-1-配置说明" class="headerlink" title="4.1. 配置说明"></a>4.1. <strong>配置说明</strong></h2><p><strong>需要在环境变量中配置以下 MinIO 相关参数：</strong></p>
+<h2 id="4-1-配置说明">4.1. <strong>配置说明</strong></h2>
+<p><strong>需要在环境变量中配置以下 MinIO 相关参数：</strong></p>
 <pre class="line-numbers language-plain" data-language="plain"><code class="language-plain">MINIO_HOST=your-minio-host
 MINIO_PORT=your-minio-port
 MINIO_ACCESS_KEY=your-access-key
 MINIO_SECRET_KEY=your-secret-key<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="4-2-实现细节"><a href="#4-2-实现细节" class="headerlink" title="4.2. 实现细节"></a>4.2. <strong>实现细节</strong></h2><h3 id="4-2-1-1-安装依赖"><a href="#4-2-1-1-安装依赖" class="headerlink" title="4.2.1. 1. 安装依赖"></a>4.2.1. <strong>1. 安装依赖</strong></h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> @nestjs/common @nestjs/config minio<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h3 id="4-2-2-2-模块结构"><a href="#4-2-2-2-模块结构" class="headerlink" title="4.2.2. 2. 模块结构"></a>4.2.2. <strong>2. 模块结构</strong></h3><pre class="line-numbers language-plain" data-language="plain"><code class="language-plain">mall-service-file/
+<h2 id="4-2-实现细节">4.2. <strong>实现细节</strong></h2>
+<h3 id="4-2-1-1-安装依赖">4.2.1. <strong>1. 安装依赖</strong></h3>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> @nestjs/common @nestjs/config minio<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="4-2-2-2-模块结构">4.2.2. <strong>2. 模块结构</strong></h3>
+<pre class="line-numbers language-plain" data-language="plain"><code class="language-plain">mall-service-file/
 ├── file.module.ts    # 模块定义
 ├── file.service.ts   # 服务实现
 ├── file.controller.ts # 控制器<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="4-2-3-3-核心代码实现"><a href="#4-2-3-3-核心代码实现" class="headerlink" title="4.2.3. 3. 核心代码实现"></a>4.2.3. <strong>3. 核心代码实现</strong></h3><h4 id="4-2-3-1-FileModule-file-module-ts"><a href="#4-2-3-1-FileModule-file-module-ts" class="headerlink" title="4.2.3.1. FileModule (file.module.ts)"></a>4.2.3.1. <strong>FileModule (file.module.ts)</strong></h4><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Module <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
+<h3 id="4-2-3-3-核心代码实现">4.2.3. <strong>3. 核心代码实现</strong></h3>
+<h4 id="4-2-3-1-FileModule-file-module-ts">4.2.3.1. <strong>FileModule (file.module.ts)</strong></h4>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Module <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> FileService <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./file.service"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> FileController <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./file.controller"</span><span class="token punctuation">;</span>
 
@@ -784,13 +811,13 @@ MINIO_SECRET_KEY=your-secret-key<span aria-hidden="true" class="line-numbers-row
   exports<span class="token operator">:</span> <span class="token punctuation">[</span>FileService<span class="token punctuation">]</span><span class="token punctuation">,</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
 <span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">FileModule</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>​<strong>说明</strong>​<strong>：</strong></p>
+<p>​<strong>说明</strong>​**：**</p>
 <ul>
 <li><strong>导出 FileService 使其可以被其他模块使用</strong></li>
 <li><strong>注册 FileController 处理文件相关的 HTTP 请求</strong></li>
 </ul>
-<h4 id="4-2-3-2-FileService-file-service-ts"><a href="#4-2-3-2-FileService-file-service-ts" class="headerlink" title="4.2.3.2. FileService (file.service.ts)"></a>4.2.3.2. <strong>FileService (file.service.ts)</strong></h4><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Injectable <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
+<h4 id="4-2-3-2-FileService-file-service-ts">4.2.3.2. <strong>FileService (file.service.ts)</strong></h4>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Injectable <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> ConfigService <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/config"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> Minio <span class="token keyword">from</span> <span class="token string">"minio"</span><span class="token punctuation">;</span>
 
@@ -871,8 +898,7 @@ MINIO_SECRET_KEY=your-secret-key<span aria-hidden="true" class="line-numbers-row
     <span class="token keyword">return</span> <span class="token builtin">Array</span><span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span>directories<span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>​<strong>关键实现说明</strong>​<strong>：</strong></p>
+<p>​<strong>关键实现说明</strong>​**：**</p>
 <ol>
 <li><strong>MinIO 客户端初始化</strong></li>
 </ol>
@@ -912,7 +938,8 @@ MINIO_SECRET_KEY=your-secret-key<span aria-hidden="true" class="line-numbers-row
 <li><strong>返回：目录名称数组</strong></li>
 <li><strong>实现：获取所有对象并解析路径结构</strong></li>
 </ul>
-<h4 id="4-2-3-3-FileController-file-controller-ts"><a href="#4-2-3-3-FileController-file-controller-ts" class="headerlink" title="4.2.3.3. FileController (file.controller.ts)"></a>4.2.3.3. <strong>FileController (file.controller.ts)</strong></h4><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span>
+<h4 id="4-2-3-3-FileController-file-controller-ts">4.2.3.3. <strong>FileController (file.controller.ts)</strong></h4>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span>
   Controller<span class="token punctuation">,</span>
   Post<span class="token punctuation">,</span>
   Get<span class="token punctuation">,</span>
@@ -962,8 +989,7 @@ MINIO_SECRET_KEY=your-secret-key<span aria-hidden="true" class="line-numbers-row
     <span class="token keyword">return</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>fileService<span class="token punctuation">.</span><span class="token function">getDirectoryStructure</span><span class="token punctuation">(</span><span class="token string">"mall"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>​<strong>关键实现说明</strong>​<strong>：</strong></p>
+<p>​<strong>关键实现说明</strong>​**：**</p>
 <ol>
 <li><strong>文件上传接口</strong></li>
 </ol>
@@ -993,7 +1019,8 @@ MINIO_SECRET_KEY=your-secret-key<span aria-hidden="true" class="line-numbers-row
 <li><strong>无需参数</strong></li>
 <li><strong>返回默认存储桶的目录结构</strong></li>
 </ul>
-<h2 id="4-3-TODO"><a href="#4-3-TODO" class="headerlink" title="4.3. TODO"></a>4.3. <strong>TODO</strong></h2><ol>
+<h2 id="4-3-TODO">4.3. <strong>TODO</strong></h2>
+<ol>
 <li><strong>确保 MinIO 服务器已正确配置并运行</strong></li>
 <li><strong>上传文件大小可能受到限制，后续需要在配置中适当调整</strong></li>
 <li><strong>需要对文件类型进行限制和验证</strong></li>
@@ -1075,7 +1102,8 @@ MINIO_SECRET_KEY=your-secret-key<span aria-hidden="true" class="line-numbers-row
         <div class="title-text">使用Github Actions+Docker自动化部署Nestjs</div>
       </div>
       <!-- <div class="content">
-        1. 如何安全部署在下面的部署工作中，我们会将 Linux 服务器的 SSH 私钥配置到 GitHub 的 Secret
+        1. 如何安全部署
+在下面的部署工作中，我们会将 Linux 服务器的 SSH 私钥配置到 GitHub 的 Secre
       </div> -->
     </a>
   </div>

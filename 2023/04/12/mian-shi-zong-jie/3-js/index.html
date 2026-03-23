@@ -566,10 +566,13 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="闭包-和-作用域"><a href="#闭包-和-作用域" class="headerlink" title="闭包 和 作用域"></a>闭包 和 作用域</h2><h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><p>作用域是指在程序中定义变量的区域，作用域规定了变量与函数的活动范围。</p>
+        <h2 id="闭包-和-作用域">闭包 和 作用域</h2>
+<h3 id="作用域">作用域</h3>
+<p>作用域是指在程序中定义变量的区域，作用域规定了变量与函数的活动范围。</p>
 <p>在 es6 之前，js 中只有全局作用域和函数作用域。在这之后，引入了 let 和 const ，它们会创建块级作用域。</p>
 <p>在函数调用栈中，当内部函数查找一个外部变量，则 js 引擎就会向上级作用域中查找。这个查找的链条称为作用域链。</p>
-<h4 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h4><p>闭包的目的是能在函数的外部作用域中访问函数内部的上下文。通过作用域以及作用域链，我们知道了当前作用域中（outer）的上下文(变量)，会在当前调用栈结束调用后被 gc 销毁。但是通过作用域链，我们可以在一个内部函数（inner）中访问 outer 作用域中的变量，创建引用关系。这样，就算调用栈执行完毕后也不会销毁 outer 中被引用的执行上下文。</p>
+<h4 id="闭包">闭包</h4>
+<p>闭包的目的是能在函数的外部作用域中访问函数内部的上下文。通过作用域以及作用域链，我们知道了当前作用域中（outer）的上下文(变量)，会在当前调用栈结束调用后被 gc 销毁。但是通过作用域链，我们可以在一个内部函数（inner）中访问 outer 作用域中的变量，创建引用关系。这样，就算调用栈执行完毕后也不会销毁 outer 中被引用的执行上下文。</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">outer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token comment">// outer</span>
   <span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
@@ -584,8 +587,8 @@
     <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="你是如何组织自己的代码？是使用模块模式，还是使用经典继承的方法？"><a href="#你是如何组织自己的代码？是使用模块模式，还是使用经典继承的方法？" class="headerlink" title="你是如何组织自己的代码？是使用模块模式，还是使用经典继承的方法？"></a>你是如何组织自己的代码？是使用模块模式，还是使用经典继承的方法？</h3><p>正常些 js 方法时使用模块模式，一个 IIFE 就算是一个模块，互相之间不影响。</p>
+<h3 id="你是如何组织自己的代码？是使用模块模式，还是使用经典继承的方法？">你是如何组织自己的代码？是使用模块模式，还是使用经典继承的方法？</h3>
+<p>正常些 js 方法时使用模块模式，一个 IIFE 就算是一个模块，互相之间不影响。</p>
 <p>继承在 react 跟 node 中也是比较常用的。</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> jspy <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">var</span> _count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
@@ -603,8 +606,8 @@
     <span class="token literal-property property">getCount</span><span class="token operator">:</span> getCount<span class="token punctuation">,</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="匿名函数的典型用法"><a href="#匿名函数的典型用法" class="headerlink" title="匿名函数的典型用法"></a>匿名函数的典型用法</h3><p>匿名函数就是没有名称的函数, 如：</p>
+<h3 id="匿名函数的典型用法">匿名函数的典型用法</h3>
+<p>匿名函数就是没有名称的函数, 如：</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token operator">!</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -614,13 +617,16 @@
 <span class="token keyword">function</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">return</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="宿主对象-host-object-和原生对象-native-object-、内置对象的区别"><a href="#宿主对象-host-object-和原生对象-native-object-、内置对象的区别" class="headerlink" title="宿主对象(host object) 和原生对象(native object)、内置对象的区别"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40387601/article/details/80431670">宿主对象(host object) 和原生对象(native object)、内置对象的区别</a></h3><h3 id="请指出以下代码的区别：function-Person-、var-person-Person-、var-person-new-Person-？"><a href="#请指出以下代码的区别：function-Person-、var-person-Person-、var-person-new-Person-？" class="headerlink" title="请指出以下代码的区别：function Person(){}、var person &#x3D; Person()、var person &#x3D; new Person()？"></a>请指出以下代码的区别：function Person(){}、var person &#x3D; Person()、var person &#x3D; new Person()？</h3><ol>
+<h3 id="宿主对象-host-object-和原生对象-native-object-、内置对象的区别"><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40387601/article/details/80431670">宿主对象(host object) 和原生对象(native object)、内置对象的区别</a></h3>
+<h3 id="请指出以下代码的区别：function-Person-、var-person-Person-、var-person-new-Person-？">请指出以下代码的区别：function Person(){}、var person = Person()、var person = new Person()？</h3>
+<ol>
 <li>定义了一个名为 Person 的函数</li>
 <li>普通的调用 Person 函数，并将返回值赋值到 person 变量上。</li>
 <li>使用 new 关键字，将 Person 作为构造函数实例化</li>
 </ol>
-<h3 id="call-apply-bind"><a href="#call-apply-bind" class="headerlink" title="call apply bind"></a>call apply bind</h3><p><a target="_blank" rel="noopener" href="https://github.com/mqyqingfeng/Blog/issues/11">call, apply 实现</a><br><a target="_blank" rel="noopener" href="https://github.com/mqyqingfeng/Blog/issues/12">bind 实现</a></p>
+<h3 id="call-apply-bind">call apply bind</h3>
+<p><a target="_blank" rel="noopener" href="https://github.com/mqyqingfeng/Blog/issues/11">call, apply 实现</a><br>
+<a target="_blank" rel="noopener" href="https://github.com/mqyqingfeng/Blog/issues/12">bind 实现</a></p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token class-name">Function</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">call</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">context</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     <span class="token comment">// this传参为null则指向window</span>
     <span class="token keyword">var</span> context <span class="token operator">=</span> context <span class="token operator">||</span> window<span class="token punctuation">;</span>
@@ -669,8 +675,8 @@
         <span class="token keyword">return</span> <span class="token function">self</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> args<span class="token punctuation">)</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="new-实现"><a href="#new-实现" class="headerlink" title="new 实现"></a><a target="_blank" rel="noopener" href="https://github.com/mqyqingfeng/Blog/issues/13">new 实现</a></h3><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">fakeNew</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+<h3 id="new-实现"><a target="_blank" rel="noopener" href="https://github.com/mqyqingfeng/Blog/issues/13">new 实现</a></h3>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">fakeNew</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">var</span> obj <span class="token operator">=</span> <span class="token function">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token keyword">var</span> Constructor <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">shift</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>arguments<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
@@ -679,8 +685,8 @@
 
   <span class="token keyword">return</span> <span class="token keyword">typeof</span> ret <span class="token operator">===</span> <span class="token string">"object"</span> <span class="token operator">?</span> ret <span class="token operator">:</span> obj<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="函数防抖和函数节流"><a href="#函数防抖和函数节流" class="headerlink" title="函数防抖和函数节流"></a>函数防抖和函数节流</h3><p><strong>防抖函数概念：</strong></p>
+<h3 id="函数防抖和函数节流">函数防抖和函数节流</h3>
+<p><strong>防抖函数概念：</strong></p>
 <blockquote>
 <p>该函数只能在指定延时结束后才能调用，如果在过程中重复调用，则重新计时。</p>
 </blockquote>
@@ -700,7 +706,6 @@
     <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> interval<span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <p><strong>函数节流:</strong></p>
 <blockquote>
 <p>在规定时间内，函数只能被调用一次。如果单位时间内多次触发，则忽略</p>
@@ -720,22 +725,26 @@
     <span class="token punctuation">&#125;</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="什么情况下会使用-document-write"><a href="#什么情况下会使用-document-write" class="headerlink" title="什么情况下会使用 document.write()"></a>什么情况下会使用 document.write()</h3><ul>
+<h3 id="什么情况下会使用-document-write">什么情况下会使用 document.write()</h3>
+<ul>
 <li>加载需要配合 js 脚本使用的外部 css 文件</li>
 </ul>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>scirpt<span class="token operator">></span>
 document<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">'&lt;link  rel="stylesheet" href="style_neads_js.css">'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
 <ul>
-<li>在新打开的页面中写入数据时<br>由于 document.write 会重写整个页面，异步调用会影响本页面的文档，如果在新窗口空白页调用，就没影响了。新开一个窗口，把本页面取到的数据在新窗口展示。</li>
+<li>在新打开的页面中写入数据时<br>
+由于 document.write 会重写整个页面，异步调用会影响本页面的文档，如果在新窗口空白页调用，就没影响了。新开一个窗口，把本页面取到的数据在新窗口展示。</li>
 </ul>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">document<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 document<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 document<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="特性检测、特性推断、浏览器-UA-字符串嗅探"><a href="#特性检测、特性推断、浏览器-UA-字符串嗅探" class="headerlink" title="特性检测、特性推断、浏览器 UA 字符串嗅探"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq402164452/article/details/54882332">特性检测、特性推断、浏览器 UA 字符串嗅探</a></h3><h3 id="Ajax-工作原理"><a href="#Ajax-工作原理" class="headerlink" title="Ajax 工作原理"></a><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1129601">Ajax 工作原理</a></h3><h3 id="跨域方案"><a href="#跨域方案" class="headerlink" title="跨域方案"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/5c23993de51d457b8c1f4ee1">跨域方案</a></h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaohuochai/p/6567712.html">图片 Ping</a><br>图片 Ping 是客户端向服务器的单向通信，因为 src 请求资源不属于同源策略，所以一般可以用来做埋点、前端监控，比如监听网页的 PV(Page View)，UV(Unique Visitor)。<br>最好是采用 1 * 1 像素的透明 gif 图，因为：</p>
+<h3 id="特性检测、特性推断、浏览器-UA-字符串嗅探"><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq402164452/article/details/54882332">特性检测、特性推断、浏览器 UA 字符串嗅探</a></h3>
+<h3 id="Ajax-工作原理"><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1129601">Ajax 工作原理</a></h3>
+<h3 id="跨域方案"><a target="_blank" rel="noopener" href="https://juejin.im/post/5c23993de51d457b8c1f4ee1">跨域方案</a></h3>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaohuochai/p/6567712.html">图片 Ping</a><br>
+图片 Ping 是客户端向服务器的单向通信，因为 src 请求资源不属于同源策略，所以一般可以用来做埋点、前端监控，比如监听网页的 PV(Page View)，UV(Unique Visitor)。<br>
+最好是采用 1 * 1 像素的透明 gif 图，因为：</p>
 <ol>
 <li>能够完成整个 HTTP 请求+响应（尽管不需要响应内容）</li>
 <li>触发 GET 请求之后不需要获取和处理数据、服务器也不需要发送数据</li>
@@ -744,35 +753,49 @@ document<span class="token punctuation">.</span><span class="token function">clo
 <li>相比 XMLHttpRequest 对象发送 GET 请求，性能上更好</li>
 <li>GIF 的最低合法体积最小（最小的 BMP 文件需要 74 个字节，PNG 需要 67 个字节，而合法的 GIF，只需要 43 个字节）</li>
 </ol>
-<h3 id="变量声明提升"><a href="#变量声明提升" class="headerlink" title="变量声明提升"></a><a target="_blank" rel="noopener" href="https://github.com/lxnxbnq/blog/issues/12">变量声明提升</a></h3><h3 id="js-冒泡机制"><a href="#js-冒泡机制" class="headerlink" title="js 冒泡机制"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/luanlouis/article/details/23927347">js 冒泡机制</a></h3><h3 id="property-属性-和-attribute-特性"><a href="#property-属性-和-attribute-特性" class="headerlink" title="property(属性)和 attribute(特性)"></a>property(属性)和 attribute(特性)</h3><ul>
-<li><p>DOM 有其默认的基本属性，而这些属性就是所谓的“property”，无论如何，它们都会在初始化的时候再 DOM 对象上创建。</p>
+<h3 id="变量声明提升"><a target="_blank" rel="noopener" href="https://github.com/lxnxbnq/blog/issues/12">变量声明提升</a></h3>
+<h3 id="js-冒泡机制"><a target="_blank" rel="noopener" href="https://blog.csdn.net/luanlouis/article/details/23927347">js 冒泡机制</a></h3>
+<h3 id="property-属性-和-attribute-特性">property(属性)和 attribute(特性)</h3>
+<ul>
+<li>
+<p>DOM 有其默认的基本属性，而这些属性就是所谓的“property”，无论如何，它们都会在初始化的时候再 DOM 对象上创建。</p>
 </li>
-<li><p>HTML 标签中定义的属性和值会保存该 DOM 对象的 attributes 属性里面；</p>
+<li>
+<p>HTML 标签中定义的属性和值会保存该 DOM 对象的 attributes 属性里面；</p>
 </li>
-<li><p>这些 attribute 属性的 JavaScript 中的类型是 Attr，而不仅仅是保存属性名和值这么简单；</p>
+<li>
+<p>这些 attribute 属性的 JavaScript 中的类型是 Attr，而不仅仅是保存属性名和值这么简单；</p>
 </li>
 </ul>
 <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>in_2<span class="token punctuation">"</span></span> <span class="token attr-name">sth</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>whatever<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> in2 <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">"in_2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>in2<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token comment">// id: "in_2"</span>
 <span class="token comment">// value: null</span>
 
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>in1<span class="token punctuation">.</span>attibutes<span class="token punctuation">.</span>sth<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 'sth="whatever"'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="document-load-和-document-DOMContentLoaded"><a href="#document-load-和-document-DOMContentLoaded" class="headerlink" title="document load 和 document DOMContentLoaded"></a>document load 和 document DOMContentLoaded</h3><ul>
+<h3 id="document-load-和-document-DOMContentLoaded">document load 和 document DOMContentLoaded</h3>
+<ul>
 <li>load 方法在网页中所有的资源（HTML,CSS,image）都完全加载后才触发</li>
 <li>当初始的 HTML 文档被完全加载和解析完成之后，DOMContentLoaded 事件被触发，而无需等待样式表、图像和子框架的完成加载</li>
 </ul>
-<h3 id="和-有什么不同"><a href="#和-有什么不同" class="headerlink" title="&#x3D;&#x3D; 和 &#x3D;&#x3D;&#x3D; 有什么不同"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Equality_comparisons_and_sameness">&#x3D;&#x3D; 和 &#x3D;&#x3D;&#x3D; 有什么不同</a></h3><h3 id="同源策略-same-origin-policy"><a href="#同源策略-same-origin-policy" class="headerlink" title="同源策略 (same-origin policy)"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy">同源策略 (same-origin policy)</a></h3><h3 id="strict-模式"><a href="#strict-模式" class="headerlink" title="strict 模式"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Strict_mode">strict 模式</a></h3><h3 id="为何通常会认为保留网站现有的全局作用域-global-scope-不去改变它，是较好的选择"><a href="#为何通常会认为保留网站现有的全局作用域-global-scope-不去改变它，是较好的选择" class="headerlink" title="为何通常会认为保留网站现有的全局作用域 (global scope) 不去改变它，是较好的选择"></a>为何通常会认为保留网站现有的全局作用域 (global scope) 不去改变它，是较好的选择</h3><ul>
+<h3 id="和-有什么不同"><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Equality_comparisons_and_sameness">== 和 === 有什么不同</a></h3>
+<h3 id="同源策略-same-origin-policy"><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy">同源策略 (same-origin policy)</a></h3>
+<h3 id="strict-模式"><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Strict_mode">strict 模式</a></h3>
+<h3 id="为何通常会认为保留网站现有的全局作用域-global-scope-不去改变它，是较好的选择">为何通常会认为保留网站现有的全局作用域 (global scope) 不去改变它，是较好的选择</h3>
+<ul>
 <li>减少命名冲突</li>
 <li>有利于模块化</li>
 </ul>
-<h3 id="请解释什么是单页应用-single-page-app-以及如何使其对搜索引擎友好-SEO-friendly"><a href="#请解释什么是单页应用-single-page-app-以及如何使其对搜索引擎友好-SEO-friendly" class="headerlink" title="请解释什么是单页应用 (single page app), 以及如何使其对搜索引擎友好 (SEO-friendly)"></a>请解释什么是单页应用 (single page app), 以及如何使其对搜索引擎友好 (SEO-friendly)</h3><p>单页应用是指在浏览器中运行的应用，它们在使用期间不会重新加载页面。像所有的应用一样，它旨在帮助用户完成任务，比如“编写文档”或者“管理 Web 服务器”。可以认为单页应用是一种从 Web 服务器加载的富客户端</p>
+<h3 id="请解释什么是单页应用-single-page-app-以及如何使其对搜索引擎友好-SEO-friendly">请解释什么是单页应用 (single page app), 以及如何使其对搜索引擎友好 (SEO-friendly)</h3>
+<p>单页应用是指在浏览器中运行的应用，它们在使用期间不会重新加载页面。像所有的应用一样，它旨在帮助用户完成任务，比如“编写文档”或者“管理 Web 服务器”。可以认为单页应用是一种从 Web 服务器加载的富客户端</p>
 <p>使用<a target="_blank" rel="noopener" href="http://www.alloyteam.com/2015/10/8783/">服务端渲染</a></p>
-<h3 id="Promise-如何使用，实现"><a href="#Promise-如何使用，实现" class="headerlink" title="Promise 如何使用，实现"></a><a target="_blank" rel="noopener" href="https://github.com/xieranmaya/blog/issues/3">Promise 如何使用，实现</a></h3><h3 id="可变对象和不可变对象"><a href="#可变对象和不可变对象" class="headerlink" title="可变对象和不可变对象"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/hustzw07/article/details/77946698">可变对象和不可变对象</a></h3><h4 id="可变对象"><a href="#可变对象" class="headerlink" title="可变对象"></a>可变对象</h4><p>我们知道，JavaScript 中对象是弱类型的。一般情况下，可以不受限制的为对象添加属性，修改属性，删除属性。大部分情况下，我们使用的都是可变对象。</p>
-<h4 id="不可变对象"><a href="#不可变对象" class="headerlink" title="不可变对象"></a>不可变对象</h4><p>对应的，我们不希望代码中某些对象被任意修改，比如添加、修改、删除等。这就是我们的不可变对象。JavaScript 为我们提供了一些原生方法，借助它们可以讲一些可变对象转变成不可变对象。一共有三种：不可扩展，密封，冻结。</p>
+<h3 id="Promise-如何使用，实现"><a target="_blank" rel="noopener" href="https://github.com/xieranmaya/blog/issues/3">Promise 如何使用，实现</a></h3>
+<h3 id="可变对象和不可变对象"><a target="_blank" rel="noopener" href="https://blog.csdn.net/hustzw07/article/details/77946698">可变对象和不可变对象</a></h3>
+<h4 id="可变对象">可变对象</h4>
+<p>我们知道，JavaScript 中对象是弱类型的。一般情况下，可以不受限制的为对象添加属性，修改属性，删除属性。大部分情况下，我们使用的都是可变对象。</p>
+<h4 id="不可变对象">不可变对象</h4>
+<p>对应的，我们不希望代码中某些对象被任意修改，比如添加、修改、删除等。这就是我们的不可变对象。JavaScript 为我们提供了一些原生方法，借助它们可以讲一些可变对象转变成不可变对象。一共有三种：不可扩展，密封，冻结。</p>
 <ol>
 <li><strong>Object.preventExtensions(obj)</strong> 不可扩展（无法阻止深层属性的扩展）</li>
 </ol>
@@ -798,19 +821,27 @@ Object<span class="token punctuation">.</span><span class="token function">preve
 person2<span class="token punctuation">.</span>info<span class="token punctuation">.</span>sex <span class="token operator">=</span> <span class="token string">"male"</span><span class="token punctuation">;</span> <span class="token comment">// 可以扩展深层属性</span>
 
 person2<span class="token punctuation">.</span>info<span class="token punctuation">.</span>sex<span class="token punctuation">;</span> <span class="token comment">// male</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
 <ol start="2">
-<li><p><strong>Object.seal(obj)</strong> 方法可以让一个对象密封，并返回被密封后的对象。密封对象将会阻止向对象添加新的属性。另外也会 改变属性的 configurable 描述。</p>
+<li>
+<p><strong>Object.seal(obj)</strong> 方法可以让一个对象密封，并返回被密封后的对象。密封对象将会阻止向对象添加新的属性。另外也会 改变属性的 configurable 描述。</p>
 </li>
-<li><p><strong>Object.freeze(obj)</strong> 方法可以冻结一个对象。冻结指的是不能向这个对象添加新的属性，不能修改其已有属性的值，不能删除已有属性，以及不能修改该对象已有属性的可枚举性、可配置性、可写性。也就是说，这个对象永远是不可变的。该方法返回被冻结的对象。</p>
+<li>
+<p><strong>Object.freeze(obj)</strong> 方法可以冻结一个对象。冻结指的是不能向这个对象添加新的属性，不能修改其已有属性的值，不能删除已有属性，以及不能修改该对象已有属性的可枚举性、可配置性、可写性。也就是说，这个对象永远是不可变的。该方法返回被冻结的对象。</p>
 </li>
 </ol>
-<h3 id="什么是事件循环"><a href="#什么是事件循环" class="headerlink" title="什么是事件循环"></a><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/33058983">什么是事件循环</a></h3><h3 id="let-var-const"><a href="#let-var-const" class="headerlink" title="let var const"></a><a target="_blank" rel="noopener" href="https://github.com/lxnxbnq/blog/issues/12">let var const</a></h3><h3 id="数组的方法"><a href="#数组的方法" class="headerlink" title="数组的方法"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array">数组的方法</a></h3><h3 id="web-worker"><a href="#web-worker" class="headerlink" title="web worker"></a><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API/Using_web_workers">web worker</a></h3><h3 id="函数柯里化"><a href="#函数柯里化" class="headerlink" title="函数柯里化"></a><a target="_blank" rel="noopener" href="https://github.com/mqyqingfeng/Blog/issues/42">函数柯里化</a></h3><h3 id="创建对象的三种方法"><a href="#创建对象的三种方法" class="headerlink" title="创建对象的三种方法"></a>创建对象的三种方法</h3><ul>
+<h3 id="什么是事件循环"><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/33058983">什么是事件循环</a></h3>
+<h3 id="let-var-const"><a target="_blank" rel="noopener" href="https://github.com/lxnxbnq/blog/issues/12">let var const</a></h3>
+<h3 id="数组的方法"><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array">数组的方法</a></h3>
+<h3 id="web-worker"><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API/Using_web_workers">web worker</a></h3>
+<h3 id="函数柯里化"><a target="_blank" rel="noopener" href="https://github.com/mqyqingfeng/Blog/issues/42">函数柯里化</a></h3>
+<h3 id="创建对象的三种方法">创建对象的三种方法</h3>
+<ul>
 <li>构造函数: <code>var obj = new Object();</code></li>
 <li>对象字面量: <code>var obj = &#123;&#125;;</code></li>
 <li><code>Object.create(obj[, otherobj])</code>;</li>
 </ul>
-<h3 id="深拷贝和浅拷贝"><a href="#深拷贝和浅拷贝" class="headerlink" title="深拷贝和浅拷贝"></a><a target="_blank" rel="noopener" href="https://juejin.im/post/59ac1c4ef265da248e75892b">深拷贝和浅拷贝</a></h3><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> obj <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+<h3 id="深拷贝和浅拷贝"><a target="_blank" rel="noopener" href="https://juejin.im/post/59ac1c4ef265da248e75892b">深拷贝和浅拷贝</a></h3>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> obj <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
   <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"william"</span><span class="token punctuation">,</span>
   <span class="token literal-property property">age</span><span class="token operator">:</span> <span class="token number">20</span><span class="token punctuation">,</span>
   <span class="token literal-property property">other</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
@@ -856,8 +887,10 @@ person2<span class="token punctuation">.</span>info<span class="token punctuatio
   <span class="token punctuation">&#125;</span>
   <span class="token keyword">return</span> newData<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="网页上各种高度"><a href="#网页上各种高度" class="headerlink" title="网页上各种高度"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/gs6511/article/details/53900761">网页上各种高度</a></h3><h3 id="实现页面加载进度条"><a href="#实现页面加载进度条" class="headerlink" title="实现页面加载进度条"></a><a target="_blank" rel="noopener" href="https://github.com/rstacruz/nprogress/">实现页面加载进度条</a></h3><h3 id="箭头函数和普通函数有什么区别"><a href="#箭头函数和普通函数有什么区别" class="headerlink" title="箭头函数和普通函数有什么区别"></a>箭头函数和普通函数有什么区别</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/59376805">箭头函数</a></p>
+<h3 id="网页上各种高度"><a target="_blank" rel="noopener" href="https://blog.csdn.net/gs6511/article/details/53900761">网页上各种高度</a></h3>
+<h3 id="实现页面加载进度条"><a target="_blank" rel="noopener" href="https://github.com/rstacruz/nprogress/">实现页面加载进度条</a></h3>
+<h3 id="箭头函数和普通函数有什么区别">箭头函数和普通函数有什么区别</h3>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/59376805">箭头函数</a></p>
 <table>
 <thead>
 <tr>
@@ -866,9 +899,10 @@ person2<span class="token punctuation">.</span>info<span class="token punctuatio
 <th>普通函数</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>写法</td>
-<td>var fn &#x3D; () &#x3D;&gt; {}</td>
+<td>var fn = () =&gt; {}</td>
 <td>function fn() {}</td>
 </tr>
 <tr>
@@ -891,7 +925,8 @@ person2<span class="token punctuation">.</span>info<span class="token punctuatio
 <td>没有原型属性<code>console.log(fn.prototype) //undefined</code></td>
 <td>有原型属性</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 
       </div>
       <div class="post-tags-categories">
@@ -935,16 +970,20 @@ person2<span class="token punctuation">.</span>info<span class="token punctuatio
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/8.jpg" class="lazyload placeholder" data-srcset="/medias/8.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2023/05/02/qian-duan/react/react-router-quan-xian-xiang-guan/" class="post-nav-link">
+    <a href="/2023/04/12/mian-shi-zong-jie/5-qian-duan-xing-neng-you-hua/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">前端日常-基于React-Router(V6)的权限控制</div>
+        <div class="title-text">前端性能优化篇</div>
       </div>
       
       <!-- <div class="content">
-        在一个后台管理系统中，安全是很重要的。不光后端需要做权限校验，前端也需要做权限控制。我们可以大致将权限分为 3 种： 接
+        你会用什么工具来查找代码中的性能问题？
+
+Network
+
+首先可以通过 Network 查看各类资源的响应时间，看看是
       </div> -->
     </a>
   </div>
@@ -955,18 +994,17 @@ person2<span class="token punctuation">.</span>info<span class="token punctuatio
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/7.jpg" class="lazyload placeholder" data-srcset="/medias/7.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2023/04/12/mian-shi-zong-jie/5-qian-duan-xing-neng-you-hua/" class="post-nav-link">
+    <a href="/2023/04/12/qian-duan/react/react-hook/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">前端性能优化篇</div>
+        <div class="title-text">React Hook</div>
       </div>
       <!-- <div class="content">
-        你会用什么工具来查找代码中的性能问题？
-Network
-
-首先可以通过 Network 查看各类资源的响应时间，看看是否
+        类组件的不足（Hooks 要解决的问题）
+缺少逻辑复用机制
+为了复用逻辑增加无实际渲染效果的组件（高阶组件、渲染属性），
       </div> -->
     </a>
   </div>

@@ -566,13 +566,16 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇文章使用Nestjs实现了一个基于JWT+RBAC（Role-Based Access Control）的认证授权系统，主要包含以下功能：</p>
+        <h2 id="前言">前言</h2>
+<p>这篇文章使用Nestjs实现了一个基于JWT+RBAC（Role-Based Access Control）的认证授权系统，主要包含以下功能：</p>
 <ul>
 <li>用户认证：实现用户登录、登出等基础认证功能</li>
 <li>权限控制：基于RBAC模型的细粒度权限控制</li>
 <li>JWT认证：使用JWT实现无状态的用户身份验证</li>
 </ul>
-<h2 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h2><h3 id="实体关系图"><a href="#实体关系图" class="headerlink" title="实体关系图"></a>实体关系图</h3><pre class="mermaid">
+<h2 id="数据库设计">数据库设计</h2>
+<h3 id="实体关系图">实体关系图</h3>
+<pre class="mermaid">
 erDiagram
     SysUsersEntity ||--o{ UsersRoleEntity : has
     RoleEntity ||--o{ UsersRoleEntity : has
@@ -595,8 +598,9 @@ erDiagram
         number role_id PK
     }
 </pre>
-
-<h3 id="表结构说明"><a href="#表结构说明" class="headerlink" title="表结构说明"></a>表结构说明</h3><h4 id="1-用户表-ibuy-admin"><a href="#1-用户表-ibuy-admin" class="headerlink" title="1. 用户表 (ibuy_admin)"></a>1. 用户表 (ibuy_admin)</h4><table>
+<h3 id="表结构说明">表结构说明</h3>
+<h4 id="1-用户表-ibuy-admin">1. 用户表 (ibuy_admin)</h4>
+<table>
 <thead>
 <tr>
 <th>字段名</th>
@@ -605,7 +609,8 @@ erDiagram
 <th>约束</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>id</td>
 <td>number</td>
 <td>用户ID</td>
@@ -635,8 +640,10 @@ erDiagram
 <td>token版本号</td>
 <td>默认值0</td>
 </tr>
-</tbody></table>
-<h4 id="2-角色表-ibuy-role"><a href="#2-角色表-ibuy-role" class="headerlink" title="2. 角色表 (ibuy_role)"></a>2. 角色表 (ibuy_role)</h4><table>
+</tbody>
+</table>
+<h4 id="2-角色表-ibuy-role">2. 角色表 (ibuy_role)</h4>
+<table>
 <thead>
 <tr>
 <th>字段名</th>
@@ -645,7 +652,8 @@ erDiagram
 <th>约束</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>id</td>
 <td>number</td>
 <td>角色ID</td>
@@ -657,8 +665,10 @@ erDiagram
 <td>角色名称</td>
 <td>唯一，可空</td>
 </tr>
-</tbody></table>
-<h4 id="3-用户角色关联表-ibuy-admin-role"><a href="#3-用户角色关联表-ibuy-admin-role" class="headerlink" title="3. 用户角色关联表 (ibuy_admin_role)"></a>3. 用户角色关联表 (ibuy_admin_role)</h4><table>
+</tbody>
+</table>
+<h4 id="3-用户角色关联表-ibuy-admin-role">3. 用户角色关联表 (ibuy_admin_role)</h4>
+<table>
 <thead>
 <tr>
 <th>字段名</th>
@@ -667,7 +677,8 @@ erDiagram
 <th>约束</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>admin_id</td>
 <td>number</td>
 <td>用户ID</td>
@@ -679,10 +690,16 @@ erDiagram
 <td>角色ID</td>
 <td>联合主键</td>
 </tr>
-</tbody></table>
-<h2 id="系统配置"><a href="#系统配置" class="headerlink" title="系统配置"></a>系统配置</h2><h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><p>需要在.env文件中配置以下环境变量：</p>
+</tbody>
+</table>
+<h2 id="系统配置">系统配置</h2>
+<h3 id="环境变量">环境变量</h3>
+<p>需要在.env文件中配置以下环境变量：</p>
 <pre class="line-numbers language-env" data-language="env"><code class="language-env">JWT_SECRET&#x3D;your_jwt_secret_key<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h2 id="核心功能"><a href="#核心功能" class="headerlink" title="核心功能"></a>核心功能</h2><h3 id="1-认证流程"><a href="#1-认证流程" class="headerlink" title="1. 认证流程"></a>1. 认证流程</h3><h4 id="1-1-登录认证"><a href="#1-1-登录认证" class="headerlink" title="1.1 登录认证"></a>1.1 登录认证</h4><p>用户登录时，系统会：</p>
+<h2 id="核心功能">核心功能</h2>
+<h3 id="1-认证流程">1. 认证流程</h3>
+<h4 id="1-1-登录认证">1.1 登录认证</h4>
+<p>用户登录时，系统会：</p>
 <ol>
 <li>验证用户名和密码</li>
 <li>生成包含用户信息的JWT Token</li>
@@ -695,8 +712,8 @@ erDiagram
 <span class="token keyword">async</span> <span class="token function">signIn</span><span class="token punctuation">(</span><span class="token decorator"><span class="token at operator">@</span><span class="token function">Body</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> user<span class="token operator">:</span> Record<span class="token operator">&lt;</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token builtin">any</span><span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>authService<span class="token punctuation">.</span><span class="token function">signIn</span><span class="token punctuation">(</span>user<span class="token punctuation">.</span>loginName<span class="token punctuation">,</span> user<span class="token punctuation">.</span>password<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="1-2-JWT认证守卫"><a href="#1-2-JWT认证守卫" class="headerlink" title="1.2 JWT认证守卫"></a>1.2 JWT认证守卫</h4><p>系统使用全局AuthGuard进行Token验证：</p>
+<h4 id="1-2-JWT认证守卫">1.2 JWT认证守卫</h4>
+<p>系统使用全局AuthGuard进行Token验证：</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// auth.guard.ts</span>
 <span class="token decorator"><span class="token at operator">@</span><span class="token function">Injectable</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">AuthGuard</span> <span class="token keyword">implements</span> <span class="token class-name">CanActivate</span> <span class="token punctuation">&#123;</span>
@@ -724,8 +741,9 @@ erDiagram
     <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-RBAC权限控制"><a href="#2-RBAC权限控制" class="headerlink" title="2. RBAC权限控制"></a>2. RBAC权限控制</h3><h4 id="2-1-角色权限守卫"><a href="#2-1-角色权限守卫" class="headerlink" title="2.1 角色权限守卫"></a>2.1 角色权限守卫</h4><p>使用PermissionGuard实现基于角色的权限控制：</p>
+<h3 id="2-RBAC权限控制">2. RBAC权限控制</h3>
+<h4 id="2-1-角色权限守卫">2.1 角色权限守卫</h4>
+<p>使用PermissionGuard实现基于角色的权限控制：</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// permission.guard.ts</span>
 <span class="token decorator"><span class="token at operator">@</span><span class="token function">Injectable</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">PermissionGuard</span> <span class="token keyword">implements</span> <span class="token class-name">CanActivate</span> <span class="token punctuation">&#123;</span>
@@ -747,14 +765,15 @@ erDiagram
     <span class="token keyword">return</span> requiredRoles<span class="token operator">?.</span><span class="token function">some</span><span class="token punctuation">(</span><span class="token punctuation">(</span>role<span class="token punctuation">)</span> <span class="token operator">=></span> roleNames<span class="token operator">?.</span><span class="token function">includes</span><span class="token punctuation">(</span>role<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">??</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="2-2-权限装饰器"><a href="#2-2-权限装饰器" class="headerlink" title="2.2 权限装饰器"></a>2.2 权限装饰器</h4><p>提供@Permission装饰器用于声明接口所需的角色权限：</p>
+<h4 id="2-2-权限装饰器">2.2 权限装饰器</h4>
+<p>提供@Permission装饰器用于声明接口所需的角色权限：</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// permission.decorator.ts</span>
 <span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token constant">PERMISSION_KEY</span> <span class="token operator">=</span> <span class="token string">'permission_by_roles'</span><span class="token punctuation">;</span>
 <span class="token keyword">export</span> <span class="token keyword">const</span> <span class="token function-variable function">Permission</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">...</span>permissions<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">=></span>
   <span class="token function">SetMetadata</span><span class="token punctuation">(</span><span class="token constant">PERMISSION_KEY</span><span class="token punctuation">,</span> permissions<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="3-使用示例"><a href="#3-使用示例" class="headerlink" title="3. 使用示例"></a>3. 使用示例</h3><h4 id="3-1-接口权限控制"><a href="#3-1-接口权限控制" class="headerlink" title="3.1 接口权限控制"></a>3.1 接口权限控制</h4><pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// role.controller.ts</span>
+<h3 id="3-使用示例">3. 使用示例</h3>
+<h4 id="3-1-接口权限控制">3.1 接口权限控制</h4>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// role.controller.ts</span>
 <span class="token decorator"><span class="token at operator">@</span><span class="token function">Permission</span></span><span class="token punctuation">(</span><span class="token string">'admin'</span><span class="token punctuation">)</span>  <span class="token comment">// 声明需要admin角色才能访问</span>
 <span class="token decorator"><span class="token at operator">@</span><span class="token function">Controller</span></span><span class="token punctuation">(</span><span class="token string">'role'</span><span class="token punctuation">)</span>
 <span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">RoleController</span> <span class="token punctuation">&#123;</span>
@@ -763,8 +782,8 @@ erDiagram
     <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>roleService<span class="token punctuation">.</span><span class="token function">createRole</span><span class="token punctuation">(</span>createRoleDto<span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="3-2-全局配置"><a href="#3-2-全局配置" class="headerlink" title="3.2 全局配置"></a>3.2 全局配置</h4><p>在AppModule中注册全局守卫：</p>
+<h4 id="3-2-全局配置">3.2 全局配置</h4>
+<p>在AppModule中注册全局守卫：</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// app.module.ts</span>
 <span class="token decorator"><span class="token at operator">@</span><span class="token function">Module</span></span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
   providers<span class="token operator">:</span> <span class="token punctuation">[</span>
@@ -779,9 +798,8 @@ erDiagram
   <span class="token punctuation">]</span><span class="token punctuation">,</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
 <span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">AppModule</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<h2 id="注意事项">注意事项</h2>
+<ol>
 <li>所有需要认证的接口都会自动经过AuthGuard验证</li>
 <li>使用@Public()装饰器可以将接口标记为公开接口</li>
 <li>使用@Permission()装饰器可以指定访问接口所需的角色</li>
@@ -843,7 +861,8 @@ erDiagram
       </div>
       
       <!-- <div class="content">
-        1. 前言在当今互联网时代，网站的安全性和加载速度成为用户体验中至关重要的两个因素。启用HTTPS可以通过加密通信保护数
+        1. 前言
+在当今互联网时代，网站的安全性和加载速度成为用户体验中至关重要的两个因素。启用HTTPS可以通过加密通信保护
       </div> -->
     </a>
   </div>
@@ -862,7 +881,8 @@ erDiagram
         <div class="title-text">Nestjs+RabbitMQ+支付宝沙盒 实现电商支付功能</div>
       </div>
       <!-- <div class="content">
-        1. 前言在电商系统中，支付功能是整个交易流程中最为关键的环节之一。一个完善的支付系统不仅要保证交易的安全性和可靠性，还
+        1. 前言
+在电商系统中，支付功能是整个交易流程中最为关键的环节之一。一个完善的支付系统不仅要保证交易的安全性和可靠性，
       </div> -->
     </a>
   </div>

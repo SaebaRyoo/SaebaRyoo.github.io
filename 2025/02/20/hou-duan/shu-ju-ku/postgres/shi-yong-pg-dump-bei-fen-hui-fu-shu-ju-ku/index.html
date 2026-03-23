@@ -566,32 +566,42 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1 id="PostgreSQL-数据库备份与恢复操作"><a href="#PostgreSQL-数据库备份与恢复操作" class="headerlink" title="PostgreSQL 数据库备份与恢复操作"></a>PostgreSQL 数据库备份与恢复操作</h1><p>在使用 PostgreSQL 数据库时，<code>pg_dump</code> 是一个常用的工具，用于备份数据库的内容。备份和恢复数据库是数据库管理中的重要环节，可以确保数据的安全性和可恢复性。以下是关于如何使用 <code>pg_dump</code> 备份和恢复数据库的具体步骤。</p>
-<h2 id="一、pg-dump-备份数据库"><a href="#一、pg-dump-备份数据库" class="headerlink" title="一、pg_dump 备份数据库"></a>一、pg_dump 备份数据库</h2><h3 id="1-打开命令行工具"><a href="#1-打开命令行工具" class="headerlink" title="1. 打开命令行工具"></a>1. 打开命令行工具</h3><p>按照 mac 为例，如果你没将 postgre 相关的命令行加到环境变量中，那么你需要找到 postgre 的安装位置。比如我没有通过 homebrew 安装，我的安装位置在<code>/Library/PostgreSQL/15</code>。然后<code>cd /bin</code>。</p>
-<h3 id="2-执行-pg-dump-命令"><a href="#2-执行-pg-dump-命令" class="headerlink" title="2. 执行 pg_dump 命令"></a>2. 执行 <code>pg_dump</code> 命令</h3><p>在命令行中，使用 <code>pg_dump</code> 命令来备份数据库。命令的基本格式如下：</p>
+        <h1>PostgreSQL 数据库备份与恢复操作</h1>
+<p>在使用 PostgreSQL 数据库时，<code>pg_dump</code> 是一个常用的工具，用于备份数据库的内容。备份和恢复数据库是数据库管理中的重要环节，可以确保数据的安全性和可恢复性。以下是关于如何使用 <code>pg_dump</code> 备份和恢复数据库的具体步骤。</p>
+<h2 id="一、pg-dump-备份数据库">一、pg_dump 备份数据库</h2>
+<h3 id="1-打开命令行工具">1. 打开命令行工具</h3>
+<p>按照 mac 为例，如果你没将 postgre 相关的命令行加到环境变量中，那么你需要找到 postgre 的安装位置。比如我没有通过 homebrew 安装，我的安装位置在<code>/Library/PostgreSQL/15</code>。然后<code>cd /bin</code>。</p>
+<h3 id="2-执行-pg-dump-命令">2. 执行 <code>pg_dump</code> 命令</h3>
+<p>在命令行中，使用 <code>pg_dump</code> 命令来备份数据库。命令的基本格式如下：</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./pg_dump <span class="token parameter variable">-U</span> postgres <span class="token parameter variable">-h</span> localhost <span class="token parameter variable">-p</span> <span class="token number">5432</span> mall <span class="token operator">></span> ~/Desktop/sql/mall_backup.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <ul>
-<li><p><code>-U</code>：指定连接数据库的用户名。</p>
+<li>
+<p><code>-U</code>：指定连接数据库的用户名。</p>
 </li>
-<li><p><code>-h</code>：指定数据库服务器的主机名（默认为 <code>localhost</code>）。</p>
+<li>
+<p><code>-h</code>：指定数据库服务器的主机名（默认为 <code>localhost</code>）。</p>
 </li>
-<li><p><code>-p</code>：指定数据库服务器的端口号（默认为 <code>5432</code>）。</p>
+<li>
+<p><code>-p</code>：指定数据库服务器的端口号（默认为 <code>5432</code>）。</p>
 </li>
-<li><p><code>mall</code>：要备份的数据库的名称。</p>
+<li>
+<p><code>mall</code>：要备份的数据库的名称。</p>
 </li>
-<li><p><code>~/Desktop/sql/mall_backup.sql</code>：备份文件的名称和路径（默认为当前目录下的文件名，这里是自定义的目录）。</p>
+<li>
+<p><code>~/Desktop/sql/mall_backup.sql</code>：备份文件的名称和路径（默认为当前目录下的文件名，这里是自定义的目录）。</p>
 </li>
 </ul>
-<h3 id="3-备份特定表"><a href="#3-备份特定表" class="headerlink" title="3.备份特定表"></a>3.备份特定表</h3><p>如果只需要备份特定的表或模式，可以使用 <code>-t</code>（表）或 <code>-n</code>（模式）选项。</p>
+<h3 id="3-备份特定表">3.备份特定表</h3>
+<p>如果只需要备份特定的表或模式，可以使用 <code>-t</code>（表）或 <code>-n</code>（模式）选项。</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./pg_dump <span class="token parameter variable">-U</span> postgres <span class="token parameter variable">-h</span> localhost <span class="token parameter variable">-p</span> <span class="token number">5432</span> <span class="token parameter variable">-t</span> <span class="token function">users</span> mall <span class="token operator">></span> ~/Desktop/sql/users.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h2 id="二、恢复数据库"><a href="#二、恢复数据库" class="headerlink" title="二、恢复数据库"></a>二、恢复数据库</h2><h3 id="1-创建目标数据库（如果尚未存在）"><a href="#1-创建目标数据库（如果尚未存在）" class="headerlink" title="1. 创建目标数据库（如果尚未存在）"></a>1. 创建目标数据库（如果尚未存在）</h3><p>在恢复数据之前，需要确保目标数据库已经存在。如果还没有目标数据库，可以使用 <code>createdb</code> 命令或 <code>CREATE DATABASE</code> SQL 语句来创建它。</p>
-<h4 id="示例：使用-createdb-创建目标数据库"><a href="#示例：使用-createdb-创建目标数据库" class="headerlink" title="示例：使用 createdb 创建目标数据库"></a>示例：使用 <code>createdb</code> 创建目标数据库</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./createdb <span class="token parameter variable">-U</span> postgres <span class="token parameter variable">-h</span> localhost <span class="token parameter variable">-p</span> <span class="token number">5432</span> mall_test<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h3 id="2-使用-psql-恢复数据库"><a href="#2-使用-psql-恢复数据库" class="headerlink" title="2. 使用 psql 恢复数据库"></a>2. 使用 <code>psql</code> 恢复数据库</h3><p>使用 <code>psql</code> 命令将备份的 SQL 文件导入到目标数据库中。命令的基本格式如下：</p>
+<h2 id="二、恢复数据库">二、恢复数据库</h2>
+<h3 id="1-创建目标数据库（如果尚未存在）">1. 创建目标数据库（如果尚未存在）</h3>
+<p>在恢复数据之前，需要确保目标数据库已经存在。如果还没有目标数据库，可以使用 <code>createdb</code> 命令或 <code>CREATE DATABASE</code> SQL 语句来创建它。</p>
+<h4 id="示例：使用-createdb-创建目标数据库">示例：使用 <code>createdb</code> 创建目标数据库</h4>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./createdb <span class="token parameter variable">-U</span> postgres <span class="token parameter variable">-h</span> localhost <span class="token parameter variable">-p</span> <span class="token number">5432</span> mall_test<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="2-使用-psql-恢复数据库">2. 使用 <code>psql</code> 恢复数据库</h3>
+<p>使用 <code>psql</code> 命令将备份的 SQL 文件导入到目标数据库中。命令的基本格式如下：</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">psql <span class="token parameter variable">-U</span> 用户名 <span class="token parameter variable">-h</span> 主机名 <span class="token parameter variable">-p</span> 端口号 <span class="token parameter variable">-d</span> 目标数据库名 <span class="token operator">&lt;</span> 备份文件名.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
 <ul>
 <li><code>-U</code>：指定连接数据库的用户名。</li>
 <li><code>-h</code>：指定数据库服务器的主机名（默认为 <code>localhost</code>）。</li>
@@ -599,10 +609,12 @@
 <li><code>-d</code>：指定要恢复数据的目标数据库名。</li>
 <li><code>&lt; 备份文件名.sql</code>：指定备份文件的名称和路径。</li>
 </ul>
-<h4 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./psql <span class="token parameter variable">-U</span> postgres <span class="token parameter variable">-h</span> localhost <span class="token parameter variable">-p</span> <span class="token number">5432</span> mall_test <span class="token operator">&lt;</span> ~/Desktop/sql/mall_backup.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h3 id="3-使用-psql-恢复特定表"><a href="#3-使用-psql-恢复特定表" class="headerlink" title="3. 使用 psql 恢复特定表"></a>3. 使用 psql 恢复特定表</h3><p>如果备份文件是以自定义格式（<code>-Fc</code>）或目录格式（<code>-Fd</code>）创建的，则需要使用 <code>pg_restore</code> 命令来恢复数据。</p>
-<h4 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./psql <span class="token parameter variable">-U</span> postgres <span class="token parameter variable">-h</span> localhost <span class="token parameter variable">-p</span> <span class="token number">5432</span> <span class="token parameter variable">-d</span> mall_test <span class="token operator">&lt;</span> ~/Desktop/sql/users.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="示例：">示例：</h4>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./psql <span class="token parameter variable">-U</span> postgres <span class="token parameter variable">-h</span> localhost <span class="token parameter variable">-p</span> <span class="token number">5432</span> mall_test <span class="token operator">&lt;</span> ~/Desktop/sql/mall_backup.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="3-使用-psql-恢复特定表">3. 使用 psql 恢复特定表</h3>
+<p>如果备份文件是以自定义格式（<code>-Fc</code>）或目录格式（<code>-Fd</code>）创建的，则需要使用 <code>pg_restore</code> 命令来恢复数据。</p>
+<h4 id="示例：-2">示例：</h4>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./psql <span class="token parameter variable">-U</span> postgres <span class="token parameter variable">-h</span> localhost <span class="token parameter variable">-p</span> <span class="token number">5432</span> <span class="token parameter variable">-d</span> mall_test <span class="token operator">&lt;</span> ~/Desktop/sql/users.sql<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
       </div>
       <div class="post-tags-categories">
@@ -655,7 +667,8 @@
       </div>
       
       <!-- <div class="content">
-        请看原文点击查看原文
+        请看原文
+点击查看原文
 以下内容只用作记录
 
       </div> -->
@@ -676,7 +689,9 @@
         <div class="title-text">Web Worker和Service Worker</div>
       </div>
       <!-- <div class="content">
-        WebWorker 介绍什么是 Web Worker？为 JS 创造多线程的环境，允许主线程创建 Worker 线程，将
+        WebWorker 介绍
+什么是 Web Worker？
+为 JS 创造多线程的环境，允许主线程创建 Worker 线程
       </div> -->
     </a>
   </div>
