@@ -567,8 +567,7 @@
     <article class="post post-detail">
       <div class="post-content">
         <p>在这篇文章中，我们会继续讲解<code>stream</code>，不过这次我们重点说的是<code>writable stream</code>和<code>pipe</code>。我们会通过几个例子来理解<code>writable stream</code>的工作原理。同时，我们提供了 Node 环境中<code>process</code>对象中出现的流的例子:<code>stdin</code>,<code>stdout</code>和<code>stderr</code>。</p>
-<h2 id="Writable-Stream">Writable Stream</h2>
-<p>在之前文章的例子中，我们使用<code>fs.writeFile</code>方法创建和写入文件:</p>
+<h2 id="Writable-Stream"><a href="#Writable-Stream" class="headerlink" title="Writable Stream"></a>Writable Stream</h2><p>在之前文章的例子中，我们使用<code>fs.writeFile</code>方法创建和写入文件:</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">writeFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">await</span> fs<span class="token punctuation">.</span>promises<span class="token punctuation">.</span><span class="token function">writeFile</span><span class="token punctuation">(</span><span class="token string">"./file.txt"</span><span class="token punctuation">,</span> <span class="token string">"hello-world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -579,6 +578,7 @@
   <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 <span class="token function">writeFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>不过在同一个文件上多次使用 <code>fs.writeFile</code> 会引起文件的并发写入问题，这意味着多个写入操作可能会同时尝试访问同一个文件，并导致数据写入的混乱和不确定性。因此，为了保证文件的数据完整性和安全性，每次使用 <code>fs.writeFile</code> 写入文件时，需要等待前一个操作完成后才能进行下一个操作，这样可以避免并发写入的问题。这种方式虽然简单易用，但不适用于处理大量数据的情况，因为等待时间可能会很长，导致程序的性能下降。我们可以看下面这个例子:</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">function</span> <span class="token function">writeToFile</span><span class="token punctuation">(</span>data<span class="token operator">:</span> <span class="token builtin">string</span> <span class="token operator">|</span> NodeJS<span class="token punctuation">.</span>ArrayBufferView<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   fs<span class="token punctuation">.</span><span class="token function">writeFile</span><span class="token punctuation">(</span><span class="token string">"test.txt"</span><span class="token punctuation">,</span> data<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> flag<span class="token operator">:</span> <span class="token string">"a+"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
@@ -592,12 +592,14 @@
 <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token function">writeToFile</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Data </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>i<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">\n</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>当你运行这段代码时，你会发现，可能会出现乱序输出</p>
 <pre class="line-numbers language-none"><code class="language-none">Data 0
 Data 2
 Data 1
 Data 4
 Data 3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>相比之下，使用 <code>fs.createWriteStream</code> 可以更好地处理大量数据的写入操作，下面是一个简单的例子：</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// 创建可写流</span>
 <span class="token keyword">const</span> writeStream <span class="token operator">=</span> fs<span class="token punctuation">.</span><span class="token function">createWriteStream</span><span class="token punctuation">(</span><span class="token string">"test.txt"</span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> flags<span class="token operator">:</span> <span class="token string">"a+"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -614,15 +616,15 @@ Data 3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></sp
 
 <span class="token comment">// 关闭可写流</span>
 writeStream<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>在这个例子中，我们使用 <code>fs.createWriteStream</code> 创建了一个可写流，并通过 <code>writeStream.write</code> 方法向文件中写入数据。这种方式可以分块逐个写入数据，避免了一次性写入大量数据的问题，因此可以更好地处理大量数据的写入操作，并提高程序的性能。</p>
-<h2 id="Pipe">Pipe</h2>
-<p><code>pipe()</code> 是一个非常常用的方法，用于将可读流和可写流连接起来，以便从可读流中读取数据并将其写入到可写流中。例如：</p>
+<h2 id="Pipe"><a href="#Pipe" class="headerlink" title="Pipe"></a>Pipe</h2><p><code>pipe()</code> 是一个非常常用的方法，用于将可读流和可写流连接起来，以便从可读流中读取数据并将其写入到可写流中。例如：</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">const</span> readableStream <span class="token operator">=</span> fs<span class="token punctuation">.</span><span class="token function">createReadStream</span><span class="token punctuation">(</span><span class="token string">"./file.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">const</span> writableStream <span class="token operator">=</span> fs<span class="token punctuation">.</span><span class="token function">createWriteStream</span><span class="token punctuation">(</span><span class="token string">"./all.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 readableStream<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>writableStream<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>在上面的例子中，我们通过创建了<code>readableStream</code>和<code>writableStream</code>两个流来读取和写数据。<br>
-然后我们通过<code>pipe</code>方法来将可读流中的数据传输到可写流中，直到可读流结束或者可写流关闭为止。</p>
+
+<p>在上面的例子中，我们通过创建了<code>readableStream</code>和<code>writableStream</code>两个流来读取和写数据。<br>然后我们通过<code>pipe</code>方法来将可读流中的数据传输到可写流中，直到可读流结束或者可写流关闭为止。</p>
 <p>这种方式可以非常高效的处理大量数据，且不需要手动控制数据的流动。</p>
 <p>除了将可读流和可写流连接起来，<code>pipe</code>还可以将多个可读流连接起来，并输出给单个可写流。这可以很方便的处理多个源的数据，例如多文件合并为单文件。</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">const</span> readableStream1 <span class="token operator">=</span> fs<span class="token punctuation">.</span><span class="token function">createReadStream</span><span class="token punctuation">(</span><span class="token string">"file1.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -631,8 +633,8 @@ readableStream<span class="token punctuation">.</span><span class="token functio
 
 readableStream1<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>writableStream<span class="token punctuation">)</span><span class="token punctuation">;</span>
 readableStream2<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>writableStream<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="可写流的原理">可写流的原理</h2>
-<p><code>fs.createWriteStream</code>不是唯一创建可读流的方法。我们可以自己创建一个可读流。</p>
+
+<h2 id="可写流的原理"><a href="#可写流的原理" class="headerlink" title="可写流的原理"></a>可写流的原理</h2><p><code>fs.createWriteStream</code>不是唯一创建可读流的方法。我们可以自己创建一个可读流。</p>
 <p>每个可读流需要实现一个<code>_write</code>方法。当我们将数据写到流中时，就会间接的调用这个方法</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Writable <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"stream"</span><span class="token punctuation">;</span>
 
@@ -644,6 +646,7 @@ writable<span class="token punctuation">.</span><span class="token function-vari
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 
 writable<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">"Hello world!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>上面的例子会输出<code>Hello world!</code></p>
 <p>在上面这个例子中，每次我们写入<code>stream</code>，字符串就会被 console 输出。<code>encoding</code>变量是一个字符串，表示我们数据的编码格式。调用<code>next</code>方法表示数据已经刷新，意味着我们完成了对它的处理。</p>
 <p><code>_write</code>方法也可以通过<code>Writable</code>构造函数，或者继承<code>Writable</code>类来声明。</p>
@@ -672,11 +675,10 @@ writable<span class="token punctuation">.</span><span class="token function">wri
 
 readable<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>writable<span class="token punctuation">)</span><span class="token punctuation">;</span>
 readable1<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>writable<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>在上面的例子中，每次我们写入数据时(使用的是 pipe，会自动调用<code>writable.write</code>)，都会将数据添加到<code>output.txt</code>后。</p>
-<h2 id="Process-流">Process 流</h2>
-<p>在第一章中，我们提到过全局<code>process</code>对象。除了<code>process.argv</code>和<code>process.execPath</code>等属性外，它还包含我们的应用程序可以使用的流。</p>
-<h3 id="process-stdin">process.stdin</h3>
-<p><code>process.stdin</code>是一个标准输入流(<code>standard input</code>)，用于读取用户的输入。我们可以通过以下代码创建一个简单的<code>REPL（Read-Eval-Print Loop）</code></p>
+<h2 id="Process-流"><a href="#Process-流" class="headerlink" title="Process 流"></a>Process 流</h2><p>在第一章中，我们提到过全局<code>process</code>对象。除了<code>process.argv</code>和<code>process.execPath</code>等属性外，它还包含我们的应用程序可以使用的流。</p>
+<h3 id="process-stdin"><a href="#process-stdin" class="headerlink" title="process.stdin"></a>process.stdin</h3><p><code>process.stdin</code>是一个标准输入流(<code>standard input</code>)，用于读取用户的输入。我们可以通过以下代码创建一个简单的<code>REPL（Read-Eval-Print Loop）</code></p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> readline <span class="token keyword">from</span> <span class="token string">"readline"</span><span class="token punctuation">;</span>
 
 <span class="token keyword">const</span> rl <span class="token operator">=</span> readline<span class="token punctuation">.</span><span class="token function">createInterface</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
@@ -688,18 +690,19 @@ rl<span class="token punctuation">.</span><span class="token function">question<
   <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Hello, </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>name<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">!</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   rl<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>在这个例子中，<code>readline</code> 模块创建了一个 <code>Interface</code> 对象，将 <code>process.stdin</code> 作为输入流传递给它，然后通过 <code>rl.question()</code> 方法向用户提出一个问题，并在用户输入回答后，将回答作为参数传递给回调函数。</p>
 <p><code>process.stdin</code> 可以通过监听 <code>data</code> 事件来读取用户输入的数据，例如：</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript">process<span class="token punctuation">.</span>stdin<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">"data"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
   <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Received: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>data<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>这段代码会打印出用户输入的数据。当用户按下回车键时，Node.js 会将输入的数据作为一个 Buffer 对象触发 <code>data</code> 事件，然后程序可以通过该事件的回调函数来处理数据。</p>
-<h3 id="process-stdout-和-process-stderr">process.stdout 和 process.stderr</h3>
-<p><code>process.stdout</code>和<code>process.stderr</code>是一个可写流。它们被用在<code>console.log()</code>和<code>console.error()</code>,向它们写入文本就会在控制台中输出。我们可以轻松地利用它们来记录文件：</p>
+<h3 id="process-stdout-和-process-stderr"><a href="#process-stdout-和-process-stderr" class="headerlink" title="process.stdout 和 process.stderr"></a>process.stdout 和 process.stderr</h3><p><code>process.stdout</code>和<code>process.stderr</code>是一个可写流。它们被用在<code>console.log()</code>和<code>console.error()</code>,向它们写入文本就会在控制台中输出。我们可以轻松地利用它们来记录文件：</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">const</span> readable <span class="token operator">=</span> fs<span class="token punctuation">.</span><span class="token function">createReadStream</span><span class="token punctuation">(</span><span class="token string">"./test.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 readable<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>process<span class="token punctuation">.</span>stdout<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h2 id="总结">总结</h2>
-<p>在本文中，我们介绍了可写流：如何使用它们来处理文件以及如何通过管道与可读流结合使用。我们还实现了可写流来处理文件，其中包括编写 _write 函数。我们还学习了如何通过 process.stdin 流传递附加数据以及 process.stdout 和 process.stderr 流的作用。</p>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在本文中，我们介绍了可写流：如何使用它们来处理文件以及如何通过管道与可读流结合使用。我们还实现了可写流来处理文件，其中包括编写 _write 函数。我们还学习了如何通过 process.stdin 流传递附加数据以及 process.stdout 和 process.stderr 流的作用。</p>
 
       </div>
       <div class="post-tags-categories">
@@ -774,21 +777,15 @@ HTTP 是一种协议，它允许你请求例如JSON 数据和HTML 文档这项�
         <div class="title-text">交易相关知识</div>
       </div>
       <!-- <div class="content">
-        常用名词解释
-市场行情
-
-
+        常用名词解释市场行情
 数字货币
-
 
 K 线图
 
-
 Spot-现货交易
 
-trade-币币交易/交易对
-
-https
+trade-币币交易&#x2F;交易对
+https:
       </div> -->
     </a>
   </div>

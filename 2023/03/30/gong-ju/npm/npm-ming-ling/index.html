@@ -566,9 +566,7 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1><a target="_blank" rel="noopener" href="https://www.cnblogs.com/PeunZhang/p/5553574.html">原文地址，本篇仅做记录学习</a></h1>
-<h3 id="npm-install-安装模块">npm install 安装模块</h3>
-<ol>
+        <h1 id="原文地址，本篇仅做记录学习"><a href="#原文地址，本篇仅做记录学习" class="headerlink" title="原文地址，本篇仅做记录学习"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/PeunZhang/p/5553574.html">原文地址，本篇仅做记录学习</a></h1><h3 id="npm-install-安装模块"><a href="#npm-install-安装模块" class="headerlink" title="npm install 安装模块"></a>npm install 安装模块</h3><ol>
 <li>基础语法</li>
 </ol>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> <span class="token punctuation">(</span>with no args, <span class="token keyword">in</span> package <span class="token function">dir</span><span class="token punctuation">)</span>
@@ -582,98 +580,87 @@
 
 alias: <span class="token function">npm</span> i
 common options: <span class="token punctuation">[</span>-S<span class="token operator">|</span>--save<span class="token operator">|</span>-D<span class="token operator">|</span>--save-dev<span class="token operator">|</span>-O<span class="token operator">|</span>--save-optional<span class="token punctuation">]</span> <span class="token punctuation">[</span>-E<span class="token operator">|</span>--save-exact<span class="token punctuation">]</span> <span class="token punctuation">[</span>--dry-run<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <ol start="2">
-<li>
-<p>安装包，默认会安装最新的版本<br>
-<code>npm install gulp</code></p>
+<li><p>安装包，默认会安装最新的版本<br><code>npm install gulp</code></p>
 </li>
-<li>
-<p>安装指定版本<br>
-<code>npm install gulp@1.1.1</code></p>
+<li><p>安装指定版本<br><code>npm install gulp@1.1.1</code></p>
 </li>
 </ol>
 <ul>
 <li>项目对模块的依赖可以使用下面的 3 种方法来表示（假设当前版本号是 1.1.0 ）：</li>
 </ul>
-<p>兼容模块新发布的补丁版本：~1.1.0、1.1.x、1.1<br>
-兼容模块新发布的小版本、补丁版本：^1.1.0、1.x、1<br>
-兼容模块新发布的大版本、小版本、补丁版本：*、x</p>
+<p>兼容模块新发布的补丁版本：~1.1.0、1.1.x、1.1<br>兼容模块新发布的小版本、补丁版本：^1.1.0、1.x、1<br>兼容模块新发布的大版本、小版本、补丁版本：*、x</p>
 <ul>
-<li><strong>-S, --save 安装包信息将加入到 dependencies（生产阶段的依赖）</strong></li>
+<li><strong>-S, –save 安装包信息将加入到 dependencies（生产阶段的依赖）</strong></li>
 </ul>
 <p><code>npm install gulp --save 或 npm install gulp -S</code></p>
 <p>package.json 文件的 dependencies 字段：</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
     <span class="token property">"gulp"</span><span class="token operator">:</span> <span class="token string">"^3.9.1"</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <ul>
-<li><strong>-D, --save-dev 安装包信息将加入到 devDependencies（开发阶段的依赖），所以开发阶段一般使用它</strong></li>
+<li><strong>-D, –save-dev 安装包信息将加入到 devDependencies（开发阶段的依赖），所以开发阶段一般使用它</strong></li>
 </ul>
 <p><code>npm install gulp --save-dev 或 npm install gulp -D</code></p>
 <p>package.json 文件的 devDependencies 字段：</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
     <span class="token property">"gulp"</span><span class="token operator">:</span> <span class="token string">"^3.9.1"</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <ul>
-<li><strong>-O, --save-optional 安装包信息将加入到 optionalDependencies（可选阶段的依赖）</strong></li>
+<li><strong>-O, –save-optional 安装包信息将加入到 optionalDependencies（可选阶段的依赖）</strong></li>
 </ul>
 <p><code>npm install gulp --save-optional 或 npm install gulp -O</code></p>
 <p>package.json 文件的 optionalDependencies 字段：</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"optionalDependencies"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
     <span class="token property">"gulp"</span><span class="token operator">:</span> <span class="token string">"^3.9.1"</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <ul>
-<li><strong>-E, --save-exact 精确安装指定模块版本</strong></li>
+<li><strong>-E, –save-exact 精确安装指定模块版本</strong></li>
 </ul>
 <p><code>npm install gulp --save-exact 或 npm install gulp -E</code></p>
 <p>输入命令<strong>npm install gulp -ES</strong>，留意 package.json 文件的 dependencies 字段，以看出版本号中的^消失了</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
     <span class="token property">"gulp"</span><span class="token operator">:</span> <span class="token string">"3.9.1"</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>模块的依赖都被写入了 package.json 文件后，他人打开项目的根目录（项目开源、内部团队合作），使用 npm install 命令可以根据 dependencies 配置安装所有的依赖包</p>
 <ul>
-<li>
-<p>本地安装 <code>npm install gulp</code></p>
+<li><p>本地安装 <code>npm install gulp</code></p>
 </li>
-<li>
-<p>全局安装 <code>npm install gulp -g</code></p>
+<li><p>全局安装 <code>npm install gulp -g</code></p>
 </li>
 </ul>
-<h3 id="npm-uninstall-卸载模块">npm uninstall 卸载模块</h3>
-<ol>
+<h3 id="npm-uninstall-卸载模块"><a href="#npm-uninstall-卸载模块" class="headerlink" title="npm uninstall 卸载模块"></a>npm uninstall 卸载模块</h3><ol>
 <li>基础语法</li>
 </ol>
 <pre class="line-numbers language-none"><code class="language-none">npm uninstall [&lt;@scope&gt;&#x2F;]&lt;pkg&gt;[@&lt;version&gt;]... [-S|--save|-D|--save-dev|-O|--save-optional]
 
 aliases: remove, rm, r, un, unlink<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="npm-update-更新模块">npm update 更新模块</h3>
-<pre><code>npm update [-g] [&lt;pkg&gt;...]
+
+<h3 id="npm-update-更新模块"><a href="#npm-update-更新模块" class="headerlink" title="npm update 更新模块"></a>npm update 更新模块</h3><pre><code>npm update [-g] [&lt;pkg&gt;...]
 </code></pre>
-<h3 id="npm-outdated-检查模块是否已经过时">npm outdated 检查模块是否已经过时</h3>
-<pre><code>npm outdated [[&lt;@scope&gt;/]&lt;pkg&gt; ...]
+<h3 id="npm-outdated-检查模块是否已经过时"><a href="#npm-outdated-检查模块是否已经过时" class="headerlink" title="npm outdated 检查模块是否已经过时"></a>npm outdated 检查模块是否已经过时</h3><pre><code>npm outdated [[&lt;@scope&gt;/]&lt;pkg&gt; ...]
 </code></pre>
-<h3 id="npm-ls-查看安装的模块">npm ls 查看安装的模块</h3>
-<pre class="line-numbers language-none"><code class="language-none">npm ls [[&lt;@scope&gt;&#x2F;]&lt;pkg&gt; ...]
+<h3 id="npm-ls-查看安装的模块"><a href="#npm-ls-查看安装的模块" class="headerlink" title="npm ls 查看安装的模块"></a>npm ls 查看安装的模块</h3><pre class="line-numbers language-none"><code class="language-none">npm ls [[&lt;@scope&gt;&#x2F;]&lt;pkg&gt; ...]
 
 aliases: list, la, ll<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="npm-help-查看某条命令的详细帮助">npm help 查看某条命令的详细帮助</h3>
-<ol>
-<li>
-<p>基础语法<br>
-<code>npm help &lt;term&gt; [&lt;terms..&gt;]</code></p>
+
+<h3 id="npm-help-查看某条命令的详细帮助"><a href="#npm-help-查看某条命令的详细帮助" class="headerlink" title="npm help 查看某条命令的详细帮助"></a>npm help 查看某条命令的详细帮助</h3><ol>
+<li><p>基础语法<br><code>npm help &lt;term&gt; [&lt;terms..&gt;]</code></p>
 </li>
-<li>
-<p>例如输入 npm help install，系统在默认的浏览器或者默认的编辑器中打开本地 nodejs 安装包的文件/nodejs/node_modules/npm/html/doc/cli/npm-install.html</p>
+<li><p>例如输入 npm help install，系统在默认的浏览器或者默认的编辑器中打开本地 nodejs 安装包的文件&#x2F;nodejs&#x2F;node_modules&#x2F;npm&#x2F;html&#x2F;doc&#x2F;cli&#x2F;npm-install.html</p>
 </li>
 </ol>
 <p><code>npm help install</code></p>
-<h3 id="npm-root-查看包的安装路径">npm root 查看包的安装路径</h3>
-<pre><code>输出 node_modules的路径
+<h3 id="npm-root-查看包的安装路径"><a href="#npm-root-查看包的安装路径" class="headerlink" title="npm root 查看包的安装路径"></a>npm root 查看包的安装路径</h3><pre><code>输出 node_modules的路径
 
 npm root [-g]
 </code></pre>
-<h3 id="npm-config-管理-npm-的配置路径">npm config 管理 npm 的配置路径</h3>
-<pre><code>npm config set &lt;key&gt; &lt;value&gt; [-g|--global]
+<h3 id="npm-config-管理-npm-的配置路径"><a href="#npm-config-管理-npm-的配置路径" class="headerlink" title="npm config 管理 npm 的配置路径"></a>npm config 管理 npm 的配置路径</h3><pre><code>npm config set &lt;key&gt; &lt;value&gt; [-g|--global]
 npm config get &lt;key&gt;
 npm config delete &lt;key&gt;
 npm config list
@@ -682,16 +669,14 @@ npm get &lt;key&gt;
 npm set &lt;key&gt; &lt;value&gt; [-g|--global]
 </code></pre>
 <p>对于 config 这块用得最多应该是设置代理，解决 npm 安装一些模块失败的问题</p>
-<p>例如我在公司内网，因为公司的防火墙原因，无法完成任何模块的安装，这个时候设置代理可以解决<br>
-npm config set proxy=<a target="_blank" rel="noopener" href="http://xxx.com:8080">http://xxx.com:8080</a></p>
+<p>例如我在公司内网，因为公司的防火墙原因，无法完成任何模块的安装，这个时候设置代理可以解决<br>npm config set proxy&#x3D;<a target="_blank" rel="noopener" href="http://xxx.com:8080/">http://xxx.com:8080</a></p>
 <p>又如国内的网络环境问题，某官方的 IP 可能被和谐了，幸好国内有好心人，搭建了镜像，此时我们简单设置镜像</p>
 <pre><code>npm config set registry=&quot;http://r.cnpmjs.org&quot;
 </code></pre>
 <p>也可以临时配置，如安装淘宝镜像</p>
 <pre><code>npm install -g cnpm --registry=https://registry.npm.taobao.org
 </code></pre>
-<h3 id="npm-cache-管理模块的缓存">npm cache 管理模块的缓存</h3>
-<pre><code>npm cache add &lt;tarball file&gt;
+<h3 id="npm-cache-管理模块的缓存"><a href="#npm-cache-管理模块的缓存" class="headerlink" title="npm cache 管理模块的缓存"></a>npm cache 管理模块的缓存</h3><pre><code>npm cache add &lt;tarball file&gt;
 npm cache add &lt;folder&gt;
 npm cache add &lt;tarball url&gt;
 npm cache add &lt;name&gt;@&lt;version&gt;
@@ -703,8 +688,7 @@ npm cache clean [&lt;path&gt;]
 <p>最常用命令无非清除 npm 本地缓存</p>
 <pre><code>npm cache clean
 </code></pre>
-<h3 id="npm-view-查看模块的注册信息">npm view 查看模块的注册信息</h3>
-<pre><code>npm view [&lt;@scope&gt;/]&lt;name&gt;[@&lt;version&gt;] [&lt;field&gt;[.&lt;subfield&gt;]...]
+<h3 id="npm-view-查看模块的注册信息"><a href="#npm-view-查看模块的注册信息" class="headerlink" title="npm view 查看模块的注册信息"></a>npm view 查看模块的注册信息</h3><pre><code>npm view [&lt;@scope&gt;/]&lt;name&gt;[@&lt;version&gt;] [&lt;field&gt;[.&lt;subfield&gt;]...]
 
 aliases: info, show, v
 </code></pre>
@@ -717,17 +701,14 @@ aliases: info, show, v
 <p>查看模块的贡献者，包含邮箱地址</p>
 <pre><code>npm view npm contributors
 </code></pre>
-<h3 id="npm-adduser-用户登录">npm adduser 用户登录</h3>
-<pre><code>npm adduser [--registry=url] [--scope=@orgname] [--always-auth]
+<h3 id="npm-adduser-用户登录"><a href="#npm-adduser-用户登录" class="headerlink" title="npm adduser 用户登录"></a>npm adduser 用户登录</h3><pre><code>npm adduser [--registry=url] [--scope=@orgname] [--always-auth]
 </code></pre>
-<h3 id="npm-publish-发布模块">npm publish 发布模块</h3>
-<pre><code>npm publish [&lt;tarball&gt;|&lt;folder&gt;] [--tag &lt;tag&gt;] [--access &lt;public|restricted&gt;]
+<h3 id="npm-publish-发布模块"><a href="#npm-publish-发布模块" class="headerlink" title="npm publish 发布模块"></a>npm publish 发布模块</h3><pre><code>npm publish [&lt;tarball&gt;|&lt;folder&gt;] [--tag &lt;tag&gt;] [--access &lt;public|restricted&gt;]
 
-Publishes '.' if no argument supplied
-Sets tag 'latest' if no --tag specified
+Publishes &#39;.&#39; if no argument supplied
+Sets tag &#39;latest&#39; if no --tag specified
 </code></pre>
-<h3 id="npm-access-在发布的包上设置访问级别">npm access 在发布的包上设置访问级别</h3>
-<pre><code>npm access public [&lt;package&gt;]
+<h3 id="npm-access-在发布的包上设置访问级别"><a href="#npm-access-在发布的包上设置访问级别" class="headerlink" title="npm access 在发布的包上设置访问级别"></a>npm access 在发布的包上设置访问级别</h3><pre><code>npm access public [&lt;package&gt;]
 npm access restricted [&lt;package&gt;]
 
 npm access grant &lt;read-only|read-write&gt; &lt;scope:team&gt; [&lt;package&gt;]
@@ -737,8 +718,7 @@ npm access ls-packages [&lt;user&gt;|&lt;scope&gt;|&lt;scope:team&gt;]
 npm access ls-collaborators [&lt;package&gt; [&lt;user&gt;]]
 npm access edit [&lt;package&gt;]
 </code></pre>
-<h3 id="npm-package-json-的语法">npm package.json 的语法</h3>
-<p><a target="_blank" rel="noopener" href="https://github.com/ericdum/mujiang.info/issues/6/">https://github.com/ericdum/mujiang.info/issues/6/</a></p>
+<h3 id="npm-package-json-的语法"><a href="#npm-package-json-的语法" class="headerlink" title="npm package.json 的语法"></a>npm package.json 的语法</h3><p><a target="_blank" rel="noopener" href="https://github.com/ericdum/mujiang.info/issues/6/">https://github.com/ericdum/mujiang.info/issues/6/</a></p>
 
       </div>
       <div class="post-tags-categories">
@@ -815,11 +795,9 @@ npm access edit [&lt;package&gt;]
       </div>
       <!-- <div class="content">
         Update
-
 此项为博主了解的时间为基础，并非 git 实际更新时间
 
-2022.10.01 更新
-github 在更
+2022.10.01 更新github 在更新后
       </div> -->
     </a>
   </div>

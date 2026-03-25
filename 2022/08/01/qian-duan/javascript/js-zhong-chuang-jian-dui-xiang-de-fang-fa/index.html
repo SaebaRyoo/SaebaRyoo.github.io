@@ -566,9 +566,7 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h3 id="工厂模式">工厂模式</h3>
-<p><strong>优点：</strong> 解决创建多个相似对象的问题<br>
-<strong>缺点：</strong></p>
+        <h3 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h3><p><strong>优点：</strong> 解决创建多个相似对象的问题<br><strong>缺点：</strong></p>
 <ol>
 <li>无法通过 constructor 识别对象，创建的对象的 constructor 都是 Object，而不是 createPerson</li>
 <li>通用的方法会创建多次，占用内存</li>
@@ -585,12 +583,11 @@
 
 <span class="token keyword">var</span> person1 <span class="token operator">=</span> <span class="token function">createPerson</span><span class="token punctuation">(</span><span class="token string">"william"</span><span class="token punctuation">,</span> <span class="token number">23</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>person1<span class="token punctuation">.</span>constructor<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Object</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="构造函数模式">构造函数模式</h3>
-<p><strong>优点：</strong></p>
+
+<h3 id="构造函数模式"><a href="#构造函数模式" class="headerlink" title="构造函数模式"></a>构造函数模式</h3><p><strong>优点：</strong></p>
 <ol>
 <li>通过 new 关键字创建实例，更像面向对象语言的实例创建</li>
-<li>能够通过 constructor 和 instanceof 识别对象<br>
-<strong>缺点：</strong></li>
+<li>能够通过 constructor 和 instanceof 识别对象<br><strong>缺点：</strong></li>
 <li>和工厂函数一样。通用的方法会创建多次，占用内存。</li>
 </ol>
 <p><strong>不同：与工厂函数的不同之处在于</strong></p>
@@ -617,8 +614,8 @@ console<span class="token punctuation">.</span><span class="token function">log<
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>person1<span class="token punctuation">.</span>constructor<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Person</span>
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>person1 <span class="token keyword">instanceof</span> <span class="token class-name">Person</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// true</span>
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>person1 <span class="token keyword">instanceof</span> <span class="token class-name">Object</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="原型模式">原型模式</h3>
-<p><strong>优点：</strong></p>
+
+<h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><p><strong>优点：</strong></p>
 <ol>
 <li>所有对象实例都能共享构造函数的原型对象上的属性和方法</li>
 </ol>
@@ -642,8 +639,8 @@ console<span class="token punctuation">.</span><span class="token function">log<
 person1<span class="token punctuation">.</span>colors <span class="token operator">===</span> person2<span class="token punctuation">.</span>color2<span class="token punctuation">;</span> <span class="token comment">// true， 值与引用都相等</span>
 person1<span class="token punctuation">.</span>colors<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">"red"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>person2<span class="token punctuation">.</span>colors<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//  ['green', 'yellow', 'blue', 'red']</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="构造函数和原型组合模式">构造函数和原型组合模式</h3>
-<p><strong>优点：</strong></p>
+
+<h3 id="构造函数和原型组合模式"><a href="#构造函数和原型组合模式" class="headerlink" title="构造函数和原型组合模式"></a>构造函数和原型组合模式</h3><p><strong>优点：</strong></p>
 <ol>
 <li>解决工厂、构造函数中通用方法占用内存</li>
 <li>解决原型中引用类型共享内存的，没有实例自己的属性和方法</li>
@@ -662,8 +659,8 @@ console<span class="token punctuation">.</span><span class="token function">log<
 person1<span class="token punctuation">.</span>colors<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token string">"red"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>person1<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//  ['green', 'yellow', 'blue', 'red']</span>
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>person2<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//  ['green', 'yellow', 'blue']</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="动态原型模式">动态原型模式</h3>
-<p><strong>优点：</strong> 只有当实例上不存在 getInfo 方法时才在原型上创建</p>
+
+<h3 id="动态原型模式"><a href="#动态原型模式" class="headerlink" title="动态原型模式"></a>动态原型模式</h3><p><strong>优点：</strong> 只有当实例上不存在 getInfo 方法时才在原型上创建</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">Person</span><span class="token punctuation">(</span><span class="token parameter">name<span class="token punctuation">,</span> age<span class="token punctuation">,</span> colors</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
   <span class="token keyword">this</span><span class="token punctuation">.</span>age <span class="token operator">=</span> age<span class="token punctuation">;</span>
@@ -676,8 +673,8 @@ console<span class="token punctuation">.</span><span class="token function">log<
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 <span class="token keyword">var</span> person1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"william"</span><span class="token punctuation">,</span> <span class="token number">23</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">"green"</span><span class="token punctuation">,</span> <span class="token string">"yellow"</span><span class="token punctuation">,</span> <span class="token string">"blue"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="寄生构造函数">寄生构造函数</h3>
-<p>该模式和工厂模式一样，除了使用了 new</p>
+
+<h3 id="寄生构造函数"><a href="#寄生构造函数" class="headerlink" title="寄生构造函数"></a>寄生构造函数</h3><p>该模式和工厂模式一样，除了使用了 new</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">Person</span><span class="token punctuation">(</span><span class="token parameter">name<span class="token punctuation">,</span> age</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">var</span> o <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
   o<span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
@@ -688,6 +685,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
   <span class="token keyword">return</span> o<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 <span class="token keyword">var</span> person1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token string">"william"</span><span class="token punctuation">,</span> <span class="token number">23</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>当想要创建一个具有额外方法的数组，但是有不能直接修改 Array 构造函数时，可以使用这个模式</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">SpecialArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">var</span> values <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -699,9 +697,8 @@ console<span class="token punctuation">.</span><span class="token function">log<
 <span class="token punctuation">&#125;</span>
 <span class="token keyword">var</span> colors <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SpecialArray</span><span class="token punctuation">(</span><span class="token string">"red"</span><span class="token punctuation">,</span> <span class="token string">"blue"</span><span class="token punctuation">,</span> <span class="token string">"green"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 colors<span class="token punctuation">.</span><span class="token function">toPipedString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// "red|bule|green"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="稳妥构造函数">稳妥构造函数</h3>
-<p><strong>优点：</strong> 定义私有变量，只能通过指定方法获取属性<br>
-<strong>缺点：</strong> 无法区分实例类别</p>
+
+<h3 id="稳妥构造函数"><a href="#稳妥构造函数" class="headerlink" title="稳妥构造函数"></a>稳妥构造函数</h3><p><strong>优点：</strong> 定义私有变量，只能通过指定方法获取属性<br><strong>缺点：</strong> 无法区分实例类别</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">Person</span><span class="token punctuation">(</span><span class="token parameter">name</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">var</span> o <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   o<span class="token punctuation">.</span><span class="token function-variable function">getName</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>

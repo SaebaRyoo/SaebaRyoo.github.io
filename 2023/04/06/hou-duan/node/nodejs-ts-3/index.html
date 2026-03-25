@@ -570,14 +570,12 @@
 <p>这个系列是翻译文章，虽然是翻译，但有些地方还是做了一些修改。如果你想要看原版，那可以根据这个<a target="_blank" rel="noopener" href="https://wanago.io/2019/02/25/node-js-typescript-3-the-buffer/">链接</a>去查找。</p>
 </blockquote>
 <p>这篇文章介绍了 Node 中另一个重要的概念:<code>Buffer</code>。为了理解它，我们还会解释什么是二进制数据和为什么我们需要 <strong>character encodings(字符编码)</strong> 。所有这些信息在深入研究 Node.js 的其他部分，例如<code>stream</code>时非常重要。</p>
-<h2 id="Buffer">Buffer</h2>
-<p><code>Buffer</code>是 Node 中的一个全局对象，它不需要<code>require</code>就可以直接使用。它的主要作用是帮助我们处理二进制数据。</p>
+<h2 id="Buffer"><a href="#Buffer" class="headerlink" title="Buffer"></a>Buffer</h2><p><code>Buffer</code>是 Node 中的一个全局对象，它不需要<code>require</code>就可以直接使用。它的主要作用是帮助我们处理二进制数据。</p>
 <p>因为服务端不像客户端只需要做一些简单的字符操作或 DOM 操作，服务端需要处理<code>网络协议</code>、<code>数据库操作</code>、<code>图片处理</code>、<code>文件处理</code>、<code>加解密</code>等，在这些操作中，需要处理大量的二进制数据。</p>
 <p>但是它究竟是什么？</p>
 <p>计算机以二进制（0 和 1）表示数据。要存储一个数字，计算机首先将其转换为二进制表示。数字转换通常相对简单，在大多数情况下，不会对其二进制形式产生任何疑问。</p>
 <p>但是数字并不是我们处理的唯一数据类型：我们还有图像、文本、视频等等。为了表示这些数据，我们需要制定一些约定，因为所有数据都是用数字来表示的。当涉及到文本时，有多种字符编码，定义字符集以及如何使用数字来表示它们。其中一个非常流行的编码是<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/UTF-8">UTF-8</a>，我们在本文中使用它。</p>
-<h2 id="buffer-是一个数字数组">buffer 是一个数字数组</h2>
-<p>buffer 对象，类似于 number 数组，它的每个<strong>元素为 16 进制的两位数（存储的时候还是二进制，显示为 16 进制是因为可读性并且可以减少字符输出）</strong>，表示一个字节。由于单个字节上保存的最大数字为 255 <strong>（因为一个字节可以表示的二进制位数是 8 位（1 个字节 = 8 个二进制位）。而每一位的值只有 0 或 1 两种可能，所以 8 位的二进制数可以表示 2^8 种不同的数值，即 256 种（从 0 到 255）。因此，一个字节最多只能表示到 255。）</strong> 因此 buffer 元素不能包含更大的数字：</p>
+<h2 id="buffer-是一个数字数组"><a href="#buffer-是一个数字数组" class="headerlink" title="buffer 是一个数字数组"></a>buffer 是一个数字数组</h2><p>buffer 对象，类似于 number 数组，它的每个<strong>元素为 16 进制的两位数（存储的时候还是二进制，显示为 16 进制是因为可读性并且可以减少字符输出）</strong>，表示一个字节。由于单个字节上保存的最大数字为 255 <strong>（因为一个字节可以表示的二进制位数是 8 位（1 个字节 &#x3D; 8 个二进制位）。而每一位的值只有 0 或 1 两种可能，所以 8 位的二进制数可以表示 2^8 种不同的数值，即 256 种（从 0 到 255）。因此，一个字节最多只能表示到 255。）</strong> 因此 buffer 元素不能包含更大的数字：</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">const</span> buffer <span class="token operator">=</span> Buffer<span class="token punctuation">.</span><span class="token function">alloc</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 buffer<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">255</span><span class="token punctuation">;</span>
@@ -596,12 +594,13 @@ buffer<span class="token punctuation">[</span><span class="token number">3</span
 
 buffer<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">50</span><span class="token punctuation">;</span>
 <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>buffer<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 206</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>如上所示，如果你尝试分配一个<strong>大于 255</strong>的值，<strong>256</strong>就会除以这个数，并将<strong>余数</strong>分配给该值。</p>
 <p>而负数的处理比较不同。如果你尝试将一个负数赋给一个字节，它将使用<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Two%27s_complement">二进制补码</a>系统进行转换。</p>
 <p>我们可以看到最后一个例子<code>buffer[4] = -50</code>，输出的是 206</p>
 <p>它的计算过程如下：</p>
 <blockquote>
-<p>$-50_{(10)} = 11001110_{(U2)}$</p>
+<p>$-50_{(10)} &#x3D; 11001110_{(U2)}$</p>
 </blockquote>
 <p>上面的公式表示把十进制数-50 转化成二进制补码表示，补码表示方式为<strong>取反加一</strong>。具体过程如下：</p>
 <ol>
@@ -611,21 +610,23 @@ buffer<span class="token punctuation">[</span><span class="token number">4</span
 </ol>
 <p>最终得到的<strong>11001110</strong>是 <strong>-50</strong> 在二进制补码表示方式下的值。</p>
 <p>然后在 JavaScript 中输出一个数字的时候，会默认将这个二进制数转换回正常的十进制展示。也就是类似如下，所以输出 206</p>
-<p><code>parseInt('11001110', 2); // 206</code></p>
+<p><code>parseInt(&#39;11001110&#39;, 2); // 206</code></p>
 <p>当你创建一个 buffer，你也可以使用一个值来填充它</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token comment">// Creates a Buffer of length 5, filled with 1</span>
 <span class="token keyword">const</span> buffer <span class="token operator">=</span> Buffer<span class="token punctuation">.</span><span class="token function">alloc</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token comment">// Creates a Buffer containing 1, 2, 3</span>
 <span class="token keyword">const</span> buffer <span class="token operator">=</span> Buffer<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="字符串-Buffer">字符串 Buffer</h2>
-<p>由于 Buffer 是存储字节数据, 你也可以使用 Buffer 来操作字符串</p>
+
+<h2 id="字符串-Buffer"><a href="#字符串-Buffer" class="headerlink" title="字符串 Buffer"></a>字符串 Buffer</h2><p>由于 Buffer 是存储字节数据, 你也可以使用 Buffer 来操作字符串</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">const</span> buffer <span class="token operator">=</span> Buffer<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"Hello world!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>默认情况下，我们需要记住它使用的是<code>UTF-8</code>编码。你可以使用传递给<code>from</code>函数的第二个参数来更改它。</p>
 <p>例如 Buffer 可以使用 toString 方法来轻松读取</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">const</span> buffer <span class="token operator">=</span> Buffer<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"Hello world!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>buffer<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Hello world!</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>当然也并不总是那么简单！有许多 UTF-8 字符需要<strong>多个字节来表示</strong>，这可能会给你带来一些麻烦。让我们看看这个字符串：</p>
 <blockquote>
 <p>Hello 🌎 world!</p>
@@ -638,6 +639,7 @@ buffer<span class="token punctuation">[</span><span class="token number">4</span
   Buffer<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0b10001100</span><span class="token punctuation">,</span> <span class="token number">0b10001110</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   Buffer<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">" world!"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
 <span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <blockquote>
 <p><code>0b</code>表示是在 JavaScript 中写一个二进制数据</p>
 </blockquote>
@@ -649,6 +651,7 @@ buffers<span class="token punctuation">.</span><span class="token function">forE
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Hello ��� world!</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>它并没有达到我们想要的效果。这是因为每个 buffer 都被单独处理。我们可以使用<code>StringDecoder</code>进行改进。它提供了一种 API，用于将 Buffer 对象解码为字符串，同时保留多字节字符。</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> StringDecoder <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"string_decoder"</span><span class="token punctuation">;</span>
 
@@ -667,9 +670,9 @@ buffers<span class="token punctuation">.</span><span class="token function">forE
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Hello 🌎 world!</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><code>StringDecoder</code>可以确保解码后的字符串不包含任何不完整的多字节字符，它通过将不完整的字符保留在内部 buffer 中，直到下一次调用<code>decoder.write()</code>方法。</p>
-<h2 id="读取一个文件">读取一个文件</h2>
-<p>在该系列的第一部分，我们读取一个指定编码的文件。</p>
+<h2 id="读取一个文件"><a href="#读取一个文件" class="headerlink" title="读取一个文件"></a>读取一个文件</h2><p>在该系列的第一部分，我们读取一个指定编码的文件。</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">cat</span><span class="token punctuation">(</span>path<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">const</span> content <span class="token operator">=</span> <span class="token keyword">await</span> fs<span class="token punctuation">.</span>promises<span class="token punctuation">.</span><span class="token function">readFile</span><span class="token punctuation">(</span>path<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> encoding<span class="token operator">:</span> <span class="token string">"utf-8"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -678,6 +681,7 @@ buffers<span class="token punctuation">.</span><span class="token function">forE
     <span class="token builtin">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>正是因为指定了编码格式，所以我们会接收到一个字符串。如果我们不提供一个编码格式，接收到的就是原始的 buffer。需要通过<code>toString</code>来转换</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> fs <span class="token keyword">from</span> <span class="token string">"fs"</span><span class="token punctuation">;</span>
 
@@ -691,9 +695,9 @@ buffers<span class="token punctuation">.</span><span class="token function">forE
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 <span class="token function">readFile</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><code>readFile</code>方法会一次性读取整个文件的内容。因此，即使文件非常大，它也只会在整个文件处理完后调用一次回调函数。如果想在整个文件内容被加载之前对文件的部分内容执行操作，需要使用<code>createReadStream</code>函数返回一个流。</p>
-<h2 id="总结">总结</h2>
-<p><code>buffer</code>是一个<code>字节数组</code>，其中每个元素的值范围从 0 到 255。由于所有类型的数据（如图像和文本）都必须表示为数字，因此我们还解释了<code>字符编码</code>的概念。在讨论即将涉及到的流时，所有这些信息都是很重要的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>buffer</code>是一个<code>字节数组</code>，其中每个元素的值范围从 0 到 255。由于所有类型的数据（如图像和文本）都必须表示为数字，因此我们还解释了<code>字符编码</code>的概念。在讨论即将涉及到的流时，所有这些信息都是很重要的。</p>
 
       </div>
       <div class="post-tags-categories">
@@ -737,19 +741,16 @@ buffers<span class="token punctuation">.</span><span class="token function">forE
   <div class="post-nav-prev post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/2.jpg" class="lazyload placeholder" data-srcset="/medias/2.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
     </div>
-    <a href="/2023/04/06/hou-duan/node/nodejs-ts-2/" class="post-nav-link">
+    <a href="/2023/04/06/hou-duan/node/nodejs-ts-4/" class="post-nav-link">
       <div class="title">
         <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">Node.js TypeScript#2. EventEmitter</div>
+        <div class="title-text">Node.js TypeScript#4. Readable Stream(可读流)</div>
       </div>
       
       <!-- <div class="content">
-        
-这个系列是翻译文章，虽然是翻译，但有些地方还是做了一些修改。如果你想要看原版，那可以根据这个链接去查找。
-
-在这篇文章
+        在 Nodejs 中，Stream是非常重要的，我们可以通过Stream来高效的读写数据。比如在处理文件或者处理 htt
       </div> -->
     </a>
   </div>
@@ -760,15 +761,18 @@ buffers<span class="token punctuation">.</span><span class="token function">forE
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/14.jpg" class="lazyload placeholder" data-srcset="/medias/14.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2023/04/06/hou-duan/node/nodejs-ts-4/" class="post-nav-link">
+    <a href="/2023/04/04/hou-duan/node/nodejs-ts-1/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">Node.js TypeScript#4. Readable Stream(可读流)</div>
+        <div class="title-text">Node.js TypeScript#1. Modules, process参数, 文件系统基础</div>
       </div>
       <!-- <div class="content">
-        在 Nodejs 中，Stream是非常重要的，我们可以通过Stream来高效的读写数据。比如在处理文件或者处理 htt
+        
+这个系列是翻译文章，虽然是翻译，但有些地方还是做了一些修改。如果你想要看原版，那可以根据这个链接去查找。
+
+在这个系列
       </div> -->
     </a>
   </div>

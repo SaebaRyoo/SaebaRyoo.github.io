@@ -567,9 +567,7 @@
     <article class="post post-detail">
       <div class="post-content">
         <p>最近在做项目时遇到一个需求，需要让一个列表能够通过点击按钮进行滚动，每次都是一屏的距离，不足则结束。并且，这个列表项是在<a target="_blank" rel="noopener" href="https://github.com/react-grid-layout/react-grid-layout">react-grid-layout</a>中的某一个模块内。所以包裹这个列表的容器会随时发生变化。在完成这个组件后，通过这篇文章总结一下。</p>
-<h2 id="UI-原型分析">UI/原型分析</h2>
-<p>那么从上面的功能描述以及项目中的 UI，我们可以分析得到这样一个假想图：<br>
-<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b08cd8dcffb247a7b9256f4041993a67~tplv-k3u1fbpfcp-watermark.image?" class="lazyload placeholder" data-srcset="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b08cd8dcffb247a7b9256f4041993a67~tplv-k3u1fbpfcp-watermark.image?" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image.png"></p>
+<h2 id="UI-原型分析"><a href="#UI-原型分析" class="headerlink" title="UI&#x2F;原型分析"></a>UI&#x2F;原型分析</h2><p>那么从上面的功能描述以及项目中的 UI，我们可以分析得到这样一个假想图：<br><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b08cd8dcffb247a7b9256f4041993a67~tplv-k3u1fbpfcp-watermark.image" class="lazyload placeholder" data-srcset="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b08cd8dcffb247a7b9256f4041993a67~tplv-k3u1fbpfcp-watermark.image" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="image.png"></p>
 <ol>
 <li>我们需要实现一个容器来作为我们的<strong>可视区域</strong>，并且这个容器是可以伸缩的。</li>
 <li>列表内容如果超出容器的<strong>可视区域</strong>，那么就会被隐藏。</li>
@@ -578,18 +576,13 @@
 </ol>
 <p>话不多说，我们先上简单的最终效果图</p>
 <ul>
-<li>
-<p>有固定宽度，不可伸缩<br>
-<img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f1e7d028cbd44d54be496daff25e7076~tplv-k3u1fbpfcp-watermark.image?" class="lazyload placeholder" data-srcset="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f1e7d028cbd44d54be496daff25e7076~tplv-k3u1fbpfcp-watermark.image?" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="slider-demo.gif"></p>
+<li><p>有固定宽度，不可伸缩<br><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f1e7d028cbd44d54be496daff25e7076~tplv-k3u1fbpfcp-watermark.image" class="lazyload placeholder" data-srcset="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f1e7d028cbd44d54be496daff25e7076~tplv-k3u1fbpfcp-watermark.image" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="slider-demo.gif"></p>
 </li>
-<li>
-<p>无固定宽度，可伸缩（这里直接用<a target="_blank" rel="noopener" href="https://www.binance.com/zh-CN/futures/BTCUSDT">币安</a>的效果来展示，如果你有兴趣，可以自己下载个<code>react-grid-layout</code>或者其他库来试一下效果）</p>
+<li><p>无固定宽度，可伸缩（这里直接用<a target="_blank" rel="noopener" href="https://www.binance.com/zh-CN/futures/BTCUSDT">币安</a>的效果来展示，如果你有兴趣，可以自己下载个<code>react-grid-layout</code>或者其他库来试一下效果）</p>
 </li>
 </ul>
-<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a9ef5d5ca4d644fdaa0c59882647493e~tplv-k3u1fbpfcp-watermark.image?" class="lazyload placeholder" data-srcset="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a9ef5d5ca4d644fdaa0c59882647493e~tplv-k3u1fbpfcp-watermark.image?" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="mxefs-bl7av.gif"></p>
-<h2 id="功能实现">功能实现</h2>
-<h3 id="监听元素尺寸变化">监听元素尺寸变化</h3>
-<blockquote>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a9ef5d5ca4d644fdaa0c59882647493e~tplv-k3u1fbpfcp-watermark.image" class="lazyload placeholder" data-srcset="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a9ef5d5ca4d644fdaa0c59882647493e~tplv-k3u1fbpfcp-watermark.image" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="mxefs-bl7av.gif"></p>
+<h2 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h2><h3 id="监听元素尺寸变化"><a href="#监听元素尺寸变化" class="headerlink" title="监听元素尺寸变化"></a>监听元素尺寸变化</h3><blockquote>
 <p>工欲善其事必先利其器</p>
 </blockquote>
 <p>在分析完后，我们发现有一个点。如果要支持<code>react-grid-layout</code>这类的伸缩功能，需要能够监听到元素的动态变化。</p>
@@ -613,9 +606,9 @@
   <span class="token keyword">return</span> width<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
 <span class="token keyword">export</span> <span class="token keyword">default</span> useResizeObserver<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>其中核心的逻辑是使用<code>ResizeObserver</code>类来监听一个元素的尺寸变化。然后返回变化后的<code>width</code></p>
-<h2 id="组件开发。">组件开发。</h2>
-<p>有了上面的分析，再实现代码就是一步步走即可。所以我们直接贴代码：</p>
+<h2 id="组件开发。"><a href="#组件开发。" class="headerlink" title="组件开发。"></a>组件开发。</h2><p>有了上面的分析，再实现代码就是一步步走即可。所以我们直接贴代码：</p>
 <p><code>components/SliderContainer/index.tsx</code></p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx"><span class="token keyword">import</span> React<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
   useMemo<span class="token punctuation">,</span>
@@ -745,6 +738,7 @@
     </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
   <span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>组件目前设置了两个属性<code>width</code>和<code>children</code></p>
 <ul>
 <li><strong>width</strong>: 如果不传，默认<code>inherit</code>，表示该容器是可伸缩的，那么组件内部会自己计算；如果传了固定宽度，则按照该固定宽度来设置</li>
@@ -805,8 +799,8 @@
   <span class="token property">right</span><span class="token punctuation">:</span> 40px<span class="token punctuation">;</span>
   <span class="token property">background</span><span class="token punctuation">:</span> <span class="token function">linear-gradient</span><span class="token punctuation">(</span>269.21deg<span class="token punctuation">,</span> #ffffff<span class="token punctuation">,</span> <span class="token function">rgba</span><span class="token punctuation">(</span>255<span class="token punctuation">,</span> 255<span class="token punctuation">,</span> 255<span class="token punctuation">,</span> 0.2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="使用方式">使用方式</h2>
-<p>我们可以通过下面的方式来使用</p>
+
+<h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><p>我们可以通过下面的方式来使用</p>
 <pre class="line-numbers language-tsx" data-language="tsx"><code class="language-tsx"><span class="token keyword">const</span> list <span class="token operator">=</span> <span class="token punctuation">[</span>
   <span class="token punctuation">&#123;</span> key<span class="token operator">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span> name<span class="token operator">:</span> <span class="token string">"列表项1"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
   <span class="token punctuation">&#123;</span> key<span class="token operator">:</span> <span class="token string">"2"</span><span class="token punctuation">,</span> name<span class="token operator">:</span> <span class="token string">"列表项2"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
@@ -889,8 +883,7 @@
         
 本文章是用来总结卡颂大佬的《从零实现 React18》课程的。
 
-章节 1
-主要讲解了一个项目的搭建应该从以下几个角度
+章节 1主要讲解了一个项目的搭建应该从以下几个角度出
       </div> -->
     </a>
   </div>
@@ -909,9 +902,8 @@
         <div class="title-text">Node.js常见概念</div>
       </div>
       <!-- <div class="content">
-        架构
-为啥取名为 Node 呢？
-因为 Node 的架构主要分为 4 大部分，Node Standard Library
+        架构为啥取名为 Node 呢？
+因为 Node 的架构主要分为 4 大部分，Node Standard Library,
       </div> -->
     </a>
   </div>

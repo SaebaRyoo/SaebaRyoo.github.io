@@ -566,18 +566,17 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h3 id="定义">定义</h3>
-<blockquote>
+        <h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><blockquote>
 <p>保证一个类只有一个实例，并提供一个访问它的全局访问点</p>
 </blockquote>
-<h3 id="常见场景">常见场景</h3>
-<ul>
+<h3 id="常见场景"><a href="#常见场景" class="headerlink" title="常见场景"></a>常见场景</h3><ul>
 <li>线程池</li>
 <li>全局缓存</li>
 <li>浏览器中的 window 对象</li>
 </ul>
 <p>最简单的单例就是全局创建一个</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>使用类创建一个单例对象</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> <span class="token function-variable function">Single</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">name</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
   <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
@@ -655,8 +654,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
       </div>
       
       <!-- <div class="content">
-        单一职责原则（SRP）
-就一个类而言，应该仅有一个引起它变化的原因。在 js 中，需要用到类的场景不多。单一职责更多的被
+        单一职责原则（SRP）就一个类而言，应该仅有一个引起它变化的原因。在 js 中，需要用到类的场景不多。单一职责更多的被运
       </div> -->
     </a>
   </div>
@@ -676,12 +674,10 @@ console<span class="token punctuation">.</span><span class="token function">log<
       </div>
       <!-- <div class="content">
         定义
-
 策略模式就是定义一系列的算法，将他们一个个封装起来。
 
-使用场景
-在实际开发中，我们需要将算法的含义扩大一些。
-
+使用场景在实际开发中，我们需要将算法的含义扩大一些。
+比如
       </div> -->
     </a>
   </div>

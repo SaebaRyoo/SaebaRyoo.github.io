@@ -566,14 +566,10 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="Why">Why</h2>
-<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1877057">微服务的优缺点</a></p>
+        <h2 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h2><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1877057">微服务的优缺点</a></p>
 <p>这篇文章只是讲了比较基础的 demo</p>
-<h2 id="Setup">Setup</h2>
-<p>首先需要安装 nestjs 的命令行工具<br>
-<code>npm i -g @nestjs/cli</code></p>
-<p>然后使用 nest 命令创建一个项目<br>
-<code>nest new micro-service-demo</code></p>
+<h2 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h2><p>首先需要安装 nestjs 的命令行工具<br><code>npm i -g @nestjs/cli</code></p>
+<p>然后使用 nest 命令创建一个项目<br><code>nest new micro-service-demo</code></p>
 <p>安装微服务相关库，<code>yarn add -S @grpc/grpc-js @grpc/proto-loader     @nestjs/microservices</code></p>
 <p>这个时候是一个标准的项目开发模式。但是，我们开发微服务则需要将一个功能比较多的服务拆分。所以，可以通过 nestjs 自带的 <strong><a target="_blank" rel="noopener" href="https://docs.nestjs.com/cli/monorepo#monorepo-mode">Monorepo mode</a></strong> 来开发</p>
 <p>通过<code>nest g app api-gateway &amp; nest g app auth-service &amp; nest g app order-service &amp; nest g app product-service</code>来生成对应的服务</p>
@@ -582,6 +578,7 @@
   <span class="token property">"start:order"</span><span class="token operator">:</span> <span class="token string">"nest start order-service --watch"</span><span class="token punctuation">,</span>
   <span class="token property">"start:product"</span><span class="token operator">:</span> <span class="token string">"nest start product-service --watch"</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>其中:</p>
 <ul>
 <li>api-gateway: 为 api 网关，作用是作为代理，连接各个微服务，为 client 提供接口</li>
@@ -590,10 +587,7 @@
 <li>product: 产品服务</li>
 </ul>
 <p>我们这里暂时不做复杂功能，只实现 order 微服务和 product 微服务。并在 api-gateway 中使用 grpc 的方式访问 order 服务，order 的 service 再访问 product 微服务。</p>
-<h2 id="实现">实现</h2>
-<h3 id="proto-文件">proto 文件</h3>
-<p>在根目录创建<code>protos</code>目录，该目录用于定义 proto 文件，它定义程序中需要处理的结构化数据<br>
-首先是创建<code>order.proto</code>文件</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="proto-文件"><a href="#proto-文件" class="headerlink" title="proto 文件"></a>proto 文件</h3><p>在根目录创建<code>protos</code>目录，该目录用于定义 proto 文件，它定义程序中需要处理的结构化数据<br>首先是创建<code>order.proto</code>文件</p>
 <pre class="line-numbers language-none"><code class="language-none">syntax &#x3D; &quot;proto3&quot;;
 
 package order;
@@ -613,6 +607,7 @@ message CreateOrderResponse &#123;
     repeated string error &#x3D; 2;
     int32 id &#x3D; 3;
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>然后是<code>product.proto</code></p>
 <pre class="line-numbers language-none"><code class="language-none">syntax &#x3D; &quot;proto3&quot;;
 
@@ -631,15 +626,15 @@ repeated string error &#x3D; 2;
 service ProductService &#123;
 rpc DecreaseStock(DecreaseStockRequest) returns (DecreaseStockResponse);
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="创建微服务">创建微服务</h3>
-<p>首先我们先安装<code>yarn add ts-proto</code>,该库用于将我们的<code>proto</code>文件转化成强类型的 <strong>TS</strong> 文件</p>
+
+<h3 id="创建微服务"><a href="#创建微服务" class="headerlink" title="创建微服务"></a>创建微服务</h3><p>首先我们先安装<code>yarn add ts-proto</code>,该库用于将我们的<code>proto</code>文件转化成强类型的 <strong>TS</strong> 文件</p>
 <p>然后在 <code>package.json</code>中的<code>scripts</code>中添加如下命令</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
   <span class="token property">"proto:all"</span><span class="token operator">:</span> <span class="token string">"protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./protos/pbs ./protos/**.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb --ts_proto_opt=outputIndex=true"</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
 <p>具体的参数意思可以参考<a target="_blank" rel="noopener" href="https://github.com/stephenh/ts-proto#supported-options">这里</a></p>
-<p>运行命令后会在<code>protos</code>中生成出一个<code>pbs</code>目录，里面包含了相关的 ts 文件<br>
-(TODO: 这里的后续可以通过 Nestjs 中的 lib 将这些文件单独提出到公共库中)</p>
+<p>运行命令后会在<code>protos</code>中生成出一个<code>pbs</code>目录，里面包含了相关的 ts 文件<br>(TODO: 这里的后续可以通过 Nestjs 中的 lib 将这些文件单独提出到公共库中)</p>
 <p>然后再创建<code>order.client.options.ts</code>，用于生成微服务相关的配置</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> ClientOptions<span class="token punctuation">,</span> Transport <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/microservices"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> <span class="token constant">ORDER_PACKAGE_NAME</span> <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./order.pb"</span><span class="token punctuation">;</span>
@@ -654,6 +649,7 @@ rpc DecreaseStock(DecreaseStockRequest) returns (DecreaseStockResponse);
     url<span class="token operator">:</span> <span class="token string">"localhost:50001"</span><span class="token punctuation">,</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>然后修改位于<code>order-service</code>目录中的<code>main</code>文件</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> NestFactory <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/core"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> OrderServiceModule <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./order-service.module"</span><span class="token punctuation">;</span>
@@ -668,6 +664,7 @@ rpc DecreaseStock(DecreaseStockRequest) returns (DecreaseStockResponse);
   <span class="token keyword">await</span> app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span>
 <span class="token function">bootstrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>在<code>order-service/order-service.module</code>中导入 product 微服务</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Module <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> OrderServiceController <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./order-service.controller"</span><span class="token punctuation">;</span>
@@ -689,6 +686,7 @@ rpc DecreaseStock(DecreaseStockRequest) returns (DecreaseStockResponse);
   providers<span class="token operator">:</span> <span class="token punctuation">[</span>OrderServiceService<span class="token punctuation">]</span><span class="token punctuation">,</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
 <span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">OrderServiceModule</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>修改<code>order-service/order-service.controller</code>文件</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Controller<span class="token punctuation">,</span> Get <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> OrderServiceService <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./order-service.service"</span><span class="token punctuation">;</span>
@@ -707,6 +705,7 @@ rpc DecreaseStock(DecreaseStockRequest) returns (DecreaseStockResponse);
     <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>orderServiceService<span class="token punctuation">.</span><span class="token function">createOrder</span><span class="token punctuation">(</span><span class="token string">"1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>修改<code>order-service/order-service.service</code>文件</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Inject<span class="token punctuation">,</span> Injectable<span class="token punctuation">,</span> OnModuleInit <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> CreateOrderResponse <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"../../../protos/order.pb"</span><span class="token punctuation">;</span>
@@ -753,6 +752,7 @@ rpc DecreaseStock(DecreaseStockRequest) returns (DecreaseStockResponse);
     <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>然后再按照上面的步骤修改修改一下<code>product-service</code>中的 main.ts</p>
 <p>然后是修改<code>product-service.controller</code>文件</p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Controller<span class="token punctuation">,</span> Get <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
@@ -772,6 +772,7 @@ rpc DecreaseStock(DecreaseStockRequest) returns (DecreaseStockResponse);
     <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>productServiceService<span class="token punctuation">.</span><span class="token function">decreaseStock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>然后是修改<code>product-service.service.ts</code></p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Injectable <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> DecreaseStockResponse <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"../../../protos/product.pb"</span><span class="token punctuation">;</span>
@@ -785,6 +786,7 @@ rpc DecreaseStock(DecreaseStockRequest) returns (DecreaseStockResponse);
     <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>最后是在<code>api-gateway</code>中的<code>module</code>文件注册 order 微服务即可</p>
 <p><code>api-gateway.module.ts</code></p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Module <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
@@ -807,6 +809,7 @@ rpc DecreaseStock(DecreaseStockRequest) returns (DecreaseStockResponse);
   providers<span class="token operator">:</span> <span class="token punctuation">[</span>ApiGatewayService<span class="token punctuation">]</span><span class="token punctuation">,</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
 <span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">ApiGatewayModule</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>修改<code>api-gateway.controller</code></p>
 <pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Controller<span class="token punctuation">,</span> Get<span class="token punctuation">,</span> Post <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">&#123;</span> ApiGatewayService <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./api-gateway.service"</span><span class="token punctuation">;</span>
@@ -826,13 +829,11 @@ rpc DecreaseStock(DecreaseStockRequest) returns (DecreaseStockResponse);
     <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>apiGatewayService<span class="token punctuation">.</span><span class="token function">createOrder</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>到这里，一个简单的微服务就搭建完成了</p>
-<h2 id="测试">测试</h2>
-<p>接着就是启动 api-gateway 服务、order 服务、product 服务</p>
-<p>在命令行输入<code>curl -X POST http://localhost:3000/order</code><br>
-然后输出<code>&#123;&quot;status&quot;:200,&quot;id&quot;:1&#125;%</code>即表示成功</p>
-<h2 id="相关链接">相关链接</h2>
-<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/47704968/protoc-command-not-found-linux">protoc: command not found (Linux)</a></p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>接着就是启动 api-gateway 服务、order 服务、product 服务</p>
+<p>在命令行输入<code>curl -X POST http://localhost:3000/order</code><br>然后输出<code>&#123;&quot;status&quot;:200,&quot;id&quot;:1&#125;%</code>即表示成功</p>
+<h2 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h2><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/47704968/protoc-command-not-found-linux">protoc: command not found (Linux)</a></p>
 
       </div>
       <div class="post-tags-categories">
@@ -889,8 +890,7 @@ rpc DecreaseStock(DecreaseStockRequest) returns (DecreaseStockResponse);
       </div>
       
       <!-- <div class="content">
-        DOCTYPE(文档类型)的作用是什么?
-DTD(document type definition, 文档类型定义) 是
+        DOCTYPE(文档类型)的作用是什么?DTD(document type definition, 文档类型定义) 是一
       </div> -->
     </a>
   </div>
@@ -909,8 +909,7 @@ DTD(document type definition, 文档类型定义) 是
         <div class="title-text">API with Nestjs#1 Controllers, 路由和模块(module)结构</div>
       </div>
       <!-- <div class="content">
-        TODO
-Nestjs 是一个用来构建 Node 引用的框架。与其他一些比较灵活的框架如：Express、Koa相比，我
+        TODONestjs 是一个用来构建 Node 引用的框架。与其他一些比较灵活的框架如：Express、Koa相比，我们
       </div> -->
     </a>
   </div>

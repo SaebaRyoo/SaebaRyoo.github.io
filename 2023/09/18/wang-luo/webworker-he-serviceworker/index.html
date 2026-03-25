@@ -566,21 +566,16 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h1>WebWorker 介绍</h1>
-<h3 id="什么是-Web-Worker？">什么是 Web Worker？</h3>
-<p>为 JS 创造多线程的环境，允许主线程创建 Worker 线程，将一些任务分配给后者运行。也就是主线程和 worker 线程并行。等到 Worker 线程完成计算的任务，再通过 postMessage 与主线程进行通信。</p>
-<h3 id="为什么需要-Web-Worker？">为什么需要 Web Worker？</h3>
-<p>随着电脑计算能力的加强。js 原有的单线程模型，无法很好的发挥这些计算能力。而 web worker 就是为了发挥更好的计算能力。这样，他能将一些计算密集或者高延时的任务，放在 Worker 线程中执行。主线程负责 UI 的交互，这样不会被阻塞。</p>
-<h3 id="特点">特点</h3>
-<ol>
+        <h1 id="WebWorker-介绍"><a href="#WebWorker-介绍" class="headerlink" title="WebWorker 介绍"></a>WebWorker 介绍</h1><h3 id="什么是-Web-Worker？"><a href="#什么是-Web-Worker？" class="headerlink" title="什么是 Web Worker？"></a>什么是 Web Worker？</h3><p>为 JS 创造多线程的环境，允许主线程创建 Worker 线程，将一些任务分配给后者运行。也就是主线程和 worker 线程并行。等到 Worker 线程完成计算的任务，再通过 postMessage 与主线程进行通信。</p>
+<h3 id="为什么需要-Web-Worker？"><a href="#为什么需要-Web-Worker？" class="headerlink" title="为什么需要 Web Worker？"></a>为什么需要 Web Worker？</h3><p>随着电脑计算能力的加强。js 原有的单线程模型，无法很好的发挥这些计算能力。而 web worker 就是为了发挥更好的计算能力。这样，他能将一些计算密集或者高延时的任务，放在 Worker 线程中执行。主线程负责 UI 的交互，这样不会被阻塞。</p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ol>
 <li>同源限制： 分配给 Worker 线程运行的脚本文件，需要和主线程的脚本同源</li>
 <li>DOM 限制： Worker 线程所在的环境的全局对象，与主线程不一样，无法读取主线程所在网页的 DOM 对象，也无法使用 document、window、parent 这些对象。但是，Worker 线程可以 navigator 对象和 location 对象。</li>
 <li>通信： Worker 线程和主线程不在同一个上下文环境，它们不能直接通信，必须通过消息完成。</li>
 <li>脚本限制： worker 线程不能执行 alert、confirm 方法，但是可以使用 XMLHttpRequest 对象发出 ajax 请求</li>
 <li>文件限制： 无法读取本地文件</li>
 </ol>
-<h3 id="简单应用">简单应用</h3>
-<p>在写之前，我们需要确保 worker 线程的脚本文件和主线程的脚本文件是同源的。所以我们可以通过 node 来作为 web server。日常开发中可以使用 webpack 的<a target="_blank" rel="noopener" href="https://www.webpackjs.com/loaders/worker-loader/">worker-loader</a></p>
+<h3 id="简单应用"><a href="#简单应用" class="headerlink" title="简单应用"></a>简单应用</h3><p>在写之前，我们需要确保 worker 线程的脚本文件和主线程的脚本文件是同源的。所以我们可以通过 node 来作为 web server。日常开发中可以使用 webpack 的<a target="_blank" rel="noopener" href="https://www.webpackjs.com/loaders/worker-loader/">worker-loader</a></p>
 <p>index.js</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> express <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"express"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">var</span> ejs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"ejs"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -611,6 +606,7 @@ app<span class="token punctuation">.</span><span class="token function">get</spa
 app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
   console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"服务已开启"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>然后，我们在同级目录中添加<code>templates</code>和<code>statics</code>目录。</p>
 <p>然后再 templates 目录中增加 <code>worker.ejs</code></p>
 <pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
@@ -633,6 +629,7 @@ app<span class="token punctuation">.</span><span class="token function">listen</
     <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
   </span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>然后再在 statics 目录中添加<code>worker.js</code></p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// 监听 message</span>
 <span class="token comment">// self 代表子线程，即子线程的全局对象，等同于this</span>
@@ -646,14 +643,13 @@ self<span class="token punctuation">.</span><span class="token function">addEven
   <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
   <span class="token boolean">false</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>运行<code>node index.js</code>，然后在浏览器中访问<code>http://localhost/worker</code>，你就会发现 console 面板中会输出如下:</p>
 <ol>
 <li>received message from chrome Hello World</li>
 <li>间隔 1 秒左右，再输出 received message from service hihi</li>
 </ol>
-<h1>Service Worker</h1>
-<h3 id="什么是-service-worker-呢？">什么是 service worker 呢？</h3>
-<p>service worker 相当于一个在浏览器和服务器之间的中间人。如果网站注册了 service worker，那么它可以拦截当前网站的所有请求，进行判断。如果需要向服务器发起请求的就转给服务器，如果可以直接使用缓存的就直接返回缓存不再转给服务器。从而大大提高浏览体验</p>
+<h1 id="Service-Worker"><a href="#Service-Worker" class="headerlink" title="Service Worker"></a>Service Worker</h1><h3 id="什么是-service-worker-呢？"><a href="#什么是-service-worker-呢？" class="headerlink" title="什么是 service worker 呢？"></a>什么是 service worker 呢？</h3><p>service worker 相当于一个在浏览器和服务器之间的中间人。如果网站注册了 service worker，那么它可以拦截当前网站的所有请求，进行判断。如果需要向服务器发起请求的就转给服务器，如果可以直接使用缓存的就直接返回缓存不再转给服务器。从而大大提高浏览体验</p>
 
       </div>
       <div class="post-tags-categories">
@@ -698,8 +694,7 @@ self<span class="token punctuation">.</span><span class="token function">addEven
       </div>
       
       <!-- <div class="content">
-        PostgreSQL 数据库备份与恢复操作
-在使用 PostgreSQL 数据库时，pg_dump 是一个常用的工具，用
+        PostgreSQL 数据库备份与恢复操作在使用 PostgreSQL 数据库时，pg_dump 是一个常用的工具，用于
       </div> -->
     </a>
   </div>
@@ -718,11 +713,9 @@ self<span class="token punctuation">.</span><span class="token function">addEven
         <div class="title-text">TCP原理</div>
       </div>
       <!-- <div class="content">
-        TCP 的三次握手四次挥手
-三次握手的过程如下：
-
+        TCP 的三次握手四次挥手三次握手的过程如下：
 客户端向服务器发送 SYN 包，表示请求连接。
-服务器收到 SYN 
+服务器收到 SYN 包后
       </div> -->
     </a>
   </div>

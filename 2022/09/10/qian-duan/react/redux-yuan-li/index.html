@@ -569,21 +569,16 @@
         <p>Redux 是一个用于 JavaScript 应用的状态管理库，它的核心原理可以概括为：<strong>通过单一数据源、状态只读、纯函数修改这三大原则，结合发布-订阅模式，提供可预测、可追踪的状态管理</strong>。</p>
 <p>下面我从设计思想、核心概念、工作流程、与 React 的结合以及中间件原理几个层面来展开。</p>
 <hr>
-<h2 id="一、三大设计原则">一、三大设计原则</h2>
-<h3 id="1-单一数据源">1. 单一数据源</h3>
-<p>整个应用的状态被保存在一个<strong>对象树</strong>中，并且这个对象树只存在于<strong>唯一一个 Store</strong> 中。这使得状态管理变得集中、易于调试和持久化。</p>
-<h3 id="2-状态是只读的">2. 状态是只读的</h3>
-<p>唯一改变状态的方式是<strong>触发一个 Action</strong>（一个描述“发生了什么”的普通对象）。这种设计保证了视图或任何异步操作都不会直接修改状态，所有的状态变更都集中、有序，便于追踪。</p>
-<h3 id="3-使用纯函数执行修改">3. 使用纯函数执行修改</h3>
-<p>描述“状态如何变化”的逻辑写在 <strong>Reducer</strong> 中。Reducer 是纯函数：<code>(previousState, action) =&gt; newState</code>。它接收当前状态和 action，返回全新的状态，而不会修改原状态。纯函数的特性使得时间旅行、热重载等功能成为可能。</p>
+<h2 id="一、三大设计原则"><a href="#一、三大设计原则" class="headerlink" title="一、三大设计原则"></a>一、三大设计原则</h2><h3 id="1-单一数据源"><a href="#1-单一数据源" class="headerlink" title="1. 单一数据源"></a>1. 单一数据源</h3><p>整个应用的状态被保存在一个<strong>对象树</strong>中，并且这个对象树只存在于<strong>唯一一个 Store</strong> 中。这使得状态管理变得集中、易于调试和持久化。</p>
+<h3 id="2-状态是只读的"><a href="#2-状态是只读的" class="headerlink" title="2. 状态是只读的"></a>2. 状态是只读的</h3><p>唯一改变状态的方式是<strong>触发一个 Action</strong>（一个描述“发生了什么”的普通对象）。这种设计保证了视图或任何异步操作都不会直接修改状态，所有的状态变更都集中、有序，便于追踪。</p>
+<h3 id="3-使用纯函数执行修改"><a href="#3-使用纯函数执行修改" class="headerlink" title="3. 使用纯函数执行修改"></a>3. 使用纯函数执行修改</h3><p>描述“状态如何变化”的逻辑写在 <strong>Reducer</strong> 中。Reducer 是纯函数：<code>(previousState, action) =&gt; newState</code>。它接收当前状态和 action，返回全新的状态，而不会修改原状态。纯函数的特性使得时间旅行、热重载等功能成为可能。</p>
 <hr>
-<h2 id="二、核心概念与工作流程">二、核心概念与工作流程</h2>
-<p>Redux 的核心流程是一个严格的单向数据流：</p>
+<h2 id="二、核心概念与工作流程"><a href="#二、核心概念与工作流程" class="headerlink" title="二、核心概念与工作流程"></a>二、核心概念与工作流程</h2><p>Redux 的核心流程是一个严格的单向数据流：</p>
 <p>text</p>
 <pre class="line-numbers language-none"><code class="language-none">View&#x2F;用户交互 → dispatch(action) → Reducer → newState → View 更新<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>具体涉及以下角色：</p>
-<h3 id="1-Store">1. Store</h3>
-<p>Store 是连接所有部分的中心，它：</p>
+<h3 id="1-Store"><a href="#1-Store" class="headerlink" title="1. Store"></a>1. Store</h3><p>Store 是连接所有部分的中心，它：</p>
 <ul>
 <li>维护应用的状态树</li>
 <li>提供 <code>getState()</code> 获取当前状态</li>
@@ -591,21 +586,19 @@
 <li>提供 <code>subscribe(listener)</code> 注册监听器，当状态变化时通知</li>
 </ul>
 <p>创建 Store 通常通过 <code>createStore(reducer, preloadedState, enhancer)</code>。</p>
-<h3 id="2-Action">2. Action</h3>
-<p>Action 是一个普通 JavaScript 对象，必须包含 <code>type</code> 字段，用于描述要进行的操作。例如：</p>
+<h3 id="2-Action"><a href="#2-Action" class="headerlink" title="2. Action"></a>2. Action</h3><p>Action 是一个普通 JavaScript 对象，必须包含 <code>type</code> 字段，用于描述要进行的操作。例如：</p>
 <p>javascript</p>
 <pre class="line-numbers language-none"><code class="language-none">&#123; type: &#39;INCREMENT&#39;, payload: &#123; amount: 1 &#125; &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 <p>Action 也可以由 <strong>Action Creator</strong> 函数生成，便于复用。</p>
-<h3 id="3-Reducer">3. Reducer</h3>
-<p>Reducer 指定状态如何响应 action。由于 reducer 是纯函数，它必须：</p>
+<h3 id="3-Reducer"><a href="#3-Reducer" class="headerlink" title="3. Reducer"></a>3. Reducer</h3><p>Reducer 指定状态如何响应 action。由于 reducer 是纯函数，它必须：</p>
 <ul>
 <li>不直接修改原状态</li>
 <li>不执行副作用（如 API 请求）</li>
 <li>对于未知的 action，返回原状态</li>
 </ul>
 <p>常见的 reducer 结构会使用 <code>switch</code> 语句根据 action.type 返回新的状态对象。随着应用变大，可以使用 <code>combineReducers</code> 将多个 reducer 合并，每个 reducer 管理状态树的一部分。</p>
-<h3 id="4-数据流示例">4. 数据流示例</h3>
-<p>javascript</p>
+<h3 id="4-数据流示例"><a href="#4-数据流示例" class="headerlink" title="4. 数据流示例"></a>4. 数据流示例</h3><p>javascript</p>
 <pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 1. 定义 reducer
 function counter(state &#x3D; 0, action) &#123;
   switch (action.type) &#123;
@@ -627,11 +620,10 @@ store.subscribe(() &#x3D;&gt; console.log(store.getState()));
 
 &#x2F;&#x2F; 4. 分发 action
 store.dispatch(&#123; type: &#39;INCREMENT&#39; &#125;); &#x2F;&#x2F; 输出 1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <hr>
-<h2 id="三、Redux-的实现原理（简析）">三、Redux 的实现原理（简析）</h2>
-<p>Redux 源码非常精炼，核心实现围绕 <code>createStore</code> 函数。</p>
-<h3 id="Store-的内部结构（简化版）">Store 的内部结构（简化版）</h3>
-<p>javascript</p>
+<h2 id="三、Redux-的实现原理（简析）"><a href="#三、Redux-的实现原理（简析）" class="headerlink" title="三、Redux 的实现原理（简析）"></a>三、Redux 的实现原理（简析）</h2><p>Redux 源码非常精炼，核心实现围绕 <code>createStore</code> 函数。</p>
+<h3 id="Store-的内部结构（简化版）"><a href="#Store-的内部结构（简化版）" class="headerlink" title="Store 的内部结构（简化版）"></a>Store 的内部结构（简化版）</h3><p>javascript</p>
 <pre class="line-numbers language-none"><code class="language-none">function createStore(reducer, preloadedState) &#123;
   let currentState &#x3D; preloadedState;
   let currentReducer &#x3D; reducer;
@@ -662,6 +654,7 @@ store.dispatch(&#123; type: &#39;INCREMENT&#39; &#125;); &#x2F;&#x2F; 输出 1<s
 
   return &#123; dispatch, subscribe, getState &#125;;
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p><strong>关键点</strong>：</p>
 <ul>
 <li>状态保存在闭包变量 <code>currentState</code> 中，外部无法直接修改</li>
@@ -669,25 +662,21 @@ store.dispatch(&#123; type: &#39;INCREMENT&#39; &#125;); &#x2F;&#x2F; 输出 1<s
 <li>监听器机制是简单的发布-订阅，没有对变化做精细比较，由上层（如 React-Redux）负责优化</li>
 </ul>
 <hr>
-<h2 id="四、与-React-的结合">四、与 React 的结合</h2>
-<p>Redux 本身与视图库无关，但常与 React 搭配使用。官方推荐的绑定库是 <strong>React-Redux</strong>，它通过 <strong>Provider</strong> 组件和 <strong>connect</strong> 高阶组件（或 hooks）将 Redux store 注入到 React 组件树中。</p>
-<h3 id="React-Redux-的工作方式">React-Redux 的工作方式</h3>
-<ul>
+<h2 id="四、与-React-的结合"><a href="#四、与-React-的结合" class="headerlink" title="四、与 React 的结合"></a>四、与 React 的结合</h2><p>Redux 本身与视图库无关，但常与 React 搭配使用。官方推荐的绑定库是 <strong>React-Redux</strong>，它通过 <strong>Provider</strong> 组件和 <strong>connect</strong> 高阶组件（或 hooks）将 Redux store 注入到 React 组件树中。</p>
+<h3 id="React-Redux-的工作方式"><a href="#React-Redux-的工作方式" class="headerlink" title="React-Redux 的工作方式"></a>React-Redux 的工作方式</h3><ul>
 <li><strong>Provider</strong>：利用 React Context 将 store 向下传递给所有子组件。</li>
 <li><strong>connect</strong>：将组件需要的 state 和 dispatch 映射为 props，并监听 store 变化。当 store 更新时，通过 <code>mapStateToProps</code> 筛选组件关心的数据，仅当数据变化时才重新渲染组件。</li>
 </ul>
 <p>Hooks 版本则使用 <code>useSelector</code> 和 <code>useDispatch</code>，更加简洁。</p>
 <hr>
-<h2 id="五、中间件（Middleware）原理">五、中间件（Middleware）原理</h2>
-<p>Redux 本身只支持同步数据流，但通过 <strong>中间件</strong> 可以处理异步操作、日志等副作用。中间件位于 <code>dispatch</code> 发出 action 和 action 到达 reducer 之间。</p>
-<h3 id="中间件的函数签名">中间件的函数签名</h3>
-<p>javascript</p>
+<h2 id="五、中间件（Middleware）原理"><a href="#五、中间件（Middleware）原理" class="headerlink" title="五、中间件（Middleware）原理"></a>五、中间件（Middleware）原理</h2><p>Redux 本身只支持同步数据流，但通过 <strong>中间件</strong> 可以处理异步操作、日志等副作用。中间件位于 <code>dispatch</code> 发出 action 和 action 到达 reducer 之间。</p>
+<h3 id="中间件的函数签名"><a href="#中间件的函数签名" class="headerlink" title="中间件的函数签名"></a>中间件的函数签名</h3><p>javascript</p>
 <pre class="line-numbers language-none"><code class="language-none">const middleware &#x3D; store &#x3D;&gt; next &#x3D;&gt; action &#x3D;&gt; &#123;
   &#x2F;&#x2F; 在 action 到达 reducer 之前做一些事
   &#x2F;&#x2F; 可以调用 next(action) 传递 action，也可以调用 store.dispatch 再次派发
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="applyMiddleware-的实现原理">applyMiddleware 的实现原理</h3>
-<p><code>applyMiddleware</code> 是一个 Store Enhancer，它通过<strong>函数式组合</strong>（compose）将多个中间件串联起来，增强 <code>dispatch</code> 方法。核心代码如下（简化）：</p>
+
+<h3 id="applyMiddleware-的实现原理"><a href="#applyMiddleware-的实现原理" class="headerlink" title="applyMiddleware 的实现原理"></a>applyMiddleware 的实现原理</h3><p><code>applyMiddleware</code> 是一个 Store Enhancer，它通过<strong>函数式组合</strong>（compose）将多个中间件串联起来，增强 <code>dispatch</code> 方法。核心代码如下（简化）：</p>
 <p>javascript</p>
 <pre class="line-numbers language-none"><code class="language-none">function applyMiddleware(...middlewares) &#123;
   return (createStore) &#x3D;&gt; (reducer, preloadedState) &#x3D;&gt; &#123;
@@ -704,9 +693,9 @@ store.dispatch(&#123; type: &#39;INCREMENT&#39; &#125;); &#x2F;&#x2F; 输出 1<s
     return &#123; ...store, dispatch &#125;;
   &#125;;
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <p>中间件通过嵌套函数层层包裹原始的 <code>store.dispatch</code>，形成一个洋葱模型，可以在 action 流经时做各种处理（如异步请求、日志记录）。</p>
-<h3 id="异步中间件示例（redux-thunk）">异步中间件示例（redux-thunk）</h3>
-<p><code>redux-thunk</code> 是最常用的异步中间件，它允许 action creator 返回一个函数（而不是普通对象），这个函数接收 <code>dispatch</code> 和 <code>getState</code> 作为参数，可以执行异步操作后再派发真正的 action。</p>
+<h3 id="异步中间件示例（redux-thunk）"><a href="#异步中间件示例（redux-thunk）" class="headerlink" title="异步中间件示例（redux-thunk）"></a>异步中间件示例（redux-thunk）</h3><p><code>redux-thunk</code> 是最常用的异步中间件，它允许 action creator 返回一个函数（而不是普通对象），这个函数接收 <code>dispatch</code> 和 <code>getState</code> 作为参数，可以执行异步操作后再派发真正的 action。</p>
 <p>javascript</p>
 <pre class="line-numbers language-none"><code class="language-none">const fetchUser &#x3D; (id) &#x3D;&gt; async (dispatch) &#x3D;&gt; &#123;
   dispatch(&#123; type: &#39;FETCH_USER_REQUEST&#39; &#125;);
@@ -717,17 +706,16 @@ store.dispatch(&#123; type: &#39;INCREMENT&#39; &#125;); &#x2F;&#x2F; 输出 1<s
     dispatch(&#123; type: &#39;FETCH_USER_FAILURE&#39;, error &#125;);
   &#125;
 &#125;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 <hr>
-<h2 id="六、Redux-的设计哲学总结">六、Redux 的设计哲学总结</h2>
-<ul>
+<h2 id="六、Redux-的设计哲学总结"><a href="#六、Redux-的设计哲学总结" class="headerlink" title="六、Redux 的设计哲学总结"></a>六、Redux 的设计哲学总结</h2><ul>
 <li><strong>可预测性</strong>：纯函数 reducer + 单一数据源，使得状态变化可追踪、可测试。</li>
 <li><strong>可维护性</strong>：状态逻辑集中，action 和 reducer 分离，便于多人协作。</li>
 <li><strong>生态丰富</strong>：中间件机制让扩展变得灵活，如 redux-saga、redux-observable 等处理复杂副作用。</li>
-<li><strong>时间旅行</strong>：由于状态不可变，可以轻松实现撤销/重做、热重载等调试功能。</li>
+<li><strong>时间旅行</strong>：由于状态不可变，可以轻松实现撤销&#x2F;重做、热重载等调试功能。</li>
 </ul>
 <hr>
-<h2 id="七、现代-Redux-的发展">七、现代 Redux 的发展</h2>
-<p>随着 Redux Toolkit（官方工具集）的推出，Redux 的写法更简洁、更推荐。它内置了 <code>configureStore</code>、<code>createSlice</code>、<code>createAsyncThunk</code> 等，减少了样板代码，同时默认集成了 redux-thunk 和 Redux DevTools，并且使用 Immer 库允许在 reducer 中“可变”地更新状态（实际仍不可变）。</p>
+<h2 id="七、现代-Redux-的发展"><a href="#七、现代-Redux-的发展" class="headerlink" title="七、现代 Redux 的发展"></a>七、现代 Redux 的发展</h2><p>随着 Redux Toolkit（官方工具集）的推出，Redux 的写法更简洁、更推荐。它内置了 <code>configureStore</code>、<code>createSlice</code>、<code>createAsyncThunk</code> 等，减少了样板代码，同时默认集成了 redux-thunk 和 Redux DevTools，并且使用 Immer 库允许在 reducer 中“可变”地更新状态（实际仍不可变）。</p>
 <p>但无论写法如何变化，Redux 背后的原理依然是：<strong>单向数据流、reducer 纯函数、通过 dispatch action 触发更新</strong>。</p>
 <hr>
 <p>希望这个回答能帮助你理解 Redux 的核心原理。如果需要进一步探讨某个细节（如中间件组合原理、与 Immer 的配合等），可以继续提问。</p>
@@ -784,10 +772,9 @@ store.dispatch(&#123; type: &#39;INCREMENT&#39; &#125;); &#x2F;&#x2F; 输出 1<s
       
       <!-- <div class="content">
         常用命令
-
 查看版本: nginx -v
 启动: nginx
-关闭: nginx -s stop(推荐) || ngin
+关闭: nginx -s stop(推荐) || nginx
       </div> -->
     </a>
   </div>
@@ -806,11 +793,9 @@ store.dispatch(&#123; type: &#39;INCREMENT&#39; &#125;); &#x2F;&#x2F; 输出 1<s
         <div class="title-text">JavaScript中创建对象的方法</div>
       </div>
       <!-- <div class="content">
-        工厂模式
-优点： 解决创建多个相似对象的问题
-缺点：
+        工厂模式优点： 解决创建多个相似对象的问题缺点：
 
-无法通过 constructor 识别对象，创建的对象的 con
+无法通过 constructor 识别对象，创建的对象的 const
       </div> -->
     </a>
   </div>
