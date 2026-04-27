@@ -610,16 +610,16 @@
 <span class="token keyword">SELECT</span> sex<span class="token punctuation">,</span> <span class="token function">AVG</span><span class="token punctuation">(</span>math<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span> <span class="token keyword">FROM</span> student <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> sex<span class="token punctuation">;</span>
 
 <span class="token comment">-- 分数低于70分的不参与分组</span>
-<span class="token keyword">SELECT</span> sex<span class="token punctuation">,</span> <span class="token function">AVG</span><span class="token punctuation">(</span>math<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span>
-<span class="token keyword">FROM</span> student
-<span class="token keyword">WHERE</span> math <span class="token operator">></span> <span class="token number">70</span>
+<span class="token keyword">SELECT</span> sex<span class="token punctuation">,</span> <span class="token function">AVG</span><span class="token punctuation">(</span>math<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span> 
+<span class="token keyword">FROM</span> student 
+<span class="token keyword">WHERE</span> math <span class="token operator">></span> <span class="token number">70</span> 
 <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> sex<span class="token punctuation">;</span>
 
 <span class="token comment">-- 分组后人数大于2的才显示</span>
 <span class="token keyword">SELECT</span> sex<span class="token punctuation">,</span> <span class="token function">AVG</span><span class="token punctuation">(</span>math<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span> <span class="token keyword">as</span> 人数
-<span class="token keyword">FROM</span> student
-<span class="token keyword">WHERE</span> math <span class="token operator">></span> <span class="token number">70</span>
-<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> sex
+<span class="token keyword">FROM</span> student 
+<span class="token keyword">WHERE</span> math <span class="token operator">></span> <span class="token number">70</span> 
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> sex 
 <span class="token keyword">HAVING</span> 人数 <span class="token operator">></span> <span class="token number">2</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>注意：</p>
@@ -711,19 +711,19 @@
 <span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token comment">-- 创建表后添加外键</span>
-<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> 表名
-<span class="token keyword">ADD</span> <span class="token keyword">CONSTRAINT</span> 外键名称
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> 表名 
+<span class="token keyword">ADD</span> <span class="token keyword">CONSTRAINT</span> 外键名称 
 <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>外键字段名称<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> 主表名称<span class="token punctuation">(</span>主表列名称<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token comment">-- 删除外键</span>
 <span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> 表名 <span class="token keyword">DROP</span> <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> 外键名称<span class="token punctuation">;</span>
 
 <span class="token comment">-- 添加级联操作</span>
-<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> 表名
-<span class="token keyword">ADD</span> <span class="token keyword">CONSTRAINT</span> 外键名称
-<span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>外键字段名称<span class="token punctuation">)</span>
-<span class="token keyword">REFERENCES</span> 主表名称<span class="token punctuation">(</span>主表列名称<span class="token punctuation">)</span>
-<span class="token keyword">ON</span> <span class="token keyword">UPDATE</span> <span class="token keyword">CASCADE</span>
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> 表名 
+<span class="token keyword">ADD</span> <span class="token keyword">CONSTRAINT</span> 外键名称 
+<span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>外键字段名称<span class="token punctuation">)</span> 
+<span class="token keyword">REFERENCES</span> 主表名称<span class="token punctuation">(</span>主表列名称<span class="token punctuation">)</span> 
+<span class="token keyword">ON</span> <span class="token keyword">UPDATE</span> <span class="token keyword">CASCADE</span> 
 <span class="token keyword">ON</span> <span class="token keyword">DELETE</span> <span class="token keyword">CASCADE</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>级联操作类型：</p>
@@ -781,70 +781,33 @@
     <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span><span class="token punctuation">(</span>uid<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> tab_user<span class="token punctuation">(</span>uid<span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="数据库设计范式"><a href="#数据库设计范式" class="headerlink" title="数据库设计范式"></a>数据库设计范式</h3><h4 id="第一范式（1NF）：原子性"><a href="#第一范式（1NF）：原子性" class="headerlink" title="第一范式（1NF）：原子性"></a>第一范式（1NF）：原子性</h4><p><strong>定义</strong>：表中的每一列都必须是<strong>不可再分的基本数据项</strong>，即列中不能包含多个值，也不能包含集合或重复的组。</p>
-<p><strong>目的</strong>：确保每个字段只存储单一值，方便查询和索引。</p>
-<p><strong>示例</strong></p>
+<h3 id="数据库设计范式"><a href="#数据库设计范式" class="headerlink" title="数据库设计范式"></a>数据库设计范式</h3><h4 id="第一范式（1NF）"><a href="#第一范式（1NF）" class="headerlink" title="第一范式（1NF）"></a>第一范式（1NF）</h4><p>要求属性具有原子性，不可再分解。</p>
+<p>示例：</p>
 <ul>
-<li><strong>不规范</strong>：<code>学生（学号，姓名，出生日期(年,月,日)）</code><br>这里“出生日期”列实际上包含了三个独立信息（年、月、日），违反了原子性。</li>
-<li><strong>规范</strong>：<code>学生（学号，姓名，出生年，出生月，出生日）</code><br>将出生日期拆分为三个独立列，或用一个 <code>date</code> 类型列存储完整的日期（<code>date</code> 类型在数据库中属于原子值）。</li>
+<li>不规范：学生（学号，姓名，出生日期(年,月,日)）</li>
+<li>规范：学生（学号，姓名，出生年，出生月，出生日）</li>
 </ul>
-<p><strong>注意</strong>：</p>
+<h4 id="第二范式（2NF）"><a href="#第二范式（2NF）" class="headerlink" title="第二范式（2NF）"></a>第二范式（2NF）</h4><p>在1NF的基础上，消除非主键列对主键的部分依赖。</p>
+<p>示例：</p>
 <ul>
-<li>拆分字段并不等于必须将日期拆成年、月、日三列，<strong>只要用数据库支持的原子类型（如 <code>DATE</code>、<code>TIMESTAMP</code>）存储即可</strong>。</li>
-<li>真正的反例是：在一列中存储逗号分隔的标签、多个电话号码等。</li>
-</ul>
-<p><strong>违反后果</strong>：</p>
-<ul>
-<li>查询某个特定值困难（如查找所有3月出生的学生，无法高效索引）。</li>
-<li>更新时容易产生不一致（如只修改了月却没改日）。</li>
-</ul>
-<hr>
-<h4 id="第二范式（2NF）：消除部分依赖"><a href="#第二范式（2NF）：消除部分依赖" class="headerlink" title="第二范式（2NF）：消除部分依赖"></a>第二范式（2NF）：消除部分依赖</h4><p><strong>前提</strong>：表必须满足 1NF，且表的主键是<strong>复合主键</strong>（由多列组成）。<br><strong>定义</strong>：在 1NF 基础上，要求所有<strong>非主键列</strong>都<strong>完全依赖于整个主键</strong>，不能仅依赖于主键的一部分。</p>
-<p><strong>目的</strong>：避免因部分依赖导致的数据冗余和异常。</p>
-<p><strong>示例</strong></p>
-<ul>
-<li><p><strong>不规范</strong>：<code>选课（学号，课程号，姓名，学分）</code><br>主键是 <code>(学号, 课程号)</code>。</p>
-<ul>
-<li>“姓名”只依赖于“学号”（部分依赖）</li>
-<li>“学分”只依赖于“课程号”（部分依赖）<br>因此不符合 2NF。</li>
-</ul>
-</li>
-<li><p><strong>规范</strong>：拆分为三张表</p>
-<ul>
-<li><code>学生（学号，姓名）</code></li>
-<li><code>课程（课程号，学分）</code></li>
-<li><code>选课（学号，课程号）</code></li>
+<li>不规范：选课（学号，课程号，姓名，学分）</li>
+<li>规范：<ul>
+<li>学生（学号，姓名）</li>
+<li>课程（课程号，学分）</li>
+<li>选课（学号，课程号）</li>
 </ul>
 </li>
 </ul>
-<p><strong>违反后果</strong>：</p>
+<h4 id="第三范式（3NF）"><a href="#第三范式（3NF）" class="headerlink" title="第三范式（3NF）"></a>第三范式（3NF）</h4><p>在2NF的基础上，消除传递依赖。</p>
+<p>示例：</p>
 <ul>
-<li><strong>数据冗余</strong>：一个学生选了多门课，姓名重复存储多次。</li>
-<li><strong>更新异常</strong>：学生改名时，需要修改所有选课记录，可能遗漏。</li>
-<li><strong>删除异常</strong>：如果某课程暂时无人选，其学分信息无法录入（因为学分字段在选课表中，需要课程号存在）。</li>
-</ul>
-<p><strong>实际应用</strong>：在 ORM 设计中，2NF 自然地引导我们使用<strong>中间表</strong>来表示多对多关系，并将实体的独立属性放在各自的表中。</p>
-<hr>
-<h4 id="第三范式（3NF）：消除传递依赖"><a href="#第三范式（3NF）：消除传递依赖" class="headerlink" title="第三范式（3NF）：消除传递依赖"></a>第三范式（3NF）：消除传递依赖</h4><p><strong>前提</strong>：表必须满足 2NF。<br><strong>定义</strong>：在 2NF 基础上，要求所有<strong>非主键列</strong>之间不能存在<strong>传递依赖</strong>。即：如果 <code>A → B</code> 且 <code>B → C</code>，则 <code>C</code> 不能直接依赖于 <code>A</code>，应通过 <code>B</code> 间接依赖，需将 <code>B</code> 和 <code>C</code> 拆分到独立表中。</p>
-<p><strong>目的</strong>：避免因传递依赖造成的冗余和更新异常。</p>
-<p><strong>示例</strong></p>
-<ul>
-<li><p><strong>不规范</strong>：<code>学生（学号，姓名，年龄，学院名称，学院电话）</code><br>主键为“学号”。<br>“学院电话”依赖于“学院名称”，而“学院名称”依赖于“学号” → 存在传递依赖 <code>学号 → 学院名称 → 学院电话</code>。</p>
-</li>
-<li><p><strong>规范</strong>：拆分为</p>
-<ul>
-<li><code>学生（学号，姓名，年龄，学院编号）</code></li>
-<li><code>学院（学院编号，学院名称，学院电话）</code></li>
+<li>不规范：学生（学号，姓名，年龄，学院名称，学院电话）</li>
+<li>规范：<ul>
+<li>学生（学号，姓名，年龄，学院编号）</li>
+<li>学院（学院编号，学院名称，学院电话）</li>
 </ul>
 </li>
 </ul>
-<p><strong>违反后果</strong>：</p>
-<ul>
-<li><strong>数据冗余</strong>：同一学院的所有学生都重复存储学院电话。</li>
-<li><strong>更新异常</strong>：学院电话变更时，需要更新所有该学院学生的记录，极易出错。</li>
-<li><strong>插入异常</strong>：如果某学院还没有学生，无法在学生表中录入学院电话。</li>
-</ul>
-<p><strong>实际应用</strong>：3NF 是大多数 OLTP 系统设计的常见目标。例如订单表中通常不直接存“用户姓名”，而是存“用户 ID”，通过关联用户表获取姓名。</p>
 <h2 id="数据库维护"><a href="#数据库维护" class="headerlink" title="数据库维护"></a>数据库维护</h2><h3 id="数据库备份与还原"><a href="#数据库备份与还原" class="headerlink" title="数据库备份与还原"></a>数据库备份与还原</h3><h4 id="命令行方式"><a href="#命令行方式" class="headerlink" title="命令行方式"></a>命令行方式</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 备份</span>
 mysqldump -u用户名 -p密码 数据库名称 <span class="token operator">></span> 保存的路径
 
