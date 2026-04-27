@@ -5,6 +5,7 @@ categories:
   - 前端
 tags:
   - React
+  - 状态管理
 ---
 
 > 首先，我们需要知道 redux 的相关概念
