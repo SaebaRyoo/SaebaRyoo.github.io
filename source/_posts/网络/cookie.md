@@ -14,61 +14,25 @@ tags:
 
 ## 常见问题
 
-### 主域名可以访问子域名的 cookie 吗？
+### 主域名与子域名如何共享 cookie？
 
-在浏览器中，主域名是无法直接访问子域名的 cookie 的，这是由**同源策略**所限制的。**同源策略**要求两个页面只有在**协议**、**主机**和**端口号**都相同的情况下，才能互相访问对方的数据，这样可以保护用户的隐私安全。
+默认情况下，cookie 的 `domain` 是**当前设置它的域名本身**，不会自动共享给其他域名。无论是主域名还是子域名，想要让双方都能访问同一个 cookie，**必须在设置 cookie 时显式指定 `domain` 为一级域名**。
 
-例如，在主域名为  `example.com`  的情况下，子域名  `www.example.com`  和  `api.example.com`  的 cookie 不能相互访问。
-
-然而，由于**同源策略**允许设置文档的域名（`document.domain`），通过设置该属性可以使主域名允许访问子域名的 cookie。具体实现方法如下：
-
-1.  在所有需要进行 cookie 共享的页面中设置：
+例如，在 `www.example.com` 或 `example.com` 任意一方设置 cookie 时，指定 `domain=example.com`：
 
 ```
-document.domain = "example.com";
+document.cookie = "mycookie=myvalue; domain=example.com; path=/";
 ```
 
-这样就使得所有子域名和主域名的  `document.domain`  都相同，从而实现了跨域共享 cookie。
-
-2.  在任意一个子域名中创建一个 cookie，例如：
-
-```
-document.cookie = "mycookie=myvalue; domain=example.com; expires=Fri, 31 Jul 2022 23:59:59 GMT; path=/";
-```
-
-在上面的代码中，使用了  `domain`  参数来指定 cookie 的父域名为  `example.com`。
-
-3.  在其他子域名的页面中可以读取这个 cookie，并进行相关操作，例如：
+这样，`example.com`、`www.example.com`、`api.example.com` 等所有该主域名下的子域名都可以读取到这个 cookie：
 
 ```
 console.log(document.cookie); // 输出："mycookie=myvalue"
 ```
 
-需要注意的是，通过设置  `document.domain`  属性来实现 cookie 共享需要满足以下条件：
+如果设置 cookie 时**不指定 `domain`**，则该 cookie 只属于当前域名，其他子域名或主域名均无法访问。
 
-- 主域名和子域名的  `document.domain`  值必须相同；
-- 主域名和子域名的**协议**、**端口号**必须相同；
-- 当前页面的域名必须是完整的（含有顶级域名）。
-
-如果不满足以上条件的话，将无法完成 cookie 共享。
-
-### 子域名是否可以访问主域名的 cookie？
-
-子域名可以访问父域名下的 cookie，因为在同一个主域名下，子域名和父域名共享同一个 cookie 存储机制。也就是说，当在  `example.com`  域名下创建一个 cookie 时，其子域名  `www.example.com`  和  `api.example.com`  也能够通过 JavaScript 对其进行读取或修改，只要这些子域名没有设置自己的 cookie。
-
-这是因为在同一个主域名下，所有的子域名都属于同一个域，浏览器会默认将 cookie 的域名设置为主域名，未指定的子域名会自动与主域名进行共享。例如，在主域名  `example.com`  中设置了一个名为  `mycookie`  的 cookie：
-
-```
-document.cookie = "mycookie=test; domain=example.com";
-```
-
-那么在  `www.example.com`  和  `api.example.com`  下直接访问时，都可以通过 JavaScript 读取到该 cookie：
-
-```
-console.log(document.cookie);  // 输出："mycookie=test"
-```
-
-需要注意的是，**在不同主域名下的子域名之间是不能共享 cookie 的，因为主域名不同，它们的域也不同，不受同源策略限制**。为了解决这个问题，可以使用**跨域通信技术**，如 CORS、JSONP、postMessage 等。
+需要注意的是，**不同主域名之间的子域名无法共享 cookie**，这是由同源策略决定的。跨主域名的数据共享需要使用 CORS、postMessage 等跨域通信技术。
 
 ### cookie 与 web 安全
 
