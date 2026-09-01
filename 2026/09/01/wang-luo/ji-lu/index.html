@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>React源码(二)-FiberNode | Ryo的小站</title>
+  <title>macOS 访问工控机（10.x.x.x）踩坑与排雷指南 | Ryo的小站</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -519,21 +519,21 @@
 
 
 <div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
-  background-position: center center;position: relative;background-image:url('/medias/5.jpg')">
+  background-position: center center;position: relative;background-image:url('/medias/2.jpg')">
   <div class="post-detail-header-mask"></div>
   <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
   
   <div class="post-detail-header_info-box">
     <div class="title-box">
       <span class="title">
-        React源码(二)-FiberNode
+        macOS 访问工控机（10.x.x.x）踩坑与排雷指南
       </span>
     </div>
     
     
       
         <span class="post-detail-header_date">
-          <i class="fas fa-calendar"></i> 发表于：2020-01-01 |
+          <i class="fas fa-calendar"></i> 发表于：2026-09-01 |
         </span>
       
 
@@ -541,8 +541,8 @@
         <span class="post-detail-header_categories">
           <i class="iconfont iconbookmark1"></i> 分类：
           
-            <a href="/categories/%E5%89%8D%E7%AB%AF/" class="post-detail-header_category">
-              前端
+            <a href="/categories/%E7%BD%91%E7%BB%9C/" class="post-detail-header_category">
+              网络
             </a>
           
         </span>
@@ -566,17 +566,85 @@
   <div class="main-content">
     <article class="post post-detail">
       <div class="post-content">
-        <h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO:"></a>TODO:</h2>
+        <h1 id="macOS-访问工控机（10-x-x-x）踩坑与排雷指南"><a href="#macOS-访问工控机（10-x-x-x）踩坑与排雷指南" class="headerlink" title="macOS 访问工控机（10.x.x.x）踩坑与排雷指南"></a>macOS 访问工控机（10.x.x.x）踩坑与排雷指南</h1><h2 id="1-背景与现象"><a href="#1-背景与现象" class="headerlink" title="1. 背景与现象"></a>1. 背景与现象</h2><p>在 macOS 上调试内网工控机（IP：<code>10.0.0.32</code>）时，遇到了一系列“诡异”的网络不通问题：</p>
+<ul>
+<li><strong>Chrome 浏览器</strong>访问 <code>http://10.0.0.32:7688</code> 报错：<code>ERR_ADDRESS_UNREACHABLE</code>。</li>
+<li><strong>Royal TSX</strong>（第三方 SSH 客户端）连接 <code>10.0.0.32</code> 超时或拒绝连接。</li>
+<li><strong>macOS 自带终端（Terminal）</strong> 使用 SSH 连接正常（前提是用户名和密码输入正确）。</li>
+</ul>
+<h2 id="2-根本原因分析"><a href="#2-根本原因分析" class="headerlink" title="2. 根本原因分析"></a>2. 根本原因分析</h2><h3 id="2-1-苹果的“本地网络”隐私锁"><a href="#2-1-苹果的“本地网络”隐私锁" class="headerlink" title="2.1 苹果的“本地网络”隐私锁"></a>2.1 苹果的“本地网络”隐私锁</h3><p>从 macOS Catalina 开始，苹果强制要求：<strong>任何 App 尝试连接私有 IP 地址（内网）时，必须经过用户明确授权</strong>。</p>
+<p><strong>触发条件（数学判断）：</strong><br>macOS 不关心对方是工控机、打印机还是 NAS，只判断目标 IP 是否属于以下三大标准私有地址段：</p>
+<ul>
+<li><code>10.0.0.0/8</code> （10.x.x.x） —— <strong>你的工控机在此范围</strong></li>
+<li><code>172.16.0.0/12</code> （172.16.x.x ~ 172.31.x.x）</li>
+<li><code>192.168.0.0/16</code> （192.168.x.x）</li>
+</ul>
+<p>只要目标 IP 命中上述范围，macOS 网络内核会在底层直接拦截数据包，导致 App 无法收到任何回包。</p>
+<h3 id="2-2-为什么“自带终端”能连，而“Royal-TSX-Chrome”不能？"><a href="#2-2-为什么“自带终端”能连，而“Royal-TSX-Chrome”不能？" class="headerlink" title="2.2 为什么“自带终端”能连，而“Royal TSX &#x2F; Chrome”不能？"></a>2.2 为什么“自带终端”能连，而“Royal TSX &#x2F; Chrome”不能？</h3><p>权限是按 <strong>App（应用）</strong> 独立存储的：</p>
+<ul>
+<li><strong>自带终端（Terminal.app）</strong>：可能在系统安装时默认获得了权限，或者之前某次弹窗被你点过“允许”，因此它不受阻。*(注：本例中一开始连不上是因为用户名输错，属于认证失败，与权限无关。)*</li>
+<li><strong>Chrome &amp; Royal TSX</strong>：作为第三方 App，macOS 严格限制其内网访问。除非用户在弹窗中点“允许”或在系统设置中手动开权限，否则系统会直接丢弃发往 <code>10.0.0.32</code> 的数据包。</li>
+</ul>
+<blockquote>
+<p><strong>区分报错技巧</strong>：</p>
+<ul>
+<li><strong>权限问题</strong>：连接超时（Timeout）或 <code>ERR_ADDRESS_UNREACHABLE</code>（Chrome）。</li>
+<li><strong>用户名&#x2F;密码错误</strong>：提示 <code>Authentication failed</code> 或 <code>Permission denied</code>（SSH）。</li>
+</ul>
+</blockquote>
+<h2 id="3-解决方案"><a href="#3-解决方案" class="headerlink" title="3. 解决方案"></a>3. 解决方案</h2><h3 id="3-1-统一设置路径（系统级）"><a href="#3-1-统一设置路径（系统级）" class="headerlink" title="3.1 统一设置路径（系统级）"></a>3.1 统一设置路径（系统级）</h3><ol>
+<li>点击左上角苹果图标 &gt; <strong>系统设置</strong>。</li>
+<li>进入 <strong>隐私与安全性</strong> &gt; <strong>本地网络</strong>。</li>
+<li>在右侧列表中找到以下 App，并<strong>打开开关</strong>：<ul>
+<li><code>Google Chrome</code></li>
+<li><code>Royal TSX</code> （或 <code>Royal TSV</code>）</li>
+<li>（可选）<code>Terminal</code> —— 如果自带终端也被拦截，一并开启。</li>
+</ul>
+</li>
+</ol>
+<p><strong>操作提示</strong>：</p>
+<ul>
+<li>修改权限后，<strong>必须完全退出（Cmd + Q）并重启</strong>对应的 App，改动才会生效。</li>
+<li>如果列表中没有某个 App，可以尝试在该 App 中执行一次 <code>ping 10.0.0.32</code> 或随便输入一个 SSH 连接，系统检测到请求后会自动在列表中生成条目。</li>
+</ul>
+<h3 id="3-2-Chrome-浏览器补充说明"><a href="#3-2-Chrome-浏览器补充说明" class="headerlink" title="3.2 Chrome 浏览器补充说明"></a>3.2 Chrome 浏览器补充说明</h3><p>如果在系统设置中已开启权限，但 Chrome 依然报错，可以检查内部实验性功能（通常不需要改）：</p>
+<ul>
+<li>地址栏输入 <code>chrome://flags/#local-network-access-check</code>。</li>
+<li>确保该项为 <code>Default</code> 或 <code>Disabled</code>（默认为 Default 即可，系统权限优先级更高）。</li>
+</ul>
+<h2 id="4-避坑总结"><a href="#4-避坑总结" class="headerlink" title="4. 避坑总结"></a>4. 避坑总结</h2><table>
+<thead>
+<tr>
+<th align="left">现象</th>
+<th align="left">可能原因</th>
+<th align="left">解决办法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Chrome 无法打开内网 Web 页面</td>
+<td align="left">macOS 本地网络权限未开启</td>
+<td align="left">系统设置 -&gt; 隐私 -&gt; 本地网络 -&gt; 勾选 Chrome</td>
+</tr>
+<tr>
+<td align="left">Royal TSX SSH 连接超时</td>
+<td align="left">macOS 本地网络权限未开启</td>
+<td align="left">系统设置 -&gt; 隐私 -&gt; 本地网络 -&gt; 勾选 Royal TSX</td>
+</tr>
+<tr>
+<td align="left">Terminal SSH 提示 <code>Permission denied</code></td>
+<td align="left"><strong>用户名或密码错误</strong>（非网络问题）</td>
+<td align="left">核对工控机的登录凭据</td>
+</tr>
+<tr>
+<td align="left">Terminal SSH 提示 <code>Connection timed out</code></td>
+<td align="left">Terminal 也被系统拦截</td>
+<td align="left">在本地网络设置中勾选 Terminal</td>
+</tr>
+</tbody></table>
+<p><strong>核心结论</strong>：<br>遇到内网 IP（尤其是 <code>10.</code>、<code>172.16</code>、<code>192.168</code> 开头）连不上时，<strong>第一反应先去检查 macOS 的“本地网络”隐私设置</strong>，不要先怀疑网线、防火墙或工控机挂了。大多数情况下，这只是苹果给第三方 App 套上的“紧箍咒”在作祟。</p>
+
       </div>
       <div class="post-tags-categories">
-        
-        <div class="tags">
-          
-            <a href="/tags/React/" class="">
-              React
-            </a>
-          
-        </div>
         
       </div>
       
@@ -587,7 +655,7 @@
     </li>
     <li class="post-copyright-link">
     <strong>文章链接:  </strong>
-    <a href="/2020/01/01/qian-duan/react/2.react-yuan-ma-er-fibernode/" target="_blank" title="React源码(二)-FiberNode">https://saebaryoo.github.io/2020/01/01/qian-duan/react/2.react-yuan-ma-er-fibernode/</a>
+    <a href="/2026/09/01/wang-luo/ji-lu/" target="_blank" title="macOS 访问工控机（10.x.x.x）踩坑与排雷指南">https://saebaryoo.github.io/2026/09/01/wang-luo/ji-lu/</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明:   </strong>
@@ -605,40 +673,21 @@
 
 
 
-  
-  <div class="post-nav-prev post-nav-item">
-    <div class="post-nav-img" style="background-size: cover; 
-      background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/12.jpg" class="lazyload placeholder" data-srcset="/medias/12.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-    </div>
-    <a href="/2020/04/02/hou-duan/nestjs/api-with-nestjs-1/" class="post-nav-link">
-      <div class="title">
-        <i class="fas fa-angle-left"></i> 上一篇:
-        <div class="title-text">API with Nestjs#1 Controllers, 路由和模块(module)结构</div>
-      </div>
-      
-      <!-- <div class="content">
-        TODONestjs 是一个用来构建 Node 引用的框架。与其他一些比较灵活的框架如：Express、Koa相比，我们
-      </div> -->
-    </a>
-  </div>
-
 
 
   
   <div class="post-nav-next post-nav-item">
     <div class="post-nav-img" style="background-size: cover; 
       background-position: center center;">
-      <img class="lazyload lazyload placeholder" src="/medias/15.jpg" class="lazyload placeholder" data-srcset="/medias/15.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+      <img class="lazyload lazyload placeholder" src="/medias/8.jpg" class="lazyload placeholder" data-srcset="/medias/8.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
     </div>
-    <a href="/2020/01/01/qian-duan/react/1.react-yuan-ma-yi-jsx/" class="post-nav-link">
+    <a href="/2026/04/27/ai-kai-fa/gong-ju/1.claude-jie-deepseekv4/" class="post-nav-link">
       <div class="title">
         下一篇: <i class="fas fa-angle-right"></i>
-        <div class="title-text">React源码(一)-JSX</div>
+        <div class="title-text">Claude Code 免费接入 DeepSeek V4 教程</div>
       </div>
       <!-- <div class="content">
-        TODO:
-学习React源码的前提就是知道jsx，在react中并不是直接操作真实dom，而是通过jsx的语法，然后经
+        Claude Code 免费接入 DeepSeek V4 教程（零成本爽用）第一步：获取 API Key可选择以下两个平
       </div> -->
     </a>
   </div>
