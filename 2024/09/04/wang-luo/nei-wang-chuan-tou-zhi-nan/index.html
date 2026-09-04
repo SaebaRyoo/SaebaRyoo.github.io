@@ -11,7 +11,7 @@
   <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-  <title>归档 | Ryo的小站</title>
+  <title>内网穿透完全指南（从原理到实战） | Ryo的小站</title>
 
   <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1911880_c1nvbyezg17.css">
@@ -490,280 +490,674 @@
 </header>
 
         <!-- 内容区域 -->
-        <div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"></div>
-<div class="bg-light-floor-archive" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -3;"></div>
-<div class="archive-header" style="background-image:url('https://pic1.zhimg.com/80/v2-1414b3a4b205e19060db18a20d08723a_1440w.jpg?source=1940ef5c')">
-  <div class="archive-header-title">
-    archive
-  </div>
-  <div class="archive-header-desc">
+        
+ <!-- prismjs 代码高亮 -->
+ 
+    
+    <link href="/js/prism/prism-line-numbers.css" rel="stylesheet">
+    
+        <link href="/js/prism/prism.min.css" rel="stylesheet">
+    
+
+    <style>
+        pre[class*="language-"] {
+            overflow-y: hidden;
+        }
+        .line-numbers .line-numbers-rows {
+            border: none;
+        }
+    </style>
   
-  <span class="title" id="archive-header-desc"></span>
+
+
+<div class="bg-dark-floor" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -1;"></div>
+
+
+  <!-- 文章详情页顶部图片和标题 -->
+
+
+
+
+<div class="post-detail-header" id="thumbnail_canvas" style="background-repeat: no-repeat; background-size: cover; 
+  background-position: center center;position: relative;background-image:url('/medias/3.jpg')">
+  <div class="post-detail-header-mask"></div>
+  <canvas id="header_canvas"style="position:absolute;bottom:0;pointer-events:none;"></canvas>
+  
+  <div class="post-detail-header_info-box">
+    <div class="title-box">
+      <span class="title">
+        内网穿透完全指南（从原理到实战）
+      </span>
+    </div>
+    
+    
+      
+        <span class="post-detail-header_date">
+          <i class="fas fa-calendar"></i> 发表于：2024-09-04 |
+        </span>
+      
+
+      
+        <span class="post-detail-header_categories">
+          <i class="iconfont iconbookmark1"></i> 分类：
+          
+            <a href="/categories/%E7%BD%91%E7%BB%9C/" class="post-detail-header_category">
+              网络
+            </a>
+          
+        </span>
+      
+
+      
+    
+  </div>
+  
+  
+    <script src="/js/bubble/bubble.js"></script>
+  
+</div>
+
+
+
+
+
+<div class="post-detail-content row justify-position" 
+  style="padding-top: 0px;">
+  <div class="main-content">
+    <article class="post post-detail">
+      <div class="post-content">
+        <h1 id="内网穿透完全指南（从原理到实战）"><a href="#内网穿透完全指南（从原理到实战）" class="headerlink" title="内网穿透完全指南（从原理到实战）"></a>内网穿透完全指南（从原理到实战）</h1><h2 id="1-什么是内网穿透"><a href="#1-什么是内网穿透" class="headerlink" title="1. 什么是内网穿透"></a>1. 什么是内网穿透</h2><p>内网穿透（NAT Traversal）是一种技术，允许<strong>位于内网（无公网IP）的设备</strong>被<strong>外网（互联网）的用户</strong>访问。</p>
+<p>​<strong>典型场景</strong>​：工控机、树莓派、NAS、开发测试服务器等设备往往部署在公司的局域网内，没有独立的公网IP，外部无法直接访问。通过内网穿透，可以安全地远程访问这些设备。</p>
+<hr>
+<h2 id="2-核心原理：为什么需要公网IP？"><a href="#2-核心原理：为什么需要公网IP？" class="headerlink" title="2. 核心原理：为什么需要公网IP？"></a>2. 核心原理：为什么需要公网IP？</h2><h3 id="2-1-公网IP-vs-内网IP"><a href="#2-1-公网IP-vs-内网IP" class="headerlink" title="2.1 公网IP vs 内网IP"></a>2.1 公网IP vs 内网IP</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>特征</th>
+<th>比喻</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>公网IP</strong></td>
+<td>全球唯一，可在互联网任意位置访问</td>
+<td>精确的“门牌号”，快递员可以直接送达</td>
+</tr>
+<tr>
+<td>​<strong>内网IP</strong>​（如192.168.x.x）</td>
+<td>仅在局域网内有效，外网无法路由</td>
+<td>小区内的“业主小名”，外人不知道在哪栋楼</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-数据包路由的限制"><a href="#2-2-数据包路由的限制" class="headerlink" title="2.2 数据包路由的限制"></a>2.2 数据包路由的限制</h3><p>互联网上的路由器只认公网IP。如果目标地址是192.168.x.x，路由器会丢弃数据包，因为找不到这个地址在哪个网络。</p>
+<p>​<strong>结论</strong>​：要让外网访问内网设备， ​<strong>必须有一台拥有公网IP的服务器作为“中转站”</strong>。</p>
+<h3 id="2-3-内网穿透的本质"><a href="#2-3-内网穿透的本质" class="headerlink" title="2.3 内网穿透的本质"></a>2.3 内网穿透的本质</h3><ul>
+<li><strong>内网设备主动发起连接</strong> → 连接到公网服务器（因为内网设备能上网）。</li>
+<li><strong>建立持久隧道</strong> → 保持这个连接不断开。</li>
+<li><strong>公网服务器监听外网请求</strong> → 当外网用户访问服务器指定端口时，服务器通过已建立的隧道将请求转发给内网设备。</li>
+<li><strong>内网设备回复</strong> → 沿着同一隧道返回数据。</li>
+</ul>
+<p>​<strong>关键点</strong>​：内网设备不需要公网IP，只需要​<strong>能主动访问外网</strong>​（通常公司网络都允许）。</p>
+<hr>
+<h2 id="3-常见内网穿透方案对比"><a href="#3-常见内网穿透方案对比" class="headerlink" title="3. 常见内网穿透方案对比"></a>3. 常见内网穿透方案对比</h2><table>
+<thead>
+<tr>
+<th>方案</th>
+<th>是否需要自己买服务器</th>
+<th>实现难度</th>
+<th>数据安全</th>
+<th>成本</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>自建frp</strong></td>
+<td>✅需要（买云服务器）</td>
+<td>中</td>
+<td>高（数据仅过你的服务器）</td>
+<td>服务器费用</td>
+<td>工业设备、长期稳定、多服务</td>
+</tr>
+<tr>
+<td><strong>cpolar&#x2F;ngrok等SaaS</strong></td>
+<td>❌不需要（服务商提供）</td>
+<td>低</td>
+<td>中（依赖服务商）</td>
+<td>免费或付费套餐</td>
+<td>个人开发、临时测试</td>
+</tr>
+<tr>
+<td><strong>VPN&#x2F;异地组网（ZeroTier&#x2F;Tailscale）</strong></td>
+<td>需要信令服务器（可由服务商提供）</td>
+<td>中</td>
+<td>高（加密隧道）</td>
+<td>免费或付费</td>
+<td>组建虚拟局域网，访问多个设备</td>
+</tr>
+<tr>
+<td><strong>硬件远程控制（如向日葵控控）</strong></td>
+<td>❌不需要</td>
+<td>最低</td>
+<td>高（物理隔离）</td>
+<td>硬件成本高</td>
+<td>设备无网络或需BIOS级控制</td>
+</tr>
+</tbody></table>
+<h3 id="3-1-cpolar-vs-自建frp-深层区别"><a href="#3-1-cpolar-vs-自建frp-深层区别" class="headerlink" title="3.1 cpolar vs 自建frp 深层区别"></a>3.1 cpolar vs 自建frp 深层区别</h3><table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>cpolar（SaaS）</th>
+<th>自建frp</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>公网服务器</strong></td>
+<td>cpolar官方提供（共享）</td>
+<td>你自己买的云服务器</td>
+</tr>
+<tr>
+<td><strong>带宽</strong></td>
+<td>免费版限速（通常几百KB&#x2F;s）</td>
+<td>取决于你购买的带宽（可自由选择）</td>
+</tr>
+<tr>
+<td><strong>端口&#x2F;域名</strong></td>
+<td>随机分配，付费才固定</td>
+<td>固定IP+固定端口</td>
+</tr>
+<tr>
+<td><strong>数据流向</strong></td>
+<td>经过第三方服务器</td>
+<td>只经过你自己的服务器</td>
+</tr>
+<tr>
+<td><strong>稳定性</strong></td>
+<td>依赖服务商服务状态</td>
+<td>依赖云服务商（大厂通常99.95%可用）</td>
+</tr>
+<tr>
+<td><strong>适用场景</strong></td>
+<td>个人学习、临时分享</td>
+<td>企业生产环境、长期使用、多服务</td>
+</tr>
+</tbody></table>
+<p>​<strong>结论</strong>​：cpolar这类服务本质是“替你买好了服务器并部署了服务端”，但带宽和隐私受制于人。对于工控等企业场景，自建frp是更可控的选择。</p>
+<hr>
+<h2 id="4-实战：使用frp实现内网穿透（工控机场景）"><a href="#4-实战：使用frp实现内网穿透（工控机场景）" class="headerlink" title="4. 实战：使用frp实现内网穿透（工控机场景）"></a>4. 实战：使用frp实现内网穿透（工控机场景）</h2><h3 id="4-1-架构图"><a href="#4-1-架构图" class="headerlink" title="4.1 架构图"></a>4.1 架构图</h3><p>text</p>
+<pre class="line-numbers language-plain" data-language="plain"><code class="language-plain">[远程用户]  -->   [云服务器 (frps)]  &lt;-->  [工控机 (frpc)]
+               公网IP: 61.xx.xx.xx       内网IP: 192.168.1.100
+               端口: 7000 (frpc连接)
+               端口: 7614~7618 (用户访问)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="4-2-准备工作"><a href="#4-2-准备工作" class="headerlink" title="4.2 准备工作"></a>4.2 准备工作</h3><ol>
+<li>​<strong>购买一台云服务器</strong>​（阿里云、腾讯云、华为云等），操作系统推荐 Ubuntu&#x2F;CentOS，确保有公网IP。</li>
+<li>​<strong>开放防火墙</strong>​：</li>
+</ol>
+<ul>
+<li>云服务器系统防火墙（如 firewalld&#x2F;iptables）</li>
+<li>​<strong>云厂商控制台的“安全组”</strong>​（最易遗漏！）放行所需端口。</li>
+</ul>
+<ol start="3">
+<li>​<strong>下载frp</strong>​：访问 <a target="_blank" rel="noopener" href="https://github.com/fatedier/frp/releases">frp GitHub Releases</a>，根据<strong>操作系统和CPU架构</strong>分别为服务端（云服务器）和客户端（工控机）下载​<strong>相同版本</strong>​。</li>
+</ol>
+<h3 id="4-3-服务端配置（云服务器-frps）"><a href="#4-3-服务端配置（云服务器-frps）" class="headerlink" title="4.3 服务端配置（云服务器 - frps）"></a>4.3 服务端配置（云服务器 - frps）</h3><ol>
+<li>解压并进入目录。</li>
+<li>编辑配置文件 <code>frps.toml</code>（新版）或 <code>frps.ini</code>（旧版），以下以新版 TOML 格式为例：</li>
+</ol>
+<p>toml</p>
+<pre class="line-numbers language-plain" data-language="plain"><code class="language-plain"># frps.toml
+bindPort = 7000                 # frpc 连接端口
+auth.method = "token"
+auth.token = "your_secure_token_here"   # 改为强密码
+
+# Web管理面板（可选）
+webServer.addr = "0.0.0.0"
+webServer.port = 7500
+webServer.user = "admin"
+webServer.password = "your_admin_password"<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li>启动服务端（测试）：</li>
+</ol>
+<p>bash</p>
+<p>.&#x2F;frps -c frps.toml</p>
+<p>成功启动后会看到类似 <code>frps started</code> 的日志。</p>
+<ol start="4">
+<li>​<strong>关键步骤</strong>​：在云厂商安全组中放行 TCP 端口 <code>7000</code> 和你要暴露给用户的端口（如 <code>7614-7618</code>）。</li>
+</ol>
+<h3 id="4-4-客户端配置（工控机-frpc）"><a href="#4-4-客户端配置（工控机-frpc）" class="headerlink" title="4.4 客户端配置（工控机 - frpc）"></a>4.4 客户端配置（工控机 - frpc）</h3><ol>
+<li>解压并进入目录。</li>
+<li>编辑配置文件 <code>frpc.toml</code>（​<strong>注意：每个代理必须单独用 ​</strong>​<code>[[proxies]]</code>​<strong>​ ​声明，不要漏掉</strong>​）：</li>
+</ol>
+<p>toml</p>
+<pre class="line-numbers language-plain" data-language="plain"><code class="language-plain"># frpc.toml
+serverAddr = "你的云服务器公网IP"
+serverPort = 7000                      # 与服务端 bindPort 一致
+
+auth.method = "token"
+auth.token = "your_secure_token_here"  # 与服务端 token 一致
+
+# 以下定义多个代理，每个对应一个内网服务
+[[proxies]]
+name = "api-server"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 7676
+remotePort = 7614
+
+[[proxies]]
+name = "static-web"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 7667
+remotePort = 7615
+
+[[proxies]]
+name = "web-server"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 7668
+remotePort = 7616
+
+[[proxies]]
+name = "print-it"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 8000
+remotePort = 7617
+
+[[proxies]]
+name = "service-web-server"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 7688
+remotePort = 7618<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li>启动客户端（测试）：</li>
+</ol>
+<p>bash</p>
+<p>.&#x2F;frpc -c frpc.toml</p>
+<p>看到 <code>start proxy success</code> 表示连接成功。</p>
+<h3 id="4-5-远程访问测试"><a href="#4-5-远程访问测试" class="headerlink" title="4.5 远程访问测试"></a>4.5 远程访问测试</h3><p>在任意能上网的电脑上：</p>
+<p>bash</p>
+<p>ssh -p 7614 工控机用户名@云服务器公网IP</p>
+<p>输入工控机密码即可登录（假设代理的是 SSH 服务）。其他端口类似。</p>
+<h3 id="4-6-配置开机自启（systemd）"><a href="#4-6-配置开机自启（systemd）" class="headerlink" title="4.6 配置开机自启（systemd）"></a>4.6 配置开机自启（systemd）</h3><p>创建服务文件 <code>/etc/systemd/system/frpc.service</code>：</p>
+<p>ini</p>
+<pre class="line-numbers language-plain" data-language="plain"><code class="language-plain">[Unit]
+Description=frp client
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/路径/frpc -c /路径/frpc.toml
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后执行：</p>
+<p>bash</p>
+<pre class="line-numbers language-plain" data-language="plain"><code class="language-plain">sudo systemctl daemon-reload
+sudo systemctl enable frpc.service
+sudo systemctl start frpc.service<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>服务端同理，只需把 <code>frpc</code> 改为 <code>frps</code>。</p>
+<hr>
+<hr>
+<h2 id="5-安全建议"><a href="#5-安全建议" class="headerlink" title="5. 安全建议"></a>5. 安全建议</h2><ol>
+<li>​<strong>修改所有默认密码</strong>​：云服务器SSH密码、frp的token、Web管理面板密码，都必须使用强密码。</li>
+<li>​<strong>开启认证</strong>​：frp必须配置 <code>auth.token</code>，避免未授权客户端连接。</li>
+<li>​<strong>最小化端口暴露</strong>​：只放行必须的 <code>remotePort</code>，不要全开。</li>
+<li>​<strong>云服务器安全组</strong>​：仅对需要访问的IP段开放端口（如果能固定），或使用VPN叠加。</li>
+<li>​<strong>定期更新</strong>​：frp和操作系统及时打补丁。</li>
+<li>​<strong>监控日志</strong>​：定期查看 <code>frps</code> 和 <code>frpc</code> 日志，发现异常连接及时处理。</li>
+</ol>
+<hr>
+<h2 id="7-总结"><a href="#7-总结" class="headerlink" title="7. 总结"></a>7. 总结</h2><ul>
+<li>​<strong>内网穿透的必要条件</strong>​：通信链路中至少有一个节点拥有公网IP（通常是云服务器）。</li>
+<li>​<strong>frp 是自主可控、安全稳定的选择</strong>​，适合企业生产环境。</li>
+<li><strong>cpolar 等SaaS工具</strong>省心但受限于服务商，适合个人轻量使用。</li>
+<li>​<strong>核心配置要点</strong>​：服务端放行端口、客户端正确配置 <code>[[proxies]]</code>、保持token一致。</li>
+</ul>
+<p>通过本指南，你应该能独立完成从概念理解到实际部署的全过程。如有问题，可查看 frp 官方文档或查阅日志定位。</p>
+<hr>
+<p>​<strong>版本记录</strong>​：本文档基于 frp v0.52+ TOML 配置编写，实践前请确认版本兼容性。</p>
+
+      </div>
+      <div class="post-tags-categories">
+        
+      </div>
+      
+        <div class="copyright">
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+    <strong>作者:  </strong>Ryo</a>
+    </li>
+    <li class="post-copyright-link">
+    <strong>文章链接:  </strong>
+    <a href="/2024/09/04/wang-luo/nei-wang-chuan-tou-zhi-nan/" target="_blank" title="内网穿透完全指南（从原理到实战）">https://saebaryoo.github.io/2024/09/04/wang-luo/nei-wang-chuan-tou-zhi-nan/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明:   </strong>
+      本网站所有文章除特别声明外,均采用 <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+      许可协议。转载请注明出处!
+    </li>
+  </ul>
+<div>
+      
+    </article>
+    <!-- 上一篇文章和下一篇文章 -->
+    
+      <!-- 文章详情页的上一页和下一页 -->
+<div class="post-nav">
+
+
+
+  
+  <div class="post-nav-prev post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/10.jpg" class="lazyload placeholder" data-srcset="/medias/10.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
+    </div>
+    <a href="/2025/02/20/hou-duan/shu-ju-ku/redis/wan-zi-chang-wen-jie-xi-redis/" class="post-nav-link">
+      <div class="title">
+        <i class="fas fa-angle-left"></i> 上一篇:
+        <div class="title-text">万字好文！带你入门 redis</div>
+      </div>
+      
+      <!-- <div class="content">
+        请看原文点击查看原文
+以下内容只用作记录
+
+      </div> -->
+    </a>
+  </div>
+
+
+
+  
+  <div class="post-nav-next post-nav-item">
+    <div class="post-nav-img" style="background-size: cover; 
+      background-position: center center;">
+      <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" src="" alt="">
+    </div>
+    <a href="/2023/09/18/wang-luo/webworker-he-serviceworker/" class="post-nav-link">
+      <div class="title">
+        下一篇: <i class="fas fa-angle-right"></i>
+        <div class="title-text">Web Worker和Service Worker</div>
+      </div>
+      <!-- <div class="content">
+        WebWorker 介绍什么是 Web Worker？为 JS 创造多线程的环境，允许主线程创建 Worker 线程，将
+      </div> -->
+    </a>
+  </div>
+
+</div>
+
+    
+    
+
+    <!-- 打赏 -->
+    
+
+    <!-- 分享 -->
+    
+      <!-- https://github.com/overtrue/share.js -->
+<!-- 文章详情页的分享 -->
+<div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+
+<script src="/js/shareJs/social-share.min.js"></script>
+</script>
+
+<style>
+  .social-share {
+    margin: 20px 0;
+  }
+</style>
+
+
+    
+    
+    <!-- 评论 -->
+    <!-- 评论 -->
+
+  <div id="myComment">
+    
+      <div id="gitment-container"></div>
+
+    
+  </div>
+
+<!-- comment script in themes\hexo-theme-bamboo\layout\_partial\scripts\index.ejs -->
+
+
+  </div>
+
+  <!-- 目录 -->
+  <!-- 文章详情页右侧目录 -->
+
+  <div class="toc-aside">
+    <div class="toc-main">
+      <div class="toc-aside-title">
+        <i class="fas fa-list-ul" aria-hidden="true"></i><span>本文目录</span>
+        
+          <div class="toc-open-close">本文目录</div>
+        
+      </div>
+      <div class="toc-content">
+        <div class="toc"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 手机端目录按钮 -->
+  <div id="toc-mobile-btn">
+    <i class="fas fa-list-ul" aria-hidden="true"></i>
+  </div>
+
+
+<script>
+  function closeToc(init) {
+    $(".toc-aside").css({'width': 0, 'padding': 0, 'transition': init ?  'noe' : 'width 0.3s' });
+    $(".toc-content").css({'width': 0});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'none'});
+    $(".main-content").css({'width': '75%', 'margin-left': 'auto', 'margin-right': 'auto',});
+  };
+  function openToc() {
+    $(".main-content").css({'width': '65%', 'margin-right': '10px', 'margin-left': 'calc(35% - 350px)'});
+    $(".toc-aside").css({'width': '300px', 'padding': '0 10px', 'transition': 'width 0.3s'});
+    $(".toc-content").css({'width': '300px'});
+    $(".toc-aside-title span, .toc-aside-title i").css({'display': 'inline-block'});
+  }
+  function openBtnClickFn () {
+    let openOrCloseBtn = $('.toc-aside .toc-aside-title .toc-open-close');
+    let open = eval('' || 'true');
+    openOrCloseBtn.click(function() {
+      if (open) {
+        closeToc();
+        open = false;
+      } else {
+        openToc();
+        open = true;
+      }
+    });
+  };
+  openBtnClickFn();
+  initCloseTocWidth(true);
+
+  function initCloseTocWidth(init) {
+    if (window.innerWidth >= 992) {
+      let isClose = false;
+      isClose && closeToc(init)
+    }
+  }
+
+  document.addEventListener('pjax:complete', function () {
+    $(".toc-aside").css({'transition': 'no'});
+  })
+  document.addEventListener('pjax:complete', function () {
+    openBtnClickFn();
+  })
+  
+</script>
+
+  <!-- 图片放大 Wrap images with fancybox support -->
+  <script src="/js/wrapImage.js"></script>
+</div>
+
+<!-- 文章详情页背景图 -->
+<div id="appBgSwiper" style="position: fixed;left: 0;top: 0;width: 100%;height: 100%;z-index: -2;"
+	:style="{'background-color': bgColor ? bgColor : 'transparent'}">
+	<transition-group tag="ul" :name="names">
+		<li v-for='(image,index) in img' :key='index' v-show="index === mark" class="bg-swiper-box">
+			<img :src="image" class="bg-swiper-img no-lazy">
+		</li>
+	</transition-group>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#appBgSwiper',
+		data: {
+			names: '' || 'fade' || 'fade', // translate-fade fade
+			mark: 0,
+			img: [],
+			bgColor: '',
+			time: null
+		},
+		methods: {   //添加方法
+			change(i, m) {
+				if (i > m) {
+					// this.names = 'fade';
+				} else if (i < m) {
+					// this.names = 'fade';
+				} else {
+					return;
+				}
+				this.mark = i;
+			},
+			prev() {
+				// this.names = 'fade';
+				this.mark--;
+				if (this.mark === -1) {
+					this.mark = 3;
+					return
+				}
+			},
+			next() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			autoPlay() {
+				// this.names = 'fade';
+				this.mark++;
+				if (this.mark === this.img.length) {
+					this.mark = 0;
+					return
+				}
+			},
+			play() {
+				let bgImgDelay = '' || '180000'
+				let delay = parseInt(bgImgDelay) || 180000;
+				this.time = setInterval(this.autoPlay, delay);
+			},
+			enter() {
+				clearInterval(this.time);
+			},
+			leave() {
+				this.play();
+			}
+		},
+		created() {
+			this.play()
+		},
+		beforeDestroy() {
+			clearInterval(this.time);
+		},
+		mounted() {
+			let prop = '' || '';
+			let isImg = prop.includes('.bmp') || prop.includes('.jpg') || prop.includes('.png') || prop.includes('.tif') || prop.includes('.gif') || prop.includes('.pcx') || prop.includes('.tga') || prop.includes('.exif') || prop.includes('.fpx') || prop.includes('.psd') || prop.includes('.cdr') || prop.includes('.pcd') || prop.includes('.dxf') || prop.includes('.ufo') || prop.includes('.eps') || prop.includes('.ai') || prop.includes('.raw') || prop.includes('.WMF') || prop.includes('.webp') || prop.includes('.jpeg') || prop.includes('http://') || prop.includes('https://')
+			if (isImg) {
+				let img = prop.split(',');
+				let configRoot = '/'
+				let arrImg = [];
+				img.forEach(el => {
+					var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+					var objExp = new RegExp(Expression);
+
+					if (objExp.test(el)) {
+						// http or https
+						arrImg.push(el);
+					} else {
+						// 非http or https开头
+						// 本地文件
+						let firstStr = el.charAt(0);
+						if (firstStr == '/') {
+							el = el.substr(1); // 删除第一个字符 '/',因为 configRoot最后一个字符为 /
+						}
+						el = configRoot + el;
+						arrImg.push(el);
+					}
+				})
+				this.img = arrImg;
+			} else {
+				this.bgColor = prop;
+			}
+		}
+	})
+</script>
+
+<style>
+	.bg-swiper-box {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.bg-swiper-img {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
+
+
+
   <script>
-  function typedFn() {
-    const el = '#archive-header-desc';
-    const type = 'archive';
-    let desc = '春有百花秋有月，夏有凉风冬有雪'
-    var typed = new Typed(el, {
-      strings: [desc],
-      startDelay: 100,
-      typeSpeed: 100,
-      loop: true,
-      backSpeed: 50,
-      showCursor: true
-    });
-  }
-  typedFn();
-</script>
+  function loadMermaid() {
+    if (document.getElementsByClassName('mermaid').length) {
+      if (window.mermaidJsLoad) mermaid.init()
+      else {
+        loadScript('https://cdn.jsdelivr.net/npm/mermaid@latest/dist/mermaid.min.js').then(() => {
+          window.mermaidJsLoad = true
+          mermaid.initialize({
+            theme: 'default',
+          })
+          if ('true') {
+            mermaid.init();
+          }
+        })
+      }
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    loadMermaid();
+  })
+
+  document.addEventListener('pjax:complete', function () {
+    loadMermaid();
+  })
   
-  </div>
-  <div class="mask-box"></div>
-</div>
-
-<div class="archive-video">
-  <video class="full-video" autoplay loop muted>
-      <source style="width: 100%;height: 100vh;" src="/">
-  </video>
-  <div class="video-header-title">
-    archive
-  </div>
-  <div class="video-header-desc">
-  
-      <span class="title" id="archive-video-header-desc"></span>
-      <script>
-  function typedFn() {
-    const el = '#archive-video-header-desc';
-    const type = 'archive';
-    let desc = '春有百花秋有月，夏有凉风冬有雪'
-    var typed = new Typed(el, {
-      strings: [desc],
-      startDelay: 100,
-      typeSpeed: 100,
-      loop: true,
-      backSpeed: 50,
-      showCursor: true
-    });
-  }
-  typedFn();
 </script>
-      
-  </div>
-  <div class="mask-box"></div>
-</div>
 
-<!-- hash算法 -->
-
-
-<div class="archive-main">
-  <section class="archive">
-    <div class="archive-content">
-      <ul class="post-archive">
-        
-        
-          
-            
-            <div class="year" data-aos="zoom-in-up">
-                <div class="bullet"></div>
-                <a href="/archives/2023">2023</a>
-            </div>
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/04/07/web3.0/0.jiao-yi-xiang-guan-zhi-shi/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/1.jpg" class="lazyload placeholder" data-srcset="/medias/1.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">04-07</span>
-              </div>
-              <a class="post-title" href="/2023/04/07/web3.0/0.jiao-yi-xiang-guan-zhi-shi/">交易相关知识</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/04/06/hou-duan/node/nodejs-ts-2/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/2.jpg" class="lazyload placeholder" data-srcset="/medias/2.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">04-06</span>
-              </div>
-              <a class="post-title" href="/2023/04/06/hou-duan/node/nodejs-ts-2/">Node.js TypeScript#2. EventEmitter</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/04/06/hou-duan/node/nodejs-ts-3/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/8.jpg" class="lazyload placeholder" data-srcset="/medias/8.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">04-06</span>
-              </div>
-              <a class="post-title" href="/2023/04/06/hou-duan/node/nodejs-ts-3/">Node.js TypeScript#3. Buffer</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/04/06/hou-duan/node/nodejs-ts-4/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/4.jpg" class="lazyload placeholder" data-srcset="/medias/4.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">04-06</span>
-              </div>
-              <a class="post-title" href="/2023/04/06/hou-duan/node/nodejs-ts-4/">Node.js TypeScript#4. Readable Stream(可读流)</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/04/04/hou-duan/node/nodejs-ts-1/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/14.jpg" class="lazyload placeholder" data-srcset="/medias/14.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">04-04</span>
-              </div>
-              <a class="post-title" href="/2023/04/04/hou-duan/node/nodejs-ts-1/">Node.js TypeScript#1. Modules, process参数, 文件系统基础</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/04/01/hou-duan/shu-ju-ku/mysql/1.mysql-ji-chu-yu-fa/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/14.jpg" class="lazyload placeholder" data-srcset="/medias/14.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">04-01</span>
-              </div>
-              <a class="post-title" href="/2023/04/01/hou-duan/shu-ju-ku/mysql/1.mysql-ji-chu-yu-fa/">MySQL基础语法</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/04/01/hou-duan/shu-ju-ku/mysql/2.mysql-chang-jian-xie-fa/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/12.jpg" class="lazyload placeholder" data-srcset="/medias/12.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">04-01</span>
-              </div>
-              <a class="post-title" href="/2023/04/01/hou-duan/shu-ju-ku/mysql/2.mysql-chang-jian-xie-fa/">MySQL常见基础写法</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/03/30/gong-ju/npm/npm-ming-ling/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/5.jpg" class="lazyload placeholder" data-srcset="/medias/5.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">03-30</span>
-              </div>
-              <a class="post-title" href="/2023/03/30/gong-ju/npm/npm-ming-ling/">npm 配置</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/03/29/gong-ju/git/git-ming-ling/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/8.jpg" class="lazyload placeholder" data-srcset="/medias/8.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">03-29</span>
-              </div>
-              <a class="post-title" href="/2023/03/29/gong-ju/git/git-ming-ling/">git 命令大全</a>
-            </div>
-          </li>
-        
-          
-          <li class="post-item" data-aos="fade-left">
-            
-            <div class="post-img-box">
-              <a href="/2023/03/28/web3.0/2.shi-xian-yi-ge-mini-qu-kuai-lian/" class="post-img " style="background-size: cover; 
-                background-position: center center;">
-                <img class="lazyload lazyload placeholder" src="/medias/15.jpg" class="lazyload placeholder" data-srcset="/medias/15.jpg" srcset="https://pic1.zhimg.com/v2-cd38920285d125be80b3eb504052c550_b.webp" alt="">
-              </a>
-            </div>
-            <div class="post-date-title">
-              <div>
-                <span class="post-date">03-28</span>
-              </div>
-              <a class="post-title" href="/2023/03/28/web3.0/2.shi-xian-yi-ge-mini-qu-kuai-lian/">使用node.js实现一个迷你区块链</a>
-            </div>
-          </li>
-        
-      </ul>
-    </div>
-  </section>
-  <div class="w-70">
-    
-  <!-- <nav class="page-nav">
-    <a class="extend prev" rel="prev" href="/archives/page/5/">上一页</a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/4/">4</a><a class="page-number" href="/archives/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/archives/page/7/">7</a><a class="page-number" href="/archives/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/12/">12</a><a class="extend next" rel="next" href="/archives/page/7/">下一页</a>
-  </nav> -->
-  <div class="page-nav">
-    
-      <a href="/archives/page/5/"
-         class="page-nav-pre">
-         <i class="fas fa-angle-left"></i><span class="ml-5">上一页</span>
-      </a>
-    
-    <div class="page-info">
-        <div class="page-info-text">6 / 12</div>
-    </div>
-    
-      <a href="/archives/page/7/"
-         class="page-nav-next">
-          <span class="mr-5">下一页</span><i class="fas fa-angle-right"></i>
-      </a>
-      
-  </div>
-
-  </div>
-</div>
 
       </main>
     </div>
