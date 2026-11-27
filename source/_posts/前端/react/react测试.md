@@ -460,7 +460,7 @@ export function renderWithProviders(
 它不同于其他 mock service 需要独立运行一个服务且对代码的侵入性比较强。它是利用的 Service Worker API，在网络层进行请求拦截。保证有 mock 和无 mock 的应用程序的行为一致，且不需要为了 mock 而对应用程序的代码做修改。具体说明在[官网](https://mswjs.io/docs/#why-service-workers)
 
 它的工作流如下图
-![](/imgs/react/3.png)
+![](/images/react/3.png)
 
 ### 使用 userEvent 来模拟用户操作
 

@@ -28,8 +28,8 @@ onlyTitle: true
 {% title h2, 作品展示 %}
 
 <div class="gallery-group-main">
-    {% galleryGroup '商城项目' '基于Nextjs和Nestjs的全栈电商平台' 'https://ibuy.xin' https://saebaryoo.github.io/imgs/resume/ibuy-logo.svg %}
-    {% galleryGroup '技术博客' '个人技术博客与知识沉淀' 'https://juejin.cn/user/588993961408685/posts' https://saebaryoo.github.io/imgs/resume/resume-cover.svg %}
+    {% galleryGroup '商城项目' '基于Nextjs和Nestjs的全栈电商平台' 'https://ibuy.xin' /images/resume/ibuy-logo.svg %}
+    {% galleryGroup '技术博客' '个人技术博客与知识沉淀' 'https://juejin.cn/user/588993961408685/posts' /images/resume/resume-cover.svg %}
 </div>
 
 {% title h2, 技术栈 %}

@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "web3.0/0.交易相关知识.md",
+                "file": "_posts/工具/其他/如何使用obsidian配合hexo.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "0.交易相关知识"
+              "title": "如何使用obsidian配合hexo"
             }
           }
         ]
@@ -99,7 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "web3.0/0.交易相关知识.md",
+                "file": "_posts/工具/其他/如何使用obsidian配合hexo.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -118,7 +118,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "web3.0/0.交易相关知识.md",
+                "file": "_posts/工具/其他/如何使用obsidian配合hexo.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -161,7 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "web3.0/0.交易相关知识.md",
+                "file": "_posts/工具/其他/如何使用obsidian配合hexo.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -185,16 +185,23 @@
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
-      "bases:新建数据库": false
+      "bases:新建数据库": false,
+      "obsidian-git:Open Git source control": false
     }
   },
   "active": "f1c9af006ab65437",
   "lastOpenFiles": [
-    "web3.0/1. 概念.md",
-    "web3.0/2. 实现一个mini区块链.md",
-    "web3.0/0.交易相关知识.md",
-    "工具/git/GitHub-SSH-22端口中断与走443配置.md",
-    "工具/git/git命令.md",
-    "工具/git/Git submodules.md"
+    "images/logo-rt 1.png",
+    "_posts/logo-rt.png",
+    "_posts/工具/其他",
+    "web3.0/未命名.md",
+    "_posts/工具/其他/如何使用obsidian配合hexo.md",
+    "_posts/web3.0/0.交易相关知识.md",
+    "工具/git/Test.md",
+    "_posts/web3.0/1. 概念.md",
+    "_posts/web3.0/2. 实现一个mini区块链.md",
+    "_posts/工具/git/GitHub-SSH-22端口中断与走443配置.md",
+    "_posts/工具/git/git命令.md",
+    "_posts/工具/git/Git submodules.md"
   ]
 }

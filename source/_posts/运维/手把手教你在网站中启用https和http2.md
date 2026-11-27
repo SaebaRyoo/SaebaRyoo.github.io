@@ -34,13 +34,13 @@ tags:
 
 登录阿里云后上**搜索ssl**,点击 **数字证书管理服务**
 
-![](/imgs/hou-duan/33.png)
+![](/images/hou-duan/33.png)
 
 ## 3.2. 购买免费ssl证书
 
 在**ssl证书管理**里面选择**个人测试证书** ，然后点击**立即购买，** 购买完成后点击**创建证书**，点击创建证书后下面列表会出现一个待申请状态的证书，点击**证书申请**，填写申请的信息。
 
-![](/imgs/hou-duan/34.png)
+![](/images/hou-duan/34.png)
 
 一般等个几分钟就可以了。
 
@@ -48,7 +48,7 @@ tags:
 
 在审核通过后，在管理列表里会有对应的证书，点进去后**切换到下载**的tab页面，就会出现如下页面，我们使用的是nginx部署的，下载nginx那一列就行
 
-![](/imgs/hou-duan/35.png)
+![](/images/hou-duan/35.png)
 
 # 4. 上传证书到服务器
 
@@ -223,10 +223,10 @@ tags:
 
 访问网站看到有把小锁就表示https配置好了
 
-![](/imgs/hou-duan/36.png)
+![](/images/hou-duan/36.png)
 
 ## 6.2. 验证http2.0
 
 打开我们的浏览器的控制台，查看 protocal ，为h2则表示启用成功
 
-![](/imgs/hou-duan/37.png)
+![](/images/hou-duan/37.png)

@@ -155,9 +155,9 @@ App.tsx
 import * as React from "react";
 import { sum } from "@/src/utils/sum";
 import Header from "./components/header";
-import img1 from "@/public/imgs/ryo.jpeg";
-import img2 from "@/public/imgs/乱菊.jpeg";
-import img3 from "@/public/imgs/weather.jpeg";
+import img1 from "@/public/images/ryo.jpeg";
+import img2 from "@/public/images/乱菊.jpeg";
+import img3 from "@/public/images/weather.jpeg";
 import Root from "./pages/root";
 
 const App: React.FC = () => {
