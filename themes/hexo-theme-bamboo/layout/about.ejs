@@ -16,7 +16,7 @@
       </div>
       <p class="about-signature">Ryo</p>
     </div>
-    <figure class="about-picture"><img src="<%= url_for('post-office/postcard-small.jpg') %>" width="600" height="400" alt="咕咕嘎嘎和 Doro 正在投递来信"></figure>
+    <figure class="about-picture"><img src="<%= url_for('images/gugu-doro/web/anime-02-coastal-train.jpg') %>" srcset="<%= url_for('images/gugu-doro/web/thumbs/anime-02-coastal-train.jpg') %> 480w, <%= url_for('images/gugu-doro/web/anime-02-coastal-train.jpg') %> 1672w" sizes="(max-width: 720px) 78vw, 380px" width="1672" height="941" alt="咕嘎与 Doro 坐在沿海列车上，一起看向窗外的大海" loading="lazy"></figure>
   </div>
   <div class="about-counts">
     <% [[site.posts.length, '封来信', config.archive_dir], [site.categories.length, '个分类', config.category_dir], [site.tags.length, '个标签', config.tag_dir]].forEach(([count, label, path]) => { %>

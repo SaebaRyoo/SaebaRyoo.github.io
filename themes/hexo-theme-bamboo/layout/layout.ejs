@@ -16,7 +16,7 @@
   <meta property="og:title" content="<%= title %>">
   <meta property="og:description" content="<%= description %>">
   <meta property="og:type" content="<%= is_post() ? 'article' : 'website' %>">
-  <meta property="og:image" content="<%= full_url_for('post-office/postcard.jpg') %>">
+  <meta property="og:image" content="<%= full_url_for(is_post() ? postal_cover(page).src : 'images/gugu-doro/web/anime-01-seaside-post.jpg') %>">
   <link rel="canonical" href="<%= full_url_for(page.path) %>">
   <link rel="icon" href="<%= url_for('post-office/gugu-icon.png') %>" type="image/png">
   <title><%= title %></title>

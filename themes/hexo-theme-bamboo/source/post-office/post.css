@@ -124,7 +124,7 @@ img { max-width: 100%; height: auto; }
 .airmail-art { position: relative; width: 100%; max-width: 30rem; justify-self: end; padding: .3rem .7rem .3rem 1.05rem; }
 .picture-stamp { position: relative; transform: rotate(2.3deg); filter: drop-shadow(0 2px 1px #31473855); }
 .stamp-paper { --cut: 4px; padding: .72rem .72rem .17rem; background: #fffbe9; color: #294932; }
-.stamp-paper img { width: 100%; aspect-ratio: 1.58; object-fit: cover; display: block; border: 1px solid #657556; }
+.stamp-paper img { width: 100%; aspect-ratio: 1672 / 941; object-fit: cover; display: block; border: 1px solid #657556; }
 .stamp-paper figcaption { display: flex; align-items: center; justify-content: space-between; padding: .25rem .15rem .21rem; font: 700 .75rem/1.2 var(--mono); letter-spacing: .16em; }
 .stamp-paper figcaption > span:last-child { display: inline-flex; gap: .35rem; align-items: center; color: #626e53; letter-spacing: .08em; }
 .postmark { position: absolute; right: -1.05rem; top: -.35rem; width: 5.2rem; height: 5.2rem; transform: rotate(13deg); color: #a63e2d; pointer-events: none; }
@@ -150,10 +150,11 @@ img { max-width: 100%; height: auto; }
 .letter { display: flex; gap: 1.25rem; align-items: center; border-bottom: 1px dashed var(--rule); padding: 1.15rem .25rem; }
 .letter-picture { flex: none; display: block; filter: drop-shadow(0 1px 1px #2b442940); }
 .mini-stamp, .portrait-stamp { --cut: 3px; display: block; padding: 6px; background-color: #fffbea; }
-.mini-stamp { width: 5.1rem; transform: rotate(-2deg); transition: transform .2s; }
+.mini-stamp { width: 9.25rem; transform: rotate(-2deg); transition: transform .2s; }
 .letter:nth-child(even) .mini-stamp { transform: rotate(2deg); }
 .letter:hover .mini-stamp { transform: rotate(0); }
 .mini-stamp img, .portrait-stamp img { display: block; width: 100%; border: 1px solid #58684c66; }
+.mini-stamp img { aspect-ratio: 16 / 10; object-fit: cover; }
 .letter-meta { display: flex; align-items: center; flex-wrap: wrap; gap: .55rem; color: var(--muted); font-size: .8rem; }
 .letter-meta time, .archive-date { font-family: var(--mono); font-variant-numeric: tabular-nums; letter-spacing: .025em; }
 .letter-meta > span[aria-hidden] { color: var(--rule); }
@@ -348,7 +349,7 @@ dialog::backdrop { background: #14251e85; }
   .button { padding: .4rem .8rem; min-height: 2.6rem; }
   .airmail-art { margin: 1.45rem auto 0; width: 92%; max-width: 27rem; padding: 0; }
   .stamp-paper { padding: .52rem .52rem .12rem; }
-  .stamp-paper img { aspect-ratio: 1.88; object-position: center 58%; }
+  .stamp-paper img { object-position: center; }
   .stamp-paper figcaption { font-size: .66rem; }
   .postmark { right: -.85rem; top: -.6rem; width: 3.75rem; height: 3.75rem; }
   .postmark-ring span, .postmark-ring small { font-size: .53rem; }
@@ -361,7 +362,7 @@ dialog::backdrop { background: #14251e85; }
   .mail-sidebar { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .85rem; }
   .letter { padding: .95rem 0; }
   .letter h3 { font-size: 1.03rem; }
-  .mini-stamp { width: 4.1rem; padding: 5px; }
+  .mini-stamp { width: 6.5rem; padding: 5px; }
   .letter-body > p { font-size: .85rem; }
   .inner-page { margin: 1.7rem auto 2.6rem; }
   .page-heading h1 { font-size: 2.38rem; }

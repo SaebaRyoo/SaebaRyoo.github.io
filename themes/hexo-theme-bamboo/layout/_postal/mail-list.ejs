@@ -3,11 +3,12 @@
   <% posts.each(post => {
     const category = post.categories && post.categories.last();
     const stamp = postal_stamp(category && category.name);
+    const cover = postal_cover(post);
     const summary = postal_excerpt(post);
   %>
     <article class="letter">
       <a class="letter-picture" href="<%= url_for(post.path) %>" tabindex="-1" aria-hidden="true">
-        <span class="mini-stamp"><img src="<%= url_for('post-office/' + stamp + '.jpg') %>" alt="" width="86" height="86" loading="lazy"></span>
+        <span class="mini-stamp"><img src="<%= url_for(cover.thumbnail) %>" alt="" width="480" height="300" loading="lazy" decoding="async"></span>
       </a>
       <div class="letter-body">
         <div class="letter-meta">

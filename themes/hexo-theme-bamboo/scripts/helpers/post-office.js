@@ -1,6 +1,7 @@
 'use strict';
 
 const { createReadStream } = require('fs');
+const { createHash } = require('crypto');
 const { dirname, join } = require('path');
 const { stripHTML, unescapeHTML } = require('hexo-util');
 
@@ -11,6 +12,22 @@ const stamps = {
 };
 
 hexo.extend.helper.register('postal_stamp', category => stamps[category] || 'letters');
+
+const coverImages = [
+  'anime-06-night-coding', 'anime-02-coastal-train', 'anime-03-rainy-cafe',
+  'anime-04-sakura-picnic', 'anime-05-snowy-postcards', 'anime-01-seaside-post',
+  '01-pair-programming', '02-rainy-delivery', '03-coffee-break',
+  '04-starlit-reading', '05-autumn-mail-route'
+];
+
+hexo.extend.helper.register('postal_cover', post => {
+  const hash = createHash('sha1').update(post.slug || post.title || '').digest();
+  const image = coverImages[hash.readUInt32BE(0) % coverImages.length] + '.jpg';
+  return {
+    src: 'images/gugu-doro/web/' + image,
+    thumbnail: 'images/gugu-doro/web/thumbs/' + image
+  };
+});
 
 function plainText(html) {
   return unescapeHTML(stripHTML(html)).replace(/\s+/g, ' ').trim();
