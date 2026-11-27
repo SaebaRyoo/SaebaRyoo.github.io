@@ -1,1 +1,29 @@
-<%- partial('_partial/archive', {pagination: config.archive, index: true}) %>
+<%
+  const years = [...new Set(site.posts.sort('date', -1).map(post => date(post.date, 'YYYY')))];
+  const issue = [page.year, page.month && String(page.month).padStart(2, '0')].filter(Boolean).join(' / ');
+  let currentYear;
+%>
+<section class="inner-page archive-page">
+  <header class="page-heading">
+    <span class="letterhead" lang="en"><span class="letterhead-rule"></span> MAIL ARCHIVE</span>
+    <h1>文章归档</h1>
+    <p><%= issue ? issue + ' 的来信' : '按投递时间翻阅 Ryo 的 ' + site.posts.length + ' 封来信。' %></p>
+  </header>
+  <nav class="year-tabs" aria-label="按年份筛选">
+    <a href="<%= url_for(config.archive_dir + '/') %>"<%- page.year ? '' : ' aria-current="page"' %>>全部</a>
+    <% years.forEach(year => { %><a href="<%= url_for(config.archive_dir + '/' + year + '/') %>"<%- Number(year) === Number(page.year) && !page.month ? ' aria-current="page"' : '' %>><%= year %></a><% }) %>
+  </nav>
+  <div class="archive-roll">
+    <% page.posts.each(post => {
+      const year = date(post.date, 'YYYY');
+      if (year !== currentYear) { currentYear = year; %>
+        <h2><a href="<%= url_for(config.archive_dir + '/' + year + '/') %>"><%= year %></a></h2>
+      <% } %>
+      <div class="archive-row">
+        <a class="archive-date" href="<%= url_for(config.archive_dir + '/' + year + '/' + date(post.date, 'MM') + '/') %>" aria-label="<%= date(post.date, 'YYYY年M月') %>的归档"><time datetime="<%= date(post.date, 'YYYY-MM-DD') %>"><%= date(post.date, 'MM.DD') %></time></a>
+        <a class="archive-title" href="<%= url_for(post.path) %>"><%= post.title %></a>
+      </div>
+    <% }) %>
+  </div>
+  <%- partial('_postal/pagination') %>
+</section>

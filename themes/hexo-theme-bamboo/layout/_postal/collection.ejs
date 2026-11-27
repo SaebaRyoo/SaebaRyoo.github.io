@@ -1,0 +1,7 @@
+<% const name = byTag ? page.tag : page.category; %>
+<section class="inner-page collection-page">
+  <a class="breadcrumb" href="<%= url_for((byTag ? config.tag_dir : config.category_dir) + '/') %>"><%- partial('_postal/icon', { name: byTag ? 'tag' : 'folder' }) %> <%= byTag ? '标签索引' : '分类信箱' %></a>
+  <header class="page-heading"><h1><%= name %></h1></header>
+  <%- partial('_postal/mail-list', { posts: page.posts }) %>
+  <%- partial('_postal/pagination') %>
+</section>

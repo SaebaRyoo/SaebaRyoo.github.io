@@ -1,0 +1,20 @@
+<section class="duty-card" aria-labelledby="duty-title">
+  <div class="side-heading">
+    <h2 id="duty-title"><%- partial('_postal/icon', { name: 'stamp' }) %> 值班邮差</h2>
+    <button class="shift-btn" type="button" data-change-shift hidden><%- partial('_postal/icon', { name: 'refresh' }) %>换班</button>
+  </div>
+  <div class="duty-roster" aria-live="polite">
+    <% [
+      ['gugu', '咕咕嘎嘎', '信件分拣员', '「咕嘎！今天的来信都分好啦。」'],
+      ['doro', 'Doro', '特快投递员', '「这封信？我四只脚跑着送来的。」']
+    ].forEach(([id, name, role, quote], index) => { %>
+      <div class="courier" data-courier="<%= id %>"<%- index ? ' hidden' : '' %>>
+        <div class="courier-id">
+          <span class="portrait-stamp"><img src="<%= url_for('post-office/' + id + '.jpg') %>" alt="" width="88" height="88"></span>
+          <div><h3><%= name %></h3><p><%= role %></p></div>
+        </div>
+        <p class="courier-note"><%= quote %></p>
+      </div>
+    <% }) %>
+  </div>
+</section>

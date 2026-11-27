@@ -1,0 +1,9 @@
+<dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="<%= url_for(config.search.path) %>">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><%- partial('_postal/icon', { name: 'close' }) %></button></form>
+  </header>
+  <label class="search-field"><%- partial('_postal/icon', { name: 'search' }) %><input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>

@@ -1,0 +1,20 @@
+<% const items = (byTag ? site.tags : site.categories).sort('length', -1); %>
+<section class="inner-page">
+  <header class="page-heading">
+    <span class="letterhead" lang="en"><span class="letterhead-rule"></span> SORTING ROOM</span>
+    <h1><%= byTag ? '标签索引' : '分类信箱' %></h1>
+    <p><%= byTag ? '按关键词找信，共 ' + items.length + ' 个标签。' : '按主题分拣来信，共 ' + items.length + ' 个分类。' %></p>
+  </header>
+  <nav class="year-tabs" aria-label="索引方式">
+    <a href="<%= url_for(config.category_dir + '/') %>"<%- byTag ? '' : ' aria-current="page"' %>>分类</a>
+    <a href="<%= url_for(config.tag_dir + '/') %>"<%- byTag ? ' aria-current="page"' : '' %>>标签</a>
+  </nav>
+  <div class="topic-grid<%= byTag ? ' tag-grid' : '' %>">
+    <% items.each(item => { %>
+      <a class="topic-tile" href="<%= url_for(item.path) %>">
+        <% if (byTag) { %><span class="hash" aria-hidden="true">#</span><% } else { %><span class="topic-thumb"><img src="<%= url_for('post-office/' + postal_stamp(item.name) + '.jpg') %>" alt="" width="58" height="58" loading="lazy"></span><% } %>
+        <strong><%= item.name %></strong><span class="topic-count"><%= item.length %> 封</span>
+      </a>
+    <% }) %>
+  </div>
+</section>

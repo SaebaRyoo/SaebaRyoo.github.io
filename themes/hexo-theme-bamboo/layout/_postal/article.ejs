@@ -1,0 +1,41 @@
+<%
+  const category = page.categories && page.categories.last();
+  const contents = theme.toc.on && page.toc !== false ? toc(page.content, { list_number: false }) : '';
+  const hasDiagram = theme.mermaid.on && /class=["'][^"']*\bmermaid\b/.test(page.content);
+%>
+<article class="inner-page reading-page">
+  <a class="breadcrumb" href="<%= url_for(blogPost ? config.archive_dir + '/' : 'about/') %>"><%- partial('_postal/icon', { name: blogPost ? 'box' : 'mail' }) %><%= blogPost ? '文章归档' : '关于 Ryo' %></a>
+  <header class="article-heading">
+    <div class="letter-meta">
+      <% if (category) { %><a class="category-ink ink-<%= postal_stamp(category.name) %>" href="<%= url_for(category.path) %>"><%= category.name %></a><span aria-hidden="true">/</span><% } %>
+      <time datetime="<%= date(page.date, 'YYYY-MM-DD') %>"><%= date(page.date, 'YYYY.MM.DD') %></time><span aria-hidden="true">/</span><%= config.author %>
+    </div>
+    <h1><%= page.title %></h1>
+    <% if (page.tags && page.tags.length) { %><div class="article-tags"><% page.tags.each(tag => { %><a href="<%= url_for(tag.path) %>"># <%= tag.name %></a><% }) %></div><% } %>
+  </header>
+  <div class="reading-grid<%= contents ? ' with-toc' : '' %>">
+    <% if (contents) { %>
+      <aside class="contents"><details open><summary>信件目录</summary><nav aria-label="文章目录"><%- contents %></nav></details></aside>
+    <% } %>
+    <div class="reading-column">
+      <div class="prose"><%- postal_article_html(page.content) %></div>
+      <% if (blogPost && theme.copyright.on && page.copyright !== false) { %>
+        <div class="article-credit"><span>作者 <%= config.author %></span><a href="<%= theme.CDN.copyRight %>" rel="license">CC BY-NC-ND 4.0</a><button class="text-link" type="button" data-copy-url hidden>复制文章链接</button></div>
+      <% } %>
+      <% if (blogPost && theme.postNav.on && (page.prev || page.next)) { %>
+        <nav class="article-neighbours" aria-label="相邻文章"><% [[page.prev, '上一篇'], [page.next, '下一篇']].forEach(([post, label]) => { if (post) { %>
+          <a href="<%= url_for(post.path) %>"><small><%= label %></small><strong><%= post.title %></strong></a>
+        <% } }) %></nav>
+      <% } %>
+      <% if (theme.utterance.on && page.comments !== false) { %>
+        <details class="comments" data-comment-src="<%= theme.utterance.cdn %>" data-repo="<%= theme.utterance.repo %>" data-term="<%= theme.utterance.issue_term %>" data-light="<%= theme.utterance.theme.light %>" data-dark="<%= theme.utterance.theme.dark %>">
+          <summary>读者回信</summary>
+          <div class="comment-mount"></div><a class="text-link" href="https://github.com/<%= theme.utterance.repo %>/issues">在 GitHub 查看讨论</a>
+        </details>
+      <% } %>
+    </div>
+  </div>
+</article>
+<% if (hasDiagram) { %><script defer src="<%= url_for('post-office/mermaid.min.js') %>"></script><% } %>
+<% if (page.mathjax) { %><%- partial('_partial/math/mathjax') %><% } %>
+<dialog class="image-dialog" aria-label="查看原图"><form method="dialog"><button class="icon-btn" aria-label="关闭原图"><%- partial('_postal/icon', { name: 'close' }) %></button></form><img alt=""></dialog>
