@@ -1,0 +1,748 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="本文全面介绍了Nginx服务器的核心概念和实践应用。从基础的安装配置到进阶的性能优化，详细讲解了反向代理、负载均衡、安全配置等核心功能。文章同时提供了大量实用的配置示例，适合从入门到进阶。">
+  <meta property="og:title" content="nginx服务器详细解析 · Ryo的小站">
+  <meta property="og:description" content="本文全面介绍了Nginx服务器的核心概念和实践应用。从基础的安装配置到进阶的性能优化，详细讲解了反向代理、负载均衡、安全配置等核心功能。文章同时提供了大量实用的配置示例，适合从入门到进阶。">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://saebaryoo.github.io/images/gugu-doro/web/anime-06-night-coding.jpg">
+  <link rel="canonical" href="https://saebaryoo.github.io/2025/03/17/yun-wei/nginx-fu-wu-qi-xiang-xi-ru-men/">
+  <link rel="icon" href="/post-office/gugu-icon.png" type="image/png">
+  <title>nginx服务器详细解析 · Ryo的小站</title>
+  <script>
+    try {
+      var storedDark = localStorage.getItem('dark');
+      document.documentElement.dataset.theme = (storedDark === null ? matchMedia('(prefers-color-scheme: dark)').matches : storedDark === 'true') ? 'dark' : 'light';
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/post-office/post.css">
+  <script defer src="/post-office/post.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.3 8.5-6.3"/></symbol>
+    <symbol id="i-wing" viewBox="0 0 32 24"><path d="M1.5 6.5h8m-6.5 4h5m-3.5 4h2"/><path d="M12 5h18l-5 14H7z" fill="currentColor" stroke="none"/><path d="m12 7 6 5.6 10-5.8" stroke="var(--wing-line, #235344)"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" transform="rotate(-8 12 12)"/><path d="M8 8h.1m4 4h.1m3.9 4h.1" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a8.8 8.8 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 15 6 5h12l3 10v4H3z"/><path d="M3 14h5l2 3h4l2-3h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 3h10v11H3z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-5l2 2m0-5v5h-5M20 13a8 8 0 0 1-14 5l-2-2m0 5v-5h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 16h16v4H4zM7 16c0-3 3-3.5 3-5V9a4 4 0 1 1 4 0v2c0 1.5 3 2 3 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="m3 3 8 .3L21 13l-8 8-9.7-9.7z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="m2 10 20-7-6.5 18-4.3-7.7L2 10Z"/><path d="M11.2 13.3 22 3"/></symbol>
+  </defs>
+</svg>
+
+  <a class="skip" href="#main-content">跳到正文</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="/" aria-label="Ryo的小站首页">
+        <span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 32 24"><use href="#i-wing"/></svg></span>
+        <span><strong>Ryo的小站</strong><small lang="en">GUGU POST</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives/">文章归档</a>
+        
+          <a href="/categories/">分类索引</a>
+        
+          <a href="/visualization-layout/">实验室</a>
+        
+          <a href="/about/">关于</a>
+        
+      </nav>
+      <div class="header-tools">
+        <button class="search-trigger" type="button" data-search-open hidden aria-label="搜索文章" aria-haspopup="dialog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<span>搜索</span><kbd>/</kbd></button>
+        
+          <button type="button" class="icon-btn theme-trigger" data-theme-toggle hidden aria-label="夜间模式" title="夜间模式"><svg class="icon" aria-hidden="true"><use class="moon" href="#i-moon"/><use class="sun" href="#i-sun"/></svg></button>
+        
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="wrap" tabindex="-1">
+<article class="inner-page reading-page">
+  <a class="breadcrumb" href="/archives/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
+文章归档</a>
+  <header class="article-heading">
+    <div class="letter-meta">
+      <a class="category-ink ink-letters" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span aria-hidden="true">/</span>
+      <time datetime="2025-03-17">2025.03.17</time><span aria-hidden="true">/</span>Ryo
+    </div>
+    <h1>nginx服务器详细解析</h1>
+    <div class="article-tags"><a href="/tags/Nginx/"># Nginx</a></div>
+  </header>
+  <div class="reading-grid with-toc">
+    
+      <aside class="contents"><details open><summary>信件目录</summary><nav aria-label="文章目录"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="toc-text">1. 基础篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Nginx%E4%BB%8B%E7%BB%8D"><span class="toc-text">1.1 Nginx介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-1-%E4%B8%BB%E8%A6%81%E7%89%B9%E7%82%B9"><span class="toc-text">1.1.1 主要特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-2-%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD"><span class="toc-text">1.1.2 核心功能</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Nginx%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85"><span class="toc-text">1.2 Nginx下载安装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-1-%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9"><span class="toc-text">1.2.1 版本选择</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-2-%E5%AE%89%E8%A3%85%E6%96%B9%E5%BC%8F"><span class="toc-text">1.2.2 安装方式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-Nginx%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4%E5%92%8C%E9%85%8D%E7%BD%AE"><span class="toc-text">1.3 Nginx基本命令和配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-1-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">1.3.1 常用命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-2-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="toc-text">1.3.2 配置文件结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-3-Location%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99"><span class="toc-text">1.3.3 Location匹配规则</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-Nginx%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD%E4%B8%8E%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8"><span class="toc-text">1.4 Nginx核心功能与实际应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-1-%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E6%9C%8D%E5%8A%A1"><span class="toc-text">1.4.1 静态资源服务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-2-%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-text">1.4.2 反向代理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-3-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-text">1.4.3 负载均衡</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-4-3-1-%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE"><span class="toc-text">1.4.3.1 基础配置</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-4-3-2-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AD%96%E7%95%A5"><span class="toc-text">1.4.3.2 负载均衡策略</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-4-%E9%99%90%E6%B5%81%E9%85%8D%E7%BD%AE"><span class="toc-text">1.4.4 限流配置</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-4-4-1-%E6%AD%A3%E5%B8%B8%E9%99%90%E5%88%B6%E8%AE%BF%E9%97%AE%E9%A2%91%E7%8E%87"><span class="toc-text">1.4.4.1 正常限制访问频率</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-4-4-2-%E7%AA%81%E5%8F%91%E9%99%90%E5%88%B6%E8%AE%BF%E9%97%AE%E9%A2%91%E7%8E%87"><span class="toc-text">1.4.4.2 突发限制访问频率</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-4-4-3-%E9%99%90%E5%88%B6%E5%B9%B6%E5%8F%91%E8%BF%9E%E6%8E%A5%E6%95%B0"><span class="toc-text">1.4.4.3 限制并发连接数</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%BF%9B%E9%98%B6%E7%AF%87"><span class="toc-text">2. 进阶篇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-text">2.1 性能优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-1-Gzip%E5%8E%8B%E7%BC%A9"><span class="toc-text">2.1.1 Gzip压缩</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-2-%E7%BC%93%E5%AD%98%E9%85%8D%E7%BD%AE"><span class="toc-text">2.1.2 缓存配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-4-%E8%BF%9E%E6%8E%A5%E4%BC%98%E5%8C%96"><span class="toc-text">2.1.4 连接优化</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-HTTPS%E5%92%8CHTTP-2%E9%85%8D%E7%BD%AE"><span class="toc-text">2.2 HTTPS和HTTP&#x2F;2配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-%E5%9F%BA%E7%A1%80HTTPS%E9%85%8D%E7%BD%AE"><span class="toc-text">2.2.1 基础HTTPS配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-HTTP-2%E4%BC%98%E5%8C%96"><span class="toc-text">2.2.2 HTTP&#x2F;2优化</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%AE%89%E5%85%A8%E5%8A%A0%E5%9B%BA"><span class="toc-text">2.3 安全加固</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-1-DDoS%E9%98%B2%E6%8A%A4"><span class="toc-text">2.3.1 DDoS防护</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-2-%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="toc-text">2.3.2 访问控制</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86"><span class="toc-text">2.4 日志管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-1-%E8%AE%BF%E9%97%AE%E6%97%A5%E5%BF%97"><span class="toc-text">2.4.1 访问日志</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-2-%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97"><span class="toc-text">2.4.2 错误日志</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-3-%E6%97%A5%E5%BF%97%E8%BD%AE%E8%BD%AC"><span class="toc-text">2.4.3 日志轮转</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E7%9B%91%E6%8E%A7%E5%92%8C%E8%B0%83%E8%AF%95"><span class="toc-text">2.5 监控和调试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-1-%E7%8A%B6%E6%80%81%E7%9B%91%E6%8E%A7"><span class="toc-text">2.5.1 状态监控</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-2-%E8%B0%83%E8%AF%95%E9%85%8D%E7%BD%AE"><span class="toc-text">2.5.2 调试配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-text">3. 最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E5%BB%BA%E8%AE%AE"><span class="toc-text">3.1 性能优化建议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%AE%89%E5%85%A8%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-text">3.2 安全最佳实践</span></a></li></ol></li></ol></nav></details></aside>
+    
+    <div class="reading-column">
+      <div class="prose"><h2 id="1-基础篇"><a href="#1-基础篇" class="headerlink" title="1. 基础篇"></a>1. 基础篇</h2><h3 id="1-1-Nginx介绍"><a href="#1-1-Nginx介绍" class="headerlink" title="1.1 Nginx介绍"></a>1.1 Nginx介绍</h3><p><strong>Nginx是一款轻量级的Web服务器、反向代理服务器，是由俄罗斯的程序设计师Igor Sysoev所开发，使用C语言开发。由于其内存占用少，启动速度极快，具有高并发处理能力，在互联网项目中被广泛应用。</strong></p>
+<h4 id="1-1-1-主要特点"><a href="#1-1-1-主要特点" class="headerlink" title="1.1.1 主要特点"></a>1.1.1 主要特点</h4><ul>
+<li><strong>内存占用少，并发能力强</strong></li>
+<li><strong>高度模块化的设计，具有很好的扩展性</strong></li>
+<li><strong>高可靠性和稳定性</strong></li>
+<li><strong>支持热部署，不停机更新配置和程序版本</strong></li>
+</ul>
+<h4 id="1-1-2-核心功能"><a href="#1-1-2-核心功能" class="headerlink" title="1.1.2 核心功能"></a>1.1.2 核心功能</h4><ul>
+<li><strong>HTTP服务器（静态资源服务器）</strong></li>
+<li><strong>反向代理服务器</strong></li>
+<li><strong>负载均衡</strong></li>
+<li><strong>邮件代理服务器</strong></li>
+<li><strong>支持FastCGI、SSL、Virtual Host、URL Rewrite、Gzip等功能</strong></li>
+<li><strong>支持第三方模块扩展</strong></li>
+</ul>
+<p><strong>目前，Nginx在全球网站中的市场份额超过33.5%，位居第二，仅次于Apache。其优秀的性能和丰富的功能使其成为现代Web架构中不可或缺的组件。</strong></p>
+<h3 id="1-2-Nginx下载安装"><a href="#1-2-Nginx下载安装" class="headerlink" title="1.2 Nginx下载安装"></a>1.2 Nginx下载安装</h3><h4 id="1-2-1-版本选择"><a href="#1-2-1-版本选择" class="headerlink" title="1.2.1 版本选择"></a>1.2.1 版本选择</h4><ul>
+<li><strong>Mainline version：开发版，包含新功能和修复</strong></li>
+<li><strong>Stable version：稳定版，建议生产环境使用</strong></li>
+<li><strong>Legacy versions：老版本</strong></li>
+</ul>
+<h4 id="1-2-2-安装方式"><a href="#1-2-2-安装方式" class="headerlink" title="1.2.2 安装方式"></a>1.2.2 安装方式</h4><ol>
+<li><strong>包管理器安装（推荐）</strong></li>
+</ol>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># CentOS/RHEL</span>
+yum <span class="token function">install</span> nginx
+
+<span class="token comment"># Ubuntu/Debian</span>
+<span class="token function">apt-get</span> <span class="token function">install</span> nginx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li><strong>源码编译安装</strong></li>
+</ol>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 下载源码</span>
+<span class="token function">wget</span> http://nginx.org/download/nginx-1.20.1.tar.gz
+
+<span class="token comment"># 解压</span>
+<span class="token function">tar</span> <span class="token parameter variable">-zxvf</span> nginx-1.20.1.tar.gz
+
+<span class="token comment"># 配置、编译、安装</span>
+./configure
+<span class="token function">make</span>
+<span class="token function">make</span> <span class="token function">install</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li><strong>Docker容器化部署（推荐生产环境）</strong></li>
+</ol>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 拉取nginx镜像</span>
+<span class="token function">docker</span> pull nginx
+
+<span class="token comment"># 创建挂载目录</span>
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> /usr/local/docker-volumes/nginx/<span class="token punctuation">&#123;</span>conf,log,html,cert<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># 运行临时容器并复制配置</span>
+<span class="token function">docker</span> run <span class="token parameter variable">--name</span> nginx <span class="token parameter variable">-d</span> <span class="token parameter variable">-p</span> <span class="token number">80</span>:80 nginx
+<span class="token function">docker</span> <span class="token function">cp</span> nginx:/etc/nginx/nginx.conf /usr/local/docker-volumes/nginx/
+<span class="token function">docker</span> <span class="token function">cp</span> nginx:/etc/nginx/conf.d /usr/local/docker-volumes/nginx/
+<span class="token function">docker</span> <span class="token function">cp</span> nginx:/usr/share/nginx/html /usr/local/docker-volumes/nginx/
+<span class="token function">docker</span> <span class="token function">rm</span> <span class="token parameter variable">-f</span> nginx
+
+<span class="token comment"># 启动正式容器</span>
+<span class="token function">docker</span> run <span class="token parameter variable">--name</span> nginx <span class="token parameter variable">-m</span> 200m <span class="token parameter variable">-p</span> <span class="token number">80</span>:80 <span class="token parameter variable">-p</span> <span class="token number">443</span>:443 <span class="token punctuation">\</span>
+<span class="token parameter variable">-v</span> /usr/local/docker-volumes/nginx/nginx.conf:/etc/nginx/nginx.conf <span class="token punctuation">\</span>
+<span class="token parameter variable">-v</span> /usr/local/docker-volumes/nginx/conf.d:/etc/nginx/conf.d <span class="token punctuation">\</span>
+<span class="token parameter variable">-v</span> /usr/local/docker-volumes/nginx/cert:/etc/nginx/cert <span class="token punctuation">\</span>
+<span class="token parameter variable">-v</span> /usr/local/docker-volumes/nginx/html:/usr/share/nginx/html <span class="token punctuation">\</span>
+<span class="token parameter variable">-v</span> /usr/local/docker-volumes/nginx/log:/var/log/nginx <span class="token punctuation">\</span>
+<span class="token parameter variable">-e</span> <span class="token assign-left variable">TZ</span><span class="token operator">=</span>Asia/Shanghai <span class="token punctuation">\</span>
+<span class="token parameter variable">--restart</span><span class="token operator">=</span>always <span class="token punctuation">\</span>
+<span class="token parameter variable">--network</span> <span class="token function">host</span> <span class="token punctuation">\</span>
+<span class="token parameter variable">--privileged</span><span class="token operator">=</span>true <span class="token parameter variable">-d</span> nginx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="1-3-Nginx基本命令和配置"><a href="#1-3-Nginx基本命令和配置" class="headerlink" title="1.3 Nginx基本命令和配置"></a>1.3 Nginx基本命令和配置</h3><h4 id="1-3-1-常用命令"><a href="#1-3-1-常用命令" class="headerlink" title="1.3.1 常用命令"></a>1.3.1 常用命令</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 强制关闭Nginx，可能不保存相关信息</span>
+nginx <span class="token parameter variable">-s</span> stop
+
+<span class="token comment"># 平稳关闭Nginx，保存相关信息</span>
+nginx <span class="token parameter variable">-s</span> quit
+
+<span class="token comment"># 重新加载配置</span>
+nginx <span class="token parameter variable">-s</span> reload
+
+<span class="token comment"># 重新打开日志文件</span>
+nginx <span class="token parameter variable">-s</span> reopen
+
+<span class="token comment"># 指定配置文件</span>
+nginx <span class="token parameter variable">-c</span> filename
+
+<span class="token comment"># 测试配置文件语法</span>
+nginx <span class="token parameter variable">-t</span>
+
+<span class="token comment"># 显示版本信息</span>
+nginx <span class="token parameter variable">-v</span>
+
+<span class="token comment"># 显示详细版本信息</span>
+nginx <span class="token parameter variable">-V</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="1-3-2-配置文件结构"><a href="#1-3-2-配置文件结构" class="headerlink" title="1.3.2 配置文件结构"></a>1.3.2 配置文件结构</h4><p><strong>Nginx配置文件主要由以下6个部分组成：</strong></p>
+<ol>
+<li><strong>main：用于进行nginx全局信息的配置</strong></li>
+<li><strong>events：用于nginx工作模式的配置</strong></li>
+<li><strong>http：用于进行http协议信息的一些配置</strong></li>
+<li><strong>server：用于进行服务器访问信息的配置</strong></li>
+<li><strong>location：用于进行访问路由的配置</strong></li>
+<li><strong>upstream：用于进行负载均衡的配置</strong><br>整体结构如下：</li>
+</ol>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 全局配置块：影响nginx全局的配置</span>
+<span class="token directive"><span class="token keyword">main</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">worker_processes</span> <span class="token number">4</span></span><span class="token punctuation">;</span>    <span class="token comment"># 工作进程数，通常设置为CPU核心数</span>
+    <span class="token directive"><span class="token keyword">worker_connections</span> <span class="token number">1024</span></span><span class="token punctuation">;</span>    <span class="token comment"># 每个工作进程的最大连接数</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># 事件块：配置影响nginx服务器或与用户的网络连接</span>
+<span class="token directive"><span class="token keyword">events</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">use</span> epoll</span><span class="token punctuation">;</span>    <span class="token comment"># 事件驱动模型，Linux系统推荐使用epoll</span>
+    <span class="token directive"><span class="token keyword">worker_connections</span> <span class="token number">1024</span></span><span class="token punctuation">;</span>    <span class="token comment"># 每个工作进程的最大连接数</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># HTTP块：配置代理、缓存、日志等绝大多数功能</span>
+<span class="token directive"><span class="token keyword">http</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token comment"># 基础配置</span>
+    <span class="token directive"><span class="token keyword">include</span> mime.types</span><span class="token punctuation">;</span>    <span class="token comment"># 文件扩展名与文件类型映射表</span>
+    <span class="token directive"><span class="token keyword">default_type</span> application/octet-stream</span><span class="token punctuation">;</span>    <span class="token comment"># 默认文件类型</span>
+    
+    <span class="token comment"># 服务器块：配置虚拟主机的相关参数</span>
+    <span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">listen</span> <span class="token number">80</span></span><span class="token punctuation">;</span>    <span class="token comment"># 监听端口</span>
+        <span class="token directive"><span class="token keyword">server_name</span> example.com</span><span class="token punctuation">;</span>    <span class="token comment"># 服务器名称</span>
+        
+        <span class="token comment"># location块：配置请求的路由和页面处理</span>
+        <span class="token directive"><span class="token keyword">location</span> /</span> <span class="token punctuation">&#123;</span>
+            <span class="token directive"><span class="token keyword">root</span> /usr/share/nginx/html</span><span class="token punctuation">;</span>    <span class="token comment"># 根目录</span>
+            <span class="token directive"><span class="token keyword">index</span> index.html</span><span class="token punctuation">;</span>    <span class="token comment"># 默认页面</span>
+        <span class="token punctuation">&#125;</span>
+        
+        <span class="token directive"><span class="token keyword">location</span> /api/</span> <span class="token punctuation">&#123;</span>
+            <span class="token directive"><span class="token keyword">proxy_pass</span> http://backend</span><span class="token punctuation">;</span>    <span class="token comment"># 反向代理配置</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    
+        <span class="token comment"># upstream块：配置负载均衡服务器组</span>
+    <span class="token directive"><span class="token keyword">upstream</span> backend</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">server</span> 127.0.0.1:8001 weight=3</span><span class="token punctuation">;</span>    <span class="token comment"># 权重为3</span>
+        <span class="token directive"><span class="token keyword">server</span> 127.0.0.1:8002 weight=2</span><span class="token punctuation">;</span>    <span class="token comment"># 权重为2</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="1-3-3-Location匹配规则"><a href="#1-3-3-Location匹配规则" class="headerlink" title="1.3.3 Location匹配规则"></a>1.3.3 Location匹配规则</h4><pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">location</span> [ = | ~ | ~* | ^~ ] url</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment"># 配置内容</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>匹配修饰符说明：</strong></p>
+<ul>
+<li>​&#x3D;：精确匹配，要求请求的URL与配置的URL完全相同<br>​</li>
+<li>​​^~：前缀匹配，不检查正则表达式**<br>​</li>
+<li>​~：区分大小写的正则匹配**<br>​</li>
+<li>​~：不区分大小写的正则匹配<br>​</li>
+<li>​&#x2F;：通用匹配，所有请求都会匹配到<br>​</li>
+</ul>
+<p><strong>匹配优先级（从高到低）：</strong></p>
+<ol>
+<li>&#x3D; 精确匹配</li>
+<li>​^~ 前缀匹配</li>
+<li>​~ 和 <strong>~正则匹配</strong></li>
+<li>&#x2F; 通用匹配</li>
+</ol>
+<p><strong>配置示例：</strong></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 精确匹配</span>
+<span class="token directive"><span class="token keyword">location</span> = /api</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment"># 只匹配 /api 请求</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># 前缀匹配</span>
+<span class="token directive"><span class="token keyword">location</span> ^~ /static/</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment"># 匹配所有以 /static/ 开头的请求</span>
+    <span class="token directive"><span class="token keyword">root</span> /usr/share/nginx/html</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># 正则匹配（区分大小写）</span>
+<span class="token directive"><span class="token keyword">location</span> ~ \.(gif|jpg|png)$</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment"># 匹配以 .gif、.jpg、.png 结尾的请求</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># 正则匹配（不区分大小写）</span>
+<span class="token directive"><span class="token keyword">location</span> ~* \.(js|css)$</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment"># 匹配以 .js、.css 结尾的请求</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># 通用匹配</span>
+<span class="token directive"><span class="token keyword">location</span> /</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment"># 匹配所有请求</span>
+    <span class="token directive"><span class="token keyword">root</span> /usr/share/nginx/html</span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">index</span> index.html</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>注意事项：</strong></p>
+<ol>
+<li><strong>多个location配置的情况下，匹配顺序优先级很重要</strong></li>
+<li>​<strong>正则表达式中如果包含字符</strong>​<code>^~</code>，不要误认为是前缀匹配</li>
+<li><strong>如果正则表达式与前缀字符串都可以匹配，按照优先级采用第一个匹配的规则</strong><br>root：用于指定访问根目录时，访问虚拟主机的web目录<br>index：在不指定访问具体资源时，默认展示的资源文件列表</li>
+</ol>
+<h3 id="1-4-Nginx核心功能与实际应用"><a href="#1-4-Nginx核心功能与实际应用" class="headerlink" title="1.4 Nginx核心功能与实际应用"></a>1.4 Nginx核心功能与实际应用</h3><h4 id="1-4-1-静态资源服务"><a href="#1-4-1-静态资源服务" class="headerlink" title="1.4.1 静态资源服务"></a>1.4.1 静态资源服务</h4><p><strong>Nginx作为静态资源服务器的性能远优于Tomcat等应用服务器。它可以高效处理如HTML、CSS、JavaScript、图片、视频等静态资源。</strong></p>
+<p><strong>配置示例：</strong></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">listen</span> <span class="token number">80</span></span><span class="token punctuation">;</span>                    <span class="token comment"># 监听80端口</span>
+    <span class="token directive"><span class="token keyword">server_name</span> example.com</span><span class="token punctuation">;</span>       <span class="token comment"># 服务器域名</span>
+    <span class="token directive"><span class="token keyword">charset</span> utf-8</span><span class="token punctuation">;</span>                <span class="token comment"># 设置编码</span>
+    
+    <span class="token comment"># 静态文件配置</span>
+    <span class="token directive"><span class="token keyword">location</span> /</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">root</span> /usr/share/nginx/html</span><span class="token punctuation">;</span>   <span class="token comment"># 静态文件根目录</span>
+        <span class="token directive"><span class="token keyword">index</span> index.html index.htm</span><span class="token punctuation">;</span>    <span class="token comment"># 默认首页</span>
+        <span class="token directive"><span class="token keyword">expires</span> <span class="token number">30d</span></span><span class="token punctuation">;</span>                   <span class="token comment"># 静态文件缓存30天</span>
+        <span class="token directive"><span class="token keyword">add_header</span> Cache-Control <span class="token string">"public, no-transform"</span></span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    
+    <span class="token comment"># 针对不同类型文件的处理</span>
+    <span class="token directive"><span class="token keyword">location</span> ~* \.(jpg|jpeg|png|gif|ico|css|js)$</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">root</span> /usr/share/nginx/html</span><span class="token punctuation">;</span>     <span class="token comment"># 媒体文件目录</span>
+        <span class="token directive"><span class="token keyword">expires</span> <span class="token number">7d</span></span><span class="token punctuation">;</span>                     <span class="token comment"># 缓存7天</span>
+        <span class="token directive"><span class="token keyword">access_log</span> <span class="token boolean">off</span></span><span class="token punctuation">;</span>                 <span class="token comment"># 关闭访问日志</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="1-4-2-反向代理"><a href="#1-4-2-反向代理" class="headerlink" title="1.4.2 反向代理"></a>1.4.2 反向代理</h4><p><strong>反向代理就是隐藏真实的服务器地址，保护真实的服务器，用户在访问时访问的是代理服务器。</strong></p>
+<p><strong>nginx 中常见的反向代理指令有两个：proxy_pass 和 fastcgi_pass，前者使用标准的 HTTP 协议转发，后者使用 FastCGI 协议转发。这里我们以 proxy_pass 为例来做介绍。</strong></p>
+<p><strong>proxy_pass 有两种配置写法：</strong></p>
+<ol>
+<li>**直接指向要代理的地址，可以是一台具体的主机（ip），也可以是一个具体的网址 **</li>
+</ol>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 简单反向代理</span>
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">listen</span> <span class="token number">80</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">server_name</span> example.com</span><span class="token punctuation">;</span>
+    
+    <span class="token comment"># 代理到单一服务器</span>
+    <span class="token directive"><span class="token keyword">location</span> /api/</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">proxy_pass</span> http://backend:8080/</span><span class="token punctuation">;</span>    <span class="token comment"># 后端服务地址</span>
+        
+        <span class="token comment"># 设置代理请求头</span>
+        <span class="token directive"><span class="token keyword">proxy_set_header</span> Host <span class="token variable">$host</span></span><span class="token punctuation">;</span>
+        <span class="token directive"><span class="token keyword">proxy_set_header</span> X-Real-IP <span class="token variable">$remote_addr</span></span><span class="token punctuation">;</span>
+        <span class="token directive"><span class="token keyword">proxy_set_header</span> X-Forwarded-For <span class="token variable">$proxy_add_x_forwarded_for</span></span><span class="token punctuation">;</span>
+        
+        <span class="token comment"># 超时设置</span>
+        <span class="token directive"><span class="token keyword">proxy_connect_timeout</span> <span class="token number">60s</span></span><span class="token punctuation">;</span>
+        <span class="token directive"><span class="token keyword">proxy_send_timeout</span> <span class="token number">60s</span></span><span class="token punctuation">;</span>
+        <span class="token directive"><span class="token keyword">proxy_read_timeout</span> <span class="token number">60s</span></span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li><strong>可以搭配负载均衡指向一组服务器（参考负载均衡）</strong></li>
+</ol>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 负载均衡反向代理</span>
+<span class="token directive"><span class="token keyword">upstream</span> backend_servers</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.10:8080 weight=3</span><span class="token punctuation">;</span>    <span class="token comment"># 权重为3</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.11:8080 weight=2</span><span class="token punctuation">;</span>    <span class="token comment"># 权重为2</span>
+    <span class="token directive"><span class="token keyword">keepalive</span> <span class="token number">32</span></span><span class="token punctuation">;</span>                         <span class="token comment"># 保持连接数</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">listen</span> <span class="token number">80</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">server_name</span> example.com</span><span class="token punctuation">;</span>
+    
+    <span class="token directive"><span class="token keyword">location</span> /api/</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">proxy_pass</span> http://backend_servers</span><span class="token punctuation">;</span>
+        <span class="token directive"><span class="token keyword">proxy_http_version</span> 1.1</span><span class="token punctuation">;</span>            <span class="token comment"># 使用HTTP/1.1</span>
+        <span class="token directive"><span class="token keyword">proxy_set_header</span> Connection <span class="token string">""</span></span><span class="token punctuation">;</span>    <span class="token comment"># 启用keepalive</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>代理配置说明：</strong></p>
+<ol>
+<li>​<strong>proxy_pass</strong>：指定后端服务器地址</li>
+<li>​<strong>proxy_set_header</strong>：设置代理请求头信息</li>
+<li>​<strong>proxy_connect_timeout</strong>：与后端服务器连接超时时间</li>
+<li>​<strong>proxy_send_timeout</strong>：发送请求给后端服务器超时时间</li>
+<li>​<strong>proxy_read_timeout</strong>：从后端服务器读取响应超时时间</li>
+</ol>
+<h4 id="1-4-3-负载均衡"><a href="#1-4-3-负载均衡" class="headerlink" title="1.4.3 负载均衡"></a>1.4.3 负载均衡</h4><p><strong>负载均衡是Nginx的核心功能之一，负载均衡是解决高并发、海量数据问题的常用手段。Nginx提供了多种负载均衡策略，通过反向代理实现请求分发，解决单点服务器性能瓶颈问题,可以根据实际需求选择合适的方案。</strong></p>
+<h5 id="1-4-3-1-基础配置"><a href="#1-4-3-1-基础配置" class="headerlink" title="1.4.3.1 基础配置"></a>1.4.3.1 基础配置</h5><pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 定义后端服务器组</span>
+<span class="token directive"><span class="token keyword">upstream</span> backend</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.10:8080 weight=3</span><span class="token punctuation">;</span>    <span class="token comment"># 权重为3</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.11:8080 weight=2</span><span class="token punctuation">;</span>    <span class="token comment"># 权重为2</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">listen</span> <span class="token number">80</span></span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">server_name</span> example.com</span><span class="token punctuation">;</span>
+    
+    <span class="token directive"><span class="token keyword">location</span> /</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">proxy_pass</span> http://backend</span><span class="token punctuation">;</span>    <span class="token comment"># 代理到服务器组</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h5 id="1-4-3-2-负载均衡策略"><a href="#1-4-3-2-负载均衡策略" class="headerlink" title="1.4.3.2 负载均衡策略"></a>1.4.3.2 负载均衡策略</h5><ol>
+<li><strong>轮询（默认）</strong></li>
+</ol>
+<p><strong>默认方式，按时间顺序逐一分配到不同的后端服务器</strong></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">upstream</span> backend</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.10:8080</span><span class="token punctuation">;</span>    <span class="token comment"># 轮询方式平均分配请求</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.11:8080</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li><strong>加权轮询</strong></li>
+</ol>
+<p><strong>weight值越大，分配到的访问机率越高</strong></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">upstream</span> backend</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.10:8080 weight=3</span><span class="token punctuation">;</span>    <span class="token comment"># 访问比例为3</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.11:8080 weight=2</span><span class="token punctuation">;</span>    <span class="token comment"># 访问比例为2</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li><strong>IP哈希</strong></li>
+</ol>
+<p><strong>根据客户端IP分配，可用于会话保持</strong></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">upstream</span> backend</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">ip_hash</span></span><span class="token punctuation">;</span>    <span class="token comment"># 启用IP哈希</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.10:8080</span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.11:8080</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="4">
+<li><strong>最少连接</strong></li>
+</ol>
+<p><strong>优先分配给连接数最少的服务器</strong></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">upstream</span> backend</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">least_conn</span></span><span class="token punctuation">;</span>    <span class="token comment"># 优先分配给连接数最少的服务器</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.10:8080</span><span class="token punctuation">;</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.11:8080</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="5">
+<li><strong>备份服务器</strong></li>
+</ol>
+<p><strong>当主服务器不可用时才会启用的备份服务器</strong></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">upstream</span> backend</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.10:8080</span><span class="token punctuation">;</span>            <span class="token comment"># 主服务器</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.11:8080 backup</span><span class="token punctuation">;</span>    <span class="token comment"># 备份服务器</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>高级配置参数：</strong></p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token directive"><span class="token keyword">upstream</span> backend</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.10:8080 weight=3 max_fails=3 fail_timeout=30s</span><span class="token punctuation">;</span>    <span class="token comment"># 健康检查</span>
+    <span class="token directive"><span class="token keyword">server</span> 192.168.1.11:8080 weight=2 max_conns=1000</span><span class="token punctuation">;</span>                  <span class="token comment"># 连接数限制</span>
+    <span class="token directive"><span class="token keyword">keepalive</span> <span class="token number">32</span></span><span class="token punctuation">;</span>    <span class="token comment"># 保持连接数</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>参数说明：</strong></p>
+<ul>
+<li>​<strong>max_fails</strong>：允许请求失败的次数</li>
+<li>​<strong>fail_timeout</strong>：经过max_fails失败后，服务暂停的时间</li>
+<li>​<strong>max_conns</strong>：最大并发连接数</li>
+<li>​<strong>keepalive</strong>：保持的空闲连接数</li>
+</ul>
+<h4 id="1-4-4-限流配置"><a href="#1-4-4-限流配置" class="headerlink" title="1.4.4 限流配置"></a>1.4.4 限流配置</h4><p><strong>Nginx限流是限制用户请求速度的重要机制，用于防止服务器过载。Nginx的限流基于漏桶算法实现，主要包括以下三种：</strong></p>
+<h5 id="1-4-4-1-正常限制访问频率"><a href="#1-4-4-1-正常限制访问频率" class="headerlink" title="1.4.4.1 正常限制访问频率"></a>1.4.4.1 正常限制访问频率</h5><pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 限制每个IP每秒只能发送1个请求</span>
+<span class="token directive"><span class="token keyword">limit_req_zone</span> <span class="token variable">$binary_remote_addr</span> zone=one:10m rate=1r/s</span><span class="token punctuation">;</span>
+
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">location</span> /api/</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">limit_req</span> zone=one</span><span class="token punctuation">;</span>
+        <span class="token directive"><span class="token keyword">proxy_pass</span> http://backend</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h5 id="1-4-4-2-突发限制访问频率"><a href="#1-4-4-2-突发限制访问频率" class="headerlink" title="1.4.4.2 突发限制访问频率"></a>1.4.4.2 突发限制访问频率</h5><pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 允许突发流量，但超过设定值后排队处理</span>
+<span class="token directive"><span class="token keyword">limit_req_zone</span> <span class="token variable">$binary_remote_addr</span> zone=two:10m rate=1r/s</span><span class="token punctuation">;</span>
+
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">location</span> /api/</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">limit_req</span> zone=two burst=5 nodelay</span><span class="token punctuation">;</span>
+        <span class="token directive"><span class="token keyword">proxy_pass</span> http://backend</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h5 id="1-4-4-3-限制并发连接数"><a href="#1-4-4-3-限制并发连接数" class="headerlink" title="1.4.4.3 限制并发连接数"></a>1.4.4.3 限制并发连接数</h5><pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 限制每个IP最多保持3个并发连接</span>
+<span class="token directive"><span class="token keyword">limit_conn_zone</span> <span class="token variable">$binary_remote_addr</span> zone=three:10m</span><span class="token punctuation">;</span>
+
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">location</span> /download/</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">limit_conn</span> three <span class="token number">3</span></span><span class="token punctuation">;</span>
+        <span class="token directive"><span class="token keyword">proxy_pass</span> http://backend</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="2-进阶篇"><a href="#2-进阶篇" class="headerlink" title="2. 进阶篇"></a>2. 进阶篇</h2><h3 id="2-1-性能优化"><a href="#2-1-性能优化" class="headerlink" title="2.1 性能优化"></a>2.1 性能优化</h3><h4 id="2-1-1-Gzip压缩"><a href="#2-1-1-Gzip压缩" class="headerlink" title="2.1.1 Gzip压缩"></a>2.1.1 Gzip压缩</h4><p>以下配置需要添加在 <strong>http 块</strong>中，用于全局启用和配置Gzip压缩：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 启用Gzip压缩 - http块配置</span>
+<span class="token directive"><span class="token keyword">gzip</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>                           <span class="token comment"># 启用Gzip压缩功能</span>
+<span class="token directive"><span class="token keyword">gzip_min_length</span> <span class="token number">1k</span></span><span class="token punctuation">;</span>                <span class="token comment"># 小于1k的文件不压缩，避免压缩很小的文件</span>
+<span class="token directive"><span class="token keyword">gzip_comp_level</span> <span class="token number">6</span></span><span class="token punctuation">;</span>                 <span class="token comment"># 压缩级别1-9，级别越高压缩率越大但CPU消耗也越高</span>
+<span class="token directive"><span class="token keyword">gzip_types</span> text/plain text/css text/javascript application/json application/javascript application/xml</span><span class="token punctuation">;</span>    <span class="token comment"># 指定需要压缩的MIME类型</span>
+<span class="token directive"><span class="token keyword">gzip_vary</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>                      <span class="token comment"># 添加Vary: Accept-Encoding响应头，用于CDN缓存</span>
+<span class="token directive"><span class="token keyword">gzip_proxied</span> any</span><span class="token punctuation">;</span>                  <span class="token comment"># 对所有代理请求进行压缩</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-1-2-缓存配置"><a href="#2-1-2-缓存配置" class="headerlink" title="2.1.2 缓存配置"></a>2.1.2 缓存配置</h4><p>以下配置需要添加在 <strong>server 块</strong>中的 <strong>location 块</strong>内，用于配置静态资源的浏览器缓存：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 静态资源缓存 - server块中的location配置</span>
+<span class="token directive"><span class="token keyword">location</span> ~* \.(jpg|jpeg|png|gif|ico|css|js)$</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">expires</span> <span class="token number">30d</span></span><span class="token punctuation">;</span>                    <span class="token comment"># 设置浏览器缓存过期时间为30天</span>
+    <span class="token directive"><span class="token keyword">add_header</span> Cache-Control <span class="token string">"public, no-transform"</span></span><span class="token punctuation">;</span>    <span class="token comment"># 允许公共缓存，禁止转换</span>
+    <span class="token directive"><span class="token keyword">access_log</span> <span class="token boolean">off</span></span><span class="token punctuation">;</span>                <span class="token comment"># 关闭访问日志以提高性能</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-1-4-连接优化"><a href="#2-1-4-连接优化" class="headerlink" title="2.1.4 连接优化"></a>2.1.4 连接优化</h4><p>以下配置需要添加在 <strong>http 块</strong>中，用于优化客户端连接参数：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 连接超时设置 - http块配置</span>
+<span class="token directive"><span class="token keyword">keepalive_timeout</span> <span class="token number">65</span></span><span class="token punctuation">;</span>              <span class="token comment"># 保持长连接的超时时间，单位秒</span>
+<span class="token directive"><span class="token keyword">keepalive_requests</span> <span class="token number">100</span></span><span class="token punctuation">;</span>            <span class="token comment"># 单个长连接最大请求数</span>
+<span class="token directive"><span class="token keyword">client_body_timeout</span> <span class="token number">10</span></span><span class="token punctuation">;</span>            <span class="token comment"># 读取请求体的超时时间，单位秒</span>
+<span class="token directive"><span class="token keyword">client_header_timeout</span> <span class="token number">10</span></span><span class="token punctuation">;</span>          <span class="token comment"># 读取请求头的超时时间，单位秒</span>
+<span class="token directive"><span class="token keyword">send_timeout</span> <span class="token number">10</span></span><span class="token punctuation">;</span>                   <span class="token comment"># 向客户端发送响应的超时时间，单位秒</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-2-HTTPS和HTTP-2配置"><a href="#2-2-HTTPS和HTTP-2配置" class="headerlink" title="2.2 HTTPS和HTTP&#x2F;2配置"></a>2.2 HTTPS和HTTP&#x2F;2配置</h3><h4 id="2-2-1-基础HTTPS配置"><a href="#2-2-1-基础HTTPS配置" class="headerlink" title="2.2.1 基础HTTPS配置"></a>2.2.1 基础HTTPS配置</h4><p>以下配置需要添加在 <strong>http 块</strong>中，包含两个 <strong>server 块</strong>配置，用于实现HTTP到HTTPS的重定向和HTTPS服务器的安全配置：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># HTTP重定向到HTTPS - http块中的第一个server配置</span>
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">listen</span> <span class="token number">80</span></span><span class="token punctuation">;</span>                    <span class="token comment"># 监听80端口</span>
+    <span class="token directive"><span class="token keyword">server_name</span> example.com</span><span class="token punctuation">;</span>       <span class="token comment"># 域名配置</span>
+    <span class="token directive"><span class="token keyword">return</span> <span class="token number">301</span> https://<span class="token variable">$server_name</span><span class="token variable">$request_uri</span></span><span class="token punctuation">;</span>    <span class="token comment"># 将所有HTTP请求永久重定向到HTTPS</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># HTTPS服务器配置 - http块中的第二个server配置</span>
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">listen</span> <span class="token number">443</span> ssl http2</span><span class="token punctuation">;</span>         <span class="token comment"># 监听443端口并启用SSL和HTTP/2</span>
+    <span class="token directive"><span class="token keyword">server_name</span> example.com</span><span class="token punctuation">;</span>       <span class="token comment"># 域名配置</span>
+    
+    <span class="token comment"># SSL证书配置 - 在server块中配置SSL证书路径</span>
+    <span class="token directive"><span class="token keyword">ssl_certificate</span> /etc/nginx/cert/example.com.pem</span><span class="token punctuation">;</span>        <span class="token comment"># SSL证书公钥</span>
+    <span class="token directive"><span class="token keyword">ssl_certificate_key</span> /etc/nginx/cert/example.com.key</span><span class="token punctuation">;</span>    <span class="token comment"># SSL证书私钥</span>
+    
+    <span class="token comment"># SSL协议和加密套件配置 - 增强HTTPS安全性</span>
+    <span class="token directive"><span class="token keyword">ssl_protocols</span> TLSv1.2 TLSv1.4</span><span class="token punctuation">;</span>    <span class="token comment"># 只允许TLS 1.2和1.4，禁用不安全的协议</span>
+    <span class="token directive"><span class="token keyword">ssl_ciphers</span> ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4</span><span class="token punctuation">;</span>    <span class="token comment"># 配置加密算法</span>
+    <span class="token directive"><span class="token keyword">ssl_prefer_server_ciphers</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>     <span class="token comment"># 优先使用服务器的加密套件配置</span>
+    
+    <span class="token comment"># SSL会话缓存 - 优化SSL握手性能</span>
+    <span class="token directive"><span class="token keyword">ssl_session_cache</span> shared:SSL:10m</span><span class="token punctuation">;</span>    <span class="token comment"># 配置10MB的共享会话缓存</span>
+    <span class="token directive"><span class="token keyword">ssl_session_timeout</span> <span class="token number">10m</span></span><span class="token punctuation">;</span>            <span class="token comment"># 设置SSL会话缓存超时时间</span>
+    
+    <span class="token comment"># HSTS配置 - 强制客户端使用HTTPS</span>
+    <span class="token directive"><span class="token keyword">add_header</span> Strict-Transport-Security <span class="token string">"max-age=31536000"</span></span><span class="token punctuation">;</span>    <span class="token comment"># 启用HSTS，有效期一年</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-2-2-HTTP-2优化"><a href="#2-2-2-HTTP-2优化" class="headerlink" title="2.2.2 HTTP&#x2F;2优化"></a>2.2.2 HTTP&#x2F;2优化</h4><p>以下配置需要添加在 <strong>http 块</strong>或 <strong>server 块</strong>中，用于优化HTTP&#x2F;2性能：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># HTTP/2特定优化 - http块或server块配置</span>
+<span class="token directive"><span class="token keyword">http2_push_preload</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>              <span class="token comment"># 启用服务器推送，支持preload资源预加载</span>
+<span class="token directive"><span class="token keyword">http2_max_concurrent_streams</span> <span class="token number">128</span></span><span class="token punctuation">;</span>    <span class="token comment"># 限制每个连接的最大并发流数量</span>
+<span class="token directive"><span class="token keyword">http2_idle_timeout</span> <span class="token number">3m</span></span><span class="token punctuation">;</span>              <span class="token comment"># 设置空闲连接的超时时间为3分钟</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-3-安全加固"><a href="#2-3-安全加固" class="headerlink" title="2.3 安全加固"></a>2.3 安全加固</h3><h4 id="2-3-1-DDoS防护"><a href="#2-3-1-DDoS防护" class="headerlink" title="2.3.1 DDoS防护"></a>2.3.1 DDoS防护</h4><p>以下配置包含多个层次的DDoS防护措施：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># IP连接限制 - http块配置</span>
+<span class="token directive"><span class="token keyword">limit_conn_zone</span> <span class="token variable">$binary_remote_addr</span> zone=addr:10m</span><span class="token punctuation">;</span>    <span class="token comment"># 在http块中定义共享内存区，用于存储IP连接计数</span>
+<span class="token directive"><span class="token keyword">limit_conn</span> addr <span class="token number">100</span></span><span class="token punctuation">;</span>                                  <span class="token comment"># 在http块或server块中限制每个IP的并发连接数</span>
+
+<span class="token comment"># 请求频率限制 - http块和location块配置</span>
+<span class="token directive"><span class="token keyword">limit_req_zone</span> <span class="token variable">$binary_remote_addr</span> zone=req_limit:10m rate=10r/s</span><span class="token punctuation">;</span>    <span class="token comment"># 在http块中定义请求限制区，限制每秒请求数</span>
+<span class="token directive"><span class="token keyword">location</span> /</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">limit_req</span> zone=req_limit burst=20 nodelay</span><span class="token punctuation">;</span>    <span class="token comment"># 在location块中配置请求限制，允许短时突发20个请求</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># TCP洪水攻击防护 - server块配置</span>
+<span class="token directive"><span class="token keyword">server</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">listen</span> <span class="token number">80</span> backlog=65535</span><span class="token punctuation">;</span>    <span class="token comment"># 设置等待连接队列大小，防止TCP SYN洪水攻击</span>
+    <span class="token directive"><span class="token keyword">listen</span> <span class="token number">443</span> ssl http2 backlog=65535</span><span class="token punctuation">;</span>    <span class="token comment"># SSL端口同样设置较大的等待队列</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-3-2-访问控制"><a href="#2-3-2-访问控制" class="headerlink" title="2.3.2 访问控制"></a>2.3.2 访问控制</h4><p>以下配置展示了多种访问控制方式，可以添加在 <strong>server 块</strong>中：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 禁止特定User-Agent - server块配置</span>
+<span class="token directive"><span class="token keyword">if</span> (<span class="token variable">$http_user_agent</span> ~* (Scrapy|Curl|WebBench))</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">return</span> <span class="token number">403</span></span><span class="token punctuation">;</span>    <span class="token comment"># 检测到爬虫等工具时返回禁止访问</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># IP访问控制 - server块中的location配置</span>
+<span class="token directive"><span class="token keyword">location</span> /admin/</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">allow</span> 192.168.1.0/24</span><span class="token punctuation">;</span>    <span class="token comment"># 允许特定IP段访问管理界面</span>
+    <span class="token directive"><span class="token keyword">deny</span> all</span><span class="token punctuation">;</span>                <span class="token comment"># 禁止其他所有IP访问</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment"># 防盗链配置 - server块中的location配置</span>
+<span class="token directive"><span class="token keyword">location</span> ~* \.(gif|jpg|jpeg|png|bmp|swf)$</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">valid_referers</span> none blocked server_names *.example.com</span><span class="token punctuation">;</span>    <span class="token comment"># 设置允许的来源域名</span>
+    <span class="token directive"><span class="token keyword">if</span> (<span class="token variable">$invalid_referer</span>)</span> <span class="token punctuation">&#123;</span>
+        <span class="token directive"><span class="token keyword">return</span> <span class="token number">403</span></span><span class="token punctuation">;</span>    <span class="token comment"># 对于非法引用的请求返回禁止访问</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-4-日志管理"><a href="#2-4-日志管理" class="headerlink" title="2.4 日志管理"></a>2.4 日志管理</h3><h4 id="2-4-1-访问日志"><a href="#2-4-1-访问日志" class="headerlink" title="2.4.1 访问日志"></a>2.4.1 访问日志</h4><p>以下配置需要添加在 <strong>http 块</strong>中，用于定义日志格式和配置访问日志：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 日志配置 - http块配置</span>
+<span class="token directive"><span class="token keyword">http</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token comment"># 定义主日志格式，包含客户端IP、访问时间、请求信息等</span>
+    <span class="token directive"><span class="token keyword">log_format</span> main <span class="token string">'<span class="token variable">$remote_addr</span> - <span class="token variable">$remote_user</span> [<span class="token variable">$time_local]</span> "<span class="token variable">$request</span>" '</span>
+                    <span class="token string">'<span class="token variable">$status</span> <span class="token variable">$body_bytes_sent</span> "<span class="token variable">$http_referer</span>" '</span>
+                    <span class="token string">'"<span class="token variable">$http_user_agent</span>" "<span class="token variable">$http_x_forwarded_for</span>"'</span></span><span class="token punctuation">;</span>
+    
+    <span class="token comment"># 配置访问日志</span>
+    <span class="token directive"><span class="token keyword">access_log</span> /var/log/nginx/access.log main buffer=32k flush=5s</span><span class="token punctuation">;</span>    <span class="token comment"># 启用主日志格式，使用32k缓冲，每5秒刷新</span>
+    <span class="token directive"><span class="token keyword">access_log</span> /var/log/nginx/access_json.log json buffer=32k</span><span class="token punctuation">;</span>        <span class="token comment"># 启用JSON格式日志，便于日志分析</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-4-2-错误日志"><a href="#2-4-2-错误日志" class="headerlink" title="2.4.2 错误日志"></a>2.4.2 错误日志</h4><p>以下配置可以添加在 <strong>main 块</strong>、<strong>http 块</strong>、<strong>server 块</strong>或 <strong>location 块</strong>中，用于配置错误日志：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 错误日志配置 - 可在main、http、server或location块中配置</span>
+<span class="token directive"><span class="token keyword">error_log</span> /var/log/nginx/error.log warn</span><span class="token punctuation">;</span>    <span class="token comment"># 设置错误日志级别为warn</span>
+
+<span class="token comment"># 可选的错误日志级别（从详细到简略）</span>
+<span class="token comment"># error_log /var/log/nginx/error.log debug;  # 调试级别：输出所有调试信息</span>
+<span class="token comment"># error_log /var/log/nginx/error.log info;   # 信息级别：输出有用的信息</span>
+<span class="token comment"># error_log /var/log/nginx/error.log notice; # 通知级别：输出普通但重要的信息</span>
+<span class="token comment"># error_log /var/log/nginx/error.log warn;   # 警告级别：输出警告信息</span>
+<span class="token comment"># error_log /var/log/nginx/error.log error;  # 错误级别：输出错误信息</span>
+<span class="token comment"># error_log /var/log/nginx/error.log crit;   # 严重错误级别：输出严重错误信息</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-4-3-日志轮转"><a href="#2-4-3-日志轮转" class="headerlink" title="2.4.3 日志轮转"></a>2.4.3 日志轮转</h4><pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 日志轮转配置（logrotate）</span>
+/var/log/nginx/*.log <span class="token punctuation">&#123;</span>
+    daily                   <span class="token comment"># 每天轮转</span>
+    missingok               <span class="token comment"># 忽略丢失的日志文件</span>
+    rotate 52               <span class="token comment"># 保留52个备份</span>
+    compress                <span class="token comment"># 压缩轮转后的日志</span>
+    delaycompress           <span class="token comment"># 延迟压缩到下一次轮转</span>
+    notifempty              <span class="token comment"># 空文件不轮转</span>
+    create 640 nginx adm    <span class="token comment"># 创建新日志文件的权限和所有者</span>
+    sharedscripts          <span class="token comment"># 所有日志共用一个脚本</span>
+    postrotate
+        <span class="token comment"># 重新打开日志文件</span>
+        [ -f /var/run/nginx.pid ] &amp;&amp; kill -USR1 `cat /var/run/nginx.pid`
+    endscript
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-5-监控和调试"><a href="#2-5-监控和调试" class="headerlink" title="2.5 监控和调试"></a>2.5 监控和调试</h3><h4 id="2-5-1-状态监控"><a href="#2-5-1-状态监控" class="headerlink" title="2.5.1 状态监控"></a>2.5.1 状态监控</h4><p>以下配置需要添加在 <strong>server 块</strong>中的 <strong>location 块</strong>内，用于配置Nginx状态监控页面：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 状态监控配置 - server块中的location配置</span>
+<span class="token directive"><span class="token keyword">location</span> /nginx_status</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">stub_status</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>           <span class="token comment"># 启用状态页，显示连接数等统计信息</span>
+    <span class="token directive"><span class="token keyword">access_log</span> <span class="token boolean">off</span></span><span class="token punctuation">;</span>           <span class="token comment"># 关闭访问日志，减少磁盘IO</span>
+    <span class="token directive"><span class="token keyword">allow</span> 127.0.0.1</span><span class="token punctuation">;</span>          <span class="token comment"># 只允许本地IP访问，提高安全性</span>
+    <span class="token directive"><span class="token keyword">deny</span> all</span><span class="token punctuation">;</span>                 <span class="token comment"># 拒绝其他所有IP访问</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-5-2-调试配置"><a href="#2-5-2-调试配置" class="headerlink" title="2.5.2 调试配置"></a>2.5.2 调试配置</h4><p>以下配置包含两部分：</p>
+<ol>
+<li>调试日志配置（可添加在 <strong>main 块</strong>、<strong>http 块</strong>、<strong>server 块</strong>或 <strong>location 块</strong>中）</li>
+<li>调试信息配置（需要添加在 <strong>server 块</strong>中的 <strong>location 块</strong>内）</li>
+</ol>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 调试日志配置 - 可在main、http、server或location块中配置</span>
+<span class="token directive"><span class="token keyword">error_log</span> /var/log/nginx/debug.log debug</span><span class="token punctuation">;</span>    <span class="token comment"># 启用调试级别的日志记录</span>
+
+<span class="token comment"># 调试信息配置 - server块中的location配置</span>
+<span class="token directive"><span class="token keyword">location</span> /debug/</span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">add_header</span> X-Debug-Message <span class="token variable">$request_uri</span></span><span class="token punctuation">;</span>    <span class="token comment"># 在响应头中添加当前请求的URI</span>
+    <span class="token directive"><span class="token keyword">add_header</span> X-Server-Name <span class="token variable">$hostname</span></span><span class="token punctuation">;</span>         <span class="token comment"># 在响应头中添加服务器主机名</span>
+    <span class="token directive"><span class="token keyword">add_header</span> X-Request-ID <span class="token variable">$request_id</span></span><span class="token punctuation">;</span>        <span class="token comment"># 在响应头中添加唯一请求ID</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="3-最佳实践"><a href="#3-最佳实践" class="headerlink" title="3. 最佳实践"></a>3. 最佳实践</h2><h3 id="3-1-性能优化建议"><a href="#3-1-性能优化建议" class="headerlink" title="3.1 性能优化建议"></a>3.1 性能优化建议</h3><ol>
+<li><strong>合理使用缓存</strong></li>
+</ol>
+<p>以下配置需要添加在 <strong>http 块</strong>中，用于优化文件缓存：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 文件缓存配置 - http块配置</span>
+<span class="token directive"><span class="token keyword">open_file_cache</span> max=1000 inactive=20s</span><span class="token punctuation">;</span>    <span class="token comment"># 最多缓存1000个文件，20秒内未被访问则清除</span>
+<span class="token directive"><span class="token keyword">open_file_cache_valid</span> <span class="token number">30s</span></span><span class="token punctuation">;</span>                <span class="token comment"># 每30秒检查一次缓存的有效性</span>
+<span class="token directive"><span class="token keyword">open_file_cache_min_uses</span> <span class="token number">2</span></span><span class="token punctuation">;</span>               <span class="token comment"># 文件被访问2次后才会被缓存</span>
+<span class="token directive"><span class="token keyword">open_file_cache_errors</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>                <span class="token comment"># 缓存文件找不到等错误信息</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li><strong>优化工作进程</strong></li>
+</ol>
+<p>以下配置需要添加在 <strong>main 块</strong>中，用于优化Nginx工作进程：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 工作进程配置 - main块配置</span>
+<span class="token directive"><span class="token keyword">worker_processes</span> auto</span><span class="token punctuation">;</span>           <span class="token comment"># 自动设置工作进程数为CPU核心数</span>
+<span class="token directive"><span class="token keyword">worker_cpu_affinity</span> auto</span><span class="token punctuation">;</span>        <span class="token comment"># 自动绑定工作进程到CPU核心</span>
+
+<span class="token comment"># 进程优先级配置</span>
+<span class="token directive"><span class="token keyword">worker_priority</span> -5</span><span class="token punctuation">;</span>              <span class="token comment"># 提高工作进程优先级（-20到19，值越小优先级越高）</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li><strong>优化事件模型</strong></li>
+</ol>
+<p>以下配置需要添加在 <strong>events 块</strong>中，用于优化连接处理：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 事件模型配置 - events块配置</span>
+<span class="token directive"><span class="token keyword">events</span></span> <span class="token punctuation">&#123;</span>
+    <span class="token directive"><span class="token keyword">use</span> epoll</span><span class="token punctuation">;</span>                <span class="token comment"># 使用epoll事件模型，提高并发处理能力</span>
+    <span class="token directive"><span class="token keyword">worker_connections</span> <span class="token number">10240</span></span><span class="token punctuation">;</span>  <span class="token comment"># 每个工作进程同时处理的最大连接数</span>
+    <span class="token directive"><span class="token keyword">multi_accept</span> <span class="token boolean">on</span></span><span class="token punctuation">;</span>           <span class="token comment"># 允许同时接受多个新连接</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="3-2-安全最佳实践"><a href="#3-2-安全最佳实践" class="headerlink" title="3.2 安全最佳实践"></a>3.2 安全最佳实践</h3><ol>
+<li><strong>隐藏版本信息</strong></li>
+</ol>
+<p>以下配置需要添加在 <strong>http 块</strong>中，用于隐藏Nginx版本信息：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 版本信息配置 - http块配置</span>
+<span class="token directive"><span class="token keyword">server_tokens</span> <span class="token boolean">off</span></span><span class="token punctuation">;</span>    <span class="token comment"># 在错误页面和响应头中隐藏Nginx版本号</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li><strong>配置安全响应头</strong></li>
+</ol>
+<p>以下配置需要添加在 <strong>http 块</strong>或 <strong>server 块</strong>中，用于增强安全性：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 安全响应头配置 - http块或server块配置</span>
+<span class="token directive"><span class="token keyword">add_header</span> X-Frame-Options <span class="token string">"SAMEORIGIN"</span></span><span class="token punctuation">;</span>          <span class="token comment"># 防止网站被嵌入恶意iframe中</span>
+<span class="token directive"><span class="token keyword">add_header</span> X-XSS-Protection <span class="token string">"1; mode=block"</span></span><span class="token punctuation">;</span>      <span class="token comment"># 启用浏览器XSS防护</span>
+<span class="token directive"><span class="token keyword">add_header</span> X-Content-Type-Options <span class="token string">"nosniff"</span></span><span class="token punctuation">;</span>      <span class="token comment"># 禁止浏览器猜测内容类型</span>
+<span class="token directive"><span class="token keyword">add_header</span> Content-Security-Policy <span class="token string">"default-src 'self'"</span></span><span class="token punctuation">;</span>  <span class="token comment"># 限制资源只能从本站加载</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li><strong>限制上传文件大小</strong></li>
+</ol>
+<p>以下配置需要添加在 <strong>http 块</strong>、<strong>server 块</strong>或 <strong>location 块</strong>中，用于限制上传文件大小：</p>
+<pre class="line-numbers language-nginx" data-language="nginx"><code class="language-nginx"><span class="token comment"># 上传限制配置 - http块、server块或location块配置</span>
+<span class="token directive"><span class="token keyword">client_max_body_size</span> <span class="token number">10m</span></span><span class="token punctuation">;</span>    <span class="token comment"># 限制客户端请求体大小为10MB</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</div>
+      
+        <div class="article-credit"><span>作者 Ryo</span><a target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a><button class="text-link" type="button" data-copy-url hidden>复制文章链接</button></div>
+      
+      
+        <nav class="article-neighbours" aria-label="相邻文章">
+          <a href="/2025/03/18/ai-kai-fa/gai-nian/3.ru-he-li-jie-agent/"><small>上一篇</small><strong>Agent学习（TODO）</strong></a>
+        
+          <a href="/2025/03/16/ai-kai-fa/gai-nian/1.zuo-wei-yi-ge-qian-duan-er-ru-he-liao-jie-llm/"><small>下一篇</small><strong>作为一个前端er如何了解LLM</strong></a>
+        </nav>
+      
+      
+        <details class="comments" data-comment-src="https://utteranc.es/client.js" data-repo="SaebaRyoo/SaebaRyoo.github.io" data-term="pathname" data-light="github-light" data-dark="github-dark">
+          <summary>读者回信</summary>
+          <div class="comment-mount"></div><a class="text-link" target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/SaebaRyoo.github.io/issues">在 GitHub 查看讨论</a>
+        </details>
+      
+    </div>
+  </div>
+</article>
+
+
+<dialog class="image-dialog" aria-label="查看原图"><form method="dialog"><button class="icon-btn" aria-label="关闭原图"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form><img alt=""></dialog>
+
+</main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+ 咕嘎邮便局 <span>·</span> Ryo</a>
+      <nav aria-label="页脚导航">
+        <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">GitHub</a>
+        <a href="/tags/">标签</a>
+        <a href="/visualization-layout/">可视化实验</a>
+        <a href="#main-content">回到顶部</a>
+      </nav>
+    </div>
+  </footer>
+  <dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="/search.xml">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form>
+  </header>
+  <label class="search-field"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>
+
+</body>
+</html>

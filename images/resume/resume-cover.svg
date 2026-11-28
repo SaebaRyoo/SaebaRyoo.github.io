@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a1a"/>
+      <stop offset="100%" style="stop-color:#4a4a4a"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.1"/>
+    </pattern>
+  </defs>
+  
+  <!-- 渐变背景 -->
+  <rect width="1200" height="630" fill="url(#bg-gradient)"/>
+  
+  <!-- 网格装饰 -->
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  
+  <!-- 装饰性圆形 -->
+  <circle cx="100" cy="100" r="200" fill="#007AFF" opacity="0.1"/>
+  <circle cx="1100" cy="530" r="150" fill="#00C7FF" opacity="0.1"/>
+  
+  <!-- 代码装饰元素 -->
+  <g transform="translate(50, 450)" opacity="0.6">
+    <text font-family="Monaco, monospace" font-size="14" fill="#00FF00">
+      <tspan x="0" y="0">const developer = {</tspan>
+      <tspan x="0" y="20">  skills: ["Frontend", "Backend", "DevOps"],</tspan>
+      <tspan x="0" y="40">  passion: "Building amazing things"</tspan>
+      <tspan x="0" y="60">};</tspan>
+    </text>
+  </g>
+  
+  <!-- 主标题 -->
+  <text x="600" y="250" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">
+    技术博客
+  </text>
+  
+  <!-- 副标题 -->
+  <text x="600" y="310" font-family="Arial, sans-serif" font-size="24" fill="#00C7FF" text-anchor="middle">
+    探索、分享、成长
+  </text>
+  
+  <!-- 技术图标 -->
+  <g transform="translate(450, 350)">
+    <!-- HTML5 -->
+    <path d="M45,0 L41,45 L24,45 L21,15 L15,15 L18,45 L0,45 L8,0 Z" fill="#E44D26"/>
+    <!-- CSS3 -->
+    <path d="M125,0 L121,45 L104,45 L101,15 L95,15 L98,45 L80,45 L88,0 Z" transform="translate(-60, 0)" fill="#1572B6"/>
+    <!-- JS -->
+    <rect x="140" y="0" width="45" height="45" fill="#F7DF1E"/>
+  </g>
+</svg>

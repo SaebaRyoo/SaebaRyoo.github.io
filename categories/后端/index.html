@@ -1,0 +1,257 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:title" content="后端 · Ryo的小站">
+  <meta property="og:description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://saebaryoo.github.io/images/gugu-doro/web/anime-01-seaside-post.jpg">
+  <link rel="canonical" href="https://saebaryoo.github.io/categories/%E5%90%8E%E7%AB%AF/index.html">
+  <link rel="icon" href="/post-office/gugu-icon.png" type="image/png">
+  <title>后端 · Ryo的小站</title>
+  <script>
+    try {
+      var storedDark = localStorage.getItem('dark');
+      document.documentElement.dataset.theme = (storedDark === null ? matchMedia('(prefers-color-scheme: dark)').matches : storedDark === 'true') ? 'dark' : 'light';
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/post-office/post.css">
+  <script defer src="/post-office/post.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.3 8.5-6.3"/></symbol>
+    <symbol id="i-wing" viewBox="0 0 32 24"><path d="M1.5 6.5h8m-6.5 4h5m-3.5 4h2"/><path d="M12 5h18l-5 14H7z" fill="currentColor" stroke="none"/><path d="m12 7 6 5.6 10-5.8" stroke="var(--wing-line, #235344)"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" transform="rotate(-8 12 12)"/><path d="M8 8h.1m4 4h.1m3.9 4h.1" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a8.8 8.8 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 15 6 5h12l3 10v4H3z"/><path d="M3 14h5l2 3h4l2-3h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 3h10v11H3z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-5l2 2m0-5v5h-5M20 13a8 8 0 0 1-14 5l-2-2m0 5v-5h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 16h16v4H4zM7 16c0-3 3-3.5 3-5V9a4 4 0 1 1 4 0v2c0 1.5 3 2 3 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="m3 3 8 .3L21 13l-8 8-9.7-9.7z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="m2 10 20-7-6.5 18-4.3-7.7L2 10Z"/><path d="M11.2 13.3 22 3"/></symbol>
+  </defs>
+</svg>
+
+  <a class="skip" href="#main-content">跳到正文</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="/" aria-label="Ryo的小站首页">
+        <span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 32 24"><use href="#i-wing"/></svg></span>
+        <span><strong>Ryo的小站</strong><small lang="en">GUGU POST</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives/">文章归档</a>
+        
+          <a href="/categories/" aria-current="page">分类索引</a>
+        
+          <a href="/visualization-layout/">实验室</a>
+        
+          <a href="/about/">关于</a>
+        
+      </nav>
+      <div class="header-tools">
+        <button class="search-trigger" type="button" data-search-open hidden aria-label="搜索文章" aria-haspopup="dialog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<span>搜索</span><kbd>/</kbd></button>
+        
+          <button type="button" class="icon-btn theme-trigger" data-theme-toggle hidden aria-label="夜间模式" title="夜间模式"><svg class="icon" aria-hidden="true"><use class="moon" href="#i-moon"/><use class="sun" href="#i-sun"/></svg></button>
+        
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="wrap" tabindex="-1">
+<section class="inner-page collection-page">
+  <a class="breadcrumb" href="/categories/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-folder"/></svg>
+ 分类信箱</a>
+  <header class="page-heading"><h1>后端</h1></header>
+  
+<div class="letters-list">
+  
+    <article class="letter">
+      <a class="letter-picture" href="/2026/09/04/hou-duan/java/sdkman/" tabindex="-1" aria-hidden="true">
+        <span class="mini-stamp"><img src="/images/gugu-doro/web/thumbs/anime-02-coastal-train.jpg" alt="" width="480" height="300" loading="lazy" decoding="async"></span>
+      </a>
+      <div class="letter-body">
+        <div class="letter-meta">
+          <a class="category-ink ink-server" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span aria-hidden="true">/</span>
+          <time datetime="2026-09-04">2026.09.04</time>
+        </div>
+        <h3><a href="/2026/09/04/hou-duan/java/sdkman/">Java SDKMAN使用指南</a></h3>
+        <p>1. 安装sdkman · 2. sdkman常用指令 · 3. 使用sdkman搞定java环境</p>
+      </div>
+    </article>
+  
+    <article class="letter">
+      <a class="letter-picture" href="/2025/03/21/hou-duan/nestjs/1.shen-ru-li-jie-nest.js-de-ji-chu-gai-nian/" tabindex="-1" aria-hidden="true">
+        <span class="mini-stamp"><img src="/images/gugu-doro/web/thumbs/soft-02-forest-delivery.jpg" alt="" width="480" height="300" loading="lazy" decoding="async"></span>
+      </a>
+      <div class="letter-body">
+        <div class="letter-meta">
+          <a class="category-ink ink-server" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span aria-hidden="true">/</span>
+          <time datetime="2025-03-21">2025.03.21</time>
+        </div>
+        <h3><a href="/2025/03/21/hou-duan/nestjs/1.shen-ru-li-jie-nest.js-de-ji-chu-gai-nian/">深入理解Nest.js的基础概念</a></h3>
+        <p>Nest.js 是一个用于构建高效、可扩展的 Node.js 服务器端应用程序的框架。它使用渐进式 JavaScript，内置并完全支持 TypeScript（但仍然允许开发人员使用纯 JavaScript 编写代码），并结合了面向对象编程（OOP）、函数式编程（FP）和函数式响</p>
+      </div>
+    </article>
+  
+    <article class="letter">
+      <a class="letter-picture" href="/2025/03/14/hou-duan/shang-cheng/shi-yong-nestjs-shi-xian-ji-yu-jwt-rbac-de-ren-zheng-shou-quan-xi-tong/" tabindex="-1" aria-hidden="true">
+        <span class="mini-stamp"><img src="/images/gugu-doro/web/thumbs/05-autumn-mail-route.jpg" alt="" width="480" height="300" loading="lazy" decoding="async"></span>
+      </a>
+      <div class="letter-body">
+        <div class="letter-meta">
+          <a class="category-ink ink-server" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span aria-hidden="true">/</span>
+          <time datetime="2025-03-14">2025.03.14</time>
+        </div>
+        <h3><a href="/2025/03/14/hou-duan/shang-cheng/shi-yong-nestjs-shi-xian-ji-yu-jwt-rbac-de-ren-zheng-shou-quan-xi-tong/">使用Nestjs实现基于JWT + RBAC的认证授权系统</a></h3>
+        <p>这篇文章使用Nestjs实现了一个基于JWT+RBAC（Role-Based Access Control）的认证授权系统，主要包含以下功能：</p>
+      </div>
+    </article>
+  
+    <article class="letter">
+      <a class="letter-picture" href="/2025/03/14/hou-duan/shang-cheng/shi-xian-shang-cheng-zhi-fu-gong-neng/" tabindex="-1" aria-hidden="true">
+        <span class="mini-stamp"><img src="/images/gugu-doro/web/thumbs/anime-04-sakura-picnic.jpg" alt="" width="480" height="300" loading="lazy" decoding="async"></span>
+      </a>
+      <div class="letter-body">
+        <div class="letter-meta">
+          <a class="category-ink ink-server" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span aria-hidden="true">/</span>
+          <time datetime="2025-03-14">2025.03.14</time>
+        </div>
+        <h3><a href="/2025/03/14/hou-duan/shang-cheng/shi-xian-shang-cheng-zhi-fu-gong-neng/">Nestjs+RabbitMQ+支付宝沙盒 实现电商支付功能</a></h3>
+        <p>在电商系统中，支付功能是整个交易流程中最为关键的环节之一。一个完善的支付系统不仅要保证交易的安全性和可靠性，还需要具备良好的用户体验和高效的系统性能。本文将详细介绍如何在商城系统中集成支付宝支付功能，并通过RabbitMQ消息队列来优化支付流程。</p>
+      </div>
+    </article>
+  
+    <article class="letter">
+      <a class="letter-picture" href="/2025/03/13/hou-duan/shang-cheng/shi-yong-nestjs-elasticsearch-shi-xian-dian-shang-sou-suo-gong-neng/" tabindex="-1" aria-hidden="true">
+        <span class="mini-stamp"><img src="/images/gugu-doro/web/thumbs/anime-05-snowy-postcards.jpg" alt="" width="480" height="300" loading="lazy" decoding="async"></span>
+      </a>
+      <div class="letter-body">
+        <div class="letter-meta">
+          <a class="category-ink ink-server" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span aria-hidden="true">/</span>
+          <time datetime="2025-03-13">2025.03.13</time>
+        </div>
+        <h3><a href="/2025/03/13/hou-duan/shang-cheng/shi-yong-nestjs-elasticsearch-shi-xian-dian-shang-sou-suo-gong-neng/">使用Nestjs+ElasticSearch实现电商搜索功能</a></h3>
+        <p>ElasticSearch（简称ES）是一个开源的分布式搜索引擎，基于强大的搜索和分析能力，它不仅支持全文检索、精确查询和复杂的数据聚合分析，还具备高可用的分布式架构。作为一个成熟的企业级解决方案，ES在日志分析、电商搜索等场景中被广泛应用，能够帮助企业高效处理和分析大规模数据。</p>
+      </div>
+    </article>
+  
+    <article class="letter">
+      <a class="letter-picture" href="/2025/03/12/hou-duan/shu-ju-ku/mysql/3.mysql-yue-shu-he-shu-ju-ku-she-ji/" tabindex="-1" aria-hidden="true">
+        <span class="mini-stamp"><img src="/images/gugu-doro/web/thumbs/anime-03-rainy-cafe.jpg" alt="" width="480" height="300" loading="lazy" decoding="async"></span>
+      </a>
+      <div class="letter-body">
+        <div class="letter-meta">
+          <a class="category-ink ink-server" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span aria-hidden="true">/</span>
+          <time datetime="2025-03-12">2025.03.12</time>
+        </div>
+        <h3><a href="/2025/03/12/hou-duan/shu-ju-ku/mysql/3.mysql-yue-shu-he-shu-ju-ku-she-ji/">MySQL约束和数据库设计</a></h3>
+        <p>在数据库开发中，约束和数据库设计是确保数据完整性和系统性能的关键要素。MySQL约束通过限制数据的输入和修改，保证数据的准确性和一致性；而良好的数据库设计则能够减少数据冗余、提高查询效率，为应用系统提供可靠的数据基础。</p>
+      </div>
+    </article>
+  
+    <article class="letter">
+      <a class="letter-picture" href="/2025/03/03/hou-duan/shang-cheng/shi-yong-minio-he-nestjs-shi-xian-wen-jian-cun-chu/" tabindex="-1" aria-hidden="true">
+        <span class="mini-stamp"><img src="/images/gugu-doro/web/thumbs/05-autumn-mail-route.jpg" alt="" width="480" height="300" loading="lazy" decoding="async"></span>
+      </a>
+      <div class="letter-body">
+        <div class="letter-meta">
+          <a class="category-ink ink-server" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span aria-hidden="true">/</span>
+          <time datetime="2025-03-03">2025.03.03</time>
+        </div>
+        <h3><a href="/2025/03/03/hou-duan/shang-cheng/shi-yong-minio-he-nestjs-shi-xian-wen-jian-cun-chu/">使用Minio和Nestjs实现文件存储</a></h3>
+        <p>本文详细介绍了如何在商城项目中使用 MinIO 和 Nest.js 实现文件存储功能。文章分为四个主要部分：</p>
+      </div>
+    </article>
+  
+    <article class="letter">
+      <a class="letter-picture" href="/2023/04/12/hou-duan/node/nodejs-gai-nian/" tabindex="-1" aria-hidden="true">
+        <span class="mini-stamp"><img src="/images/gugu-doro/web/thumbs/02-rainy-delivery.jpg" alt="" width="480" height="300" loading="lazy" decoding="async"></span>
+      </a>
+      <div class="letter-body">
+        <div class="letter-meta">
+          <a class="category-ink ink-server" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span aria-hidden="true">/</span>
+          <time datetime="2023-04-12">2023.04.12</time>
+        </div>
+        <h3><a href="/2023/04/12/hou-duan/node/nodejs-gai-nian/">Node.js常见概念</a></h3>
+        <p>因为 Node 的架构主要分为 4 大部分，Node Standard Library, Node Bindings, V8, Libuv</p>
+      </div>
+    </article>
+  
+    <article class="letter">
+      <a class="letter-picture" href="/2023/04/11/hou-duan/node/nodejs-ts-6/" tabindex="-1" aria-hidden="true">
+        <span class="mini-stamp"><img src="/images/gugu-doro/web/thumbs/soft-02-forest-delivery.jpg" alt="" width="480" height="300" loading="lazy" decoding="async"></span>
+      </a>
+      <div class="letter-body">
+        <div class="letter-meta">
+          <a class="category-ink ink-server" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span aria-hidden="true">/</span>
+          <time datetime="2023-04-11">2023.04.11</time>
+        </div>
+        <h3><a href="/2023/04/11/hou-duan/node/nodejs-ts-6/">Node.js TypeScript#6. 发送http请求，理解multipart/form-data</a></h3>
+        <p>HTTP 是一种协议，它允许你请求例如JSON 数据和HTML 文档这项的资源。它连接client和server，来帮助你传递和交换信息。当数据从client发出就叫request。当数据从server发出就叫response。在这篇文章中，我们主要讲的是如何发出request。</p>
+      </div>
+    </article>
+  
+    <article class="letter">
+      <a class="letter-picture" href="/2023/04/11/hou-duan/node/nodejs-ts-5/" tabindex="-1" aria-hidden="true">
+        <span class="mini-stamp"><img src="/images/gugu-doro/web/thumbs/01-pair-programming.jpg" alt="" width="480" height="300" loading="lazy" decoding="async"></span>
+      </a>
+      <div class="letter-body">
+        <div class="letter-meta">
+          <a class="category-ink ink-server" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span aria-hidden="true">/</span>
+          <time datetime="2023-04-11">2023.04.11</time>
+        </div>
+        <h3><a href="/2023/04/11/hou-duan/node/nodejs-ts-5/">Node.js TypeScript#5. Writable Stream(可写流)</a></h3>
+        <p>在这篇文章中，我们会继续讲解stream，不过这次我们重点说的是writable stream和pipe。我们会通过几个例子来理解writable stream的工作原理。同时，我们提供了 Node 环境中process对象中出现的流的例子:stdin,stdout和stderr</p>
+      </div>
+    </article>
+  
+</div>
+
+  
+  <nav class="pagination" aria-label="文章分页"><span class="page-number current">1</span><a class="page-number" href="/categories/%E5%90%8E%E7%AB%AF/page/2/">2</a><a class="extend next" rel="next" href="/categories/%E5%90%8E%E7%AB%AF/page/2/">下一页</a></nav>
+
+
+</section>
+
+</main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+ 咕嘎邮便局 <span>·</span> Ryo</a>
+      <nav aria-label="页脚导航">
+        <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">GitHub</a>
+        <a href="/tags/">标签</a>
+        <a href="/visualization-layout/">可视化实验</a>
+        <a href="#main-content">回到顶部</a>
+      </nav>
+    </div>
+  </footer>
+  <dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="/search.xml">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form>
+  </header>
+  <label class="search-field"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>
+
+</body>
+</html>

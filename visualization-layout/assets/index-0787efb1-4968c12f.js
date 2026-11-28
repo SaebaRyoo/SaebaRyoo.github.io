@@ -1,0 +1,1 @@
+import{_ as u,R as l,a as f}from"./index-fe148188.js";function p(e){var t=e.schema,r=e.isEdit,i=u(e,["schema","isEdit"]),o=t.propValue,c=t.style,s=t.events,a={};return r||Object.keys(s).forEach(function(n){return a[n]=new Function(s[n])}),l.createElement("button",f({},a,i,{style:c}),o||"按钮")}export{p as default};

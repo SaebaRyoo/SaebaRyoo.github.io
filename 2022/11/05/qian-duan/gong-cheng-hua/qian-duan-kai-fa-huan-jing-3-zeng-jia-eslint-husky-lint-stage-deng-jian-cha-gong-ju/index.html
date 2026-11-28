@@ -1,0 +1,362 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:title" content="如何搭建一个前端开发环境(三):添加eslint+husky+lint-stage等预检工具 · Ryo的小站">
+  <meta property="og:description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://saebaryoo.github.io/images/gugu-doro/web/02-rainy-delivery.jpg">
+  <link rel="canonical" href="https://saebaryoo.github.io/2022/11/05/qian-duan/gong-cheng-hua/qian-duan-kai-fa-huan-jing-3-zeng-jia-eslint-husky-lint-stage-deng-jian-cha-gong-ju/">
+  <link rel="icon" href="/post-office/gugu-icon.png" type="image/png">
+  <title>如何搭建一个前端开发环境(三):添加eslint+husky+lint-stage等预检工具 · Ryo的小站</title>
+  <script>
+    try {
+      var storedDark = localStorage.getItem('dark');
+      document.documentElement.dataset.theme = (storedDark === null ? matchMedia('(prefers-color-scheme: dark)').matches : storedDark === 'true') ? 'dark' : 'light';
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/post-office/post.css">
+  <script defer src="/post-office/post.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.3 8.5-6.3"/></symbol>
+    <symbol id="i-wing" viewBox="0 0 32 24"><path d="M1.5 6.5h8m-6.5 4h5m-3.5 4h2"/><path d="M12 5h18l-5 14H7z" fill="currentColor" stroke="none"/><path d="m12 7 6 5.6 10-5.8" stroke="var(--wing-line, #235344)"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" transform="rotate(-8 12 12)"/><path d="M8 8h.1m4 4h.1m3.9 4h.1" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a8.8 8.8 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 15 6 5h12l3 10v4H3z"/><path d="M3 14h5l2 3h4l2-3h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 3h10v11H3z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-5l2 2m0-5v5h-5M20 13a8 8 0 0 1-14 5l-2-2m0 5v-5h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 16h16v4H4zM7 16c0-3 3-3.5 3-5V9a4 4 0 1 1 4 0v2c0 1.5 3 2 3 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="m3 3 8 .3L21 13l-8 8-9.7-9.7z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="m2 10 20-7-6.5 18-4.3-7.7L2 10Z"/><path d="M11.2 13.3 22 3"/></symbol>
+  </defs>
+</svg>
+
+  <a class="skip" href="#main-content">跳到正文</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="/" aria-label="Ryo的小站首页">
+        <span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 32 24"><use href="#i-wing"/></svg></span>
+        <span><strong>Ryo的小站</strong><small lang="en">GUGU POST</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives/">文章归档</a>
+        
+          <a href="/categories/">分类索引</a>
+        
+          <a href="/visualization-layout/">实验室</a>
+        
+          <a href="/about/">关于</a>
+        
+      </nav>
+      <div class="header-tools">
+        <button class="search-trigger" type="button" data-search-open hidden aria-label="搜索文章" aria-haspopup="dialog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<span>搜索</span><kbd>/</kbd></button>
+        
+          <button type="button" class="icon-btn theme-trigger" data-theme-toggle hidden aria-label="夜间模式" title="夜间模式"><svg class="icon" aria-hidden="true"><use class="moon" href="#i-moon"/><use class="sun" href="#i-sun"/></svg></button>
+        
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="wrap" tabindex="-1">
+<article class="inner-page reading-page">
+  <a class="breadcrumb" href="/archives/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
+文章归档</a>
+  <header class="article-heading">
+    <div class="letter-meta">
+      <a class="category-ink ink-terminal" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span aria-hidden="true">/</span>
+      <time datetime="2022-11-05">2022.11.05</time><span aria-hidden="true">/</span>Ryo
+    </div>
+    <h1>如何搭建一个前端开发环境(三):添加eslint+husky+lint-stage等预检工具</h1>
+    <div class="article-tags"><a href="/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/"># 工程化</a></div>
+  </header>
+  <div class="reading-grid with-toc">
+    
+      <aside class="contents"><details open><summary>信件目录</summary><nav aria-label="文章目录"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#eslint"><span class="toc-text">eslint</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0-editorconfig-%E5%92%8C-prettier-%E6%9D%A5%E7%BA%A6%E6%9D%9F%E4%BB%A3%E7%A0%81%E7%9A%84%E4%B9%A6%E5%86%99%E8%A7%84%E8%8C%83"><span class="toc-text">添加 editorconfig 和 prettier 来约束代码的书写规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-husky-%E5%92%8C-lint-stage-%E6%9E%84%E5%BB%BA%E4%BB%A3%E7%A0%81%E6%A3%80%E6%9F%A5%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-text">使用 husky 和 lint-stage 构建代码检查工作流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-commitlint-husky-%E7%BA%A6%E6%9D%9F-commit-%E4%BF%A1%E6%81%AF%E6%A0%BC%E5%BC%8F"><span class="toc-text">使用 commitlint + husky 约束 commit 信息格式</span></a></li></ol></nav></details></aside>
+    
+    <div class="reading-column">
+      <div class="prose"><p><strong>前端开发配置系列文章的 github 仓库为： <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/webpack-config">https://github.com/SaebaRyoo/webpack-config</a> ,如果您在看的过程中发现了什么不足和错误，感谢您能指出！</strong></p>
+<blockquote>
+<p>上一篇讲了如何创建一个简单的开发环境搭建，但是在一个项目中，只有这些是不够的。每个人的代码质量不同，格式不同。所以需要用到代码规范校验</p>
+</blockquote>
+<h2 id="eslint"><a href="#eslint" class="headerlink" title="eslint"></a>eslint</h2><p>它主要功能包含代码格式校验，代码质量校验</p>
+<ol>
+<li><p>首先，安装 eslint <code>yarn add eslint -D</code>(目前我用的是 eslint v8.25.0, 高版本的 eslint 需要比较新的 vscode，不然 eslint 插件可能无法工作)</p>
+</li>
+<li><p>配置 eslint 规则和.eslintignore,并且前面我们用到了 react 和 typescript，所以也需要安装一下对应的插件和解析器<br><code>yarn add eslint-plugin-react @typescript-eslint/parser @typescript-eslint/eslint-plugin -D</code></p>
+</li>
+</ol>
+<p>.eslintrc.js</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">env</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">browser</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">es2021</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token keyword">extends</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"eslint:recommended"</span><span class="token punctuation">,</span>
+    <span class="token string">"plugin:react/recommended"</span><span class="token punctuation">,</span>
+    <span class="token string">"plugin:@typescript-eslint/recommended"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">parser</span><span class="token operator">:</span> <span class="token string">"@typescript-eslint/parser"</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">parserOptions</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">ecmaVersion</span><span class="token operator">:</span> <span class="token string">"latest"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">sourceType</span><span class="token operator">:</span> <span class="token string">"module"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">plugins</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"react"</span><span class="token punctuation">,</span> <span class="token string">"@typescript-eslint"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">rules</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string-property property">"arrow-body-style"</span><span class="token operator">:</span> <span class="token string">"off"</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"prefer-arrow-callback"</span><span class="token operator">:</span> <span class="token string">"off"</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"no-var"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"no-console"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"consistent-return"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"default-case"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"no-alert"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"no-irregular-whitespace"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"no-extra-boolean-cast"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"no-unused-vars"</span><span class="token operator">:</span> <span class="token string">"off"</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"@typescript-eslint/indent"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"error"</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// tab 缩进2空格</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>.eslintignore</p>
+<pre class="line-numbers language-none"><code class="language-none">dist
+.eslintrc.js
+webpack.*
+postcss.*
+**&#x2F;*.test.js
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="添加-editorconfig-和-prettier-来约束代码的书写规范"><a href="#添加-editorconfig-和-prettier-来约束代码的书写规范" class="headerlink" title="添加 editorconfig 和 prettier 来约束代码的书写规范"></a>添加 editorconfig 和 prettier 来约束代码的书写规范</h2><p>对于它们两的区别就是，editorconfig 它主要做一节比较基础的格式化，如：Tab 缩进几格、文件编码是否是 utf-8 等，和编程语言无关，你可能会在任何项目中看到它。而 prettier 是 js 特有的格式化工具，里面有很多配置项是 js 这门语言特有的规范。</p>
+<p>它们的功能会有重叠，但大多数并不相同。所以前端项目往往两者都有。</p>
+<p>总的来说就是在前端中，大部分 editorconfig 能干的，prettier 也能干，它不能干的，prettier 也能干。非要选一个的话，肯定选 prettier</p>
+<p><strong>然后将 prettier 规范扩展到 eslint 中，首先是需要安装 prettier</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/prettier/eslint-plugin-prettier">eslint-plugin-prettier</a></p>
+<p><code>yarn add prettier eslint-plugin-prettier eslint-config-prettier -D</code></p>
+<p>然后配置.prettierrc.js</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">tabWidth</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">semi</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">singleQuote</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>.prettierignore</p>
+<pre class="line-numbers language-none"><code class="language-none">**&#x2F;*.svg
+package.json
+&#x2F;dist
+.dockerignore
+.DS_Store
+.eslintignore
+*.png
+*.toml
+docker
+.editorconfig
+Dockerfile*
+.gitignore
+.prettierignore
+LICENSE
+.eslintcache
+*.lock
+yarn-error.log
+.history
+CNAME
+&#x2F;build
+&#x2F;public
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在 eslint 中添加对应扩展</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token operator">...</span>
+  <span class="token string-property property">"extends"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token operator">...</span>
+    <span class="token string">"plugin:prettier/recommended"</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token string-property property">"plugins"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token operator">...</span>
+    <span class="token string">"prettier"</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token string-property property">"rules"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token operator">...</span>
+    <span class="token string-property property">"prettier/prettier"</span><span class="token operator">:</span> <span class="token string">"error"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>.editorconfig 需要在 vscode 中配合 editorconfig 插件使用</p>
+<pre class="line-numbers language-none"><code class="language-none"># http:&#x2F;&#x2F;editorconfig.org
+root &#x3D; true
+
+[*]
+charset &#x3D; utf-8
+end_of_line &#x3D; lf
+indent_size &#x3D; 2
+indent_style &#x3D; space
+insert_final_newline &#x3D; true
+max_line_length &#x3D; 80
+trim_trailing_whitespace &#x3D; true
+
+[*.md]
+max_line_length &#x3D; 0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="使用-husky-和-lint-stage-构建代码检查工作流"><a href="#使用-husky-和-lint-stage-构建代码检查工作流" class="headerlink" title="使用 husky 和 lint-stage 构建代码检查工作流"></a>使用 husky 和 lint-stage 构建代码检查工作流</h2><p>完成以上的配置后，我们需要在 package.json 中添加两个 script 脚本,方便我们在代码书写完成后运行命令来检查代码</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"lint"</span><span class="token operator">:</span> <span class="token string">"eslint --ext .tsx,.ts,.js src/"</span><span class="token punctuation">,</span>
+    <span class="token property">"prettier"</span><span class="token operator">:</span> <span class="token string">"prettier -c --write \"src/**/*\""</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>但是这一步还是需要开发者手动完成。你不能保证每个人都有和你相同的习惯。所以我们需要有一个 Lint 环节(Code Linting)，他是保障代码规范一致性的重要环节。同时，他会减少代码出错的概率。这也是变相的节约公司的时间和自己的时间。</p>
+<p>而 husky 封装了 githook，在代码提交前运行脚本对代码进行预检。</p>
+<ol>
+<li>安装 husky <code>yarn add husky -D</code></li>
+<li>在 package.json 中添加一个 script，并运行一次</li>
+</ol>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"prepare"</span><span class="token operator">:</span> <span class="token string">"husky install"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><code>yarn run prepare</code></p>
+<ol start="3">
+<li>添加一个 hook</li>
+</ol>
+<pre class="line-numbers language-none"><code class="language-none">npx husky add .husky&#x2F;pre-commit &quot;npm run lint&quot;
+git add .husky&#x2F;pre-commit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>然后提交代码,他会在每次 commit 前运行 npm run lint<br><code>git commit -m &quot;Keep calm and commit&quot;</code></p>
+<p>但是在遗留代码库工作会遇到新的问题，开启 Lint 初期，你改动一个文件，可能其他文件中也有大量 lint error 需要修复。但是修改整个项目显然成本很高，且容易出错。所以为了稳定，肯定是最好能 lint 修改的部分。其他的部分渐进修改。</p>
+<p>基于这个想法 lint-staged 出现了，stage 就是 git 中的概念，指待提交区，在配合 lint-stage 后。你的每次 commit 都只会 lint 你的待提交区的修改过的代码。</p>
+<p>用法如下：</p>
+<p>首先安装<br><code>yarn add lint-staged -D</code></p>
+<p>然后修改 package.json 配置，或者其他形式的配置文件</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"lint-staged"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"**/*.&#123;js,jsx,ts,tsx&#125;"</span><span class="token operator">:</span> <span class="token string">"npm run lint"</span><span class="token punctuation">,</span>
+    <span class="token property">"**/*.&#123;js,jsx,tsx,ts,less,md,json&#125;"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"prettier --write"</span><span class="token punctuation">]</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后在 .husky&#x2F;pre-commit 脚本中添加<code>npx --no-install lint-staged</code>命令，这样。每次 commit 前都会根据 lint 规则预检代码且通过 prettier 命令修改代码格式，并且这些操作都控制在了待提交区的代码中</p>
+<p>.husky&#x2F;pre-commit</p>
+<pre class="line-numbers language-none"><code class="language-none">#!&#x2F;usr&#x2F;bin&#x2F;env sh
+. &quot;$(dirname -- &quot;$0&quot;)&#x2F;_&#x2F;husky.sh&quot;
+
+npm test
+npx --no-install lint-staged
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="使用-commitlint-husky-约束-commit-信息格式"><a href="#使用-commitlint-husky-约束-commit-信息格式" class="headerlink" title="使用 commitlint + husky 约束 commit 信息格式"></a>使用 commitlint + husky 约束 commit 信息格式</h2><p>一个项目中，提交的信息也是非常的重要，如果没有规范约束，提交的备注经常是五花八门的，非常不利于后期追踪和排查问题。</p>
+<ol>
+<li>安装相关库，前面已经安装过了 husky<br><code>yarn add @commitlint/config-conventional @commitlint/cli -D</code></li>
+</ol>
+<p>commitlint 是一个用来检查 commit message 格式是否符合要求的第三方工具，而 husky 是 commit 提交前的 git hook，用来运行 commit lint 规范</p>
+<ol start="2">
+<li>配置 commitlint.config.js 规范</li>
+</ol>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">// commitlint.config.js</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">extends</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"@commitlint/config-conventional"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">rules</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string-property property">"type-enum"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token number">2</span><span class="token punctuation">,</span>
+      <span class="token string">"always"</span><span class="token punctuation">,</span>
+      <span class="token punctuation">[</span>
+        <span class="token string">"feat"</span><span class="token punctuation">,</span> <span class="token comment">// 增加新功能</span>
+        <span class="token string">"fix"</span><span class="token punctuation">,</span> <span class="token comment">// 修复bug</span>
+        <span class="token string">"docs"</span><span class="token punctuation">,</span> <span class="token comment">// 只改动了文档相关的内容</span>
+        <span class="token string">"style"</span><span class="token punctuation">,</span> <span class="token comment">// 不影响代码含义的改动，例如去掉空格、改变缩进、增删分号</span>
+        <span class="token string">"refactor"</span><span class="token punctuation">,</span> <span class="token comment">// 代码重构时使用</span>
+        <span class="token string">"test"</span><span class="token punctuation">,</span> <span class="token comment">// 添加测试或者修改现有测试</span>
+        <span class="token string">"build"</span><span class="token punctuation">,</span> <span class="token comment">// 构造工具的或者外部依赖的改动，例如webpack，npm</span>
+        <span class="token string">"chore"</span><span class="token punctuation">,</span> <span class="token comment">// 不修改src或者test的其他修改，例如构建过程或辅助工具的变更</span>
+        <span class="token string">"revert"</span><span class="token punctuation">,</span> <span class="token comment">// 执行git revert打印的message</span>
+        <span class="token string">"pref"</span><span class="token punctuation">,</span> <span class="token comment">// 提升性能的改动</span>
+        <span class="token string">"merge"</span><span class="token punctuation">,</span> <span class="token comment">// 代码合并</span>
+      <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"type-case"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"type-empty"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"scope-empty"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"scope-case"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"subject-full-stop"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">"never"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"subject-case"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">"never"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"header-max-length"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">"always"</span><span class="token punctuation">,</span> <span class="token number">72</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li>添加 shell 脚本<br><code>npx husky add .husky/commit-msg &#39;npx --no-install commitlint --edit &quot;$1&quot;&#39;</code></li>
+</ol>
+<p>执行完后，.husky 目录如下</p>
+<pre class="line-numbers language-none"><code class="language-none">-
+- commit-msg
+- pre-commit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>然后就可以修改代码，<br>然后<code>git add . &amp;&amp; git commit -m &#39;foo: change&#39; </code>来测试了，正常会报错如下信息</p>
+<p><strong>type must be one of [feat, fix, docs, style, refactor, test, build, chore, revert, pref, merge] [type-enum]</strong></p>
+</div>
+      
+        <div class="article-credit"><span>作者 Ryo</span><a target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a><button class="text-link" type="button" data-copy-url hidden>复制文章链接</button></div>
+      
+      
+        <nav class="article-neighbours" aria-label="相邻文章">
+          <a href="/2022/11/06/qian-duan/gong-cheng-hua/qian-duan-kai-fa-huan-jing-4-pei-zhi-react-router/"><small>上一篇</small><strong>如何搭建一个前端开发环境(四):配置React-Router并对代码进行分割和动态import</strong></a>
+        
+          <a href="/2022/11/04/qian-duan/gong-cheng-hua/qian-duan-kai-fa-huan-jing-2-webpack-da-jian-react-ts-de-kai-fa-huan-jing/"><small>下一篇</small><strong>如何搭建一个前端开发环境(二):Webpack(二) - 添加React + TS</strong></a>
+        </nav>
+      
+      
+        <details class="comments" data-comment-src="https://utteranc.es/client.js" data-repo="SaebaRyoo/SaebaRyoo.github.io" data-term="pathname" data-light="github-light" data-dark="github-dark">
+          <summary>读者回信</summary>
+          <div class="comment-mount"></div><a class="text-link" target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/SaebaRyoo.github.io/issues">在 GitHub 查看讨论</a>
+        </details>
+      
+    </div>
+  </div>
+</article>
+
+
+<dialog class="image-dialog" aria-label="查看原图"><form method="dialog"><button class="icon-btn" aria-label="关闭原图"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form><img alt=""></dialog>
+
+</main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+ 咕嘎邮便局 <span>·</span> Ryo</a>
+      <nav aria-label="页脚导航">
+        <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">GitHub</a>
+        <a href="/tags/">标签</a>
+        <a href="/visualization-layout/">可视化实验</a>
+        <a href="#main-content">回到顶部</a>
+      </nav>
+    </div>
+  </footer>
+  <dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="/search.xml">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form>
+  </header>
+  <label class="search-field"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>
+
+</body>
+</html>

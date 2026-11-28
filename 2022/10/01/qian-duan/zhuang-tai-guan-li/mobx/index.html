@@ -1,0 +1,334 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:title" content="MobX 原理与实战指南 · Ryo的小站">
+  <meta property="og:description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://saebaryoo.github.io/images/gugu-doro/web/anime-02-coastal-train.jpg">
+  <link rel="canonical" href="https://saebaryoo.github.io/2022/10/01/qian-duan/zhuang-tai-guan-li/mobx/">
+  <link rel="icon" href="/post-office/gugu-icon.png" type="image/png">
+  <title>MobX 原理与实战指南 · Ryo的小站</title>
+  <script>
+    try {
+      var storedDark = localStorage.getItem('dark');
+      document.documentElement.dataset.theme = (storedDark === null ? matchMedia('(prefers-color-scheme: dark)').matches : storedDark === 'true') ? 'dark' : 'light';
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/post-office/post.css">
+  <script defer src="/post-office/post.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.3 8.5-6.3"/></symbol>
+    <symbol id="i-wing" viewBox="0 0 32 24"><path d="M1.5 6.5h8m-6.5 4h5m-3.5 4h2"/><path d="M12 5h18l-5 14H7z" fill="currentColor" stroke="none"/><path d="m12 7 6 5.6 10-5.8" stroke="var(--wing-line, #235344)"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" transform="rotate(-8 12 12)"/><path d="M8 8h.1m4 4h.1m3.9 4h.1" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a8.8 8.8 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 15 6 5h12l3 10v4H3z"/><path d="M3 14h5l2 3h4l2-3h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 3h10v11H3z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-5l2 2m0-5v5h-5M20 13a8 8 0 0 1-14 5l-2-2m0 5v-5h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 16h16v4H4zM7 16c0-3 3-3.5 3-5V9a4 4 0 1 1 4 0v2c0 1.5 3 2 3 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="m3 3 8 .3L21 13l-8 8-9.7-9.7z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="m2 10 20-7-6.5 18-4.3-7.7L2 10Z"/><path d="M11.2 13.3 22 3"/></symbol>
+  </defs>
+</svg>
+
+  <a class="skip" href="#main-content">跳到正文</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="/" aria-label="Ryo的小站首页">
+        <span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 32 24"><use href="#i-wing"/></svg></span>
+        <span><strong>Ryo的小站</strong><small lang="en">GUGU POST</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives/">文章归档</a>
+        
+          <a href="/categories/">分类索引</a>
+        
+          <a href="/visualization-layout/">实验室</a>
+        
+          <a href="/about/">关于</a>
+        
+      </nav>
+      <div class="header-tools">
+        <button class="search-trigger" type="button" data-search-open hidden aria-label="搜索文章" aria-haspopup="dialog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<span>搜索</span><kbd>/</kbd></button>
+        
+          <button type="button" class="icon-btn theme-trigger" data-theme-toggle hidden aria-label="夜间模式" title="夜间模式"><svg class="icon" aria-hidden="true"><use class="moon" href="#i-moon"/><use class="sun" href="#i-sun"/></svg></button>
+        
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="wrap" tabindex="-1">
+<article class="inner-page reading-page">
+  <a class="breadcrumb" href="/archives/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
+文章归档</a>
+  <header class="article-heading">
+    <div class="letter-meta">
+      <a class="category-ink ink-terminal" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span aria-hidden="true">/</span>
+      <time datetime="2022-10-01">2022.10.01</time><span aria-hidden="true">/</span>Ryo
+    </div>
+    <h1>MobX 原理与实战指南</h1>
+    <div class="article-tags"><a href="/tags/React/"># React</a><a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/"># 状态管理</a></div>
+  </header>
+  <div class="reading-grid with-toc">
+    
+      <aside class="contents"><details open><summary>信件目录</summary><nav aria-label="文章目录"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MobX-%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98%E6%8C%87%E5%8D%97"><span class="toc-text">MobX 原理与实战指南</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E6%A6%82%E8%A7%88"><span class="toc-text">1. 核心原理概览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%B8%89%E5%A4%A7%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-text">2. 三大核心概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6%EF%BC%9A%E4%BE%9D%E8%B5%96%E8%BF%BD%E8%B8%AA%E4%B8%8E%E7%B2%BE%E7%A1%AE%E6%9B%B4%E6%96%B0"><span class="toc-text">3. 工作机制：依赖追踪与精确更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B%EF%BC%9A%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E8%BF%9B%E9%98%B6"><span class="toc-text">4. 代码示例：从基础到进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%9F%BA%E7%A1%80%E7%A4%BA%E4%BE%8B%EF%BC%9AStore-%E5%AE%9A%E4%B9%89%E4%B8%8E%E8%87%AA%E5%8A%A8%E5%93%8D%E5%BA%94"><span class="toc-text">4.1 基础示例：Store 定义与自动响应</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%BA%95%E5%B1%82%E4%BE%9D%E8%B5%96%E8%BF%BD%E8%B8%AA%E6%A8%A1%E6%8B%9F%EF%BC%88%E4%BC%AA%E4%BB%A3%E7%A0%81%EF%BC%89"><span class="toc-text">4.2 底层依赖追踪模拟（伪代码）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%9C%A8-React-%E4%B8%AD%E4%BD%BF%E7%94%A8%EF%BC%88observer%EF%BC%89"><span class="toc-text">4.3 在 React 中使用（observer）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E6%AD%A3%E7%A1%AE%E4%BD%BF%E7%94%A8-computed-%E7%9A%84%E5%A5%BD%E5%A4%84"><span class="toc-text">4.4 正确使用 computed 的好处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E5%BC%82%E6%AD%A5-Action-%E5%A4%84%E7%90%86"><span class="toc-text">4.5 异步 Action 处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E4%B8%8E%E5%B8%B8%E8%A7%81%E8%AF%AF%E5%8C%BA"><span class="toc-text">5. 最佳实践与常见误区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%80%BB%E7%BB%93"><span class="toc-text">6. 总结</span></a></li></ol></li></ol></nav></details></aside>
+    
+    <div class="reading-column">
+      <div class="prose"><h1 id="MobX-原理与实战指南"><a href="#MobX-原理与实战指南" class="headerlink" title="MobX 原理与实战指南"></a>MobX 原理与实战指南</h1><p>MobX 是一个经过实战检验的、透明的响应式状态管理库。它的核心思想是：​<strong>所有源自状态的东西，都会自动地、高效地获得更新</strong>​。</p>
+<p>本文档将结合原理与代码，帮你彻底理解 MobX。</p>
+<h2 id="1-核心原理概览"><a href="#1-核心原理概览" class="headerlink" title="1. 核心原理概览"></a>1. 核心原理概览</h2><p>MobX 的工作流程可以总结为三步：</p>
+<ol>
+<li><strong>定义可观察状态（Observable State）</strong><br>将应用的数据变为“可观察”的，以便追踪其变化。</li>
+<li><strong>建立派生（Derivations）</strong><ul>
+<li>​<strong>计算值（Computed）</strong>​：根据状态自动计算的值，会缓存结果。</li>
+<li>​<strong>反应（Reaction）</strong>​：状态变化时自动执行的副作用，例如更新 UI。</li>
+</ul>
+</li>
+<li><strong>通过动作（Action）修改状态</strong><br>所有对状态的修改都应当通过动作完成，这能保证数据变更的统一与可预测。</li>
+</ol>
+<pre class="line-numbers language-none"><code class="language-none">graph LR
+    A[Actions] --&gt;|修改| B[Observable State]
+    B --&gt;|自动追踪并更新| C[Derivations]
+    C --&gt; D[Side Effects &#x2F; UI]
+    B --&gt;|也支持| E[Computed Values]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="2-三大核心概念"><a href="#2-三大核心概念" class="headerlink" title="2. 三大核心概念"></a>2. 三大核心概念</h2><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>作用</th>
+<th>代码表示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>State</strong></td>
+<td>可观察的数据，是应用的唯一事实来源。</td>
+<td><code>makeObservable</code> &#x2F; <code>makeAutoObservable</code></td>
+</tr>
+<tr>
+<td><strong>Derivation</strong></td>
+<td>依赖状态自动计算的值（Computed）或副作用（Reactions）。</td>
+<td><code>get computed()</code> &#x2F; <code>autorun</code> &#x2F; <code>observer</code> 组件</td>
+</tr>
+<tr>
+<td><strong>Action</strong></td>
+<td>修改状态的唯一方式，保证所有变更可追踪、原子化。</td>
+<td>普通方法加上 <code>action</code> 标记</td>
+</tr>
+</tbody></table>
+<h2 id="3-工作机制：依赖追踪与精确更新"><a href="#3-工作机制：依赖追踪与精确更新" class="headerlink" title="3. 工作机制：依赖追踪与精确更新"></a>3. 工作机制：依赖追踪与精确更新</h2><p>MobX 内部维护一张隐式的依赖关系图。当你在 reaction 或 computed 中“读取”某个 observable 属性时，MobX 会自动记录它们之间的依赖。之后当该属性被修改时，MobX 会精确地通知所有依赖于它的地方重新计算。</p>
+<p><strong>技术实现</strong></p>
+<ul>
+<li>底层使用 <code>Proxy</code>（或旧版中的 <code>Object.defineProperty</code>）拦截属性读写。</li>
+<li>每个可观察数据内部有一个 <code>observers</code> 集合，存放所有依赖于它的 reaction 或 computed。</li>
+</ul>
+<h2 id="4-代码示例：从基础到进阶"><a href="#4-代码示例：从基础到进阶" class="headerlink" title="4. 代码示例：从基础到进阶"></a>4. 代码示例：从基础到进阶</h2><h3 id="4-1-基础示例：Store-定义与自动响应"><a href="#4-1-基础示例：Store-定义与自动响应" class="headerlink" title="4.1 基础示例：Store 定义与自动响应"></a>4.1 基础示例：Store 定义与自动响应</h3><p>javascript</p>
+<pre class="line-numbers language-none"><code class="language-none">import &#123; makeAutoObservable, autorun &#125; from &#39;mobx&#39;;
+
+class TodoStore &#123;
+    todos &#x3D; [];
+    filter &#x3D; &#39;all&#39;;
+
+    constructor() &#123;
+        makeAutoObservable(this);  &#x2F;&#x2F; 一键将属性变成 observable，方法变成 action，getter 变成 computed
+    &#125;
+
+    get filteredTodos() &#123;
+        console.log(&#39;计算 filteredTodos...&#39;);
+        switch (this.filter) &#123;
+            case &#39;completed&#39;: return this.todos.filter(t &#x3D;&gt; t.done);
+            case &#39;active&#39;:    return this.todos.filter(t &#x3D;&gt; !t.done);
+            default:          return this.todos;
+        &#125;
+    &#125;
+
+    addTodo(title) &#123;
+        this.todos.push(&#123; title, done: false &#125;);
+    &#125;
+
+    toggleTodo(index) &#123;
+        this.todos[index].done &#x3D; !this.todos[index].done;
+    &#125;
+
+    setFilter(filter) &#123;
+        this.filter &#x3D; filter;
+    &#125;
+&#125;
+
+const store &#x3D; new TodoStore();
+
+&#x2F;&#x2F; 建立一个 reaction：当依赖的状态发生变化时，自动执行
+autorun(() &#x3D;&gt; &#123;
+    console.log(&#39;当前过滤后的待办列表&#39;, store.filteredTodos);
+&#125;);
+
+&#x2F;&#x2F; 通过 action 修改状态 —— 可以看到控制台自动打印新的列表
+store.addTodo(&#39;学习 MobX 原理&#39;);
+store.addTodo(&#39;写一篇技术文章&#39;);
+store.toggleTodo(0);
+store.setFilter(&#39;completed&#39;);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>​<strong>效果</strong>​：每次修改状态后，<code>autorun</code> 都会重新执行，内部的 <code>filteredTodos</code> 会重新计算，并打印新的结果。你不需要手动调用任何更新方法。</p>
+<h3 id="4-2-底层依赖追踪模拟（伪代码）"><a href="#4-2-底层依赖追踪模拟（伪代码）" class="headerlink" title="4.2 底层依赖追踪模拟（伪代码）"></a>4.2 底层依赖追踪模拟（伪代码）</h3><p>为了方便理解，MobX 内部每个可观察字段类似于下面的简化模型：</p>
+<p>javascript</p>
+<pre class="line-numbers language-none"><code class="language-none">let activeReaction &#x3D; null; &#x2F;&#x2F; 全局记录当前正在执行的 reaction
+
+class ObservableField &#123;
+    constructor(value) &#123;
+        this._value &#x3D; value;
+        this.observers &#x3D; new Set();
+    &#125;
+    get() &#123;
+        if (activeReaction) this.observers.add(activeReaction);
+        return this._value;
+    &#125;
+    set(newValue) &#123;
+        this._value &#x3D; newValue;
+        for (let obs of this.observers) obs.schedule();
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>当你使用 <code>makeAutoObservable</code> 时，MobX 实际上就是把普通属性替换为类似的响应式字段。</p>
+<h3 id="4-3-在-React-中使用（observer）"><a href="#4-3-在-React-中使用（observer）" class="headerlink" title="4.3 在 React 中使用（observer）"></a>4.3 在 React 中使用（<code>observer</code>）</h3><p>jsx</p>
+<pre class="line-numbers language-none"><code class="language-none">import React from &#39;react&#39;;
+import &#123; observer &#125; from &#39;mobx-react-lite&#39;;
+import &#123; makeAutoObservable &#125; from &#39;mobx&#39;;
+
+class CounterStore &#123;
+    count &#x3D; 0;
+    constructor() &#123;
+        makeAutoObservable(this);
+    &#125;
+    increment() &#123;
+        this.count++;
+    &#125;
+&#125;
+
+const store &#x3D; new CounterStore();
+
+const Counter &#x3D; observer(() &#x3D;&gt; &#123;   &#x2F;&#x2F; observer 将组件变为 reaction
+    console.log(&#39;组件渲染&#39;);
+    return (
+        &lt;div&gt;
+            &lt;span&gt;&#123;store.count&#125;&lt;&#x2F;span&gt;
+            &lt;button onClick&#x3D;&#123;() &#x3D;&gt; store.increment()&#125;&gt;+1&lt;&#x2F;button&gt;
+        &lt;&#x2F;div&gt;
+    );
+&#125;);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>组件内的 <code>store.count</code> 被读取时，MobX 自动建立依赖。</li>
+<li>点击按钮调用 <code>increment</code>（action）修改 <code>count</code> 后，MobX 精确地只重新渲染这个组件。</li>
+</ul>
+<h3 id="4-4-正确使用-computed-的好处"><a href="#4-4-正确使用-computed-的好处" class="headerlink" title="4.4 正确使用 computed 的好处"></a>4.4 正确使用 <code>computed</code> 的好处</h3><p>❌ ​<strong>错误做法</strong>​：在 reaction 中手动计算派生值</p>
+<p>javascript</p>
+<pre class="line-numbers language-none"><code class="language-none">autorun(() &#x3D;&gt; &#123;
+    let filtered &#x3D; store.todos.filter(&#x2F;* ... *&#x2F;);
+    console.log(filtered);
+&#125;);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>问题：每次任何依赖变化（即使不直接影响过滤结果）都会重新执行过滤逻辑，且结果无法被多个消费者复用。</p>
+<p>✅ ​<strong>正确做法</strong>​：使用 <code>computed</code></p>
+<p>javascript</p>
+<pre class="line-numbers language-none"><code class="language-none">class Store &#123;
+    get filteredTodos() &#123; &#x2F;* ... *&#x2F; &#125;   &#x2F;&#x2F; computed
+&#125;
+&#x2F;&#x2F; 然后在 reaction 中只读取 filteredTodos，MobX 会自动缓存并精确更新。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="4-5-异步-Action-处理"><a href="#4-5-异步-Action-处理" class="headerlink" title="4.5 异步 Action 处理"></a>4.5 异步 Action 处理</h3><p>javascript</p>
+<pre class="line-numbers language-none"><code class="language-none">class UserStore &#123;
+    user &#x3D; null;
+    constructor() &#123;
+        makeAutoObservable(this);
+    &#125;
+
+    async fetchUser(id) &#123;
+        const response &#x3D; await fetch(&#96;&#x2F;api&#x2F;user&#x2F;$&#123;id&#125;&#96;);
+        const data &#x3D; await response.json();
+        this.user &#x3D; data;   &#x2F;&#x2F; 注意：虽然 await 后面，但仍然是 action（MobX 会流式处理）
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在严格模式下，MobX 允许异步 action 中的修改，只要最外层的函数被标记为 <code>action</code> 即可。也可以用 <code>flow</code> 获得更好的类型推断和错误处理。</p>
+<h2 id="5-最佳实践与常见误区"><a href="#5-最佳实践与常见误区" class="headerlink" title="5. 最佳实践与常见误区"></a>5. 最佳实践与常见误区</h2><ul>
+<li><strong>黄金法则：能用 computed 的地方绝不用 reaction</strong><br>计算值会缓存结果、自动派生、避免冗余计算。</li>
+<li><strong>严格模式下必须通过 action 修改状态</strong><br>使用 <code>configure(&#123; enforceActions: &quot;observed&quot; &#125;)</code> 可以让代码更健壮。</li>
+<li><strong>依赖追踪只发生在属性读取时</strong><br>注意不要解构 observable：<code>const &#123; count &#125; = store</code> 会切断依赖，应该直接使用 <code>store.count</code>。</li>
+<li><strong>在 React 中始终用 ​<code>observer</code> ​包裹组件</strong><br>即使组件只读取一个属性，也要包裹，否则数据变化时不会重绘。</li>
+<li><strong>理解原子更新</strong><br>MobX 在一个 action 结束之前，不会触发任何 reaction。这保证了中间状态不会被观察到，提升性能。</li>
+</ul>
+<h2 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h2><p>MobX 通过“可观察数据 + 自动依赖追踪 + 精确更新”的模式，让状态管理变得自然而高效。你只需：</p>
+<ol>
+<li>用 <code>makeAutoObservable</code> 定义状态和动作。</li>
+<li>用 <code>computed</code> 定义派生值。</li>
+<li>在 React 中用 <code>observer</code> 包装组件。</li>
+<li>通过 action 修改状态。</li>
+</ol>
+<p>剩下的变化传播、缓存、更新时机全部交给 MobX 自动处理。这套机制既保留了面向对象的直观性，又拥有极佳的性能，非常适合中大型应用。</p>
+</div>
+      
+        <div class="article-credit"><span>作者 Ryo</span><a target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a><button class="text-link" type="button" data-copy-url hidden>复制文章链接</button></div>
+      
+      
+        <nav class="article-neighbours" aria-label="相邻文章">
+          <a href="/2022/11/01/kai-fa-wen-ti-ji-lu/vscode-zhong-flow-bao-cuo/"><small>上一篇</small><strong>关于查看React源码使用flow，却提示ts类型检查的错误</strong></a>
+        
+          <a href="/2022/09/29/wang-luo/web-an-quan/"><small>下一篇</small><strong>常见web安全问题</strong></a>
+        </nav>
+      
+      
+        <details class="comments" data-comment-src="https://utteranc.es/client.js" data-repo="SaebaRyoo/SaebaRyoo.github.io" data-term="pathname" data-light="github-light" data-dark="github-dark">
+          <summary>读者回信</summary>
+          <div class="comment-mount"></div><a class="text-link" target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/SaebaRyoo.github.io/issues">在 GitHub 查看讨论</a>
+        </details>
+      
+    </div>
+  </div>
+</article>
+
+
+<dialog class="image-dialog" aria-label="查看原图"><form method="dialog"><button class="icon-btn" aria-label="关闭原图"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form><img alt=""></dialog>
+
+</main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+ 咕嘎邮便局 <span>·</span> Ryo</a>
+      <nav aria-label="页脚导航">
+        <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">GitHub</a>
+        <a href="/tags/">标签</a>
+        <a href="/visualization-layout/">可视化实验</a>
+        <a href="#main-content">回到顶部</a>
+      </nav>
+    </div>
+  </footer>
+  <dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="/search.xml">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form>
+  </header>
+  <label class="search-field"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>
+
+</body>
+</html>

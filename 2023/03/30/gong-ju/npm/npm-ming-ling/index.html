@@ -1,0 +1,296 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:title" content="npm 配置 · Ryo的小站">
+  <meta property="og:description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://saebaryoo.github.io/images/gugu-doro/web/anime-03-rainy-cafe.jpg">
+  <link rel="canonical" href="https://saebaryoo.github.io/2023/03/30/gong-ju/npm/npm-ming-ling/">
+  <link rel="icon" href="/post-office/gugu-icon.png" type="image/png">
+  <title>npm 配置 · Ryo的小站</title>
+  <script>
+    try {
+      var storedDark = localStorage.getItem('dark');
+      document.documentElement.dataset.theme = (storedDark === null ? matchMedia('(prefers-color-scheme: dark)').matches : storedDark === 'true') ? 'dark' : 'light';
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/post-office/post.css">
+  <script defer src="/post-office/post.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.3 8.5-6.3"/></symbol>
+    <symbol id="i-wing" viewBox="0 0 32 24"><path d="M1.5 6.5h8m-6.5 4h5m-3.5 4h2"/><path d="M12 5h18l-5 14H7z" fill="currentColor" stroke="none"/><path d="m12 7 6 5.6 10-5.8" stroke="var(--wing-line, #235344)"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" transform="rotate(-8 12 12)"/><path d="M8 8h.1m4 4h.1m3.9 4h.1" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a8.8 8.8 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 15 6 5h12l3 10v4H3z"/><path d="M3 14h5l2 3h4l2-3h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 3h10v11H3z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-5l2 2m0-5v5h-5M20 13a8 8 0 0 1-14 5l-2-2m0 5v-5h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 16h16v4H4zM7 16c0-3 3-3.5 3-5V9a4 4 0 1 1 4 0v2c0 1.5 3 2 3 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="m3 3 8 .3L21 13l-8 8-9.7-9.7z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="m2 10 20-7-6.5 18-4.3-7.7L2 10Z"/><path d="M11.2 13.3 22 3"/></symbol>
+  </defs>
+</svg>
+
+  <a class="skip" href="#main-content">跳到正文</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="/" aria-label="Ryo的小站首页">
+        <span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 32 24"><use href="#i-wing"/></svg></span>
+        <span><strong>Ryo的小站</strong><small lang="en">GUGU POST</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives/">文章归档</a>
+        
+          <a href="/categories/">分类索引</a>
+        
+          <a href="/visualization-layout/">实验室</a>
+        
+          <a href="/about/">关于</a>
+        
+      </nav>
+      <div class="header-tools">
+        <button class="search-trigger" type="button" data-search-open hidden aria-label="搜索文章" aria-haspopup="dialog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<span>搜索</span><kbd>/</kbd></button>
+        
+          <button type="button" class="icon-btn theme-trigger" data-theme-toggle hidden aria-label="夜间模式" title="夜间模式"><svg class="icon" aria-hidden="true"><use class="moon" href="#i-moon"/><use class="sun" href="#i-sun"/></svg></button>
+        
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="wrap" tabindex="-1">
+<article class="inner-page reading-page">
+  <a class="breadcrumb" href="/archives/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
+文章归档</a>
+  <header class="article-heading">
+    <div class="letter-meta">
+      <a class="category-ink ink-terminal" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a><span aria-hidden="true">/</span>
+      <time datetime="2023-03-30">2023.03.30</time><span aria-hidden="true">/</span>Ryo
+    </div>
+    <h1>npm 配置</h1>
+    <div class="article-tags"><a href="/tags/Node/"># Node</a><a href="/tags/NPM/"># NPM</a></div>
+  </header>
+  <div class="reading-grid with-toc">
+    
+      <aside class="contents"><details open><summary>信件目录</summary><nav aria-label="文章目录"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8E%9F%E6%96%87%E5%9C%B0%E5%9D%80%EF%BC%8C%E6%9C%AC%E7%AF%87%E4%BB%85%E5%81%9A%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0"><span class="toc-text">原文地址，本篇仅做记录学习</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-install-%E5%AE%89%E8%A3%85%E6%A8%A1%E5%9D%97"><span class="toc-text">npm install 安装模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-uninstall-%E5%8D%B8%E8%BD%BD%E6%A8%A1%E5%9D%97"><span class="toc-text">npm uninstall 卸载模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-update-%E6%9B%B4%E6%96%B0%E6%A8%A1%E5%9D%97"><span class="toc-text">npm update 更新模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-outdated-%E6%A3%80%E6%9F%A5%E6%A8%A1%E5%9D%97%E6%98%AF%E5%90%A6%E5%B7%B2%E7%BB%8F%E8%BF%87%E6%97%B6"><span class="toc-text">npm outdated 检查模块是否已经过时</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-ls-%E6%9F%A5%E7%9C%8B%E5%AE%89%E8%A3%85%E7%9A%84%E6%A8%A1%E5%9D%97"><span class="toc-text">npm ls 查看安装的模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-help-%E6%9F%A5%E7%9C%8B%E6%9F%90%E6%9D%A1%E5%91%BD%E4%BB%A4%E7%9A%84%E8%AF%A6%E7%BB%86%E5%B8%AE%E5%8A%A9"><span class="toc-text">npm help 查看某条命令的详细帮助</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-root-%E6%9F%A5%E7%9C%8B%E5%8C%85%E7%9A%84%E5%AE%89%E8%A3%85%E8%B7%AF%E5%BE%84"><span class="toc-text">npm root 查看包的安装路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-config-%E7%AE%A1%E7%90%86-npm-%E7%9A%84%E9%85%8D%E7%BD%AE%E8%B7%AF%E5%BE%84"><span class="toc-text">npm config 管理 npm 的配置路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-cache-%E7%AE%A1%E7%90%86%E6%A8%A1%E5%9D%97%E7%9A%84%E7%BC%93%E5%AD%98"><span class="toc-text">npm cache 管理模块的缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-view-%E6%9F%A5%E7%9C%8B%E6%A8%A1%E5%9D%97%E7%9A%84%E6%B3%A8%E5%86%8C%E4%BF%A1%E6%81%AF"><span class="toc-text">npm view 查看模块的注册信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-adduser-%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95"><span class="toc-text">npm adduser 用户登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-publish-%E5%8F%91%E5%B8%83%E6%A8%A1%E5%9D%97"><span class="toc-text">npm publish 发布模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-access-%E5%9C%A8%E5%8F%91%E5%B8%83%E7%9A%84%E5%8C%85%E4%B8%8A%E8%AE%BE%E7%BD%AE%E8%AE%BF%E9%97%AE%E7%BA%A7%E5%88%AB"><span class="toc-text">npm access 在发布的包上设置访问级别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-package-json-%E7%9A%84%E8%AF%AD%E6%B3%95"><span class="toc-text">npm package.json 的语法</span></a></li></ol></li></ol></li></ol></nav></details></aside>
+    
+    <div class="reading-column">
+      <div class="prose"><h1 id="原文地址，本篇仅做记录学习"><a href="#原文地址，本篇仅做记录学习" class="headerlink" title="原文地址，本篇仅做记录学习"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/PeunZhang/p/5553574.html">原文地址，本篇仅做记录学习</a></h1><h3 id="npm-install-安装模块"><a href="#npm-install-安装模块" class="headerlink" title="npm install 安装模块"></a>npm install 安装模块</h3><ol>
+<li>基础语法</li>
+</ol>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> <span class="token punctuation">(</span>with no args, <span class="token keyword">in</span> package <span class="token function">dir</span><span class="token punctuation">)</span>
+<span class="token function">npm</span> <span class="token function">install</span> <span class="token punctuation">[</span><span class="token operator">&lt;</span>@scope<span class="token operator">></span>/<span class="token punctuation">]</span><span class="token operator">&lt;</span>name<span class="token operator">></span>
+<span class="token function">npm</span> <span class="token function">install</span> <span class="token punctuation">[</span><span class="token operator">&lt;</span>@scope<span class="token operator">></span>/<span class="token punctuation">]</span><span class="token operator">&lt;</span>name<span class="token operator">></span>@<span class="token operator">&lt;</span>tag<span class="token operator">></span>
+<span class="token function">npm</span> <span class="token function">install</span> <span class="token punctuation">[</span><span class="token operator">&lt;</span>@scope<span class="token operator">></span>/<span class="token punctuation">]</span><span class="token operator">&lt;</span>name<span class="token operator">></span>@<span class="token operator">&lt;</span>version<span class="token operator">></span>
+<span class="token function">npm</span> <span class="token function">install</span> <span class="token punctuation">[</span><span class="token operator">&lt;</span>@scope<span class="token operator">></span>/<span class="token punctuation">]</span><span class="token operator">&lt;</span>name<span class="token operator">></span>@<span class="token operator">&lt;</span>version range<span class="token operator">></span>
+<span class="token function">npm</span> <span class="token function">install</span> <span class="token operator">&lt;</span>tarball file<span class="token operator">></span>
+<span class="token function">npm</span> <span class="token function">install</span> <span class="token operator">&lt;</span>tarball url<span class="token operator">></span>
+<span class="token function">npm</span> <span class="token function">install</span> <span class="token operator">&lt;</span>folder<span class="token operator">></span>
+
+alias: <span class="token function">npm</span> i
+common options: <span class="token punctuation">[</span>-S<span class="token operator">|</span>--save<span class="token operator">|</span>-D<span class="token operator">|</span>--save-dev<span class="token operator">|</span>-O<span class="token operator">|</span>--save-optional<span class="token punctuation">]</span> <span class="token punctuation">[</span>-E<span class="token operator">|</span>--save-exact<span class="token punctuation">]</span> <span class="token punctuation">[</span>--dry-run<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li><p>安装包，默认会安装最新的版本<br><code>npm install gulp</code></p>
+</li>
+<li><p>安装指定版本<br><code>npm install gulp@1.1.1</code></p>
+</li>
+</ol>
+<ul>
+<li>项目对模块的依赖可以使用下面的 3 种方法来表示（假设当前版本号是 1.1.0 ）：</li>
+</ul>
+<p>兼容模块新发布的补丁版本：~1.1.0、1.1.x、1.1<br>兼容模块新发布的小版本、补丁版本：^1.1.0、1.x、1<br>兼容模块新发布的大版本、小版本、补丁版本：*、x</p>
+<ul>
+<li><strong>-S, –save 安装包信息将加入到 dependencies（生产阶段的依赖）</strong></li>
+</ul>
+<p><code>npm install gulp --save 或 npm install gulp -S</code></p>
+<p>package.json 文件的 dependencies 字段：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"gulp"</span><span class="token operator">:</span> <span class="token string">"^3.9.1"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li><strong>-D, –save-dev 安装包信息将加入到 devDependencies（开发阶段的依赖），所以开发阶段一般使用它</strong></li>
+</ul>
+<p><code>npm install gulp --save-dev 或 npm install gulp -D</code></p>
+<p>package.json 文件的 devDependencies 字段：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"gulp"</span><span class="token operator">:</span> <span class="token string">"^3.9.1"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li><strong>-O, –save-optional 安装包信息将加入到 optionalDependencies（可选阶段的依赖）</strong></li>
+</ul>
+<p><code>npm install gulp --save-optional 或 npm install gulp -O</code></p>
+<p>package.json 文件的 optionalDependencies 字段：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"optionalDependencies"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"gulp"</span><span class="token operator">:</span> <span class="token string">"^3.9.1"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li><strong>-E, –save-exact 精确安装指定模块版本</strong></li>
+</ul>
+<p><code>npm install gulp --save-exact 或 npm install gulp -E</code></p>
+<p>输入命令<strong>npm install gulp -ES</strong>，留意 package.json 文件的 dependencies 字段，以看出版本号中的^消失了</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"gulp"</span><span class="token operator">:</span> <span class="token string">"3.9.1"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>模块的依赖都被写入了 package.json 文件后，他人打开项目的根目录（项目开源、内部团队合作），使用 npm install 命令可以根据 dependencies 配置安装所有的依赖包</p>
+<ul>
+<li><p>本地安装 <code>npm install gulp</code></p>
+</li>
+<li><p>全局安装 <code>npm install gulp -g</code></p>
+</li>
+</ul>
+<h3 id="npm-uninstall-卸载模块"><a href="#npm-uninstall-卸载模块" class="headerlink" title="npm uninstall 卸载模块"></a>npm uninstall 卸载模块</h3><ol>
+<li>基础语法</li>
+</ol>
+<pre class="line-numbers language-none"><code class="language-none">npm uninstall [&lt;@scope&gt;&#x2F;]&lt;pkg&gt;[@&lt;version&gt;]... [-S|--save|-D|--save-dev|-O|--save-optional]
+
+aliases: remove, rm, r, un, unlink<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="npm-update-更新模块"><a href="#npm-update-更新模块" class="headerlink" title="npm update 更新模块"></a>npm update 更新模块</h3><pre><code>npm update [-g] [&lt;pkg&gt;...]
+</code></pre>
+<h3 id="npm-outdated-检查模块是否已经过时"><a href="#npm-outdated-检查模块是否已经过时" class="headerlink" title="npm outdated 检查模块是否已经过时"></a>npm outdated 检查模块是否已经过时</h3><pre><code>npm outdated [[&lt;@scope&gt;/]&lt;pkg&gt; ...]
+</code></pre>
+<h3 id="npm-ls-查看安装的模块"><a href="#npm-ls-查看安装的模块" class="headerlink" title="npm ls 查看安装的模块"></a>npm ls 查看安装的模块</h3><pre class="line-numbers language-none"><code class="language-none">npm ls [[&lt;@scope&gt;&#x2F;]&lt;pkg&gt; ...]
+
+aliases: list, la, ll<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="npm-help-查看某条命令的详细帮助"><a href="#npm-help-查看某条命令的详细帮助" class="headerlink" title="npm help 查看某条命令的详细帮助"></a>npm help 查看某条命令的详细帮助</h3><ol>
+<li><p>基础语法<br><code>npm help &lt;term&gt; [&lt;terms..&gt;]</code></p>
+</li>
+<li><p>例如输入 npm help install，系统在默认的浏览器或者默认的编辑器中打开本地 nodejs 安装包的文件&#x2F;nodejs&#x2F;node_modules&#x2F;npm&#x2F;html&#x2F;doc&#x2F;cli&#x2F;npm-install.html</p>
+</li>
+</ol>
+<p><code>npm help install</code></p>
+<h3 id="npm-root-查看包的安装路径"><a href="#npm-root-查看包的安装路径" class="headerlink" title="npm root 查看包的安装路径"></a>npm root 查看包的安装路径</h3><pre><code>输出 node_modules的路径
+
+npm root [-g]
+</code></pre>
+<h3 id="npm-config-管理-npm-的配置路径"><a href="#npm-config-管理-npm-的配置路径" class="headerlink" title="npm config 管理 npm 的配置路径"></a>npm config 管理 npm 的配置路径</h3><pre><code>npm config set &lt;key&gt; &lt;value&gt; [-g|--global]
+npm config get &lt;key&gt;
+npm config delete &lt;key&gt;
+npm config list
+npm config edit
+npm get &lt;key&gt;
+npm set &lt;key&gt; &lt;value&gt; [-g|--global]
+</code></pre>
+<p>对于 config 这块用得最多应该是设置代理，解决 npm 安装一些模块失败的问题</p>
+<p>例如我在公司内网，因为公司的防火墙原因，无法完成任何模块的安装，这个时候设置代理可以解决<br>npm config set proxy&#x3D;<a target="_blank" rel="noopener" href="http://xxx.com:8080/">http://xxx.com:8080</a></p>
+<p>又如国内的网络环境问题，某官方的 IP 可能被和谐了，幸好国内有好心人，搭建了镜像，此时我们简单设置镜像</p>
+<pre><code>npm config set registry=&quot;http://r.cnpmjs.org&quot;
+</code></pre>
+<p>也可以临时配置，如安装淘宝镜像</p>
+<pre><code>npm install -g cnpm --registry=https://registry.npm.taobao.org
+</code></pre>
+<h3 id="npm-cache-管理模块的缓存"><a href="#npm-cache-管理模块的缓存" class="headerlink" title="npm cache 管理模块的缓存"></a>npm cache 管理模块的缓存</h3><pre><code>npm cache add &lt;tarball file&gt;
+npm cache add &lt;folder&gt;
+npm cache add &lt;tarball url&gt;
+npm cache add &lt;name&gt;@&lt;version&gt;
+
+npm cache ls [&lt;path&gt;]
+
+npm cache clean [&lt;path&gt;]
+</code></pre>
+<p>最常用命令无非清除 npm 本地缓存</p>
+<pre><code>npm cache clean
+</code></pre>
+<h3 id="npm-view-查看模块的注册信息"><a href="#npm-view-查看模块的注册信息" class="headerlink" title="npm view 查看模块的注册信息"></a>npm view 查看模块的注册信息</h3><pre><code>npm view [&lt;@scope&gt;/]&lt;name&gt;[@&lt;version&gt;] [&lt;field&gt;[.&lt;subfield&gt;]...]
+
+aliases: info, show, v
+</code></pre>
+<p>查看模块的依赖关系</p>
+<pre><code>npm view gulp dependencies
+</code></pre>
+<p>查看模块的源文件地址</p>
+<pre><code>npm view gulp repository.url
+</code></pre>
+<p>查看模块的贡献者，包含邮箱地址</p>
+<pre><code>npm view npm contributors
+</code></pre>
+<h3 id="npm-adduser-用户登录"><a href="#npm-adduser-用户登录" class="headerlink" title="npm adduser 用户登录"></a>npm adduser 用户登录</h3><pre><code>npm adduser [--registry=url] [--scope=@orgname] [--always-auth]
+</code></pre>
+<h3 id="npm-publish-发布模块"><a href="#npm-publish-发布模块" class="headerlink" title="npm publish 发布模块"></a>npm publish 发布模块</h3><pre><code>npm publish [&lt;tarball&gt;|&lt;folder&gt;] [--tag &lt;tag&gt;] [--access &lt;public|restricted&gt;]
+
+Publishes &#39;.&#39; if no argument supplied
+Sets tag &#39;latest&#39; if no --tag specified
+</code></pre>
+<h3 id="npm-access-在发布的包上设置访问级别"><a href="#npm-access-在发布的包上设置访问级别" class="headerlink" title="npm access 在发布的包上设置访问级别"></a>npm access 在发布的包上设置访问级别</h3><pre><code>npm access public [&lt;package&gt;]
+npm access restricted [&lt;package&gt;]
+
+npm access grant &lt;read-only|read-write&gt; &lt;scope:team&gt; [&lt;package&gt;]
+npm access revoke &lt;scope:team&gt; [&lt;package&gt;]
+
+npm access ls-packages [&lt;user&gt;|&lt;scope&gt;|&lt;scope:team&gt;]
+npm access ls-collaborators [&lt;package&gt; [&lt;user&gt;]]
+npm access edit [&lt;package&gt;]
+</code></pre>
+<h3 id="npm-package-json-的语法"><a href="#npm-package-json-的语法" class="headerlink" title="npm package.json 的语法"></a>npm package.json 的语法</h3><p><a target="_blank" rel="noopener" href="https://github.com/ericdum/mujiang.info/issues/6/">https://github.com/ericdum/mujiang.info/issues/6/</a></p>
+</div>
+      
+        <div class="article-credit"><span>作者 Ryo</span><a target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a><button class="text-link" type="button" data-copy-url hidden>复制文章链接</button></div>
+      
+      
+        <nav class="article-neighbours" aria-label="相邻文章">
+          <a href="/2023/04/01/hou-duan/shu-ju-ku/mysql/2.mysql-chang-jian-xie-fa/"><small>上一篇</small><strong>MySQL常见基础写法</strong></a>
+        
+          <a href="/2023/03/29/gong-ju/git/git-ming-ling/"><small>下一篇</small><strong>git 命令大全</strong></a>
+        </nav>
+      
+      
+        <details class="comments" data-comment-src="https://utteranc.es/client.js" data-repo="SaebaRyoo/SaebaRyoo.github.io" data-term="pathname" data-light="github-light" data-dark="github-dark">
+          <summary>读者回信</summary>
+          <div class="comment-mount"></div><a class="text-link" target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/SaebaRyoo.github.io/issues">在 GitHub 查看讨论</a>
+        </details>
+      
+    </div>
+  </div>
+</article>
+
+
+<dialog class="image-dialog" aria-label="查看原图"><form method="dialog"><button class="icon-btn" aria-label="关闭原图"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form><img alt=""></dialog>
+
+</main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+ 咕嘎邮便局 <span>·</span> Ryo</a>
+      <nav aria-label="页脚导航">
+        <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">GitHub</a>
+        <a href="/tags/">标签</a>
+        <a href="/visualization-layout/">可视化实验</a>
+        <a href="#main-content">回到顶部</a>
+      </nav>
+    </div>
+  </footer>
+  <dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="/search.xml">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form>
+  </header>
+  <label class="search-field"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>
+
+</body>
+</html>

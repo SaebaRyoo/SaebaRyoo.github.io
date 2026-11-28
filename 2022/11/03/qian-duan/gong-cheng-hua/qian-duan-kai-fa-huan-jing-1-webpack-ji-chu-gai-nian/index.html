@@ -1,0 +1,277 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:title" content="如何搭建一个前端开发环境(一):Webpack(一) - 基础概念 · Ryo的小站">
+  <meta property="og:description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://saebaryoo.github.io/images/gugu-doro/web/anime-04-sakura-picnic.jpg">
+  <link rel="canonical" href="https://saebaryoo.github.io/2022/11/03/qian-duan/gong-cheng-hua/qian-duan-kai-fa-huan-jing-1-webpack-ji-chu-gai-nian/">
+  <link rel="icon" href="/post-office/gugu-icon.png" type="image/png">
+  <title>如何搭建一个前端开发环境(一):Webpack(一) - 基础概念 · Ryo的小站</title>
+  <script>
+    try {
+      var storedDark = localStorage.getItem('dark');
+      document.documentElement.dataset.theme = (storedDark === null ? matchMedia('(prefers-color-scheme: dark)').matches : storedDark === 'true') ? 'dark' : 'light';
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/post-office/post.css">
+  <script defer src="/post-office/post.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.3 8.5-6.3"/></symbol>
+    <symbol id="i-wing" viewBox="0 0 32 24"><path d="M1.5 6.5h8m-6.5 4h5m-3.5 4h2"/><path d="M12 5h18l-5 14H7z" fill="currentColor" stroke="none"/><path d="m12 7 6 5.6 10-5.8" stroke="var(--wing-line, #235344)"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" transform="rotate(-8 12 12)"/><path d="M8 8h.1m4 4h.1m3.9 4h.1" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a8.8 8.8 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 15 6 5h12l3 10v4H3z"/><path d="M3 14h5l2 3h4l2-3h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 3h10v11H3z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-5l2 2m0-5v5h-5M20 13a8 8 0 0 1-14 5l-2-2m0 5v-5h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 16h16v4H4zM7 16c0-3 3-3.5 3-5V9a4 4 0 1 1 4 0v2c0 1.5 3 2 3 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="m3 3 8 .3L21 13l-8 8-9.7-9.7z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="m2 10 20-7-6.5 18-4.3-7.7L2 10Z"/><path d="M11.2 13.3 22 3"/></symbol>
+  </defs>
+</svg>
+
+  <a class="skip" href="#main-content">跳到正文</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="/" aria-label="Ryo的小站首页">
+        <span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 32 24"><use href="#i-wing"/></svg></span>
+        <span><strong>Ryo的小站</strong><small lang="en">GUGU POST</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives/">文章归档</a>
+        
+          <a href="/categories/">分类索引</a>
+        
+          <a href="/visualization-layout/">实验室</a>
+        
+          <a href="/about/">关于</a>
+        
+      </nav>
+      <div class="header-tools">
+        <button class="search-trigger" type="button" data-search-open hidden aria-label="搜索文章" aria-haspopup="dialog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<span>搜索</span><kbd>/</kbd></button>
+        
+          <button type="button" class="icon-btn theme-trigger" data-theme-toggle hidden aria-label="夜间模式" title="夜间模式"><svg class="icon" aria-hidden="true"><use class="moon" href="#i-moon"/><use class="sun" href="#i-sun"/></svg></button>
+        
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="wrap" tabindex="-1">
+<article class="inner-page reading-page">
+  <a class="breadcrumb" href="/archives/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
+文章归档</a>
+  <header class="article-heading">
+    <div class="letter-meta">
+      <a class="category-ink ink-terminal" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span aria-hidden="true">/</span>
+      <time datetime="2022-11-03">2022.11.03</time><span aria-hidden="true">/</span>Ryo
+    </div>
+    <h1>如何搭建一个前端开发环境(一):Webpack(一) - 基础概念</h1>
+    <div class="article-tags"><a href="/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/"># 工程化</a><a href="/tags/Webpack/"># Webpack</a></div>
+  </header>
+  <div class="reading-grid with-toc">
+    
+      <aside class="contents"><details open><summary>信件目录</summary><nav aria-label="文章目录"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-text">概念</span></a></li></ol></nav></details></aside>
+    
+    <div class="reading-column">
+      <div class="prose"><p><strong>前端开发配置系列文章的 github 仓库为： <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/webpack-config">https://github.com/SaebaRyoo/webpack-config</a> ,如果您在看的过程中发现了什么不足和错误，感谢您能指出！</strong></p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>Webpack 是一个静态模块打包器，它将所有的资源都看作模块。通过一个或多个入口，构建一个依赖图谱(dependency graph)。然后将所有模块组合成一个或多个 bundle</p>
+<div align="center">
+   <img loading="lazy" src="https://i.postimg.cc/JzjqbKNW/image.png" width = "600" alt="" align=center />
+</div>
+
+<p>可以通过一个简单的例子来初步了解 Webpack</p>
+<p><strong>比如： 我们想要使用 es6 的箭头函数来写一个功能，但是有的浏览器不支持（IE6-11 或其他老版本浏览器）。那么这个用户在加载这个 js 资源的时候就会报错。</strong></p>
+<p>但这显然不是我们想要的结果，这时候就需要用到 webpack 或像 gulp 这样的构建工具来帮助我们将 es6 的语法转化成低版本浏览器可兼容的代码。</p>
+<p>那么用 webpack 来配置一个构建工具时如下：</p>
+<ol>
+<li><p>创建一个目录，并<code>yarn init</code>初始化一个包管理器</p>
+</li>
+<li><p>安装 webpack <code>yarn install webpack webpack-cli -D</code></p>
+</li>
+<li><p>想要将 es6 转化为 es5 语法，需要用到 babel 插件对代码进行编译,所以需要安装 babel 和相应的 loader <code>yarn add @babel/core @babel/preset-env babel-loader -D</code></p>
+</li>
+<li><p>配置.babelrc</p>
+</li>
+</ol>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"presets"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">[</span>
+      <span class="token string">"@babel/preset-env"</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#123;</span>
+        <span class="token property">"modules"</span><span class="token operator">:</span> <span class="token boolean">false</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="5">
+<li>创建 src&#x2F;index.js 入口</li>
+</ol>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> <span class="token function-variable function">sum</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">a<span class="token punctuation">,</span> b</span><span class="token punctuation">)</span> <span class="token operator">=></span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">sum</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<ol start="6">
+<li>创建输出文件 dist&#x2F;html</li>
+</ol>
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>width=device-width, initial-scale=1.0<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>Document<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>./bundle.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="7">
+<li>然后就是配置 webpack.config.js</li>
+</ol>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> webpack <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"webpack"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"path"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> config <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">entry</span><span class="token operator">:</span> <span class="token string">"./src/index.js"</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">output</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">path</span><span class="token operator">:</span> path<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">"dist"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">filename</span><span class="token operator">:</span> <span class="token string">"bundle.js"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">module</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">rules</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">&#123;</span>
+        <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">\.js$</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+        <span class="token literal-property property">use</span><span class="token operator">:</span> <span class="token string">"babel-loader"</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">exclude</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">node_modules</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> config<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="8">
+<li>最后通过构建命令<code>./node_modules/.bin/webpack --config webpack.config.js --mode development</code> 运行配置，会生成一个 dist&#x2F;bundle.js 文件，这就是转换后的 js 文件</li>
+</ol>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">/*
+ * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
+ * This devtool is neither made for production nor for readable output files.
+ * It uses "eval()" calls to create a separate source file in the browser devtools.
+ * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
+ * or disable the default devtool with "devtool: false".
+ * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
+ */</span>
+<span class="token comment">/******/</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">// webpackBootstrap</span>
+  <span class="token comment">/******/</span> <span class="token keyword">var</span> __webpack_modules__ <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">/***/</span> <span class="token string">"./src/index.js"</span><span class="token operator">:</span>
+      <span class="token comment">/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/</span>
+      <span class="token comment">/***/</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+        <span class="token function">eval</span><span class="token punctuation">(</span>
+          <span class="token string">"var sum = function sum(a, b) &#123;\n  return a + b;\n&#125;;\nconsole.log(sum(1, 2));\n\n//# sourceURL=webpack://webpack-config/./src/index.js?"</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">/***/</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+
+    <span class="token comment">/******/</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+  <span class="token comment">/************************************************************************/</span>
+  <span class="token comment">/******/</span>
+  <span class="token comment">/******/</span> <span class="token comment">// startup</span>
+  <span class="token comment">/******/</span> <span class="token comment">// Load entry module and return exports</span>
+  <span class="token comment">/******/</span> <span class="token comment">// This entry module can't be inlined because the eval devtool is used.</span>
+  <span class="token comment">/******/</span> <span class="token keyword">var</span> __webpack_exports__ <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+  <span class="token comment">/******/</span> __webpack_modules__<span class="token punctuation">[</span><span class="token string">"./src/index.js"</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">/******/</span>
+  <span class="token comment">/******/</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>上面这个例子就使用了 webpack 的几个核心概念</strong></p>
+<ol>
+<li>入口 entry</li>
+</ol>
+<p>在 webpack 的配置文件中通过配置 entry 告诉 webpack 所有模块的入口在哪里</p>
+<ol start="2">
+<li>输出 output</li>
+</ol>
+<p>output 配置编译后的文件存放在哪里，以及如何命名</p>
+<ol start="3">
+<li>loader</li>
+</ol>
+<p>loader 其实就是一个 pure function，它帮助 webpack 通过不同的 loader 处理各种类型的资源，我们这里就是通过 babel-loader 处理 js 资源，然后通过 babel 的配置，将输入的 es6 语法转换成 es5 语法再输出</p>
+<ol start="4">
+<li>插件 plugin</li>
+</ol>
+<p>上面的例子暂时没有用到，不过也很好理解，plugin 就是 loader 的增强版，loader 只能用来转换不同类型的模块，而 plugin 能执行的任务更广。包括打包优化、资源管理、注入环境变量等。简单来说就是 loader 能做的 plugin 可以做，loader 不能做的 plugin 也能做</p>
+<p>以上就是 webpack 的核心概念了</p>
+</div>
+      
+        <div class="article-credit"><span>作者 Ryo</span><a target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a><button class="text-link" type="button" data-copy-url hidden>复制文章链接</button></div>
+      
+      
+        <nav class="article-neighbours" aria-label="相邻文章">
+          <a href="/2022/11/04/qian-duan/gong-cheng-hua/qian-duan-kai-fa-huan-jing-2-webpack-da-jian-react-ts-de-kai-fa-huan-jing/"><small>上一篇</small><strong>如何搭建一个前端开发环境(二):Webpack(二) - 添加React + TS</strong></a>
+        
+          <a href="/2022/11/02/qian-duan/gong-cheng-hua/jiao-shou-jia-da-jian/"><small>下一篇</small><strong>从零开始搭建前端脚手架</strong></a>
+        </nav>
+      
+      
+        <details class="comments" data-comment-src="https://utteranc.es/client.js" data-repo="SaebaRyoo/SaebaRyoo.github.io" data-term="pathname" data-light="github-light" data-dark="github-dark">
+          <summary>读者回信</summary>
+          <div class="comment-mount"></div><a class="text-link" target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/SaebaRyoo.github.io/issues">在 GitHub 查看讨论</a>
+        </details>
+      
+    </div>
+  </div>
+</article>
+
+
+<dialog class="image-dialog" aria-label="查看原图"><form method="dialog"><button class="icon-btn" aria-label="关闭原图"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form><img alt=""></dialog>
+
+</main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+ 咕嘎邮便局 <span>·</span> Ryo</a>
+      <nav aria-label="页脚导航">
+        <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">GitHub</a>
+        <a href="/tags/">标签</a>
+        <a href="/visualization-layout/">可视化实验</a>
+        <a href="#main-content">回到顶部</a>
+      </nav>
+    </div>
+  </footer>
+  <dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="/search.xml">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form>
+  </header>
+  <label class="search-field"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>
+
+</body>
+</html>

@@ -1,0 +1,411 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:title" content="Nestjs#1.基于grpc的微服务(一) · Ryo的小站">
+  <meta property="og:description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://saebaryoo.github.io/images/gugu-doro/web/anime-01-seaside-post.jpg">
+  <link rel="canonical" href="https://saebaryoo.github.io/2020/04/03/hou-duan/nestjs/nestjs-1.ji-yu-grpc-de-wei-fu-wu-yi/">
+  <link rel="icon" href="/post-office/gugu-icon.png" type="image/png">
+  <title>Nestjs#1.基于grpc的微服务(一) · Ryo的小站</title>
+  <script>
+    try {
+      var storedDark = localStorage.getItem('dark');
+      document.documentElement.dataset.theme = (storedDark === null ? matchMedia('(prefers-color-scheme: dark)').matches : storedDark === 'true') ? 'dark' : 'light';
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/post-office/post.css">
+  <script defer src="/post-office/post.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.3 8.5-6.3"/></symbol>
+    <symbol id="i-wing" viewBox="0 0 32 24"><path d="M1.5 6.5h8m-6.5 4h5m-3.5 4h2"/><path d="M12 5h18l-5 14H7z" fill="currentColor" stroke="none"/><path d="m12 7 6 5.6 10-5.8" stroke="var(--wing-line, #235344)"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" transform="rotate(-8 12 12)"/><path d="M8 8h.1m4 4h.1m3.9 4h.1" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a8.8 8.8 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 15 6 5h12l3 10v4H3z"/><path d="M3 14h5l2 3h4l2-3h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 3h10v11H3z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-5l2 2m0-5v5h-5M20 13a8 8 0 0 1-14 5l-2-2m0 5v-5h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 16h16v4H4zM7 16c0-3 3-3.5 3-5V9a4 4 0 1 1 4 0v2c0 1.5 3 2 3 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="m3 3 8 .3L21 13l-8 8-9.7-9.7z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="m2 10 20-7-6.5 18-4.3-7.7L2 10Z"/><path d="M11.2 13.3 22 3"/></symbol>
+  </defs>
+</svg>
+
+  <a class="skip" href="#main-content">跳到正文</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="/" aria-label="Ryo的小站首页">
+        <span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 32 24"><use href="#i-wing"/></svg></span>
+        <span><strong>Ryo的小站</strong><small lang="en">GUGU POST</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives/">文章归档</a>
+        
+          <a href="/categories/">分类索引</a>
+        
+          <a href="/visualization-layout/">实验室</a>
+        
+          <a href="/about/">关于</a>
+        
+      </nav>
+      <div class="header-tools">
+        <button class="search-trigger" type="button" data-search-open hidden aria-label="搜索文章" aria-haspopup="dialog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<span>搜索</span><kbd>/</kbd></button>
+        
+          <button type="button" class="icon-btn theme-trigger" data-theme-toggle hidden aria-label="夜间模式" title="夜间模式"><svg class="icon" aria-hidden="true"><use class="moon" href="#i-moon"/><use class="sun" href="#i-sun"/></svg></button>
+        
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="wrap" tabindex="-1">
+<article class="inner-page reading-page">
+  <a class="breadcrumb" href="/archives/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
+文章归档</a>
+  <header class="article-heading">
+    <div class="letter-meta">
+      <a class="category-ink ink-server" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a><span aria-hidden="true">/</span>
+      <time datetime="2020-04-03">2020.04.03</time><span aria-hidden="true">/</span>Ryo
+    </div>
+    <h1>Nestjs#1.基于grpc的微服务(一)</h1>
+    <div class="article-tags"><a href="/tags/Node/"># Node</a><a href="/tags/Nest-js/"># Nest.js</a></div>
+  </header>
+  <div class="reading-grid with-toc">
+    
+      <aside class="contents"><details open><summary>信件目录</summary><nav aria-label="文章目录"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Why"><span class="toc-text">Why</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Setup"><span class="toc-text">Setup</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#proto-%E6%96%87%E4%BB%B6"><span class="toc-text">proto 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%BE%AE%E6%9C%8D%E5%8A%A1"><span class="toc-text">创建微服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-text">测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E9%93%BE%E6%8E%A5"><span class="toc-text">相关链接</span></a></li></ol></nav></details></aside>
+    
+    <div class="reading-column">
+      <div class="prose"><h2 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h2><p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1877057">微服务的优缺点</a></p>
+<p>这篇文章只是讲了比较基础的 demo</p>
+<h2 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h2><p>首先需要安装 nestjs 的命令行工具<br><code>npm i -g @nestjs/cli</code></p>
+<p>然后使用 nest 命令创建一个项目<br><code>nest new micro-service-demo</code></p>
+<p>安装微服务相关库，<code>yarn add -S @grpc/grpc-js @grpc/proto-loader     @nestjs/microservices</code></p>
+<p>这个时候是一个标准的项目开发模式。但是，我们开发微服务则需要将一个功能比较多的服务拆分。所以，可以通过 nestjs 自带的 <strong><a target="_blank" rel="noopener" href="https://docs.nestjs.com/cli/monorepo#monorepo-mode">Monorepo mode</a></strong> 来开发</p>
+<p>通过<code>nest g app api-gateway &amp; nest g app auth-service &amp; nest g app order-service &amp; nest g app product-service</code>来生成对应的服务</p>
+<p>然后在<code>package.json</code>中的<code>scripts</code>中添加上对应的启动方式</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"start:order"</span><span class="token operator">:</span> <span class="token string">"nest start order-service --watch"</span><span class="token punctuation">,</span>
+  <span class="token property">"start:product"</span><span class="token operator">:</span> <span class="token string">"nest start product-service --watch"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>其中:</p>
+<ul>
+<li>api-gateway: 为 api 网关，作用是作为代理，连接各个微服务，为 client 提供接口</li>
+<li>auth: 登录以及认证</li>
+<li>order: 订单服务</li>
+<li>product: 产品服务</li>
+</ul>
+<p>我们这里暂时不做复杂功能，只实现 order 微服务和 product 微服务。并在 api-gateway 中使用 grpc 的方式访问 order 服务，order 的 service 再访问 product 微服务。</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="proto-文件"><a href="#proto-文件" class="headerlink" title="proto 文件"></a>proto 文件</h3><p>在根目录创建<code>protos</code>目录，该目录用于定义 proto 文件，它定义程序中需要处理的结构化数据<br>首先是创建<code>order.proto</code>文件</p>
+<pre class="line-numbers language-none"><code class="language-none">syntax &#x3D; &quot;proto3&quot;;
+
+package order;
+
+service OrderService &#123;
+    rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+&#125;
+
+message CreateOrderRequest &#123;
+    int32 productId &#x3D; 1;
+    int32 quantity &#x3D; 2;
+    int32 userId &#x3D; 3;
+&#125;
+
+message CreateOrderResponse &#123;
+    int32 status &#x3D; 1;
+    repeated string error &#x3D; 2;
+    int32 id &#x3D; 3;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后是<code>product.proto</code></p>
+<pre class="line-numbers language-none"><code class="language-none">syntax &#x3D; &quot;proto3&quot;;
+
+package product;
+
+message DecreaseStockRequest &#123;
+int32 id &#x3D; 1;
+int32 orderId &#x3D; 2;
+&#125;
+
+message DecreaseStockResponse &#123;
+int32 status &#x3D; 1;
+repeated string error &#x3D; 2;
+&#125;
+
+service ProductService &#123;
+rpc DecreaseStock(DecreaseStockRequest) returns (DecreaseStockResponse);
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="创建微服务"><a href="#创建微服务" class="headerlink" title="创建微服务"></a>创建微服务</h3><p>首先我们先安装<code>yarn add ts-proto</code>,该库用于将我们的<code>proto</code>文件转化成强类型的 <strong>TS</strong> 文件</p>
+<p>然后在 <code>package.json</code>中的<code>scripts</code>中添加如下命令</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"proto:all"</span><span class="token operator">:</span> <span class="token string">"protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./protos/pbs ./protos/**.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb --ts_proto_opt=outputIndex=true"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>具体的参数意思可以参考<a target="_blank" rel="noopener" href="https://github.com/stephenh/ts-proto#supported-options">这里</a></p>
+<p>运行命令后会在<code>protos</code>中生成出一个<code>pbs</code>目录，里面包含了相关的 ts 文件<br>(TODO: 这里的后续可以通过 Nestjs 中的 lib 将这些文件单独提出到公共库中)</p>
+<p>然后再创建<code>order.client.options.ts</code>，用于生成微服务相关的配置</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> ClientOptions<span class="token punctuation">,</span> Transport <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/microservices"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> <span class="token constant">ORDER_PACKAGE_NAME</span> <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./order.pb"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> path <span class="token keyword">from</span> <span class="token string">"path"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> process <span class="token keyword">from</span> <span class="token string">"process"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">const</span> orderClient<span class="token operator">:</span> ClientOptions <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  transport<span class="token operator">:</span> Transport<span class="token punctuation">.</span><span class="token constant">GRPC</span><span class="token punctuation">,</span>
+  options<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">package</span><span class="token operator">:</span> <span class="token constant">ORDER_PACKAGE_NAME</span><span class="token punctuation">,</span>
+    protoPath<span class="token operator">:</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>process<span class="token punctuation">.</span><span class="token function">cwd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"./protos/pbs/index.order.proto"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    url<span class="token operator">:</span> <span class="token string">"localhost:50001"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后修改位于<code>order-service</code>目录中的<code>main</code>文件</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> NestFactory <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/core"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> OrderServiceModule <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./order-service.module"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> MicroserviceOptions <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/microservices"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> orderClient <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"../../../protos/order.client.options"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">async</span> <span class="token keyword">function</span> <span class="token function">bootstrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token keyword">await</span> NestFactory<span class="token punctuation">.</span><span class="token generic-function"><span class="token function">createMicroservice</span><span class="token generic class-name"><span class="token operator">&lt;</span>MicroserviceOptions<span class="token operator">></span></span></span><span class="token punctuation">(</span>
+    OrderServiceModule<span class="token punctuation">,</span>
+    orderClient
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">await</span> app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token function">bootstrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在<code>order-service/order-service.module</code>中导入 product 微服务</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Module <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> OrderServiceController <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./order-service.controller"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> OrderServiceService <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./order-service.service"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> ClientsModule <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/microservices"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> <span class="token constant">PRODUCT_SERVICE_NAME</span> <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"../../../protos/product.pb"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> productClient <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"../../../protos/product.client.options"</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Module</span></span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  imports<span class="token operator">:</span> <span class="token punctuation">[</span>
+    ClientsModule<span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+      <span class="token punctuation">&#123;</span>
+        name<span class="token operator">:</span> <span class="token constant">PRODUCT_SERVICE_NAME</span><span class="token punctuation">,</span>
+        <span class="token operator">...</span>productClient<span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  controllers<span class="token operator">:</span> <span class="token punctuation">[</span>OrderServiceController<span class="token punctuation">]</span><span class="token punctuation">,</span>
+  providers<span class="token operator">:</span> <span class="token punctuation">[</span>OrderServiceService<span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">OrderServiceModule</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>修改<code>order-service/order-service.controller</code>文件</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Controller<span class="token punctuation">,</span> Get <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> OrderServiceService <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./order-service.service"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span>
+  CreateOrderResponse<span class="token punctuation">,</span>
+  <span class="token constant">ORDER_SERVICE_NAME</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"../../../protos/order.pb"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> GrpcMethod <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/microservices"</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Controller</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">OrderServiceController</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token keyword">private</span> <span class="token keyword">readonly</span> orderServiceService<span class="token operator">:</span> OrderServiceService<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">GrpcMethod</span></span><span class="token punctuation">(</span><span class="token constant">ORDER_SERVICE_NAME</span><span class="token punctuation">)</span>
+  <span class="token function">createOrder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span>CreateOrderResponse<span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>orderServiceService<span class="token punctuation">.</span><span class="token function">createOrder</span><span class="token punctuation">(</span><span class="token string">"1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>修改<code>order-service/order-service.service</code>文件</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Inject<span class="token punctuation">,</span> Injectable<span class="token punctuation">,</span> OnModuleInit <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> CreateOrderResponse <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"../../../protos/order.pb"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span>
+  <span class="token constant">PRODUCT_SERVICE_NAME</span><span class="token punctuation">,</span>
+  ProductServiceClient<span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"../../../protos/product.pb"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> ClientGrpc <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/microservices"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> firstValueFrom <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"rxjs"</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Injectable</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">OrderServiceService</span> <span class="token keyword">implements</span> <span class="token class-name">OnModuleInit</span> <span class="token punctuation">&#123;</span>
+  productServiceClient<span class="token operator">:</span> ProductServiceClient<span class="token punctuation">;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Inject</span></span><span class="token punctuation">(</span><span class="token constant">PRODUCT_SERVICE_NAME</span><span class="token punctuation">)</span>
+  <span class="token keyword">readonly</span> clientGrpc<span class="token operator">:</span> ClientGrpc<span class="token punctuation">;</span>
+
+  <span class="token keyword">public</span> <span class="token function">onModuleInit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">any</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>productServiceClient <span class="token operator">=</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>clientGrpc<span class="token punctuation">.</span><span class="token function">getService</span><span class="token punctuation">(</span><span class="token constant">PRODUCT_SERVICE_NAME</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">async</span> <span class="token function">createOrder</span><span class="token punctuation">(</span>productId<span class="token operator">:</span> <span class="token builtin">string</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span>CreateOrderResponse<span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// TODO: 调用product 微服务 rpc, 完成库存变化</span>
+
+    <span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token punctuation">&#123;</span> id<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span> orderId<span class="token operator">:</span> <span class="token number">2</span> <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">firstValueFrom</span><span class="token punctuation">(</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>productServiceClient<span class="token punctuation">.</span><span class="token function">decreaseStock</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>response<span class="token punctuation">.</span>status <span class="token operator">===</span> <span class="token number">200</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>
+        status<span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+        error<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+        id<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">// const stock =</span>
+    <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>
+      status<span class="token operator">:</span> <span class="token number">500</span><span class="token punctuation">,</span>
+      error<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      id<span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后再按照上面的步骤修改修改一下<code>product-service</code>中的 main.ts</p>
+<p>然后是修改<code>product-service.controller</code>文件</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Controller<span class="token punctuation">,</span> Get <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> ProductServiceService <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./product-service.service"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span>
+  DecreaseStockResponse<span class="token punctuation">,</span>
+  <span class="token constant">PRODUCT_SERVICE_NAME</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"../../../protos/product.pb"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> GrpcMethod <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/microservices"</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Controller</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">ProductServiceController</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token keyword">private</span> <span class="token keyword">readonly</span> productServiceService<span class="token operator">:</span> ProductServiceService<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">GrpcMethod</span></span><span class="token punctuation">(</span><span class="token constant">PRODUCT_SERVICE_NAME</span><span class="token punctuation">)</span>
+  <span class="token function">decreaseStock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span>DecreaseStockResponse<span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>productServiceService<span class="token punctuation">.</span><span class="token function">decreaseStock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后是修改<code>product-service.service.ts</code></p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Injectable <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> DecreaseStockResponse <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"../../../protos/product.pb"</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Injectable</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">ProductServiceService</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">async</span> <span class="token function">decreaseStock</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span>DecreaseStockResponse<span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>
+      status<span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+      error<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>最后是在<code>api-gateway</code>中的<code>module</code>文件注册 order 微服务即可</p>
+<p><code>api-gateway.module.ts</code></p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Module <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> ApiGatewayController <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./api-gateway.controller"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> ApiGatewayService <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./api-gateway.service"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> ClientsModule <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/microservices"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> <span class="token constant">ORDER_SERVICE_NAME</span> <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"../../../protos/order.pb"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> orderClient <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"../../../protos/order.client.options"</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Module</span></span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+  imports<span class="token operator">:</span> <span class="token punctuation">[</span>
+    ClientsModule<span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+      <span class="token punctuation">&#123;</span>
+        name<span class="token operator">:</span> <span class="token constant">ORDER_SERVICE_NAME</span><span class="token punctuation">,</span>
+        <span class="token operator">...</span>orderClient<span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  controllers<span class="token operator">:</span> <span class="token punctuation">[</span>ApiGatewayController<span class="token punctuation">]</span><span class="token punctuation">,</span>
+  providers<span class="token operator">:</span> <span class="token punctuation">[</span>ApiGatewayService<span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">ApiGatewayModule</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>修改<code>api-gateway.controller</code></p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> Controller<span class="token punctuation">,</span> Get<span class="token punctuation">,</span> Post <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"@nestjs/common"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> ApiGatewayService <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./api-gateway.service"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span> CreateOrderResponse <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"../../../protos/order.pb"</span><span class="token punctuation">;</span>
+
+<span class="token decorator"><span class="token at operator">@</span><span class="token function">Controller</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">ApiGatewayController</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token keyword">private</span> <span class="token keyword">readonly</span> apiGatewayService<span class="token operator">:</span> ApiGatewayService<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+  <span class="token decorator"><span class="token at operator">@</span><span class="token function">Post</span></span><span class="token punctuation">(</span><span class="token string">"order"</span><span class="token punctuation">)</span>
+  <span class="token function">createOrder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Promise</span><span class="token operator">&lt;</span>CreateOrderResponse<span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+      productId<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      quantity<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      userId<span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>apiGatewayService<span class="token punctuation">.</span><span class="token function">createOrder</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>到这里，一个简单的微服务就搭建完成了</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>接着就是启动 api-gateway 服务、order 服务、product 服务</p>
+<p>在命令行输入<code>curl -X POST http://localhost:3000/order</code><br>然后输出<code>&#123;&quot;status&quot;:200,&quot;id&quot;:1&#125;%</code>即表示成功</p>
+<h2 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h2><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/47704968/protoc-command-not-found-linux">protoc: command not found (Linux)</a></p>
+</div>
+      
+        <div class="article-credit"><span>作者 Ryo</span><a target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a><button class="text-link" type="button" data-copy-url hidden>复制文章链接</button></div>
+      
+      
+        <nav class="article-neighbours" aria-label="相邻文章">
+          <a href="/2020/07/11/qian-duan/html/1.ji-chu/"><small>上一篇</small><strong>html基础</strong></a>
+        
+          <a href="/2020/04/02/hou-duan/nestjs/api-with-nestjs-1/"><small>下一篇</small><strong>API with Nestjs#1 Controllers, 路由和模块(module)结构</strong></a>
+        </nav>
+      
+      
+        <details class="comments" data-comment-src="https://utteranc.es/client.js" data-repo="SaebaRyoo/SaebaRyoo.github.io" data-term="pathname" data-light="github-light" data-dark="github-dark">
+          <summary>读者回信</summary>
+          <div class="comment-mount"></div><a class="text-link" target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/SaebaRyoo.github.io/issues">在 GitHub 查看讨论</a>
+        </details>
+      
+    </div>
+  </div>
+</article>
+
+
+<dialog class="image-dialog" aria-label="查看原图"><form method="dialog"><button class="icon-btn" aria-label="关闭原图"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form><img alt=""></dialog>
+
+</main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+ 咕嘎邮便局 <span>·</span> Ryo</a>
+      <nav aria-label="页脚导航">
+        <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">GitHub</a>
+        <a href="/tags/">标签</a>
+        <a href="/visualization-layout/">可视化实验</a>
+        <a href="#main-content">回到顶部</a>
+      </nav>
+    </div>
+  </footer>
+  <dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="/search.xml">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form>
+  </header>
+  <label class="search-field"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>
+
+</body>
+</html>

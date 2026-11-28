@@ -1,0 +1,285 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="用 Obsidian 写 Hexo 博客的完整方案：vault 目录约定、图片路径、front-matter 模板，以及从粘贴图片到 GitHub Actions 自动发布的整条链路。">
+  <meta property="og:title" content="如何使用 Obsidian 配合 Hexo · Ryo的小站">
+  <meta property="og:description" content="用 Obsidian 写 Hexo 博客的完整方案：vault 目录约定、图片路径、front-matter 模板，以及从粘贴图片到 GitHub Actions 自动发布的整条链路。">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://saebaryoo.github.io/images/gugu-doro/web/anime-05-snowy-postcards.jpg">
+  <link rel="canonical" href="https://saebaryoo.github.io/2026/11/27/gong-ju/qi-ta/ru-he-shi-yong-obsidian-pei-he-hexo/">
+  <link rel="icon" href="/post-office/gugu-icon.png" type="image/png">
+  <title>如何使用 Obsidian 配合 Hexo · Ryo的小站</title>
+  <script>
+    try {
+      var storedDark = localStorage.getItem('dark');
+      document.documentElement.dataset.theme = (storedDark === null ? matchMedia('(prefers-color-scheme: dark)').matches : storedDark === 'true') ? 'dark' : 'light';
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/post-office/post.css">
+  <script defer src="/post-office/post.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.3 8.5-6.3"/></symbol>
+    <symbol id="i-wing" viewBox="0 0 32 24"><path d="M1.5 6.5h8m-6.5 4h5m-3.5 4h2"/><path d="M12 5h18l-5 14H7z" fill="currentColor" stroke="none"/><path d="m12 7 6 5.6 10-5.8" stroke="var(--wing-line, #235344)"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" transform="rotate(-8 12 12)"/><path d="M8 8h.1m4 4h.1m3.9 4h.1" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a8.8 8.8 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 15 6 5h12l3 10v4H3z"/><path d="M3 14h5l2 3h4l2-3h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 3h10v11H3z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-5l2 2m0-5v5h-5M20 13a8 8 0 0 1-14 5l-2-2m0 5v-5h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 16h16v4H4zM7 16c0-3 3-3.5 3-5V9a4 4 0 1 1 4 0v2c0 1.5 3 2 3 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="m3 3 8 .3L21 13l-8 8-9.7-9.7z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="m2 10 20-7-6.5 18-4.3-7.7L2 10Z"/><path d="M11.2 13.3 22 3"/></symbol>
+  </defs>
+</svg>
+
+  <a class="skip" href="#main-content">跳到正文</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="/" aria-label="Ryo的小站首页">
+        <span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 32 24"><use href="#i-wing"/></svg></span>
+        <span><strong>Ryo的小站</strong><small lang="en">GUGU POST</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives/">文章归档</a>
+        
+          <a href="/categories/">分类索引</a>
+        
+          <a href="/visualization-layout/">实验室</a>
+        
+          <a href="/about/">关于</a>
+        
+      </nav>
+      <div class="header-tools">
+        <button class="search-trigger" type="button" data-search-open hidden aria-label="搜索文章" aria-haspopup="dialog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<span>搜索</span><kbd>/</kbd></button>
+        
+          <button type="button" class="icon-btn theme-trigger" data-theme-toggle hidden aria-label="夜间模式" title="夜间模式"><svg class="icon" aria-hidden="true"><use class="moon" href="#i-moon"/><use class="sun" href="#i-sun"/></svg></button>
+        
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="wrap" tabindex="-1">
+<article class="inner-page reading-page">
+  <a class="breadcrumb" href="/archives/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
+文章归档</a>
+  <header class="article-heading">
+    <div class="letter-meta">
+      <a class="category-ink ink-terminal" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a><span aria-hidden="true">/</span>
+      <time datetime="2026-11-27">2026.11.27</time><span aria-hidden="true">/</span>Ryo
+    </div>
+    <h1>如何使用 Obsidian 配合 Hexo</h1>
+    <div class="article-tags"><a href="/tags/Hexo/"># Hexo</a><a href="/tags/Obsidian/"># Obsidian</a><a href="/tags/GitHub-Actions/"># GitHub Actions</a></div>
+  </header>
+  <div class="reading-grid with-toc">
+    
+      <aside class="contents"><details open><summary>信件目录</summary><nav aria-label="文章目录"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%88%86%E5%B7%A5%EF%BC%9A%E5%90%84%E7%AE%A1%E5%90%84%E7%9A%84"><span class="toc-text">一、分工：各管各的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E7%9B%AE%E5%BD%95%E7%BA%A6%E5%AE%9A"><span class="toc-text">二、目录约定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81Obsidian-%E7%9A%84%E4%B8%80%E6%AC%A1%E6%80%A7%E8%AE%BE%E7%BD%AE"><span class="toc-text">三、Obsidian 的一次性设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81Front-matter-%E6%A8%A1%E6%9D%BF"><span class="toc-text">四、Front-matter 模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%9B%BE%E7%89%87%E6%98%AF%E6%80%8E%E4%B9%88%E3%80%8C%E8%87%AA%E5%8A%A8%E4%B8%8A%E4%BC%A0%E3%80%8D%E7%9A%84"><span class="toc-text">五、图片是怎么「自动上传」的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%97%A5%E5%B8%B8%E5%86%99%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-text">六、日常写作流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%87%A0%E4%B8%AA%E8%B8%A9%E8%BF%87%E7%9A%84%E5%9D%91"><span class="toc-text">七、几个踩过的坑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E4%B8%8A%E5%9B%BE%E5%BA%8A"><span class="toc-text">八、什么时候该上图床</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95"><span class="toc-text">九、检查清单</span></a></li></ol></nav></details></aside>
+    
+    <div class="reading-column">
+      <div class="prose"><p>用 Obsidian 写 Hexo 博客，体验其实很顺：Obsidian 负责「写」，Hexo 负责「发」。真正麻烦的不是写作，而是图片——放哪、链接怎么写、发布时怎么保证不丢。</p>
+<p>这篇把我现在跑通的这套方案完整记一遍。</p>
+<h2 id="一、分工：各管各的"><a href="#一、分工：各管各的" class="headerlink" title="一、分工：各管各的"></a>一、分工：各管各的</h2><p>Obsidian 管三件事：</p>
+<ul>
+<li>写 Markdown</li>
+<li>管理附件（图片）</li>
+<li>通过 Obsidian Git 插件 commit &#x2F; push</li>
+</ul>
+<p>Hexo 管三件事：</p>
+<ul>
+<li>读 front-matter（标题、日期、分类、标签）</li>
+<li>把 Markdown 渲染成 HTML</li>
+<li>把 <code>source/</code> 里的静态文件复制进 <code>public/</code> 并发布</li>
+</ul>
+<p>所以两边只需要对齐两个接口：<strong>front-matter</strong> 和 <strong>图片路径</strong>。把这两个定死，剩下的都很省心。</p>
+<h2 id="二、目录约定"><a href="#二、目录约定" class="headerlink" title="二、目录约定"></a>二、目录约定</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>约定</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Obsidian vault</td>
+<td><code>source/</code></td>
+</tr>
+<tr>
+<td>文章</td>
+<td><code>source/_posts/&lt;分类&gt;/&lt;标题&gt;.md</code></td>
+</tr>
+<tr>
+<td>图片</td>
+<td><code>source/images/</code></td>
+</tr>
+<tr>
+<td>图片链接</td>
+<td><code>![](/images/xxx.png)</code></td>
+</tr>
+<tr>
+<td>源码分支</td>
+<td><code>hexo</code></td>
+</tr>
+<tr>
+<td>发布分支</td>
+<td><code>main</code></td>
+</tr>
+</tbody></table>
+<p>几个关键选择：</p>
+<p><strong>vault 用 <code>source/</code>，不是仓库根目录。</strong> 这样 <code>images</code> 在库内，Obsidian 能直接预览；也不会把 <code>node_modules</code>、<code>public</code> 这些目录索引进来。附件和文章在同一个 git 仓库里，push 时一起走。</p>
+<p><strong>图片链接用 <code>/images/xxx.png</code>，不用相对路径。</strong> Hexo 的文章 URL 是 <code>/2026/11/27/...</code> 这种形式，相对路径会解析到文章目录下面；而 <code>/images/...</code> 永远指向站点根目录，跟文章 URL 无关。</p>
+<p><strong>图片不放主题目录。</strong> 以前我把图放在 <code>themes/hexo-theme-bamboo/source/imgs</code>，虽然也能用，但换主题、升级主题时很容易丢。统一放 <code>source/images</code> 才是自己的资产。</p>
+<h2 id="三、Obsidian-的一次性设置"><a href="#三、Obsidian-的一次性设置" class="headerlink" title="三、Obsidian 的一次性设置"></a>三、Obsidian 的一次性设置</h2><p>用 Obsidian 打开 <code>source</code> 作为 vault，然后进 <strong>设置 → 文件与链接</strong>：</p>
+<ol>
+<li>关闭「使用 [[Wikilinks]]」</li>
+<li>新链接格式选「库内绝对路径」</li>
+<li>附件默认存放路径选「指定文件夹」，填 <code>images</code></li>
+</ol>
+<p>对应的 <code>source/.obsidian/app.json</code> 大概是这样：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"newFileLocation"</span><span class="token operator">:</span> <span class="token string">"current"</span><span class="token punctuation">,</span>
+  <span class="token property">"attachmentFolderPath"</span><span class="token operator">:</span> <span class="token string">"images"</span><span class="token punctuation">,</span>
+  <span class="token property">"useMarkdownLinks"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token property">"newLinkFormat"</span><span class="token operator">:</span> <span class="token string">"absolute"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>设置完之后，粘贴截图会得到：</p>
+<pre class="line-numbers language-markdown" data-language="markdown"><code class="language-markdown">![](/images/Pasted%20image%2020261127114804.png)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这个链接在 Obsidian 里能预览（因为 <code>images</code> 在 vault 内），在 Hexo 里也能用（<code>source/images</code> 会被复制到 <code>public/images</code>）。两边都不用额外配置。</p>
+<p><strong>为什么一定要关掉 Wikilinks？</strong> 因为 Hexo 的 markdown-it 不认 Obsidian 的 wikilink 嵌入（<code>!</code> 加 <code>[[文件名]]</code>），生成出来会原样变成文本，图片直接挂掉。标准 Markdown 的 <code>![]()</code> 才是两边都认的格式。</p>
+<p>另外可以装一个 <strong>Paste image rename</strong> 插件，把 <code>Pasted image 2026...png</code> 改成 <code>20261127-1148-01.png</code> 这种干净的名字。带空格不是不能用，只是 URL 会变成 <code>%20</code>，迁移和写脚本时比较烦。</p>
+<h2 id="四、Front-matter-模板"><a href="#四、Front-matter-模板" class="headerlink" title="四、Front-matter 模板"></a>四、Front-matter 模板</h2><p>每篇文章头部需要这些信息：</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token punctuation">---</span>
+<span class="token key atrule">title</span><span class="token punctuation">:</span> 文章标题
+<span class="token key atrule">date</span><span class="token punctuation">:</span> <span class="token datetime number">2026-11-27 13:00:00</span>
+<span class="token key atrule">categories</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> 工具
+<span class="token key atrule">tags</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> Hexo
+  <span class="token punctuation">-</span> Obsidian
+<span class="token punctuation">---</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>几个注意点：</p>
+<ul>
+<li><strong><code>date</code> 一定要写。</strong> Hexo 在缺失时会用文件的创建时间，git clone 或换电脑之后日期会全乱。</li>
+<li><strong>文件名就是标题。</strong> 配置里是 <code>new_post_name: :title.md</code>，所以文件名尽量和 <code>title</code> 一致。</li>
+<li><strong>中文标题会转拼音。</strong> 站点用了 <code>hexo-permalink-pinyin</code>，URL 里是拼音，不影响阅读。</li>
+<li>想省事可以用 Obsidian 的 Templates 插件，把上面这段存成模板，新建文章时一键插入。</li>
+</ul>
+<h2 id="五、图片是怎么「自动上传」的"><a href="#五、图片是怎么「自动上传」的" class="headerlink" title="五、图片是怎么「自动上传」的"></a>五、图片是怎么「自动上传」的</h2><p>先纠正一个容易误解的点：<strong>Obsidian 本身不上传任何东西</strong>，它只负责把图片存到本地。真正的「上传」是 git push 加自动构建。</p>
+<p>完整链路是这样：</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">粘贴截图
+  → 存到 source/images/xxx.png
+  → 文章里插入 ![](/images/xxx.png)
+  → obsidian-git commit + push 到 hexo 分支
+  → GitHub Actions：npm ci + hexo generate
+  → 把 public 推到 main 分支
+  → GitHub Pages 更新<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>拆开看：</p>
+<ol>
+<li><strong>Obsidian</strong> 把图片存进 <code>source/images</code>，并插入 <code>/images/...</code> 链接。</li>
+<li><strong>obsidian-git</strong> 把文章和图片一起 commit、push。开自动备份后，这一步不用手动做。</li>
+<li><strong>GitHub Actions</strong> 在云端跑 <code>hexo generate</code>。<code>source/images</code> 会被复制到 <code>public/images</code>，和文章一起进入构建产物。</li>
+<li><strong>部署</strong> 把 <code>public</code> 推到 <code>main</code>，Pages 直接生效。</li>
+</ol>
+<p>如果不用 Actions，本地跑 <code>npm run gen</code> 也一样：<code>hexo clean &amp;&amp; hexo generate &amp;&amp; hexo deploy</code>，图片同样会带上。</p>
+<p>但两种方式有个关键区别：</p>
+<ul>
+<li><strong>本地手动 deploy</strong>：直接用本地工作区构建，图片没 commit 也能上站，但换电脑就没了。</li>
+<li><strong>Actions 自动部署</strong>：只认 git 里的文件，图片必须先 commit，否则构建出来的站点没有这张图。</li>
+</ul>
+<h2 id="六、日常写作流程"><a href="#六、日常写作流程" class="headerlink" title="六、日常写作流程"></a>六、日常写作流程</h2><ol>
+<li>在 <code>source/_posts/&lt;分类&gt;/</code> 下新建笔记，文件名用文章标题。</li>
+<li>插入 front-matter 模板，填好 <code>date</code>、<code>categories</code>、<code>tags</code>。</li>
+<li>正常写，截图直接粘贴。</li>
+<li>本地预览：<code>npm run local</code>（等价于 <code>hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</code>）。</li>
+<li>提交并 push 到 <code>hexo</code> 分支（开了 obsidian-git 自动备份的话会自动做）。</li>
+<li>GitHub Actions 自动构建并发布。</li>
+</ol>
+<p>写完之后，浏览器打开对应文章，确认图片能正常显示，就结束了。</p>
+<h2 id="七、几个踩过的坑"><a href="#七、几个踩过的坑" class="headerlink" title="七、几个踩过的坑"></a>七、几个踩过的坑</h2><ul>
+<li><strong>用了 Obsidian 的 wikilink 嵌入</strong>：<code>!</code> 加 <code>[[xxx.png]]</code>，Hexo 不认，必须用 <code>![]()</code>。</li>
+<li><strong>图片放在主题目录</strong>：换主题就丢，应该放 <code>source/images</code>。</li>
+<li>**只跑 <code>hexo d</code> 不跑 <code>hexo g</code>**：新图片不会进 <code>public</code>，部署上去是旧的。用 <code>npm run gen</code> 或 <code>npm run local</code>。</li>
+<li><strong>依赖 Actions 但图片没 commit</strong>：云端看不到你本地文件，图片会 404。</li>
+<li><strong>用掘金、语雀的图片外链</strong>：会防盗链、会过期，长期博客不要依赖。</li>
+<li><strong>开了多个 vault、附件目录不一致</strong>：同一张图会落到不同地方。最好只保留 <code>source/.obsidian</code> 一个库配置。</li>
+<li><strong><code>post_asset_folder</code> 和绝对路径混用</strong>：相对路径、中文目录、空格、URL 编码容易互相打架。这套方案干脆不用 <code>post_asset_folder</code>，统一走 <code>/images</code>。</li>
+</ul>
+<h2 id="八、什么时候该上图床"><a href="#八、什么时候该上图床" class="headerlink" title="八、什么时候该上图床"></a>八、什么时候该上图床</h2><p>如果以后图片很多、仓库太大，或者经常在手机、多台电脑上写，可以考虑图床：Obsidian 装 <strong>Image auto upload</strong> 插件，配合 PicGo 上传到 GitHub 图床或对象存储，粘贴后文章里直接是 https URL，Hexo 完全不用管路径。</p>
+<p>代价是多一个外部依赖，图床挂了文章就挂。个人博客、图片量不大的话，现在这种「图片跟仓库走」的方案更稳。</p>
+<h2 id="九、检查清单"><a href="#九、检查清单" class="headerlink" title="九、检查清单"></a>九、检查清单</h2><p>改完图片或配置后，跑一遍：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 1. 不能有 Hexo 不认的 wikilink</span>
+<span class="token function">grep</span> <span class="token parameter variable">-rn</span> <span class="token string">'!\[\['</span> source/_posts <span class="token parameter variable">--include</span><span class="token operator">=</span><span class="token string">'*.md'</span>
+
+<span class="token comment"># 2. 本地构建</span>
+npx hexo clean <span class="token operator">&amp;&amp;</span> npx hexo generate
+
+<span class="token comment"># 3. 确认图片进了 public</span>
+<span class="token function">ls</span> public/images <span class="token operator">|</span> <span class="token function">head</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>再打开 <code>public</code> 里对应的文章 HTML，确认 <code>img</code> 的 <code>src</code> 是 <code>/images/...</code>，就说明整条链路通了。</p>
+<p>跑通之后，写作就只剩四个动作：新建、写、粘图、push。</p>
+</div>
+      
+        <div class="article-credit"><span>作者 Ryo</span><a target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a><button class="text-link" type="button" data-copy-url hidden>复制文章链接</button></div>
+      
+      
+        <nav class="article-neighbours" aria-label="相邻文章">
+          <a href="/2026/11/06/yun-wei/acme.sh-qian-fa-mian-fei-tong-pei-fu-zheng-shu-bing-bu-shu-dao-docker-openresty/"><small>下一篇</small><strong>acme.sh + 阿里云 DNS + Docker OpenResty：免费通配符证书从申请到自动续期</strong></a>
+        </nav>
+      
+      
+        <details class="comments" data-comment-src="https://utteranc.es/client.js" data-repo="SaebaRyoo/SaebaRyoo.github.io" data-term="pathname" data-light="github-light" data-dark="github-dark">
+          <summary>读者回信</summary>
+          <div class="comment-mount"></div><a class="text-link" target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/SaebaRyoo.github.io/issues">在 GitHub 查看讨论</a>
+        </details>
+      
+    </div>
+  </div>
+</article>
+
+
+<dialog class="image-dialog" aria-label="查看原图"><form method="dialog"><button class="icon-btn" aria-label="关闭原图"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form><img alt=""></dialog>
+
+</main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+ 咕嘎邮便局 <span>·</span> Ryo</a>
+      <nav aria-label="页脚导航">
+        <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">GitHub</a>
+        <a href="/tags/">标签</a>
+        <a href="/visualization-layout/">可视化实验</a>
+        <a href="#main-content">回到顶部</a>
+      </nav>
+    </div>
+  </footer>
+  <dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="/search.xml">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form>
+  </header>
+  <label class="search-field"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:title" content="HTTPS总结 · Ryo的小站">
+  <meta property="og:description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://saebaryoo.github.io/images/gugu-doro/web/03-coffee-break.jpg">
+  <link rel="canonical" href="https://saebaryoo.github.io/2023/09/04/wang-luo/https-yuan-li/">
+  <link rel="icon" href="/post-office/gugu-icon.png" type="image/png">
+  <title>HTTPS总结 · Ryo的小站</title>
+  <script>
+    try {
+      var storedDark = localStorage.getItem('dark');
+      document.documentElement.dataset.theme = (storedDark === null ? matchMedia('(prefers-color-scheme: dark)').matches : storedDark === 'true') ? 'dark' : 'light';
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/post-office/post.css">
+  <script defer src="/post-office/post.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.3 8.5-6.3"/></symbol>
+    <symbol id="i-wing" viewBox="0 0 32 24"><path d="M1.5 6.5h8m-6.5 4h5m-3.5 4h2"/><path d="M12 5h18l-5 14H7z" fill="currentColor" stroke="none"/><path d="m12 7 6 5.6 10-5.8" stroke="var(--wing-line, #235344)"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" transform="rotate(-8 12 12)"/><path d="M8 8h.1m4 4h.1m3.9 4h.1" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a8.8 8.8 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 15 6 5h12l3 10v4H3z"/><path d="M3 14h5l2 3h4l2-3h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 3h10v11H3z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-5l2 2m0-5v5h-5M20 13a8 8 0 0 1-14 5l-2-2m0 5v-5h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 16h16v4H4zM7 16c0-3 3-3.5 3-5V9a4 4 0 1 1 4 0v2c0 1.5 3 2 3 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="m3 3 8 .3L21 13l-8 8-9.7-9.7z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="m2 10 20-7-6.5 18-4.3-7.7L2 10Z"/><path d="M11.2 13.3 22 3"/></symbol>
+  </defs>
+</svg>
+
+  <a class="skip" href="#main-content">跳到正文</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="/" aria-label="Ryo的小站首页">
+        <span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 32 24"><use href="#i-wing"/></svg></span>
+        <span><strong>Ryo的小站</strong><small lang="en">GUGU POST</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives/">文章归档</a>
+        
+          <a href="/categories/">分类索引</a>
+        
+          <a href="/visualization-layout/">实验室</a>
+        
+          <a href="/about/">关于</a>
+        
+      </nav>
+      <div class="header-tools">
+        <button class="search-trigger" type="button" data-search-open hidden aria-label="搜索文章" aria-haspopup="dialog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<span>搜索</span><kbd>/</kbd></button>
+        
+          <button type="button" class="icon-btn theme-trigger" data-theme-toggle hidden aria-label="夜间模式" title="夜间模式"><svg class="icon" aria-hidden="true"><use class="moon" href="#i-moon"/><use class="sun" href="#i-sun"/></svg></button>
+        
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="wrap" tabindex="-1">
+<article class="inner-page reading-page">
+  <a class="breadcrumb" href="/archives/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
+文章归档</a>
+  <header class="article-heading">
+    <div class="letter-meta">
+      <a class="category-ink ink-network" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a><span aria-hidden="true">/</span>
+      <time datetime="2023-09-04">2023.09.04</time><span aria-hidden="true">/</span>Ryo
+    </div>
+    <h1>HTTPS总结</h1>
+    
+  </header>
+  <div class="reading-grid with-toc">
+    
+      <aside class="contents"><details open><summary>信件目录</summary><nav aria-label="文章目录"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTPS"><span class="toc-text">HTTPS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-text">参考</span></a></li></ol></li></ol></nav></details></aside>
+    
+    <div class="reading-column">
+      <div class="prose"><h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>https 采用对称加密和非对称加密+数字证书的方式，对传输数据进行加密</p>
+<p><strong>对称加密方式如下</strong></p>
+<ol>
+<li>客户端发送加密套件列表（就是客户端支持的加密方式）+ client-random</li>
+<li>服务器从加密套件中选择一个加密方式，并生成 service-random + 新的加密套件返回给客户端</li>
+<li>最后浏览器和服务器分别返回确认消息</li>
+</ol>
+<p>这样浏览器和服务器都有相同 client-random 和 service-random，然后再使用相同的方法混合起来生成一个 master-secret。<br>有了 master-secret 和加密套件后，双方就可以进行数据的加密传输了。</p>
+<p>但是由于 client-random 和 service-random 是明文的。意味着中间人也可以拿到加密套件和双方随机数。由于利用随机数合成密钥的算法是公开的，所以中间人拿到随机数后，也可以合成密钥，然后破解数据</p>
+<p><strong>非对称加密</strong></p>
+<ol>
+<li>首先浏览器会发送加密套件列表给服务器</li>
+<li>服务器会选择一个加密方式，和对称加密不同的是，使用非对称加密时，服务器上需要有用于浏览器加密的公钥和服务器解密的私钥。由于公钥是给浏览器加密用的，因此服务器会将加密套件和公钥一起发送给浏览器。</li>
+</ol>
+<p>这样在浏览器向服务器发送数据时，就可以使用公钥来加密数据。由于公钥加密只有私钥才能解密，所以即使黑客截获了数据和公钥，他也无法获取数据。</p>
+<p>但是有以下的缺点</p>
+<ul>
+<li>非对称加密效率太低。严重影响到解密数据的数据，进而影响到用户打开页面的速度。</li>
+<li>无法保证服务器发送给浏览器的数据安全。虽然浏览器端可以使用公钥来加密，但是服务器只能私钥加密。因此，当服务器发送数据和公钥的时候，中间人也是可以获取到公钥和私钥加密的数据的。这样就无法保证服务器端发送的数据安全。</li>
+</ul>
+<p><strong>对称加密和非对称加密搭配使用</strong><br>相比较对称加密和非对称加密，采用两者相结合的方式则更加完美。<strong>使用对称加密来传输数据，使用非对称加密来传输对称加密的密钥</strong>。</p>
+<div align="center">
+   <img loading="lazy" src="https://i.postimg.cc/65KrmVY3/https.png" width = "600" alt="图片名称" align=center />
+</div>
+
+<ol>
+<li>首先浏览器端会发送 client-random、对称加密列表、非对称加密列表给服务器端</li>
+<li>服务器端选择并发送对称加密方式、非对称加密方式、service-random 和公钥给浏览器端</li>
+<li>然后浏览器会生成一个随机数 pre-master、然后通过非对称加密的方式。使用公钥加密 pre-master 给服务器端。（需要注意，pre-master 是通过非对加密的公钥加密的，所以黑客是无法获取到私钥来解密数据的。）</li>
+<li>服务器端接收到使用公钥加密的 pre-master，然后使用私钥解密获取到 pre-master。（到此，浏览器端和服务器端都有了 client-random、service-random、pre-master）</li>
+<li>使用 client-random、service-random、pre-master 生成的<strong>master secret</strong>加密传输数据。</li>
+</ol>
+<p><strong>添加数字证书</strong><br>虽然使用对称和非对称混合加密的方式，完美的实现了数据的加密传输。但是黑客可以通过 DNS 劫持将网站的 ip 换成自己的 ip。这样，对于用户来说，其实访问的就是黑客的服务器了。黑客就可以在自己的服务器上实现公钥和私钥。对于浏览器而言，它完全不知道现在在访问黑客的站点。</p>
+<p>所以需要有个第三方的权威机构来向浏览器证明“服务器”就是服务器。比如，买了房子，需要证明这个房子是你的。那么这里的房管局就是一个<strong>第三方权威机构</strong>。而房产证就是<strong>证书</strong>。</p>
+<p>同理，网站 A 要证明服务器就是网站 A 的，也需要一个权威机构来颁发证书。这个权威机构就是**CA(Certificate Authority)<strong>，颁发的证书就是</strong>数字证书（Digital Certificate)**。</p>
+<p>对于浏览器来说，数字证书的作用就是：1、通过证书向浏览器证明身份。2、包含服务器的公钥。</p>
+<p>所以，包含了数字证书的 https，与“对称与分对称结合”的方法相比，改变了如下两点：</p>
+<ol>
+<li>服务器不返回公钥，而是数字证书。</li>
+<li>客户端会多一个数字证书检验的过程，检验完成后才继续下面的流程</li>
+</ol>
+<p>这样就算是黑客仿造了服务器，但是由于数字证书是无法仿造的。所以依然无法欺骗客户端（用户）</p>
+<p><strong>申请数字证书</strong></p>
+<ul>
+<li>首先网站 A 需要准备一套私钥和公钥，私钥留着自己使用；</li>
+<li>然后网站 A 向 CA 机构提交公钥、公司、站点等信息并等待认证，这个认证过程可能是收费的；</li>
+<li>CA 通过线上、线下等多种渠道来验证网站 A 所提供信息的真实性，如公司是否存在、企业是否合法、域名是否归属该企业等；</li>
+<li>如信息审核通过，CA 会向网站 A 签发认证的数字证书，包含了网站 A 的公钥、组织信息、CA 的信息、有效时间、证书序列号等，这些信息都是明文的，同时包含一个 CA 生成的签名。</li>
+</ul>
+<p>最后一步的数字签名的步骤：Hash 函数计算网站提供的明文信息，得出信息摘要 -&gt; CA 使用密钥加密信息摘要，密文就是 CA 颁发给网站的数字签名</p>
+<p>这就相当于房管局在房产证上盖的章，这个章是可以去验证的，同样我们也可以通过数字签名来验证是否是该 CA 颁发的。</p>
+<p><strong>浏览器如何验证数字证书</strong><br>有了 CA 签名过的数字证书后，当浏览器向服务器发出请求时，服务器会返回数字证书给浏览器。</p>
+<p>浏览器接收到数字证书后，会进行验证。</p>
+<ol>
+<li>首先浏览器读取证书的明文信息，采用 CA 签名是相同的 Hash 函数计算并得到<strong>信息摘要 A</strong></li>
+<li>利用 CA 的公钥解密签名数据，得到<strong>信息摘要 B</strong>； 如果 <code>A === B</code>,则证书合法，服务器是网站 A 的</li>
+</ol>
+<p>如果该 CA 比较小众，浏览器不知道该不该信任，则浏览器继续查找给当前 CA 颁发证书的 CA，然后再以同样的方式验证他的上级 CA。通常情况下，操作系统中会内置信任的顶级 CA 的证书信息（包含公钥），如果这个 CA 链中没有找到浏览器内置的顶级 CA，证书也会被判定非法。</p>
+<p>在申请和使用证书的过程中，还需要注意以下三点：</p>
+<ol>
+<li>申请数字证书是不需要提供私钥的，要确保私钥永远只能由服务器掌握；</li>
+<li>数字证书最核心的是 CA 使用它的私钥生成的数字签名；</li>
+<li>内置 CA 对应的证书称为根证书，根证书是最权威的机构，它们自己为自己签名，我们把这称为自签名证书。</li>
+</ol>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/intro/100033601">https://time.geekbang.org/column/intro/100033601</a></p>
+</div>
+      
+        <div class="article-credit"><span>作者 Ryo</span><a target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a><button class="text-link" type="button" data-copy-url hidden>复制文章链接</button></div>
+      
+      
+        <nav class="article-neighbours" aria-label="相邻文章">
+          <a href="/2023/09/04/wang-luo/http-fa-zhan-yi-ji-ban-ben-dui-bi/"><small>上一篇</small><strong>HTTP的发展以及个版本对比</strong></a>
+        
+          <a href="/2023/09/04/wang-luo/tu-jie-dns-yu-ming-jie-xi/"><small>下一篇</small><strong>图解dns域名解析</strong></a>
+        </nav>
+      
+      
+        <details class="comments" data-comment-src="https://utteranc.es/client.js" data-repo="SaebaRyoo/SaebaRyoo.github.io" data-term="pathname" data-light="github-light" data-dark="github-dark">
+          <summary>读者回信</summary>
+          <div class="comment-mount"></div><a class="text-link" target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/SaebaRyoo.github.io/issues">在 GitHub 查看讨论</a>
+        </details>
+      
+    </div>
+  </div>
+</article>
+
+
+<dialog class="image-dialog" aria-label="查看原图"><form method="dialog"><button class="icon-btn" aria-label="关闭原图"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form><img alt=""></dialog>
+
+</main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+ 咕嘎邮便局 <span>·</span> Ryo</a>
+      <nav aria-label="页脚导航">
+        <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">GitHub</a>
+        <a href="/tags/">标签</a>
+        <a href="/visualization-layout/">可视化实验</a>
+        <a href="#main-content">回到顶部</a>
+      </nav>
+    </div>
+  </footer>
+  <dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="/search.xml">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form>
+  </header>
+  <label class="search-field"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>
+
+</body>
+</html>

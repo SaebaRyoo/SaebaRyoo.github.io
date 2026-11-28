@@ -1,0 +1,500 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:title" content="使用Typescript和rollup开发一个工具库,并使用github actions来自动发布npm包 · Ryo的小站">
+  <meta property="og:description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://saebaryoo.github.io/images/gugu-doro/web/anime-02-coastal-train.jpg">
+  <link rel="canonical" href="https://saebaryoo.github.io/2023/05/21/qian-duan/gong-cheng-hua/gong-cheng-hua-1-ts-rollup-kai-fa-gong-ju-ku/">
+  <link rel="icon" href="/post-office/gugu-icon.png" type="image/png">
+  <title>使用Typescript和rollup开发一个工具库,并使用github actions来自动发布npm包 · Ryo的小站</title>
+  <script>
+    try {
+      var storedDark = localStorage.getItem('dark');
+      document.documentElement.dataset.theme = (storedDark === null ? matchMedia('(prefers-color-scheme: dark)').matches : storedDark === 'true') ? 'dark' : 'light';
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/post-office/post.css">
+  <script defer src="/post-office/post.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.3 8.5-6.3"/></symbol>
+    <symbol id="i-wing" viewBox="0 0 32 24"><path d="M1.5 6.5h8m-6.5 4h5m-3.5 4h2"/><path d="M12 5h18l-5 14H7z" fill="currentColor" stroke="none"/><path d="m12 7 6 5.6 10-5.8" stroke="var(--wing-line, #235344)"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" transform="rotate(-8 12 12)"/><path d="M8 8h.1m4 4h.1m3.9 4h.1" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a8.8 8.8 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 15 6 5h12l3 10v4H3z"/><path d="M3 14h5l2 3h4l2-3h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 3h10v11H3z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-5l2 2m0-5v5h-5M20 13a8 8 0 0 1-14 5l-2-2m0 5v-5h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 16h16v4H4zM7 16c0-3 3-3.5 3-5V9a4 4 0 1 1 4 0v2c0 1.5 3 2 3 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="m3 3 8 .3L21 13l-8 8-9.7-9.7z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="m2 10 20-7-6.5 18-4.3-7.7L2 10Z"/><path d="M11.2 13.3 22 3"/></symbol>
+  </defs>
+</svg>
+
+  <a class="skip" href="#main-content">跳到正文</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="/" aria-label="Ryo的小站首页">
+        <span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 32 24"><use href="#i-wing"/></svg></span>
+        <span><strong>Ryo的小站</strong><small lang="en">GUGU POST</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives/">文章归档</a>
+        
+          <a href="/categories/">分类索引</a>
+        
+          <a href="/visualization-layout/">实验室</a>
+        
+          <a href="/about/">关于</a>
+        
+      </nav>
+      <div class="header-tools">
+        <button class="search-trigger" type="button" data-search-open hidden aria-label="搜索文章" aria-haspopup="dialog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<span>搜索</span><kbd>/</kbd></button>
+        
+          <button type="button" class="icon-btn theme-trigger" data-theme-toggle hidden aria-label="夜间模式" title="夜间模式"><svg class="icon" aria-hidden="true"><use class="moon" href="#i-moon"/><use class="sun" href="#i-sun"/></svg></button>
+        
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="wrap" tabindex="-1">
+<article class="inner-page reading-page">
+  <a class="breadcrumb" href="/archives/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
+文章归档</a>
+  <header class="article-heading">
+    <div class="letter-meta">
+      <a class="category-ink ink-terminal" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span aria-hidden="true">/</span>
+      <time datetime="2023-05-21">2023.05.21</time><span aria-hidden="true">/</span>Ryo
+    </div>
+    <h1>使用Typescript和rollup开发一个工具库,并使用github actions来自动发布npm包</h1>
+    <div class="article-tags"><a href="/tags/%E5%B7%A5%E7%A8%8B%E5%8C%96/"># 工程化</a></div>
+  </header>
+  <div class="reading-grid with-toc">
+    
+      <aside class="contents"><details open><summary>信件目录</summary><nav aria-label="文章目录"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="toc-text">创建项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-text">主要目录结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E9%A1%B9%E7%9B%AE"><span class="toc-text">配置项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-rollup-%E5%92%8C-ts"><span class="toc-text">1. 安装 rollup 和 ts</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E9%85%8D%E7%BD%AE-typescript-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">2. 配置 typescript 配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%85%8D%E7%BD%AE-rollup-config-js"><span class="toc-text">3. 配置 rollup.config.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BF%AE%E6%94%B9-package-json"><span class="toc-text">4. 修改 package.json</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%AE%89%E8%A3%85-jest-lint-prettier-husky-commit-msg-%E5%AF%B9%E4%BB%A3%E7%A0%81%E7%9A%84%E8%B4%A8%E9%87%8F%E8%BF%9B%E8%A1%8C%E7%BA%A6%E6%9D%9F"><span class="toc-text">5. 安装 jest + lint + prettier + husky + commit-msg 对代码的质量进行约束</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91"><span class="toc-text">开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#npm-%E5%8C%85%E5%8F%91%E5%B8%83"><span class="toc-text">npm 包发布</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%89%8B%E5%8A%A8%E5%8F%91%E5%B8%83"><span class="toc-text">1. 手动发布</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BD%BF%E7%94%A8-github-action-%E5%8F%91%E5%B8%83-npm%E3%80%81%E5%88%9B%E5%BB%BA-release-%E4%BB%A5%E5%8F%8A%E5%A4%84%E7%90%86%E4%B8%80%E4%BA%9B%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-text">2. 使用 github action 发布 npm、创建 release 以及处理一些工作流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87"><span class="toc-text">目标</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E4%BB%A3%E7%A0%81"><span class="toc-text">整体代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA-readme-%E6%B7%BB%E5%8A%A0-badge-%E5%BE%BD%E7%AB%A0"><span class="toc-text">为 readme 添加 badge(徽章)</span></a></li></ol></nav></details></aside>
+    
+    <div class="reading-column">
+      <div class="prose"><p>在日常开发中，经常会遇到一些通用的逻辑，导致每次都需要复制粘贴。而我们作为 coder，可以将一些常用业务逻辑封装成通用的函数库，并发布到 npm 中。<br>这样，每次遇到新的项目时，只需要 install 一下即可</p>
+<p><strong>这里我们已经有了一个<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/fe-utils">fe-utils</a> 前端日常开发工具库，也是本文最后的产物，并且后续也会持续更新。如果你有一个开源的心，但是没信心去为大的项目提 pr，不妨从这个封装日常通用逻辑的项目做起，我们一起进步！！！</strong></p>
+<p>接下来我们就尝试自己动手实现一个工具库</p>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>首先在自己的 github 上创建一个项目，然后拉取。进入到该仓库中，执行<code>yarn init</code>。一路 enter 下去。</p>
+<h2 id="主要目录结构"><a href="#主要目录结构" class="headerlink" title="主要目录结构"></a>主要目录结构</h2><pre class="line-numbers language-none"><code class="language-none">- .github
+    - workflows
+        - xx.yml
+- .husky
+- src
+    - __test__
+    - index.ts
+    - sum.ts
+- .editorconfig
+- .gitignore
+- .npmignore
+- commitlint.config.js
+- jest.config.mjs
+- package.json
+- rollup.config.js
+- tsconfig.json<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="配置项目"><a href="#配置项目" class="headerlink" title="配置项目"></a>配置项目</h2><h3 id="1-安装-rollup-和-ts"><a href="#1-安装-rollup-和-ts" class="headerlink" title="1. 安装 rollup 和 ts"></a>1. 安装 rollup 和 ts</h3><p><code>yarn add rollup typescript -D</code></p>
+<h3 id="2-配置-typescript-配置文件"><a href="#2-配置-typescript-配置文件" class="headerlink" title="2. 配置 typescript 配置文件"></a>2. 配置 typescript 配置文件</h3><p><code>yarn tsc --init</code>生成一个默认的配置文件，然后根据我们的项目，改成如下:</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"compilerOptions"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"target"</span><span class="token operator">:</span> <span class="token string">"es5"</span> <span class="token comment">/* 编译目标 */</span><span class="token punctuation">,</span>
+    <span class="token property">"module"</span><span class="token operator">:</span> <span class="token string">"commonjs"</span> <span class="token comment">/* 项目模块类型 */</span><span class="token punctuation">,</span>
+    <span class="token property">"lib"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"ES2018"</span><span class="token punctuation">,</span> <span class="token string">"DOM"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"allowJs"</span><span class="token operator">:</span> <span class="token boolean">true</span> <span class="token comment">/* 是否允许js代码 */</span><span class="token punctuation">,</span>
+    <span class="token property">"checkJs"</span><span class="token operator">:</span> <span class="token boolean">true</span> <span class="token comment">/* 检查js代码错误 */</span><span class="token punctuation">,</span>
+    <span class="token property">"declaration"</span><span class="token operator">:</span> <span class="token boolean">true</span> <span class="token comment">/* 自动创建声明文件(.d.ts) */</span><span class="token punctuation">,</span>
+    <span class="token property">"declarationDir"</span><span class="token operator">:</span> <span class="token string">"./lib"</span> <span class="token comment">/* 声明文件目录 */</span><span class="token punctuation">,</span>
+    <span class="token property">"sourceMap"</span><span class="token operator">:</span> <span class="token boolean">true</span> <span class="token comment">/* 自动生成sourcemap文件 */</span><span class="token punctuation">,</span>
+    <span class="token property">"outDir"</span><span class="token operator">:</span> <span class="token string">"lib"</span> <span class="token comment">/* 编译输出目录 */</span><span class="token punctuation">,</span>
+    <span class="token property">"rootDir"</span><span class="token operator">:</span> <span class="token string">"./src"</span> <span class="token comment">/* 项目源码根目录，用来控制编译输出的目录结构 */</span><span class="token punctuation">,</span>
+    <span class="token property">"strict"</span><span class="token operator">:</span> <span class="token boolean">true</span> <span class="token comment">/* 启用严格模式 */</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token property">"include"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"src/index.ts"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"exclude"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"node_modules"</span><span class="token punctuation">,</span> <span class="token string">"lib"</span><span class="token punctuation">]</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="3-配置-rollup-config-js"><a href="#3-配置-rollup-config-js" class="headerlink" title="3. 配置 rollup.config.js"></a>3. 配置 rollup.config.js</h3><p>在配置之前，我们需要安装几个 rollup 插件<br><code>yarn add @rollup/plugin-node-resolve @rollup/plugin-typescript @rollup/plugin-commonjs rollup-plugin-terser -D</code></p>
+<p>这几个分别是如下作用<br>@rollup&#x2F;plugin-node-resolve 处理路径<br>@rollup&#x2F;plugin-typescript 支持 ts<br>@rollup&#x2F;plugin-commonjs 处理 commonjs<br>rollup-plugin-terser 压缩 umd 规范的输出文件</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> resolve <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"@rollup/plugin-node-resolve"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> typescript <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"@rollup/plugin-typescript"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> commonjs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"@rollup/plugin-commonjs"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token punctuation">&#123;</span> terser <span class="token punctuation">&#125;</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"rollup-plugin-terser"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">input</span><span class="token operator">:</span> <span class="token string">"./src/index.ts"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">output</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">&#123;</span>
+        <span class="token literal-property property">dir</span><span class="token operator">:</span> <span class="token string">"lib"</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">format</span><span class="token operator">:</span> <span class="token string">"cjs"</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">entryFileNames</span><span class="token operator">:</span> <span class="token string">"[name].cjs.js"</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">sourcemap</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token comment">// 是否输出sourcemap</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#123;</span>
+        <span class="token literal-property property">dir</span><span class="token operator">:</span> <span class="token string">"lib"</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">format</span><span class="token operator">:</span> <span class="token string">"esm"</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">entryFileNames</span><span class="token operator">:</span> <span class="token string">"[name].esm.js"</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">sourcemap</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token comment">// 是否输出sourcemap</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#123;</span>
+        <span class="token literal-property property">dir</span><span class="token operator">:</span> <span class="token string">"lib"</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">format</span><span class="token operator">:</span> <span class="token string">"umd"</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">entryFileNames</span><span class="token operator">:</span> <span class="token string">"[name].umd.js"</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"FE_utils"</span><span class="token punctuation">,</span> <span class="token comment">// umd模块名称，相当于一个命名空间，会自动挂载到window下面</span>
+        <span class="token literal-property property">sourcemap</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">plugins</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token function">terser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">plugins</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">commonjs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">typescript</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">module</span><span class="token operator">:</span> <span class="token string">"ESNext"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="4-修改-package-json"><a href="#4-修改-package-json" class="headerlink" title="4. 修改 package.json"></a>4. 修改 package.json</h3><p>我们直接看完整的 package.json</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"@lxnxbnq/utils"</span><span class="token punctuation">,</span>
+  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"0.0.2-alpha"</span><span class="token punctuation">,</span>
+  <span class="token property">"main"</span><span class="token operator">:</span> <span class="token string">"lib/index.cjs.js"</span><span class="token punctuation">,</span>
+  <span class="token property">"module"</span><span class="token operator">:</span> <span class="token string">"lib/index.esm.js"</span><span class="token punctuation">,</span>
+  <span class="token property">"jsnext:main"</span><span class="token operator">:</span> <span class="token string">"lib/index.esm.js"</span><span class="token punctuation">,</span>
+  <span class="token property">"browser"</span><span class="token operator">:</span> <span class="token string">"lib/index.umd.js"</span><span class="token punctuation">,</span>
+  <span class="token property">"types"</span><span class="token operator">:</span> <span class="token string">"lib/index.d.ts"</span><span class="token punctuation">,</span>
+  <span class="token property">"files"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"lib"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"repository"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"git"</span><span class="token punctuation">,</span>
+    <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"git+https://github.com/SaebaRyoo/fe-utils.git"</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token property">"author"</span><span class="token operator">:</span> <span class="token string">"SaebaRyoo &lt;yuanddmail@163.com>"</span><span class="token punctuation">,</span>
+  <span class="token property">"license"</span><span class="token operator">:</span> <span class="token string">"MIT"</span><span class="token punctuation">,</span>
+  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"rollup -c"</span><span class="token punctuation">,</span>
+    <span class="token property">"test"</span><span class="token operator">:</span> <span class="token string">"jest"</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"@rollup/plugin-babel"</span><span class="token operator">:</span> <span class="token string">"^6.0.3"</span><span class="token punctuation">,</span>
+    <span class="token property">"@rollup/plugin-commonjs"</span><span class="token operator">:</span> <span class="token string">"^23.0.4"</span><span class="token punctuation">,</span>
+    <span class="token property">"@rollup/plugin-node-resolve"</span><span class="token operator">:</span> <span class="token string">"^15.0.1"</span><span class="token punctuation">,</span>
+    <span class="token property">"@rollup/plugin-typescript"</span><span class="token operator">:</span> <span class="token string">"^10.0.1"</span><span class="token punctuation">,</span>
+    <span class="token property">"@types/jest"</span><span class="token operator">:</span> <span class="token string">"^29.2.4"</span><span class="token punctuation">,</span>
+    <span class="token property">"jest"</span><span class="token operator">:</span> <span class="token string">"^29.3.1"</span><span class="token punctuation">,</span>
+    <span class="token property">"rollup"</span><span class="token operator">:</span> <span class="token string">"^3.7.2"</span><span class="token punctuation">,</span>
+    <span class="token property">"rollup-plugin-terser"</span><span class="token operator">:</span> <span class="token string">"^7.0.2"</span><span class="token punctuation">,</span>
+    <span class="token property">"ts-jest"</span><span class="token operator">:</span> <span class="token string">"^29.0.3"</span><span class="token punctuation">,</span>
+    <span class="token property">"tslib"</span><span class="token operator">:</span> <span class="token string">"^2.4.1"</span><span class="token punctuation">,</span>
+    <span class="token property">"typescript"</span><span class="token operator">:</span> <span class="token string">"^4.9.4"</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"前端业务代码工具库"</span><span class="token punctuation">,</span>
+  <span class="token property">"bugs"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://github.com/SaebaRyoo/fe-utils/issues"</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token property">"homepage"</span><span class="token operator">:</span> <span class="token string">"https://github.com/SaebaRyoo/fe-utils#readme"</span><span class="token punctuation">,</span>
+  <span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>其中需要注意的有如下几个字段</p>
+<p>告知使用者不同的规范引用哪个文件</p>
+<ul>
+<li>“main”: “lib&#x2F;index.cjs.js”, &#x2F;&#x2F; 当使用 commonjs 规范时会使用这个包</li>
+<li>“module”: “lib&#x2F;index.esm.js”, &#x2F;&#x2F; 使用 esm 时，会使用这个包</li>
+<li>“jsnext:main”: “lib&#x2F;index.esm.js”, &#x2F;&#x2F;这个同上，不过这个是社区规范，上面是官方规范</li>
+<li>“browser”: “lib&#x2F;index.umd.js”, &#x2F;&#x2F; umd 规范，当直接在浏览器中开发时，可以直接下载 release 包并在浏览器中使用 script 导入</li>
+</ul>
+<p>ts 类型文件</p>
+<ul>
+<li>“types”: “lib&#x2F;index.d.ts”,</li>
+</ul>
+<p>使用<code>yarn run build</code>打包项目</p>
+<ul>
+<li>“scripts”: {<br>“build”: “rollup -c”,<br>},</li>
+</ul>
+<p>files 字段是用于约定在发包的时候 NPM 会发布包含的文件和文件夹。</p>
+<p>“files”: [<br>“lib”<br>],</p>
+<h3 id="5-安装-jest-lint-prettier-husky-commit-msg-对代码的质量进行约束"><a href="#5-安装-jest-lint-prettier-husky-commit-msg-对代码的质量进行约束" class="headerlink" title="5. 安装 jest + lint + prettier + husky + commit-msg 对代码的质量进行约束"></a>5. 安装 jest + lint + prettier + husky + commit-msg 对代码的质量进行约束</h3><p>首先是安装安装测试框架 jest，因为项目时基于 ts 写的，所以需要配置 jest 来支持 ts<br><code>yarn add -D jest ts-jest @types/jest</code></p>
+<ol>
+<li><p>创建配置文件<br><code>yarn jest --init</code></p>
+</li>
+<li><p>修改配置文件,完整如下</p>
+</li>
+</ol>
+<p>jest 的默认环境是 node，但是我们这个工具库是面向前端的，肯定需要操作 dom，所以需要安装<code>yarn add jest-environment-jsdom -D</code>来支持 DOM 和 BOM 操作</p>
+<p>然后就是在使用到 DOM 或者 BOM 对象的测试文件的顶部加上这一行注释即可运行</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">/**
+ * @jest-environment jsdom
+ */</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>或者在配置文件中修改运行环境为<code>testEnvironment: &#39;jsdom&#39;</code></p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">/*
+ * For a detailed explanation regarding each configuration property, visit:
+ * https://jestjs.io/docs/configuration
+ */</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">clearMocks</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">collectCoverage</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">coverageDirectory</span><span class="token operator">:</span> <span class="token string">"coverage"</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">coverageProvider</span><span class="token operator">:</span> <span class="token string">"v8"</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">preset</span><span class="token operator">:</span> <span class="token string">"ts-jest"</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">testEnvironment</span><span class="token operator">:</span> <span class="token string">"jsdom"</span><span class="token punctuation">,</span> <span class="token comment">// 支持测试环境访问dom</span>
+  <span class="token comment">// 配置测试环境ua</span>
+  <span class="token literal-property property">testEnvironmentOptions</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">userAgent</span><span class="token operator">:</span>
+      <span class="token string">"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="3">
+<li>在 package.json 的 script 中添加 cli 命令</li>
+</ol>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"test"</span><span class="token operator">:</span> <span class="token string">"jest"</span><span class="token punctuation">,</span>
+    <span class="token property">"coveralls"</span><span class="token operator">:</span> <span class="token string">"jest --coverage"</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="4">
+<li>最后按照<a target="_blank" rel="noopener" href="https://juejin.cn/post/7179185223760871483">这篇文章</a>的步骤来配置规范代码的文件</li>
+</ol>
+<h2 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h2><p>我们先在 src 的目录下写一个简单的 sum 方法以及一个单元测试</p>
+<p>src&#x2F;sum.ts</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">export</span> <span class="token keyword">function</span> <span class="token function">sum</span><span class="token punctuation">(</span><span class="token operator">...</span>args<span class="token operator">:</span> <span class="token builtin">number</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">number</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> args<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>prev<span class="token punctuation">,</span> total<span class="token punctuation">)</span> <span class="token operator">=></span> total <span class="token operator">+</span> prev<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>在入口中导入并导出</p>
+<p>src&#x2F;index.ts</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">export</span> <span class="token punctuation">&#123;</span> sum <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"./sum"</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>写一个 sum 的单元测试</p>
+<p>src&#x2F;<strong>test</strong>&#x2F;sum.test.ts</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> sum <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"../index"</span><span class="token punctuation">;</span>
+
+<span class="token function">describe</span><span class="token punctuation">(</span><span class="token string">"sum"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+  <span class="token function">it</span><span class="token punctuation">(</span><span class="token string">"should work"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+    <span class="token function">expect</span><span class="token punctuation">(</span><span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toEqual</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>到这，基本上一个最简单的 npm 包就开发完了，接下来就是需要发布</p>
+<h2 id="npm-包发布"><a href="#npm-包发布" class="headerlink" title="npm 包发布"></a>npm 包发布</h2><h3 id="1-手动发布"><a href="#1-手动发布" class="headerlink" title="1. 手动发布"></a>1. 手动发布</h3><p>首先需要准备一个账号，然后进行登录，输入你的 npm 账号、密码、邮箱<br><code>npm login</code></p>
+<p>可以用<code>npm logout</code>退出当前账号</p>
+<p><code>npm who am i</code>查询当前登录的账号</p>
+<blockquote>
+<p>Scoped packages default to restricted, but you can either publish them as public using npm publish –access&#x3D;public, or set their access as public using npm access public after the initial publish.<br>范围内的软件包默认为限制性的，但你可以使用<code>npm publish --access=public</code>将其发布为公共的，或者在初始发布后使用<code>npm access public</code>将其访问权限设置为公共的。</p>
+</blockquote>
+<p>登录成功就可以通过<code>npm publish</code>将包推送到服务器上</p>
+<p>如果某版本的包有问题，可以使用<code>npm unpublish [pkg]@[version]</code>将其撤回</p>
+<p><strong>注意：如果使用<code>@[scope]/package</code>的命名形式，[scope]一定要写你的账号名，不然发布的时候会提示 404</strong></p>
+<h3 id="2-使用-github-action-发布-npm、创建-release-以及处理一些工作流程"><a href="#2-使用-github-action-发布-npm、创建-release-以及处理一些工作流程" class="headerlink" title="2. 使用 github action 发布 npm、创建 release 以及处理一些工作流程"></a>2. 使用 github action 发布 npm、创建 release 以及处理一些工作流程</h3><p>如果不了解 github action 的话, 建议先学习一下<a target="_blank" rel="noopener" href="https://docs.github.com/en/actions">github actions</a>的一些概念</p>
+<p>在根目录下创建<code>.github/workflows/node.js.yml</code>CI 配置文件（这里也可以在仓库上的 tab 栏中找到 Actions 生成）</p>
+<p><strong>注意：如果你需要不同的 actions，可以在<a target="_blank" rel="noopener" href="https://github.com/marketplace">Marketplace</a>中查找需要的 action</strong></p>
+<h4 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h4><ol>
+<li>自动发布 npm 包</li>
+<li>创建 release 并上传对应 asset</li>
+<li>跑单元测试，生成测试覆盖率提交到 coveralls</li>
+</ol>
+<h4 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h4><ol>
+<li>在 npm 中生成 token</li>
+</ol>
+<p><img loading="lazy" src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3d25fb73438c471f8fad6e84ec15c47c~tplv-k3u1fbpfcp-zoom-1.image" alt="npm_access_token"></p>
+<ol start="2">
+<li>然后复制 token 到 github 对应仓库的秘钥中</li>
+</ol>
+<p><img loading="lazy" src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a1723d8e466c42df98a86fde8e853955~tplv-k3u1fbpfcp-zoom-1.image" alt="actions secrets"></p>
+<ol start="3">
+<li>设置一个变量名，我们这里设置的是<code>NPM_ACCESS_TOKEN</code>，后面可以在 CI 中通过<code>secrets.NPM_ACCESS_TOKEN</code> 获取到</li>
+</ol>
+<h4 id="整体代码"><a href="#整体代码" class="headerlink" title="整体代码"></a>整体代码</h4><p>有了以上的思路来看下面的整体代码</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token comment"># This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node</span>
+<span class="token comment"># For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs</span>
+
+<span class="token key atrule">name</span><span class="token punctuation">:</span> Node.js CI
+
+<span class="token key atrule">on</span><span class="token punctuation">:</span>
+  <span class="token key atrule">push</span><span class="token punctuation">:</span>
+    <span class="token key atrule">branches</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"main"</span><span class="token punctuation">]</span>
+
+<span class="token key atrule">jobs</span><span class="token punctuation">:</span>
+  <span class="token key atrule">build</span><span class="token punctuation">:</span>
+    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
+
+    <span class="token key atrule">strategy</span><span class="token punctuation">:</span>
+      <span class="token key atrule">matrix</span><span class="token punctuation">:</span>
+        <span class="token key atrule">node-version</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>18.x<span class="token punctuation">]</span>
+        <span class="token comment"># See supported Node.js release schedule at https://nodejs.org/en/about/releases/</span>
+
+    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/checkout@v3
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Use Node.js $<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> matrix.node<span class="token punctuation">-</span>version <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/setup<span class="token punctuation">-</span>node@v3
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">node-version</span><span class="token punctuation">:</span> $<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> matrix.node<span class="token punctuation">-</span>version <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
+          <span class="token key atrule">cache</span><span class="token punctuation">:</span> <span class="token string">"yarn"</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">run</span><span class="token punctuation">:</span> yarn
+      <span class="token comment"># 测试，并生成测试覆盖率文件</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">run</span><span class="token punctuation">:</span> yarn run coveralls
+      <span class="token punctuation">-</span> <span class="token key atrule">run</span><span class="token punctuation">:</span> yarn run build
+      <span class="token comment"># 上报</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Coveralls
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> coverallsapp/github<span class="token punctuation">-</span>action@master
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">github-token</span><span class="token punctuation">:</span> $<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> secrets.GITHUB_TOKEN <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
+
+  <span class="token comment"># publish-npm任务</span>
+  <span class="token key atrule">publish-npm</span><span class="token punctuation">:</span>
+    <span class="token comment"># 在ubuntu最新版本的虚拟机执行</span>
+    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
+    <span class="token comment"># 设置变量</span>
+    <span class="token key atrule">strategy</span><span class="token punctuation">:</span>
+      <span class="token key atrule">matrix</span><span class="token punctuation">:</span>
+        <span class="token key atrule">node-version</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>18.x<span class="token punctuation">]</span>
+    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
+      <span class="token comment"># 检查并切换到main分支</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 检查main分支
+        <span class="token comment"># 使用actions/checkout插件</span>
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/checkout@v3
+
+      <span class="token comment"># 初始化缓存</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 缓存
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/cache@v3
+        <span class="token key atrule">id</span><span class="token punctuation">:</span> cache<span class="token punctuation">-</span>dependencies
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">path</span><span class="token punctuation">:</span> node_modules
+          <span class="token key atrule">key</span><span class="token punctuation">:</span> $<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span>runner.OS<span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span class="token punctuation">-</span>$<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span>hashFiles('<span class="token important">**/yarn.lock')</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
+
+      <span class="token comment"># 安装node</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 设置Node.js
+        <span class="token comment"># 使用actions/setup-node插件</span>
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/setup<span class="token punctuation">-</span>node@v3
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token comment"># node版本</span>
+          <span class="token key atrule">node-version</span><span class="token punctuation">:</span> $<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> matrix.node<span class="token punctuation">-</span>version <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">run</span><span class="token punctuation">:</span> yarn
+      <span class="token punctuation">-</span> <span class="token key atrule">run</span><span class="token punctuation">:</span> yarn run build
+
+      <span class="token comment"># 读取当前版本号</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 读取当前版本号
+        <span class="token key atrule">id</span><span class="token punctuation">:</span> version
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> notiz<span class="token punctuation">-</span>dev/github<span class="token punctuation">-</span>action<span class="token punctuation">-</span>json<span class="token punctuation">-</span>property@release
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token comment"># 读取版本号</span>
+          <span class="token key atrule">path</span><span class="token punctuation">:</span> <span class="token string">"./package.json"</span>
+          <span class="token key atrule">prop_path</span><span class="token punctuation">:</span> <span class="token string">"version"</span>
+
+      <span class="token punctuation">-</span> <span class="token key atrule">run</span><span class="token punctuation">:</span> echo $<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span>steps.version.outputs.prop<span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
+
+      <span class="token comment"># 创建Release</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> release
+        <span class="token comment"># 原本使用的 actions/create-release@latest来发版， actions/upload-release-asset@v1上传release-asset</span>
+        <span class="token comment"># 不过这两个action官方已经停止维护了，所以换成如下</span>
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> softprops/action<span class="token punctuation">-</span>gh<span class="token punctuation">-</span>release@v1
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">files</span><span class="token punctuation">:</span> ./lib/index.umd.js
+          <span class="token key atrule">name</span><span class="token punctuation">:</span> v$<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span>steps.version.outputs.prop<span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
+          <span class="token key atrule">tag_name</span><span class="token punctuation">:</span> v$<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span>steps.version.outputs.prop<span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
+        <span class="token key atrule">env</span><span class="token punctuation">:</span>
+          <span class="token key atrule">GITHUB_TOKEN</span><span class="token punctuation">:</span> $<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> secrets.GITHUB_TOKEN <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
+
+      <span class="token comment"># 发布NPM包</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 发布NPM包
+        <span class="token comment"># 执行发布代码</span>
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
+          npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+          npm publish</span>
+        <span class="token key atrule">env</span><span class="token punctuation">:</span>
+          <span class="token comment"># 配置 npm access token 环境变量</span>
+          <span class="token key atrule">NPM_TOKEN</span><span class="token punctuation">:</span> $<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span>secrets.NPM_ACCESS_TOKEN<span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
+
+      <span class="token comment"># 刷新缓存</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> 刷新缓存
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
+          curl https://purge.jsdelivr.net/npm/iemotion-pic@latest/lib/name.json</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="为-readme-添加-badge-徽章"><a href="#为-readme-添加-badge-徽章" class="headerlink" title="为 readme 添加 badge(徽章)"></a>为 readme 添加 badge(徽章)</h2><p>我们会发现在一个开源项目中，readme 通常都会写的很好，而且还有很多的 badge,如 ant-design 的 readme</p>
+<p><img loading="lazy" src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/89d6d77ff1cb47549efff3c34806ad3c~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<p>那么这一切都是怎么完成的呢？一些简单的 badge 可以直接在<a target="_blank" rel="noopener" href="https://shields.io/">shields</a>中输入仓库名即可生成。</p>
+<p>比如：</p>
+<p>workflow 工作流状态： <img loading="lazy" src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1b685d42f946452d9f203c47fa332849~tplv-k3u1fbpfcp-zoom-1.image" alt="GitHub Workflow Status"></p>
+<p>npm 包版本： <img loading="lazy" src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/672520d5f7e24fd5a4cd385fc88424a5~tplv-k3u1fbpfcp-zoom-1.image" alt="npm"></p>
+<p>license: <img loading="lazy" src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d888e9488a5e4fe7a1a2f12cc422959b~tplv-k3u1fbpfcp-zoom-1.image" alt="GitHub"></p>
+<p>我们也可以根据自己需要来创建不同的 badge</p>
+<p>不过要添加测试覆盖率的 badge 会稍稍有些麻烦。</p>
+<ol>
+<li><p>首先进入<a target="_blank" rel="noopener" href="https://coveralls.io/">coveralls 官网</a>，进去后需要通过 github 的授权</p>
+</li>
+<li><p>授权后点击左侧侧边栏的 ADD REPOS 会进入如下页面</p>
+</li>
+</ol>
+<p><img loading="lazy" src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7c665490a1314097ac2ad996345bb3f7~tplv-k3u1fbpfcp-zoom-1.image"></p>
+<p>然后我们将需要生成 badge 徽章的库设置为 on 即可</p>
+<ol start="3">
+<li>后面的流程就是在 CI 中执行测试脚本并生成测试覆盖率的文件然后上传到 coveralls 就可以了</li>
+</ol>
+</div>
+      
+        <div class="article-credit"><span>作者 Ryo</span><a target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a><button class="text-link" type="button" data-copy-url hidden>复制文章链接</button></div>
+      
+      
+        <nav class="article-neighbours" aria-label="相邻文章">
+          <a href="/2023/06/03/qian-duan/yi-dong-duan/h5-kai-fa-chang-jian-wen-ti/"><small>上一篇</small><strong>移动端开发H5页面，各种问题介绍</strong></a>
+        
+          <a href="/2023/05/20/qian-duan/gong-cheng-hua/cong-ling-kai-fa-yi-ge-ye-mian-ke-shi-hua-da-jian-ping-tai/"><small>下一篇</small><strong>从零开始一个前端可视化搭建平台</strong></a>
+        </nav>
+      
+      
+        <details class="comments" data-comment-src="https://utteranc.es/client.js" data-repo="SaebaRyoo/SaebaRyoo.github.io" data-term="pathname" data-light="github-light" data-dark="github-dark">
+          <summary>读者回信</summary>
+          <div class="comment-mount"></div><a class="text-link" target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/SaebaRyoo.github.io/issues">在 GitHub 查看讨论</a>
+        </details>
+      
+    </div>
+  </div>
+</article>
+
+
+<dialog class="image-dialog" aria-label="查看原图"><form method="dialog"><button class="icon-btn" aria-label="关闭原图"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form><img alt=""></dialog>
+
+</main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+ 咕嘎邮便局 <span>·</span> Ryo</a>
+      <nav aria-label="页脚导航">
+        <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">GitHub</a>
+        <a href="/tags/">标签</a>
+        <a href="/visualization-layout/">可视化实验</a>
+        <a href="#main-content">回到顶部</a>
+      </nav>
+    </div>
+  </footer>
+  <dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="/search.xml">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form>
+  </header>
+  <label class="search-field"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>
+
+</body>
+</html>

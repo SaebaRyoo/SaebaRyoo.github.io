@@ -1,0 +1,388 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:title" content="使用Github Actions+Docker自动化部署Nestjs · Ryo的小站">
+  <meta property="og:description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://saebaryoo.github.io/images/gugu-doro/web/anime-05-snowy-postcards.jpg">
+  <link rel="canonical" href="https://saebaryoo.github.io/2025/02/23/yun-wei/shi-yong-github-actions-docker-zi-dong-hua-bu-shu-nestjs/">
+  <link rel="icon" href="/post-office/gugu-icon.png" type="image/png">
+  <title>使用Github Actions+Docker自动化部署Nestjs · Ryo的小站</title>
+  <script>
+    try {
+      var storedDark = localStorage.getItem('dark');
+      document.documentElement.dataset.theme = (storedDark === null ? matchMedia('(prefers-color-scheme: dark)').matches : storedDark === 'true') ? 'dark' : 'light';
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/post-office/post.css">
+  <script defer src="/post-office/post.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.3 8.5-6.3"/></symbol>
+    <symbol id="i-wing" viewBox="0 0 32 24"><path d="M1.5 6.5h8m-6.5 4h5m-3.5 4h2"/><path d="M12 5h18l-5 14H7z" fill="currentColor" stroke="none"/><path d="m12 7 6 5.6 10-5.8" stroke="var(--wing-line, #235344)"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" transform="rotate(-8 12 12)"/><path d="M8 8h.1m4 4h.1m3.9 4h.1" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a8.8 8.8 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 15 6 5h12l3 10v4H3z"/><path d="M3 14h5l2 3h4l2-3h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 3h10v11H3z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-5l2 2m0-5v5h-5M20 13a8 8 0 0 1-14 5l-2-2m0 5v-5h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 16h16v4H4zM7 16c0-3 3-3.5 3-5V9a4 4 0 1 1 4 0v2c0 1.5 3 2 3 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="m3 3 8 .3L21 13l-8 8-9.7-9.7z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="m2 10 20-7-6.5 18-4.3-7.7L2 10Z"/><path d="M11.2 13.3 22 3"/></symbol>
+  </defs>
+</svg>
+
+  <a class="skip" href="#main-content">跳到正文</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="/" aria-label="Ryo的小站首页">
+        <span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 32 24"><use href="#i-wing"/></svg></span>
+        <span><strong>Ryo的小站</strong><small lang="en">GUGU POST</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives/">文章归档</a>
+        
+          <a href="/categories/">分类索引</a>
+        
+          <a href="/visualization-layout/">实验室</a>
+        
+          <a href="/about/">关于</a>
+        
+      </nav>
+      <div class="header-tools">
+        <button class="search-trigger" type="button" data-search-open hidden aria-label="搜索文章" aria-haspopup="dialog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<span>搜索</span><kbd>/</kbd></button>
+        
+          <button type="button" class="icon-btn theme-trigger" data-theme-toggle hidden aria-label="夜间模式" title="夜间模式"><svg class="icon" aria-hidden="true"><use class="moon" href="#i-moon"/><use class="sun" href="#i-sun"/></svg></button>
+        
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="wrap" tabindex="-1">
+<article class="inner-page reading-page">
+  <a class="breadcrumb" href="/archives/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
+文章归档</a>
+  <header class="article-heading">
+    <div class="letter-meta">
+      <a class="category-ink ink-letters" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span aria-hidden="true">/</span>
+      <time datetime="2025-02-23">2025.02.23</time><span aria-hidden="true">/</span>Ryo
+    </div>
+    <h1>使用Github Actions+Docker自动化部署Nestjs</h1>
+    <div class="article-tags"><a href="/tags/Docker/"># Docker</a><a href="/tags/Git/"># Git</a><a href="/tags/Nestjs/"># Nestjs</a></div>
+  </header>
+  <div class="reading-grid with-toc">
+    
+      <aside class="contents"><details open><summary>信件目录</summary><nav aria-label="文章目录"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%A6%82%E4%BD%95%E5%AE%89%E5%85%A8%E9%83%A8%E7%BD%B2"><span class="toc-text">1. 如何安全部署</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E4%BC%98%E7%82%B9"><span class="toc-text">1.1. 优点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E6%BD%9C%E5%9C%A8%E9%A3%8E%E9%99%A9"><span class="toc-text">1.2. 潜在风险</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E5%AE%89%E5%85%A8%E6%96%B9%E6%A1%88"><span class="toc-text">1.3. 安全方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-1-%E5%88%9B%E5%BB%BA%E4%B8%93%E7%94%A8%E7%94%A8%E6%88%B7%EF%BC%9A"><span class="toc-text">1.3.1. 创建专用用户：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-1-1-%E5%88%9B%E5%BB%BA%E9%83%A8%E7%BD%B2%E8%B4%A6%E6%88%B7"><span class="toc-text">1.3.1.1. 创建部署账户</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-1-2-%E8%AE%BE%E7%BD%AE%E5%AF%86%E7%A0%81"><span class="toc-text">1.3.1.2. 设置密码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-1-3-%E4%B8%BA%E7%94%A8%E6%88%B7%E5%88%86%E9%85%8D%E7%94%A8%E6%88%B7%E7%BB%84"><span class="toc-text">1.3.1.3. 为用户分配用户组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-1-4-%E5%88%A0%E9%99%A4%E5%92%8C%E5%86%BB%E7%BB%93%E7%94%A8%E6%88%B7%E8%B4%A6%E6%88%B7"><span class="toc-text">1.3.1.4. 删除和冻结用户账户</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-2-%E9%99%90%E5%88%B6%E7%A7%81%E9%92%A5%E6%9D%83%E9%99%90%EF%BC%88%E6%9A%82%E6%9C%AA%E4%BD%BF%E7%94%A8%EF%BC%89"><span class="toc-text">1.3.2. 限制私钥权限（暂未使用）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%BB%99-nestjs-%E9%A1%B9%E7%9B%AE%E5%A2%9E%E5%8A%A0-docker-%E9%85%8D%E7%BD%AE"><span class="toc-text">2. 给 nestjs 项目增加 docker 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%88%9B%E5%BB%BA-Dockerfile-%E9%95%9C%E5%83%8F%E6%96%87%E4%BB%B6"><span class="toc-text">2.1. 创建 Dockerfile 镜像文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E5%88%9B%E5%BB%BA-docker-compose-yml-%E9%83%A8%E7%BD%B2%E6%96%87%E4%BB%B6"><span class="toc-text">2.2. 创建 docker-compose.yml 部署文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E9%85%8D%E7%BD%AE-Github-Workflow"><span class="toc-text">3. 配置 Github Workflow</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-Github-Action-%E7%AE%80%E4%BB%8B"><span class="toc-text">3.1. Github Action 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E5%88%9B%E5%BB%BA-workflow"><span class="toc-text">3.2. 创建 workflow</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E5%9C%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%E7%A7%98%E9%92%A5"><span class="toc-text">3.3. 在服务器配置秘钥</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-%E5%9C%A8-github-%E9%A1%B9%E7%9B%AE%E4%B8%AD%E8%AE%BE%E7%BD%AE%E4%BB%93%E5%BA%93%E7%A7%98%E9%92%A5"><span class="toc-text">3.4. 在 github 项目中设置仓库秘钥</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-1-REMOTE-HOST"><span class="toc-text">3.4.1. REMOTE_HOST</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-2-REMOTE-USER"><span class="toc-text">3.4.2. REMOTE_USER</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-3-SSH-PRIVATE-KEY"><span class="toc-text">3.4.3. SSH_PRIVATE_KEY</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AE%BE%E7%BD%AE"><span class="toc-text">4. 服务器设置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%85%B6%E4%BB%96%E6%96%B9%E6%A1%88%E9%97%AE%E9%A2%98"><span class="toc-text">5. 其他方案问题</span></a></li></ol></nav></details></aside>
+    
+    <div class="reading-column">
+      <div class="prose"><h1 id="1-如何安全部署"><a href="#1-如何安全部署" class="headerlink" title="1. 如何安全部署"></a>1. <strong>如何安全部署</strong></h1><p><strong>在下面的部署工作中，我们会将 Linux 服务器的 SSH 私钥配置到 GitHub 的 Secrets 中，虽然是一种常见的自动化部署方式，但需要谨慎处理以确保安全性。</strong></p>
+<h2 id="1-1-优点"><a href="#1-1-优点" class="headerlink" title="1.1. 优点"></a>1.1. <strong>优点</strong></h2><ul>
+<li>​<strong>自动化部署</strong>​<strong>：通过 GitHub Actions 实现自动化部署，减少人工操作，提高效率。</strong></li>
+</ul>
+<h2 id="1-2-潜在风险"><a href="#1-2-潜在风险" class="headerlink" title="1.2. 潜在风险"></a>1.2. <strong>潜在风险</strong></h2><ul>
+<li>​<strong>私钥泄露</strong>​<strong>：如果 GitHub 账号被入侵，攻击者可能获取到 Secrets 中的 SSH 私钥，从而访问你的服务器。</strong></li>
+<li>​<strong>私钥滥用</strong>​<strong>：如果私钥被用于多个服务器，一旦泄露，所有相关服务器都会受到影响。</strong></li>
+</ul>
+<h2 id="1-3-安全方案"><a href="#1-3-安全方案" class="headerlink" title="1.3. 安全方案"></a>1.3. <strong>安全方案</strong></h2><h3 id="1-3-1-创建专用用户："><a href="#1-3-1-创建专用用户：" class="headerlink" title="1.3.1. 创建专用用户："></a>1.3.1. <strong>创建专用用户：</strong></h3><p><strong>在服务器上创建一个专门用于部署的用户，并限制其权限。</strong></p>
+<h4 id="1-3-1-1-创建部署账户"><a href="#1-3-1-1-创建部署账户" class="headerlink" title="1.3.1.1. 创建部署账户"></a>1.3.1.1. <strong>创建部署账户</strong></h4><p><strong>Linux 系统中创建用户账户的最基本方法是使用 useradd 命令</strong></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">useradd</span> <span class="token parameter variable">-d</span> /home/deploy deploy<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>上面的命令等同于下面的命令，不过他简化了为 deploy 用户指定”家目录”的操作</strong></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">useradd</span> deploy
+<span class="token function">sudo</span> <span class="token function">chown</span> deploy:deploy /home/deploy
+<span class="token function">sudo</span> <span class="token function">chmod</span> <span class="token number">700</span> /home/deploy<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="1-3-1-2-设置密码"><a href="#1-3-1-2-设置密码" class="headerlink" title="1.3.1.2. 设置密码"></a>1.3.1.2. <strong>设置密码</strong></h4><p><strong>新用户创建后，需要为其设置密码，我们可以使用以下命令修改 deploy 用户的密码</strong></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">passwd</span> deploy<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="1-3-1-3-为用户分配用户组"><a href="#1-3-1-3-为用户分配用户组" class="headerlink" title="1.3.1.3. 为用户分配用户组"></a>1.3.1.3. <strong>为用户分配用户组</strong></h4><p><strong>我们创建了 deploy 用户后，它默认就有一个 deploy 组，我们可以通过</strong><code>groups deploy</code>来查看这个用户的组。如果想要查看全部的组就使用<code>cat /etc/group</code>。</p>
+<p><strong>因为我们后续会使用 docker 部署，所以为了</strong>确保 <code>deploy</code> 用户有权限访问 Docker 守护进程。我们可以使用以下命令</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">usermod</span> <span class="token parameter variable">-aG</span> <span class="token function">docker</span> deploy<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="1-3-1-4-删除和冻结用户账户"><a href="#1-3-1-4-删除和冻结用户账户" class="headerlink" title="1.3.1.4. 删除和冻结用户账户"></a>1.3.1.4. <strong>删除和冻结用户账户</strong></h4><p><strong>在某些情况下，可能需要删除或冻结用户。这时候就需要使用 userdel 命令，或者 passwd</strong></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 删除用户以及他的 家目录</span>
+<span class="token function">userdel</span> deploy
+
+<span class="token comment"># 冻结用户账户，使其无法登录</span>
+<span class="token function">passwd</span> <span class="token parameter variable">-l</span> deploy<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="1-3-2-限制私钥权限（暂未使用）"><a href="#1-3-2-限制私钥权限（暂未使用）" class="headerlink" title="1.3.2. 限制私钥权限（暂未使用）"></a>1.3.2. <strong>限制私钥权限（暂未使用）</strong></h3><p>​<strong>限制私钥权限</strong>​<strong>：为 GitHub Actions 使用的 SSH 私钥配置最小权限。例如：</strong></p>
+<ul>
+<li><strong>仅允许该私钥访问特定的目录（如部署目录）。</strong></li>
+<li>**禁止该私钥执行危险操作（如 **<code>sudo</code> 或修改系统文件）。</li>
+</ul>
+<h1 id="2-给-nestjs-项目增加-docker-配置"><a href="#2-给-nestjs-项目增加-docker-配置" class="headerlink" title="2. 给 nestjs 项目增加 docker 配置"></a>2. <strong>给 nestjs 项目增加 docker 配置</strong></h1><h2 id="2-1-创建-Dockerfile-镜像文件"><a href="#2-1-创建-Dockerfile-镜像文件" class="headerlink" title="2.1. 创建 Dockerfile 镜像文件"></a>2.1. <strong>创建 Dockerfile 镜像文件</strong></h2><pre class="line-numbers language-docker" data-language="docker"><code class="language-docker"><span class="token comment"># 使用官方 Node.js 运行时作为基础镜像</span>
+<span class="token instruction"><span class="token keyword">FROM</span> node:20.18.0-alpine <span class="token keyword">AS</span> builder</span>
+
+<span class="token comment"># 设置工作目录为 /ibuy-backend</span>
+<span class="token instruction"><span class="token keyword">WORKDIR</span> /ibuy-backend</span>
+
+<span class="token comment"># 复制 package.json 和 yarn.lock 文件</span>
+<span class="token instruction"><span class="token keyword">COPY</span> package*.json yarn.lock ./</span>
+<span class="token comment">#</span>
+<span class="token comment">## 安装依赖（使用 yarn 代替 npm）</span>
+<span class="token instruction"><span class="token keyword">RUN</span> yarn install</span>
+
+<span class="token comment"># 复制项目的其他文件</span>
+<span class="token instruction"><span class="token keyword">COPY</span> . .</span>
+<span class="token comment">#</span>
+<span class="token comment">## 使用 yarn 进行构建</span>
+<span class="token instruction"><span class="token keyword">RUN</span> yarn build</span>
+
+<span class="token comment"># 暴露应用的端口</span>
+<span class="token instruction"><span class="token keyword">EXPOSE</span> 8001</span>
+
+<span class="token comment"># 设置启动命令</span>
+<span class="token instruction"><span class="token keyword">CMD</span> [<span class="token string">"node"</span>, <span class="token string">"dist/main.js"</span>]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="2-2-创建-docker-compose-yml-部署文件"><a href="#2-2-创建-docker-compose-yml-部署文件" class="headerlink" title="2.2. 创建 docker-compose.yml 部署文件"></a>2.2. <strong>创建 docker-compose.yml 部署文件</strong></h2><p><strong>这个</strong><code>environment</code>是按照你.env 文件中的变量来配置的，<code>.env</code>后面会讲到</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"2.5"</span>
+
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token comment"># NestJS service</span>
+  <span class="token key atrule">backend-nestjs</span><span class="token punctuation">:</span>
+    <span class="token key atrule">build</span><span class="token punctuation">:</span>
+      <span class="token key atrule">context</span><span class="token punctuation">:</span> .
+      <span class="token key atrule">dockerfile</span><span class="token punctuation">:</span> Dockerfile
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> ibuy<span class="token punctuation">-</span>backend<span class="token punctuation">-</span>nestjs
+    <span class="token comment"># 设置docker 网络，因为前端项目也是通过docker容器单独部署的</span>
+    <span class="token key atrule">networks</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> ibuy_network
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token string">"8001:8001"</span>
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> ~/data/docker<span class="token punctuation">-</span>volumes/ibuy<span class="token punctuation">-</span>backend/logs<span class="token punctuation">:</span>/ibuy<span class="token punctuation">-</span>backend/logs
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> NODE_ENV=production
+      <span class="token punctuation">-</span> POSTGRES_HOST=$<span class="token punctuation">&#123;</span>POSTGRES_HOST<span class="token punctuation">&#125;</span>
+      <span class="token punctuation">-</span> POSTGRES_PORT=$<span class="token punctuation">&#123;</span>POSTGRES_PORT<span class="token punctuation">&#125;</span>
+      <span class="token punctuation">-</span> POSTGRES_USER=$<span class="token punctuation">&#123;</span>POSTGRES_USER<span class="token punctuation">&#125;</span>
+      <span class="token punctuation">-</span> POSTGRES_PASSWORD=$<span class="token punctuation">&#123;</span>POSTGRES_PASSWORD<span class="token punctuation">&#125;</span>
+      <span class="token punctuation">-</span> POSTGRES_DB=$<span class="token punctuation">&#123;</span>POSTGRES_DATABASE<span class="token punctuation">&#125;</span>
+      <span class="token punctuation">-</span> REDIS_HOST=$<span class="token punctuation">&#123;</span>REDIS_HOST<span class="token punctuation">&#125;</span>
+      <span class="token punctuation">-</span> REDIS_PORT=$<span class="token punctuation">&#123;</span>REDIS_PORT<span class="token punctuation">&#125;</span>
+      <span class="token punctuation">-</span> REDIS_PASSWORD=$<span class="token punctuation">&#123;</span>REDIS_PASSWORD<span class="token punctuation">&#125;</span>
+      <span class="token punctuation">-</span> MINIO_HOST=$<span class="token punctuation">&#123;</span>MINIO_HOST<span class="token punctuation">&#125;</span>
+      <span class="token punctuation">-</span> MINIO_PORT=$<span class="token punctuation">&#123;</span>MINIO_PORT<span class="token punctuation">&#125;</span>
+      <span class="token punctuation">-</span> MINIO_ACCESS_KEY=$<span class="token punctuation">&#123;</span>MINIO_ACCESS_KEY<span class="token punctuation">&#125;</span> <span class="token comment"># Access key for MinIO</span>
+      <span class="token punctuation">-</span> MINIO_SECRET_KEY=$<span class="token punctuation">&#123;</span>MINIO_SECRET_KEY<span class="token punctuation">&#125;</span> <span class="token comment"># Secret key for MinIO</span>
+      <span class="token punctuation">-</span> JWT_SECRET=$<span class="token punctuation">&#123;</span>JWT_SECRET<span class="token punctuation">&#125;</span>
+      <span class="token punctuation">-</span> JWT_EXPIRES_IN=$<span class="token punctuation">&#123;</span>JWT_EXPIRES_IN<span class="token punctuation">&#125;</span>
+      <span class="token punctuation">-</span> ES_NODE=$<span class="token punctuation">&#123;</span>ES_NODE<span class="token punctuation">&#125;</span>
+      <span class="token punctuation">-</span> ELASTIC_USERNAME=$<span class="token punctuation">&#123;</span>ELASTIC_USERNAME<span class="token punctuation">&#125;</span>
+      <span class="token punctuation">-</span> ELASTIC_PASSWORD=$<span class="token punctuation">&#123;</span>ELASTIC_PASSWORD<span class="token punctuation">&#125;</span>
+    <span class="token key atrule">restart</span><span class="token punctuation">:</span> always
+
+<span class="token key atrule">networks</span><span class="token punctuation">:</span>
+  <span class="token key atrule">ibuy_network</span><span class="token punctuation">:</span>
+    <span class="token key atrule">driver</span><span class="token punctuation">:</span> bridge<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="3-配置-Github-Workflow"><a href="#3-配置-Github-Workflow" class="headerlink" title="3. 配置 Github Workflow"></a>3. <strong>配置 Github Workflow</strong></h1><h2 id="3-1-Github-Action-简介"><a href="#3-1-Github-Action-简介" class="headerlink" title="3.1. Github Action 简介"></a>3.1. <strong>Github Action 简介</strong></h2><ul>
+<li><strong>GitHub Actions</strong> 部署文件通常以 <code>xxx.yml</code> 命名，路径为项目根目录下 <code>/.github/workflows/xxx.yml</code> 。</li>
+<li><strong>Jobs 中使用的 Action 可以去 github 的</strong><a target="_blank" rel="noopener" href="https://github.com/marketplace">macketplace</a>寻找</li>
+</ul>
+<p><strong>一般的 workflow 流程如下</strong></p>
+<ol>
+<li><p><strong>Action</strong></p>
+<ol>
+<li><strong>条件</strong></li>
+</ol>
+</li>
+<li><p><strong>分支</strong></p>
+</li>
+<li><p><strong>Jobs</strong></p>
+<ol>
+<li><strong>运行环境</strong></li>
+</ol>
+</li>
+<li><p><strong>步骤一</strong></p>
+</li>
+<li><p><strong>步骤二</strong></p>
+</li>
+<li><p><strong>步骤 N</strong></p>
+</li>
+<li><p><strong>发布到服务器</strong></p>
+</li>
+</ol>
+<h2 id="3-2-创建-workflow"><a href="#3-2-创建-workflow" class="headerlink" title="3.2. 创建 workflow"></a>3.2. <strong>创建 workflow</strong></h2><p><strong>根据上面的分析，我们可以在前端项目的根目录创建如下的 **</strong>.github&#x2F;workflows&#x2F;deploy.yml**</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">name</span><span class="token punctuation">:</span> Docker Image CI/CD
+
+<span class="token key atrule">on</span><span class="token punctuation">:</span>
+  <span class="token key atrule">push</span><span class="token punctuation">:</span>
+    <span class="token key atrule">branches</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> main <span class="token comment"># 当 main 分支有推送时触发</span>
+
+<span class="token key atrule">jobs</span><span class="token punctuation">:</span>
+  <span class="token key atrule">build-and-deploy</span><span class="token punctuation">:</span>
+    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
+
+    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
+      <span class="token comment"># 切换分支</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Checkout
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/checkout@v4
+
+      <span class="token comment"># 部署到服务器</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Deploy to server
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> easingthemes/ssh<span class="token punctuation">-</span>deploy@v5.1.0
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token comment"># 服务器的主机地址</span>
+          <span class="token key atrule">REMOTE_HOST</span><span class="token punctuation">:</span> $<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> secrets.SERVER_HOST <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
+          <span class="token comment"># 服务器用户名</span>
+          <span class="token key atrule">REMOTE_USER</span><span class="token punctuation">:</span> $<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> secrets.SERVER_USERNAME <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
+          <span class="token comment"># 服务器私钥</span>
+          <span class="token key atrule">SSH_PRIVATE_KEY</span><span class="token punctuation">:</span> $<span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span> secrets.SERVER_PRIVATE_KEY <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
+          <span class="token comment"># 本地源目录</span>
+          <span class="token key atrule">SOURCE</span><span class="token punctuation">:</span> <span class="token string">"."</span>
+          <span class="token comment">#          EXCLUDE: "/node_modules/"</span>
+          <span class="token comment"># 部署前执行的脚本</span>
+          <span class="token key atrule">SCRIPT_BEFORE</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
+            # 创建工作目录
+            mkdir -p ~/work/ibuy-backend
+            # 删除构建目录
+            rm -rf ~/work/ibuy-backend/dist</span>
+          <span class="token comment"># 目标目录（将github上已经提交的内容全部上传到服务器对应为止）</span>
+          <span class="token key atrule">TARGET</span><span class="token punctuation">:</span> <span class="token string">"~/work/ibuy-backend"</span>
+          <span class="token comment"># 部署后执行的脚本</span>
+          <span class="token key atrule">SCRIPT_AFTER</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
+            # 进入工作目录
+            cd ~/work/ibuy-backend</span>
+
+            <span class="token comment"># 构建并启动 Docker 容器</span>
+            docker<span class="token punctuation">-</span>compose up <span class="token punctuation">-</span><span class="token punctuation">-</span>build <span class="token punctuation">-</span>d<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>因为要部署到服务器端，所以要了解连接到服务器的方式，我们选择 ssh 连接，网上也用 sftp 连接连接的教程。</p>
+<p>​<strong>我们用的 Action 是</strong><a target="_blank" rel="noopener" href="https://github.com/marketplace/actions/ssh-deploy#configuration"><strong>ssh deploy</strong></a> <strong>，它相关的配置项可以点链接详细查看</strong></p>
+<p>​</p>
+<h2 id="3-3-在服务器配置秘钥"><a href="#3-3-在服务器配置秘钥" class="headerlink" title="3.3. 在服务器配置秘钥"></a>3.3. <strong>在服务器配置秘钥</strong></h2><ul>
+<li><strong>使用</strong><code>deploy</code>用户登录我们的服务器，在 <code>root</code> 目录下输入，直接回车到底</li>
+</ul>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">ssh<span class="token punctuation">-</span>keygen <span class="token punctuation">-</span>m PEM <span class="token punctuation">-</span>t rsa <span class="token punctuation">-</span>b 4096<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li>**此时， **<code>~/.ssh/</code> 下生成了私钥文件 <code>id_dsa</code> 、公钥文件<code>id_dsa.pub</code> ，然后根据公钥文件生成<code>authorized_keys</code> ，</li>
+</ul>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> ~/.ssh/id_rsa.pub <span class="token operator">>></span> ~/.ssh/authorized_keys<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<ul>
+<li><strong>给以上三个文件分别设置权限。</strong></li>
+</ul>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">chmod <span class="token number">600</span> <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>ssh<span class="token operator">/</span>id_rsa<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">chmod <span class="token number">600</span> <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>ssh<span class="token operator">/</span>id_rsa<span class="token punctuation">.</span>pub<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">chmod <span class="token number">600</span> <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>ssh<span class="token operator">/</span>authorized_keys<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="3-4-在-github-项目中设置仓库秘钥"><a href="#3-4-在-github-项目中设置仓库秘钥" class="headerlink" title="3.4. 在 github 项目中设置仓库秘钥"></a>3.4. <strong>在 github 项目中设置仓库秘钥</strong></h2><p>**进入到你的 github 项目中，点击顶部导航栏的**<strong>​Setting。​</strong>然后点击 **Secrets and variables -&gt; New repository secret** 创建 workflow 中需要的三个变量，分别是</p>
+<p><img loading="lazy" src="https://cdn.nlark.com/yuque/0/2025/png/411665/1739775808823-a0836f96-220a-408d-a58d-0abd591a7ece.png"></p>
+<h3 id="3-4-1-REMOTE-HOST"><a href="#3-4-1-REMOTE-HOST" class="headerlink" title="3.4.1. REMOTE_HOST"></a>3.4.1. <strong>REMOTE_HOST</strong></h3><p><strong>你的服务器 ip</strong></p>
+<h3 id="3-4-2-REMOTE-USER"><a href="#3-4-2-REMOTE-USER" class="headerlink" title="3.4.2. REMOTE_USER"></a>3.4.2. <strong>REMOTE_USER</strong></h3><p>**填写 **<code>deploy</code>用户</p>
+<h3 id="3-4-3-SSH-PRIVATE-KEY"><a href="#3-4-3-SSH-PRIVATE-KEY" class="headerlink" title="3.4.3. SSH_PRIVATE_KEY"></a>3.4.3. <strong>SSH_PRIVATE_KEY</strong></h3><p><strong>用于连接服务器的秘钥，你需要在</strong>服务器中 <code>cat</code> 密钥，将所有内容复制到上图的 <strong>SSH_PRIVATE_KEY</strong> 中</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c">cat <span class="token operator">~</span><span class="token operator">/</span><span class="token punctuation">.</span>ssh<span class="token operator">/</span>id_rsa<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h1 id="4-服务器设置"><a href="#4-服务器设置" class="headerlink" title="4. 服务器设置"></a>4. <strong>服务器设置</strong></h1><p><strong>使用</strong><code>deploy</code>用户登录服务器，然后输入<code>pwd</code>。我们会发现当前用户的工作目就是我们设置的家目录<code>/home/deploy</code></p>
+<p><img loading="lazy" src="https://cdn.nlark.com/yuque/0/2025/png/411665/1740295209014-52f4acdc-f863-46c2-ba88-9add391f2d4f.png"></p>
+<p><strong>然后我们创建 nestjs 的工作目录</strong></p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">mkdir <span class="token punctuation">-</span>p ~/work/ibuy<span class="token punctuation">-</span>backend<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>这里的</strong><code>&quot;~&quot;</code>指的就是我们的家目录 <code>/home/deploy</code>。</p>
+<p><strong>因为我们的.env 文件不能外露到 github 上，所需要使用</strong><code>vim .env</code>手动创建以下我们的<code>.env</code>文件，将下面的内容拷贝到<code>.env</code>中</p>
+<p><strong>注意：这里要按照你自己的环境变量配置</strong></p>
+<pre class="line-numbers language-plain" data-language="plain"><code class="language-plain">JWT_SECRET=xxx
+JWT_EXPIRES_IN=10d
+
+
+#postgre
+POSTGRES_HOST=your-host
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=xxx
+POSTGRES_DATABASE=mall
+
+
+# redis
+REDIS_HOST=your-host
+REDIS_PORT=6379
+REDIS_PASSWORD=xxx
+
+
+# minio
+MINIO_HOST=your-host
+MINIO_PORT=9000
+MINIO_ROOT_USER=minio
+MINIO_ROOT_PASSWORD=xxx
+MINIO_ACCESS_KEY=xxx
+MINIO_SECRET_KEY=xxx
+
+# elasticsearch dev enviroment
+ES_NODE=http://your-host:9200
+ELASTIC_USERNAME=elastic
+ELASTIC_PASSWORD=xxx
+ES_PORT=9200<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="5-其他方案问题"><a href="#5-其他方案问题" class="headerlink" title="5. 其他方案问题"></a>5. <strong>其他方案问题</strong></h1><p><strong>在使用 github action 部署时发现 nestjs 的项目在 build 时不会将 node_modules 打包进去，这就导致需要将所有的文件拉到服务器上再执行构建任务。正好有一篇</strong><a target="_blank" rel="noopener" href="https://juejin.cn/post/7065724860688760862#heading-2">文章</a>也讲到了这个问题。它是自己创建了一个<code>webpack.config.js</code>文件，忽略掉<code>externals</code>以及一些 nest 提供的插件。但是这有一个很大的隐患：只适用于简单的纯 js 项目，如果遇到了依赖库里有动态加载，二进制依赖，使用了 fs 读写文件，这几种情况打包成一个文件会出问题</p>
+</div>
+      
+        <div class="article-credit"><span>作者 Ryo</span><a target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a><button class="text-link" type="button" data-copy-url hidden>复制文章链接</button></div>
+      
+      
+        <nav class="article-neighbours" aria-label="相邻文章">
+          <a href="/2025/03/03/hou-duan/shang-cheng/shi-yong-minio-he-nestjs-shi-xian-wen-jian-cun-chu/"><small>上一篇</small><strong>使用Minio和Nestjs实现文件存储</strong></a>
+        
+          <a href="/2025/02/20/yun-wei/githubaction-zi-dong-hua-bu-shu-qian-duan-ying-yong/"><small>下一篇</small><strong>使用Docker + Jenkins + Nginx 实战前端自动化部署</strong></a>
+        </nav>
+      
+      
+        <details class="comments" data-comment-src="https://utteranc.es/client.js" data-repo="SaebaRyoo/SaebaRyoo.github.io" data-term="pathname" data-light="github-light" data-dark="github-dark">
+          <summary>读者回信</summary>
+          <div class="comment-mount"></div><a class="text-link" target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/SaebaRyoo.github.io/issues">在 GitHub 查看讨论</a>
+        </details>
+      
+    </div>
+  </div>
+</article>
+
+
+<dialog class="image-dialog" aria-label="查看原图"><form method="dialog"><button class="icon-btn" aria-label="关闭原图"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form><img alt=""></dialog>
+
+</main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+ 咕嘎邮便局 <span>·</span> Ryo</a>
+      <nav aria-label="页脚导航">
+        <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">GitHub</a>
+        <a href="/tags/">标签</a>
+        <a href="/visualization-layout/">可视化实验</a>
+        <a href="#main-content">回到顶部</a>
+      </nav>
+    </div>
+  </footer>
+  <dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="/search.xml">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form>
+  </header>
+  <label class="search-field"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>
+
+</body>
+</html>

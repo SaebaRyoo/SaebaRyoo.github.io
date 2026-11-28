@@ -1,0 +1,243 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:title" content="如何优雅的更新你的npm包 · Ryo的小站">
+  <meta property="og:description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://saebaryoo.github.io/images/gugu-doro/web/01-pair-programming.jpg">
+  <link rel="canonical" href="https://saebaryoo.github.io/2025/03/15/gong-ju/npm/ru-he-you-ya-de-geng-xin-ni-de-npm-bao/">
+  <link rel="icon" href="/post-office/gugu-icon.png" type="image/png">
+  <title>如何优雅的更新你的npm包 · Ryo的小站</title>
+  <script>
+    try {
+      var storedDark = localStorage.getItem('dark');
+      document.documentElement.dataset.theme = (storedDark === null ? matchMedia('(prefers-color-scheme: dark)').matches : storedDark === 'true') ? 'dark' : 'light';
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/post-office/post.css">
+  <script defer src="/post-office/post.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.3 8.5-6.3"/></symbol>
+    <symbol id="i-wing" viewBox="0 0 32 24"><path d="M1.5 6.5h8m-6.5 4h5m-3.5 4h2"/><path d="M12 5h18l-5 14H7z" fill="currentColor" stroke="none"/><path d="m12 7 6 5.6 10-5.8" stroke="var(--wing-line, #235344)"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" transform="rotate(-8 12 12)"/><path d="M8 8h.1m4 4h.1m3.9 4h.1" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a8.8 8.8 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 15 6 5h12l3 10v4H3z"/><path d="M3 14h5l2 3h4l2-3h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 3h10v11H3z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-5l2 2m0-5v5h-5M20 13a8 8 0 0 1-14 5l-2-2m0 5v-5h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 16h16v4H4zM7 16c0-3 3-3.5 3-5V9a4 4 0 1 1 4 0v2c0 1.5 3 2 3 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="m3 3 8 .3L21 13l-8 8-9.7-9.7z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="m2 10 20-7-6.5 18-4.3-7.7L2 10Z"/><path d="M11.2 13.3 22 3"/></symbol>
+  </defs>
+</svg>
+
+  <a class="skip" href="#main-content">跳到正文</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="/" aria-label="Ryo的小站首页">
+        <span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 32 24"><use href="#i-wing"/></svg></span>
+        <span><strong>Ryo的小站</strong><small lang="en">GUGU POST</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives/">文章归档</a>
+        
+          <a href="/categories/">分类索引</a>
+        
+          <a href="/visualization-layout/">实验室</a>
+        
+          <a href="/about/">关于</a>
+        
+      </nav>
+      <div class="header-tools">
+        <button class="search-trigger" type="button" data-search-open hidden aria-label="搜索文章" aria-haspopup="dialog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<span>搜索</span><kbd>/</kbd></button>
+        
+          <button type="button" class="icon-btn theme-trigger" data-theme-toggle hidden aria-label="夜间模式" title="夜间模式"><svg class="icon" aria-hidden="true"><use class="moon" href="#i-moon"/><use class="sun" href="#i-sun"/></svg></button>
+        
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="wrap" tabindex="-1">
+<article class="inner-page reading-page">
+  <a class="breadcrumb" href="/archives/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
+文章归档</a>
+  <header class="article-heading">
+    <div class="letter-meta">
+      <a class="category-ink ink-terminal" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a><span aria-hidden="true">/</span>
+      <time datetime="2025-03-15">2025.03.15</time><span aria-hidden="true">/</span>Ryo
+    </div>
+    <h1>如何优雅的更新你的npm包</h1>
+    <div class="article-tags"><a href="/tags/Node/"># Node</a><a href="/tags/NPM/"># NPM</a></div>
+  </header>
+  <div class="reading-grid with-toc">
+    
+      <aside class="contents"><details open><summary>信件目录</summary><nav aria-label="文章目录"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85npm-check-updates"><span class="toc-text">1. 安装npm-check-updates</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E4%BD%BF%E7%94%A8"><span class="toc-text">2. 使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E6%A3%80%E6%9F%A5%E6%89%80%E6%9C%89%E9%A1%B9%E7%9B%AE%E4%BE%9D%E8%B5%96%E9%A1%B9%E7%9A%84%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC"><span class="toc-text">2.1. 检查所有项目依赖项的最新版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E5%85%A8%E9%83%A8%E6%9B%B4%E6%96%B0"><span class="toc-text">2.2. 全部更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%E4%BA%A4%E4%BA%92%E6%A8%A1%E5%BC%8F"><span class="toc-text">2.3. 交互模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%E6%8C%89%E7%85%A7%E6%8C%87%E5%AE%9A%E7%9A%84%E8%A7%84%E5%88%99%E6%9B%B4%E6%96%B0"><span class="toc-text">2.4. 按照指定的规则更新</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-%E5%8F%AA%E6%9B%B4%E6%96%B0-nestjs-%E5%BC%80%E5%A4%B4%E7%9A%84"><span class="toc-text">2.4.1. 只更新 @nestjs&#x2F;开头的</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-1-1-%E6%A3%80%E6%9F%A5%E5%8F%AF%E6%9B%B4%E6%96%B0%E7%9A%84-nestjs-%E5%BC%80%E5%A4%B4%E7%9A%84%E4%BE%9D%E8%B5%96"><span class="toc-text">2.4.1.1. 检查可更新的 @nestjs&#x2F; 开头的依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-1-2-%E6%9B%B4%E6%96%B0-package-json-%E6%96%87%E4%BB%B6"><span class="toc-text">2.4.1.2. 更新 package.json 文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-1-3-%E5%AE%89%E8%A3%85%E6%9B%B4%E6%96%B0%E5%90%8E%E7%9A%84%E4%BE%9D%E8%B5%96"><span class="toc-text">2.4.1.3. 安装更新后的依赖</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-%E5%85%B6%E4%BB%96"><span class="toc-text">2.5. 其他</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E5%92%8C%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">3. 最佳实践和注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E6%9B%B4%E6%96%B0%E5%89%8D%E7%9A%84%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-text">3.1. 更新前的准备工作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5"><span class="toc-text">3.2. 自动化更新策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%E5%A4%84%E7%90%86%E4%BE%9D%E8%B5%96%E5%86%B2%E7%AA%81"><span class="toc-text">3.3. 处理依赖冲突</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-%E6%9B%B4%E5%A4%9A%E8%B5%84%E6%BA%90"><span class="toc-text">3.4. 更多资源</span></a></li></ol></li></ol></nav></details></aside>
+    
+    <div class="reading-column">
+      <div class="prose"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在现代软件开发中，无论是前端应用、还是node服务 保持项目依赖的更新都是一项重要但具有挑战性的任务。过时的依赖可能会带来安全隐患、性能问题，以及与新特性的不兼容。然而，盲目地更新依赖也可能引入意外的破坏性变更，导致项目出现问题。</p>
+<p>为了安全、高效地管理依赖更新，我们需要一个可靠的工具和系统的更新策略。本文将介绍 <code>npm-check-updates</code> 这个强大的工具，它不仅可以帮助我们检查和更新依赖，还能让我们对更新过程有更细粒度的控制。</p>
+<p>在开始之前，让我们先了解一些重要的概念：</p>
+<ol>
+<li><p><strong>语义化版本（Semantic Versioning）</strong>：</p>
+<ul>
+<li>主版本号（Major）：做了不兼容的 API 修改</li>
+<li>次版本号（Minor）：做了向下兼容的功能性新增</li>
+<li>修订号（Patch）：做了向下兼容的问题修正</li>
+</ul>
+</li>
+<li><p><strong>版本号前缀的含义</strong>：</p>
+<ul>
+<li><code>^</code>：允许次版本号和修订号更新（例如：^1.2.3 可以更新到 1.x.x）</li>
+<li><code>~</code>：只允许修订号更新（例如：~1.2.3 可以更新到 1.2.x）</li>
+<li><code>*</code>：允许所有更新（不推荐使用）</li>
+</ul>
+</li>
+</ol>
+<h1 id="1-安装npm-check-updates"><a href="#1-安装npm-check-updates" class="headerlink" title="1. 安装npm-check-updates"></a>1. <strong>安装npm-check-updates</strong></h1><p>全局安装以使用 <code>npm-check-updates</code> 或更短的 <code>ncu</code>：</p>
+<p><code>npm install -g npm-check-updates</code></p>
+<p>或者使用<code>npx</code>安装</p>
+<p><code>npx npm-check-updates</code></p>
+<h1 id="2-使用"><a href="#2-使用" class="headerlink" title="2. 使用"></a>2. <strong>使用</strong></h1><h2 id="2-1-检查所有项目依赖项的最新版本"><a href="#2-1-检查所有项目依赖项的最新版本" class="headerlink" title="2.1. 检查所有项目依赖项的最新版本"></a>2.1. <strong>检查所有项目依赖项的最新版本</strong></h2><p><strong>直接子在命令行输入</strong><code>ncu</code>，就会显示需要更新</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token punctuation">]</span> <span class="token number">49</span>/49 <span class="token number">100</span>%
+
+ @elastic/elasticsearch             ^8.15.0  →   ^8.17.0
+ @nestjs/cli                        ^10.0.0  →   ^11.0.4
+ @nestjs/common                     ^10.0.0  →  ^11.0.10
+ @nestjs/config                      ^3.2.2  →    ^4.0.0
+ @nestjs/core                       ^10.0.0  →  ^11.0.10
+ @nestjs/elasticsearch              ^10.0.1  →   ^11.0.0
+<span class="token punctuation">..</span>.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="2-2-全部更新"><a href="#2-2-全部更新" class="headerlink" title="2.2. 全部更新"></a>2.2. <strong>全部更新</strong></h2><p><strong>这个命令会更新所有可以更新的包，慎用！</strong></p>
+<p><code>ncu -u</code></p>
+<h2 id="2-3-交互模式"><a href="#2-3-交互模式" class="headerlink" title="2.3. 交互模式"></a>2.3. <strong>交互模式</strong></h2><p><strong>使用以下命令基于交互模式来选择需要更新的包</strong></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ncu <span class="token parameter variable">--interactive</span>
+ncu <span class="token parameter variable">-i</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h2 id="2-4-按照指定的规则更新"><a href="#2-4-按照指定的规则更新" class="headerlink" title="2.4. 按照指定的规则更新"></a>2.4. <strong>按照指定的规则更新</strong></h2><h3 id="2-4-1-只更新-nestjs-开头的"><a href="#2-4-1-只更新-nestjs-开头的" class="headerlink" title="2.4.1. 只更新 @nestjs/开头的"></a>2.4.1. 只更新 <code>@nestjs/</code>开头的</h3><h4 id="2-4-1-1-检查可更新的-nestjs-开头的依赖"><a href="#2-4-1-1-检查可更新的-nestjs-开头的依赖" class="headerlink" title="2.4.1.1. 检查可更新的 @nestjs&#x2F; 开头的依赖"></a>2.4.1.1. <strong>检查可更新的 @nestjs&#x2F; 开头的依赖</strong></h4><p><strong>在项目根目录下运行以下命令，查看 @nestjs&#x2F; 开头的依赖项有哪些可用的更新：</strong></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ncu <span class="token parameter variable">-f</span> <span class="token string">'@nestjs/*'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>此命令会列出 package.json 文件中所有 @nestjs&#x2F; 开头且可更新的依赖项，同时显示它们当前的版本和最新的版本。</strong></p>
+<h4 id="2-4-1-2-更新-package-json-文件"><a href="#2-4-1-2-更新-package-json-文件" class="headerlink" title="2.4.1.2. 更新 package.json 文件"></a>2.4.1.2. <strong>更新 package.json 文件</strong></h4><p><strong>若你想把 package.json 文件里 @nestjs&#x2F; 开头的依赖项都更新到最新版本，可运行以下命令：</strong></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ncu <span class="token parameter variable">-u</span> <span class="token parameter variable">-f</span> <span class="token string">'@nestjs/*'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>该命令会修改 package.json 文件，将 @nestjs&#x2F; 开头的依赖项的版本号更新为最新的可用版本。</strong></p>
+<h4 id="2-4-1-3-安装更新后的依赖"><a href="#2-4-1-3-安装更新后的依赖" class="headerlink" title="2.4.1.3. 安装更新后的依赖"></a>2.4.1.3. <strong>安装更新后的依赖</strong></h4><p><strong>package.json 文件更新完成后，运行以下命令来安装更新后的依赖项：</strong></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> 
+<span class="token comment"># 或者</span>
+<span class="token function">yarn</span> <span class="token function">install</span>
+<span class="token comment"># 等等</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="2-5-其他"><a href="#2-5-其他" class="headerlink" title="2.5. 其他"></a>2.5. <strong>其他</strong></h2><h1 id="3-最佳实践和注意事项"><a href="#3-最佳实践和注意事项" class="headerlink" title="3. 最佳实践和注意事项"></a>3. <strong>最佳实践和注意事项</strong></h1><h2 id="3-1-更新前的准备工作"><a href="#3-1-更新前的准备工作" class="headerlink" title="3.1. 更新前的准备工作"></a>3.1. <strong>更新前的准备工作</strong></h2><ol>
+<li><p><strong>备份项目</strong>：</p>
+<ul>
+<li>确保项目代码已提交到版本控制系统</li>
+<li>创建一个新的分支进行依赖更新</li>
+</ul>
+</li>
+<li><p><strong>记录当前状态</strong>：</p>
+<ul>
+<li>保存 package.json 和 package-lock.json 的副本</li>
+<li>记录项目的主要功能点，以便后续验证</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-2-自动化更新策略"><a href="#3-2-自动化更新策略" class="headerlink" title="3.2. 自动化更新策略"></a>3.2. <strong>自动化更新策略</strong></h2><ol>
+<li><p><strong>持续集成中的依赖更新</strong>：</p>
+<ul>
+<li>配置自动化工具（如 Dependabot）定期检查依赖更新</li>
+<li>设置自动创建更新 PR，方便代码审查</li>
+</ul>
+</li>
+<li><p><strong>更新测试流程</strong>：</p>
+<ul>
+<li>在更新后运行完整的测试套件</li>
+<li>进行关键功能的手动测试</li>
+<li>在开发环境中进行充分验证</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-3-处理依赖冲突"><a href="#3-3-处理依赖冲突" class="headerlink" title="3.3. 处理依赖冲突"></a>3.3. <strong>处理依赖冲突</strong></h2><ol>
+<li><p><strong>版本冲突解决</strong>：</p>
+<ul>
+<li>使用 <code>npm ls &lt;package-name&gt;</code> 查看依赖树</li>
+<li>检查 package-lock.json 中的依赖关系</li>
+<li>必要时使用 <code>npm dedupe</code> 优化依赖树</li>
+</ul>
+</li>
+<li><p><strong>降级策略</strong>：</p>
+<ul>
+<li>如果更新后出现问题，使用 <code>npm install &lt;package-name&gt;@&lt;version&gt;</code> 回退到稳定版本</li>
+<li>在 package.json 中锁定关键依赖的版本</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-4-更多资源"><a href="#3-4-更多资源" class="headerlink" title="3.4. 更多资源"></a>3.4. <strong>更多资源</strong></h2><p><strong>更多的命令和最佳实践请参考官方文档：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/npm-check-updates">https://www.npmjs.com/package/npm-check-updates</a></p>
+</div>
+      
+        <div class="article-credit"><span>作者 Ryo</span><a target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a><button class="text-link" type="button" data-copy-url hidden>复制文章链接</button></div>
+      
+      
+        <nav class="article-neighbours" aria-label="相邻文章">
+          <a href="/2025/03/16/ai-kai-fa/gai-nian/1.zuo-wei-yi-ge-qian-duan-er-ru-he-liao-jie-llm/"><small>上一篇</small><strong>作为一个前端er如何了解LLM</strong></a>
+        
+          <a href="/2025/03/14/yun-wei/shou-ba-shou-jiao-ni-zai-wang-zhan-zhong-qi-yong-https-he-http2/"><small>下一篇</small><strong>手把手教你在Nginx服务器中启用https和http2</strong></a>
+        </nav>
+      
+      
+        <details class="comments" data-comment-src="https://utteranc.es/client.js" data-repo="SaebaRyoo/SaebaRyoo.github.io" data-term="pathname" data-light="github-light" data-dark="github-dark">
+          <summary>读者回信</summary>
+          <div class="comment-mount"></div><a class="text-link" target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/SaebaRyoo.github.io/issues">在 GitHub 查看讨论</a>
+        </details>
+      
+    </div>
+  </div>
+</article>
+
+
+<dialog class="image-dialog" aria-label="查看原图"><form method="dialog"><button class="icon-btn" aria-label="关闭原图"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form><img alt=""></dialog>
+
+</main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+ 咕嘎邮便局 <span>·</span> Ryo</a>
+      <nav aria-label="页脚导航">
+        <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">GitHub</a>
+        <a href="/tags/">标签</a>
+        <a href="/visualization-layout/">可视化实验</a>
+        <a href="#main-content">回到顶部</a>
+      </nav>
+    </div>
+  </footer>
+  <dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="/search.xml">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form>
+  </header>
+  <label class="search-field"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>
+
+</body>
+</html>

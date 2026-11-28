@@ -1,0 +1,250 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:title" content="GitHub SSH 22 端口连接中断与走 443 配置 · Ryo的小站">
+  <meta property="og:description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://saebaryoo.github.io/images/gugu-doro/web/soft-02-forest-delivery.jpg">
+  <link rel="canonical" href="https://saebaryoo.github.io/2026/03/22/gong-ju/git/github-ssh-22-duan-kou-zhong-duan-yu-zou-443-pei-zhi/">
+  <link rel="icon" href="/post-office/gugu-icon.png" type="image/png">
+  <title>GitHub SSH 22 端口连接中断与走 443 配置 · Ryo的小站</title>
+  <script>
+    try {
+      var storedDark = localStorage.getItem('dark');
+      document.documentElement.dataset.theme = (storedDark === null ? matchMedia('(prefers-color-scheme: dark)').matches : storedDark === 'true') ? 'dark' : 'light';
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/post-office/post.css">
+  <script defer src="/post-office/post.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.3 8.5-6.3"/></symbol>
+    <symbol id="i-wing" viewBox="0 0 32 24"><path d="M1.5 6.5h8m-6.5 4h5m-3.5 4h2"/><path d="M12 5h18l-5 14H7z" fill="currentColor" stroke="none"/><path d="m12 7 6 5.6 10-5.8" stroke="var(--wing-line, #235344)"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" transform="rotate(-8 12 12)"/><path d="M8 8h.1m4 4h.1m3.9 4h.1" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a8.8 8.8 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 15 6 5h12l3 10v4H3z"/><path d="M3 14h5l2 3h4l2-3h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 3h10v11H3z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-5l2 2m0-5v5h-5M20 13a8 8 0 0 1-14 5l-2-2m0 5v-5h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 16h16v4H4zM7 16c0-3 3-3.5 3-5V9a4 4 0 1 1 4 0v2c0 1.5 3 2 3 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="m3 3 8 .3L21 13l-8 8-9.7-9.7z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="m2 10 20-7-6.5 18-4.3-7.7L2 10Z"/><path d="M11.2 13.3 22 3"/></symbol>
+  </defs>
+</svg>
+
+  <a class="skip" href="#main-content">跳到正文</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="/" aria-label="Ryo的小站首页">
+        <span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 32 24"><use href="#i-wing"/></svg></span>
+        <span><strong>Ryo的小站</strong><small lang="en">GUGU POST</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives/">文章归档</a>
+        
+          <a href="/categories/">分类索引</a>
+        
+          <a href="/visualization-layout/">实验室</a>
+        
+          <a href="/about/">关于</a>
+        
+      </nav>
+      <div class="header-tools">
+        <button class="search-trigger" type="button" data-search-open hidden aria-label="搜索文章" aria-haspopup="dialog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<span>搜索</span><kbd>/</kbd></button>
+        
+          <button type="button" class="icon-btn theme-trigger" data-theme-toggle hidden aria-label="夜间模式" title="夜间模式"><svg class="icon" aria-hidden="true"><use class="moon" href="#i-moon"/><use class="sun" href="#i-sun"/></svg></button>
+        
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="wrap" tabindex="-1">
+<article class="inner-page reading-page">
+  <a class="breadcrumb" href="/archives/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
+文章归档</a>
+  <header class="article-heading">
+    <div class="letter-meta">
+      <a class="category-ink ink-terminal" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a><span aria-hidden="true">/</span>
+      <time datetime="2026-03-22">2026.03.22</time><span aria-hidden="true">/</span>Ryo
+    </div>
+    <h1>GitHub SSH 22 端口连接中断与走 443 配置</h1>
+    <div class="article-tags"><a href="/tags/%E5%AE%89%E5%85%A8/"># 安全</a><a href="/tags/git/"># git</a><a href="/tags/GitHub/"># GitHub</a><a href="/tags/SSH/"># SSH</a></div>
+  </header>
+  <div class="reading-grid with-toc">
+    
+      <aside class="contents"><details open><summary>信件目录</summary><nav aria-label="文章目录"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E7%B1%BB%E8%AF%B4%E6%98%8E"><span class="toc-text">分类说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%97%AE%E9%A2%98%E7%8E%B0%E8%B1%A1"><span class="toc-text">一、问题现象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%8E%9F%E5%9B%A0%E8%AF%B4%E6%98%8E%EF%BC%88%E6%A0%B9%E5%9B%A0%EF%BC%89"><span class="toc-text">二、原因说明（根因）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%9ASSH-%E8%B5%B0-443%EF%BC%89"><span class="toc-text">三、解决方案（推荐：SSH 走 443）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%85%B6%E4%BB%96%E5%8F%AF%E9%80%89%E6%96%B9%E6%A1%88"><span class="toc-text">四、其他可选方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E4%B8%8E-HTTPS-%E8%BF%9C%E7%A8%8B%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-text">五、与 HTTPS 远程的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%B0%8F%E7%BB%93"><span class="toc-text">六、小结</span></a></li></ol></nav></details></aside>
+    
+    <div class="reading-column">
+      <div class="prose"><h2 id="分类说明"><a href="#分类说明" class="headerlink" title="分类说明"></a>分类说明</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>标签</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>场景</strong></td>
+<td><code>git push</code> &#x2F; <code>pull</code> &#x2F; <code>clone</code>，远程为 <code>git@github.com:...</code></td>
+</tr>
+<tr>
+<td><strong>工具</strong></td>
+<td>Git、OpenSSH</td>
+</tr>
+<tr>
+<td><strong>问题类型</strong></td>
+<td>网络 &#x2F; 代理、SSH 连通性（易被误判为「权限不足」）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="一、问题现象"><a href="#一、问题现象" class="headerlink" title="一、问题现象"></a>一、问题现象</h2><p>远程仓库使用 <strong>SSH 地址</strong>（<code>git@github.com:用户/仓库.git</code>）时，<code>git push</code>、<code>git pull</code>、<code>git clone</code> 等可能在 <strong>与 GitHub 建连阶段</strong> 失败。</p>
+<p>典型输出包含：</p>
+<ul>
+<li><code>Connection closed by ... port 22</code></li>
+<li><code>fatal: Could not read from remote repository</code></li>
+<li><code>Please make sure you have the correct access rights and the repository exists.</code></li>
+</ul>
+<p>即使本地 <strong><code>git commit</code> 已成功</strong>，只要在 <strong><code>git push</code> 时需要与 GitHub 建立 SSH 连接</strong>，仍可能在上述报错处失败；根因是 <strong>push 阶段的 SSH 连通性</strong>，而不是本地仓库是否已有提交。</p>
+<hr>
+<h2 id="二、原因说明（根因）"><a href="#二、原因说明（根因）" class="headerlink" title="二、原因说明（根因）"></a>二、原因说明（根因）</h2><ol>
+<li><p><strong>失败点在 SSH 传输层</strong><br>本地提交、对象打包可以正常完成；问题出在 <strong>本机通过 SSH 访问 GitHub 默认入口（<code>github.com:22</code>）</strong> 时，连接被对端或中间网络提前关闭。</p>
+</li>
+<li><p><strong>常见网络环境</strong><br>若 <code>ssh -vT git@github.com</code> 中出现类似 <code>198.18.x.x</code> 的地址，或日志停在 <code>Connecting to github.com port 22</code> 后很快出现 <code>kex_exchange_identification: Connection closed by remote host</code>，多与 <strong>代理 &#x2F; VPN &#x2F; TUN（如部分代理透明接管）</strong> 对 <strong>22 端口</strong> 的处理有关：TCP 能建立，但在密钥交换或认证前被断开。</p>
+</li>
+<li><p><strong>配置误区</strong><br>仅把 <code>~/.ssh/config</code> 里 <code>Host github.com</code> 的 <strong><code>User</code> 设为 <code>git</code><strong>（GitHub 要求如此）</strong>不能替代</strong>「改端口 &#x2F; 改 HostName」；只要实际仍连 **<code>github.com:22</code>**，现象可能依旧。</p>
+</li>
+</ol>
+<hr>
+<h2 id="三、解决方案（推荐：SSH-走-443）"><a href="#三、解决方案（推荐：SSH-走-443）" class="headerlink" title="三、解决方案（推荐：SSH 走 443）"></a>三、解决方案（推荐：SSH 走 443）</h2><p>GitHub 支持 <strong>在 443 端口上使用 SSH</strong>，适合 22 被拦或只允许 HTTPS 出网的网络。</p>
+<p>在 <code>~/.ssh/config</code> 中为 <strong><code>Host github.com</code></strong> 配置例如：</p>
+<pre class="line-numbers language-sshconfig" data-language="sshconfig"><code class="language-sshconfig">Host github.com
+  HostName ssh.github.com
+  Port 443
+  User git
+  IdentityFile ~&#x2F;.ssh&#x2F;你的私钥
+  IdentitiesOnly yes
+  AddKeysToAgent yes
+  IgnoreUnknown UseKeychain<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>要点：</p>
+<ul>
+<li>**<code>HostName ssh.github.com</code> + <code>Port 443</code>**：走 GitHub 的 SSH-over-HTTPS 入口，避开被干扰的 22。</li>
+<li>**<code>User git</code>**：与 <code>git@github.com:仓库</code> 一致；身份由 <strong>URL 路径 + 私钥对应 GitHub 公钥</strong> 决定，不是把 <code>User</code> 写成 GitHub 用户名。</li>
+<li>**<code>IdentitiesOnly yes</code>**：配合显式 <code>IdentityFile</code>，减少多钥尝试带来的混乱或限流。</li>
+</ul>
+<p>若用 <strong>自定义 Host 别名</strong> 指向 GitHub（如 <code>Host work.com</code> 且原 <code>HostName</code> 为 <code>github.com</code>），在同样环境下也应改为 **<code>HostName ssh.github.com</code> 与 <code>Port 443</code>**，否则仍会走 22。</p>
+<p>验证：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">ssh</span> <span class="token parameter variable">-vT</span> git@github.com<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>日志中应出现 **<code>Connecting to ssh.github.com port 443</code>**，并完成认证。通过后再执行 <code>git push</code> 等。</p>
+<p>官方说明：<a target="_blank" rel="noopener" href="https://docs.github.com/en/authentication/troubleshooting-ssh/using-ssh-over-the-https-port">Using SSH over the HTTPS port</a></p>
+<hr>
+<h2 id="四、其他可选方案"><a href="#四、其他可选方案" class="headerlink" title="四、其他可选方案"></a>四、其他可选方案</h2><table>
+<thead>
+<tr>
+<th>方案</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>调整代理</strong></td>
+<td>对 <code>github.com</code> &#x2F; <code>ssh.github.com</code> 直连或合理分流，避免错误劫持 SSH。</td>
+</tr>
+<tr>
+<td><strong>远程改为 HTTPS</strong></td>
+<td><code>git remote set-url origin https://github.com/...</code>，用 PAT 或凭据管理器；不经过上述 SSH <code>Host github.com</code> 配置。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="五、与-HTTPS-远程的关系"><a href="#五、与-HTTPS-远程的关系" class="headerlink" title="五、与 HTTPS 远程的关系"></a>五、与 HTTPS 远程的关系</h2><p><strong>不会影响</strong> 已使用 <code>https://github.com/...</code> 的仓库。</p>
+<p><code>~/.ssh/config</code> 只作用于 <strong>SSH 远程</strong>；HTTPS 走 TLS 与 Git 凭据，与 OpenSSH 里 <code>Host github.com</code> 无关。</p>
+<hr>
+<h2 id="六、小结"><a href="#六、小结" class="headerlink" title="六、小结"></a>六、小结</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>表象</strong></td>
+<td><code>git</code> 报远程不可读、权限&#x2F;仓库提示，常为 <strong>SSH 连通失败</strong> 而非真的没权限。</td>
+</tr>
+<tr>
+<td><strong>根因</strong></td>
+<td><strong>GitHub SSH 默认 22</strong> 在当前网络&#x2F;代理下不可用或被中断。</td>
+</tr>
+<tr>
+<td><strong>关键修复</strong></td>
+<td><code>Host github.com</code> 使用 **<code>HostName ssh.github.com</code><strong>、</strong><code>Port 443</code>**，并确认 <strong><code>User git</code></strong> 与 **<code>IdentityFile</code>**。</td>
+</tr>
+<tr>
+<td><strong>范围</strong></td>
+<td>仅影响 <strong>SSH 地址</strong> 访问 GitHub；<strong>HTTPS 远程不受影响</strong>。</td>
+</tr>
+</tbody></table>
+</div>
+      
+        <div class="article-credit"><span>作者 Ryo</span><a target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a><button class="text-link" type="button" data-copy-url hidden>复制文章链接</button></div>
+      
+      
+        <nav class="article-neighbours" aria-label="相邻文章">
+          <a href="/2026/03/23/qian-duan/zhuang-tai-guan-li/zustand/"><small>上一篇</small><strong>Zustand原理</strong></a>
+        
+          <a href="/2025/03/21/hou-duan/nestjs/1.shen-ru-li-jie-nest.js-de-ji-chu-gai-nian/"><small>下一篇</small><strong>深入理解Nest.js的基础概念</strong></a>
+        </nav>
+      
+      
+        <details class="comments" data-comment-src="https://utteranc.es/client.js" data-repo="SaebaRyoo/SaebaRyoo.github.io" data-term="pathname" data-light="github-light" data-dark="github-dark">
+          <summary>读者回信</summary>
+          <div class="comment-mount"></div><a class="text-link" target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/SaebaRyoo.github.io/issues">在 GitHub 查看讨论</a>
+        </details>
+      
+    </div>
+  </div>
+</article>
+
+
+<dialog class="image-dialog" aria-label="查看原图"><form method="dialog"><button class="icon-btn" aria-label="关闭原图"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form><img alt=""></dialog>
+
+</main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+ 咕嘎邮便局 <span>·</span> Ryo</a>
+      <nav aria-label="页脚导航">
+        <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">GitHub</a>
+        <a href="/tags/">标签</a>
+        <a href="/visualization-layout/">可视化实验</a>
+        <a href="#main-content">回到顶部</a>
+      </nav>
+    </div>
+  </footer>
+  <dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="/search.xml">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form>
+  </header>
+  <label class="search-field"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>
+
+</body>
+</html>

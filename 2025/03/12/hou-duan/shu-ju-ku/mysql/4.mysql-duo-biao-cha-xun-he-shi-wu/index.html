@@ -1,0 +1,325 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:title" content="MySQL多表查询和事务 · Ryo的小站">
+  <meta property="og:description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://saebaryoo.github.io/images/gugu-doro/web/anime-02-coastal-train.jpg">
+  <link rel="canonical" href="https://saebaryoo.github.io/2025/03/12/hou-duan/shu-ju-ku/mysql/4.mysql-duo-biao-cha-xun-he-shi-wu/">
+  <link rel="icon" href="/post-office/gugu-icon.png" type="image/png">
+  <title>MySQL多表查询和事务 · Ryo的小站</title>
+  <script>
+    try {
+      var storedDark = localStorage.getItem('dark');
+      document.documentElement.dataset.theme = (storedDark === null ? matchMedia('(prefers-color-scheme: dark)').matches : storedDark === 'true') ? 'dark' : 'light';
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/post-office/post.css">
+  <script defer src="/post-office/post.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.3 8.5-6.3"/></symbol>
+    <symbol id="i-wing" viewBox="0 0 32 24"><path d="M1.5 6.5h8m-6.5 4h5m-3.5 4h2"/><path d="M12 5h18l-5 14H7z" fill="currentColor" stroke="none"/><path d="m12 7 6 5.6 10-5.8" stroke="var(--wing-line, #235344)"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" transform="rotate(-8 12 12)"/><path d="M8 8h.1m4 4h.1m3.9 4h.1" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a8.8 8.8 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 15 6 5h12l3 10v4H3z"/><path d="M3 14h5l2 3h4l2-3h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 3h10v11H3z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-5l2 2m0-5v5h-5M20 13a8 8 0 0 1-14 5l-2-2m0 5v-5h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 16h16v4H4zM7 16c0-3 3-3.5 3-5V9a4 4 0 1 1 4 0v2c0 1.5 3 2 3 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="m3 3 8 .3L21 13l-8 8-9.7-9.7z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="m2 10 20-7-6.5 18-4.3-7.7L2 10Z"/><path d="M11.2 13.3 22 3"/></symbol>
+  </defs>
+</svg>
+
+  <a class="skip" href="#main-content">跳到正文</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="/" aria-label="Ryo的小站首页">
+        <span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 32 24"><use href="#i-wing"/></svg></span>
+        <span><strong>Ryo的小站</strong><small lang="en">GUGU POST</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives/">文章归档</a>
+        
+          <a href="/categories/">分类索引</a>
+        
+          <a href="/visualization-layout/">实验室</a>
+        
+          <a href="/about/">关于</a>
+        
+      </nav>
+      <div class="header-tools">
+        <button class="search-trigger" type="button" data-search-open hidden aria-label="搜索文章" aria-haspopup="dialog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<span>搜索</span><kbd>/</kbd></button>
+        
+          <button type="button" class="icon-btn theme-trigger" data-theme-toggle hidden aria-label="夜间模式" title="夜间模式"><svg class="icon" aria-hidden="true"><use class="moon" href="#i-moon"/><use class="sun" href="#i-sun"/></svg></button>
+        
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="wrap" tabindex="-1">
+<article class="inner-page reading-page">
+  <a class="breadcrumb" href="/archives/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
+文章归档</a>
+  <header class="article-heading">
+    <div class="letter-meta">
+      <a class="category-ink ink-server" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><span aria-hidden="true">/</span>
+      <time datetime="2025-03-12">2025.03.12</time><span aria-hidden="true">/</span>Ryo
+    </div>
+    <h1>MySQL多表查询和事务</h1>
+    <div class="article-tags"><a href="/tags/MySQL/"># MySQL</a></div>
+  </header>
+  <div class="reading-grid with-toc">
+    
+      <aside class="contents"><details open><summary>信件目录</summary><nav aria-label="文章目录"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2%E5%9F%BA%E7%A1%80"><span class="toc-text">一、多表查询基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E6%A6%82%E5%BF%B5"><span class="toc-text">1.1 概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="toc-text">1.2 基本语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E7%A4%BA%E4%BE%8B%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="toc-text">1.3 示例数据准备</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2"><span class="toc-text">二、连接查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%86%85%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2"><span class="toc-text">2.1 内连接查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-1-%E9%9A%90%E5%BC%8F%E5%86%85%E8%BF%9E%E6%8E%A5"><span class="toc-text">2.1.1 隐式内连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-2-%E6%98%BE%E5%BC%8F%E5%86%85%E8%BF%9E%E6%8E%A5"><span class="toc-text">2.1.2 显式内连接</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%A4%96%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2"><span class="toc-text">2.2 外连接查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-%E5%B7%A6%E5%A4%96%E8%BF%9E%E6%8E%A5"><span class="toc-text">2.2.1 左外连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-2-%E5%8F%B3%E5%A4%96%E8%BF%9E%E6%8E%A5"><span class="toc-text">2.2.2 右外连接</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-text">三、子查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%A6%82%E5%BF%B5"><span class="toc-text">3.1 概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%AD%90%E6%9F%A5%E8%AF%A2%E5%88%86%E7%B1%BB"><span class="toc-text">3.2 子查询分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-1-%E5%8D%95%E8%A1%8C%E5%8D%95%E5%88%97%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-text">3.2.1 单行单列子查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-2-%E5%A4%9A%E8%A1%8C%E5%8D%95%E5%88%97%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-text">3.2.2 多行单列子查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-3-%E5%A4%9A%E8%A1%8C%E5%A4%9A%E5%88%97%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-text">3.2.3 多行多列子查询</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="toc-text">四、事务管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E4%BA%8B%E5%8A%A1%E6%A6%82%E5%BF%B5"><span class="toc-text">4.1 事务概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-text">4.2 事务的基本操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E4%BA%8B%E5%8A%A1%E7%A4%BA%E4%BE%8B"><span class="toc-text">4.3 事务示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%9B%9B%E5%A4%A7%E7%89%B9%E6%80%A7%EF%BC%88ACID%EF%BC%89"><span class="toc-text">4.4 事务的四大特性（ACID）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E4%BA%8B%E5%8A%A1%E7%9A%84%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="toc-text">4.5 事务的隔离级别</span></a></li></ol></li></ol></nav></details></aside>
+    
+    <div class="reading-column">
+      <div class="prose"><p>在实际的数据库应用中，数据通常分布在多个相关的表中，如何高效地从这些表中获取和处理数据是数据库开发中的重要课题。多表查询提供了强大的数据检索能力，通过连接查询和子查询，我们可以灵活地组合和筛选来自不同表的数据。同时，在进行数据修改操作时，事务管理机制确保了数据的一致性和完整性，是构建可靠数据库应用的基石。</p>
+<p>本文将系统地介绍MySQL中的多表查询和事务管理。首先从多表查询的基本概念入手，详细讲解内连接、外连接等不同的连接查询方式，以及子查询的多种使用场景。接着深入探讨事务的概念、特性和隔离级别，帮助读者理解如何在实际开发中正确使用事务来保证数据的安全性。文章配有丰富的示例代码，便于读者实践和掌握这些重要的数据库操作技术。</p>
+<p>建议读者在学习本文时，结合实际案例进行练习，特别是在理解不同类型的连接查询和事务隔离级别时，动手实践是加深理解的最好方式。</p>
+<h2 id="一、多表查询基础"><a href="#一、多表查询基础" class="headerlink" title="一、多表查询基础"></a>一、多表查询基础</h2><h3 id="1-1-概念"><a href="#1-1-概念" class="headerlink" title="1.1 概念"></a>1.1 概念</h3><p>多表查询是指从多个表中获取数据的查询操作。在进行多表查询时会产生笛卡尔积，即两个集合的所有组合情况。为了得到有意义的查询结果，需要通过条件消除无用的数据。</p>
+<h3 id="1-2-基本语法"><a href="#1-2-基本语法" class="headerlink" title="1.2 基本语法"></a>1.2 基本语法</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> 列名列表
+<span class="token keyword">FROM</span> 表名列表
+<span class="token keyword">WHERE</span> 条件<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="1-3-示例数据准备"><a href="#1-3-示例数据准备" class="headerlink" title="1.3 示例数据准备"></a>1.3 示例数据准备</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 部门表</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> dept<span class="token punctuation">(</span>
+  id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token keyword">AUTO_INCREMENT</span><span class="token punctuation">,</span>
+  NAME <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 插入部门数据</span>
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> dept <span class="token punctuation">(</span>NAME<span class="token punctuation">)</span> <span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token string">'开发部'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token string">'市场部'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token string">'财务部'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 员工表</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> emp <span class="token punctuation">(</span>
+  id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token keyword">AUTO_INCREMENT</span><span class="token punctuation">,</span>
+  NAME <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  gender <span class="token keyword">CHAR</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">-- 性别</span>
+  salary <span class="token keyword">DOUBLE</span><span class="token punctuation">,</span> <span class="token comment">-- 工资</span>
+  join_date <span class="token keyword">DATE</span><span class="token punctuation">,</span> <span class="token comment">-- 入职日期</span>
+  dept_id <span class="token keyword">INT</span><span class="token punctuation">,</span>
+  <span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>dept_id<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> dept<span class="token punctuation">(</span>id<span class="token punctuation">)</span> <span class="token comment">-- 外键，关联部门表(部门表的主键)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 插入员工数据</span>
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> emp<span class="token punctuation">(</span>NAME<span class="token punctuation">,</span>gender<span class="token punctuation">,</span>salary<span class="token punctuation">,</span>join_date<span class="token punctuation">,</span>dept_id<span class="token punctuation">)</span> <span class="token keyword">VALUES</span>
+<span class="token punctuation">(</span><span class="token string">'孙悟空'</span><span class="token punctuation">,</span><span class="token string">'男'</span><span class="token punctuation">,</span><span class="token number">7200</span><span class="token punctuation">,</span><span class="token string">'2013-02-24'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">(</span><span class="token string">'猪八戒'</span><span class="token punctuation">,</span><span class="token string">'男'</span><span class="token punctuation">,</span><span class="token number">3600</span><span class="token punctuation">,</span><span class="token string">'2010-12-02'</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">(</span><span class="token string">'唐僧'</span><span class="token punctuation">,</span><span class="token string">'男'</span><span class="token punctuation">,</span><span class="token number">9000</span><span class="token punctuation">,</span><span class="token string">'2008-08-08'</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">(</span><span class="token string">'白骨精'</span><span class="token punctuation">,</span><span class="token string">'女'</span><span class="token punctuation">,</span><span class="token number">5000</span><span class="token punctuation">,</span><span class="token string">'2015-10-07'</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">(</span><span class="token string">'蜘蛛精'</span><span class="token punctuation">,</span><span class="token string">'女'</span><span class="token punctuation">,</span><span class="token number">4500</span><span class="token punctuation">,</span><span class="token string">'2011-03-14'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="二、连接查询"><a href="#二、连接查询" class="headerlink" title="二、连接查询"></a>二、连接查询</h2><h3 id="2-1-内连接查询"><a href="#2-1-内连接查询" class="headerlink" title="2.1 内连接查询"></a>2.1 内连接查询</h3><h4 id="2-1-1-隐式内连接"><a href="#2-1-1-隐式内连接" class="headerlink" title="2.1.1 隐式内连接"></a>2.1.1 隐式内连接</h4><p>使用WHERE条件消除无用数据</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 查询所有员工信息和对应的部门信息</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> emp<span class="token punctuation">,</span>dept 
+<span class="token keyword">WHERE</span> emp<span class="token punctuation">.</span>dept_id <span class="token operator">=</span> dept<span class="token punctuation">.</span>id<span class="token punctuation">;</span>
+
+<span class="token comment">-- 使用别名优化查询（推荐）</span>
+<span class="token keyword">SELECT</span>
+    t1<span class="token punctuation">.</span>name <span class="token keyword">AS</span> <span class="token string">'姓名'</span><span class="token punctuation">,</span> 
+    t1<span class="token punctuation">.</span>gender <span class="token keyword">AS</span> <span class="token string">'性别'</span><span class="token punctuation">,</span>
+    t2<span class="token punctuation">.</span>name <span class="token keyword">AS</span> <span class="token string">'部门'</span>
+<span class="token keyword">FROM</span>
+    emp t1<span class="token punctuation">,</span>
+    dept t2
+<span class="token keyword">WHERE</span>
+    t1<span class="token punctuation">.</span>dept_id <span class="token operator">=</span> t2<span class="token punctuation">.</span>id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-1-2-显式内连接"><a href="#2-1-2-显式内连接" class="headerlink" title="2.1.2 显式内连接"></a>2.1.2 显式内连接</h4><p>使用INNER JOIN关键字，语法更直观</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 标准语法</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> emp
+<span class="token keyword">INNER</span> <span class="token keyword">JOIN</span> dept <span class="token keyword">ON</span> emp<span class="token punctuation">.</span>dept_id <span class="token operator">=</span> dept<span class="token punctuation">.</span>id<span class="token punctuation">;</span>
+
+<span class="token comment">-- INNER可以省略</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> emp
+<span class="token keyword">JOIN</span> dept <span class="token keyword">ON</span> emp<span class="token punctuation">.</span>dept_id <span class="token operator">=</span> dept<span class="token punctuation">.</span>id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-2-外连接查询"><a href="#2-2-外连接查询" class="headerlink" title="2.2 外连接查询"></a>2.2 外连接查询</h3><h4 id="2-2-1-左外连接"><a href="#2-2-1-左外连接" class="headerlink" title="2.2.1 左外连接"></a>2.2.1 左外连接</h4><p>查询左表所有数据以及其与右表的交集部分</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 查询所有员工信息及其部门信息（包括没有部门的员工）</span>
+<span class="token keyword">SELECT</span> t1<span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">,</span> t2<span class="token punctuation">.</span>name <span class="token keyword">AS</span> <span class="token string">'部门名称'</span>
+<span class="token keyword">FROM</span> emp t1 
+<span class="token keyword">LEFT</span> <span class="token keyword">JOIN</span> dept t2 
+<span class="token keyword">ON</span> t1<span class="token punctuation">.</span>dept_id <span class="token operator">=</span> t2<span class="token punctuation">.</span>id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="2-2-2-右外连接"><a href="#2-2-2-右外连接" class="headerlink" title="2.2.2 右外连接"></a>2.2.2 右外连接</h4><p>查询右表所有数据以及其与左表的交集部分</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 查询所有部门信息及其员工信息（包括没有员工的部门）</span>
+<span class="token keyword">SELECT</span> t1<span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">,</span> t2<span class="token punctuation">.</span>name <span class="token keyword">AS</span> <span class="token string">'员工姓名'</span>
+<span class="token keyword">FROM</span> dept t1 
+<span class="token keyword">RIGHT</span> <span class="token keyword">JOIN</span> emp t2 
+<span class="token keyword">ON</span> t2<span class="token punctuation">.</span>dept_id <span class="token operator">=</span> t1<span class="token punctuation">.</span>id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="三、子查询"><a href="#三、子查询" class="headerlink" title="三、子查询"></a>三、子查询</h2><h3 id="3-1-概念"><a href="#3-1-概念" class="headerlink" title="3.1 概念"></a>3.1 概念</h3><p>子查询是指查询中嵌套查询，内部的查询称为子查询。</p>
+<h3 id="3-2-子查询分类"><a href="#3-2-子查询分类" class="headerlink" title="3.2 子查询分类"></a>3.2 子查询分类</h3><h4 id="3-2-1-单行单列子查询"><a href="#3-2-1-单行单列子查询" class="headerlink" title="3.2.1 单行单列子查询"></a>3.2.1 单行单列子查询</h4><p>子查询结果为单个值，可以使用比较运算符</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 查询工资最高的员工信息</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> emp 
+<span class="token keyword">WHERE</span> salary <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token function">MAX</span><span class="token punctuation">(</span>salary<span class="token punctuation">)</span> <span class="token keyword">FROM</span> emp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 查询工资小于平均工资的员工</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> emp 
+<span class="token keyword">WHERE</span> salary <span class="token operator">&lt;</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token function">AVG</span><span class="token punctuation">(</span>salary<span class="token punctuation">)</span> <span class="token keyword">FROM</span> emp<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="3-2-2-多行单列子查询"><a href="#3-2-2-多行单列子查询" class="headerlink" title="3.2.2 多行单列子查询"></a>3.2.2 多行单列子查询</h4><p>子查询结果为一列多行，可以使用IN等运算符</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 查询财务部和市场部的所有员工信息</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> emp 
+<span class="token keyword">WHERE</span> dept_id <span class="token operator">IN</span> <span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span> id <span class="token keyword">FROM</span> dept 
+    <span class="token keyword">WHERE</span> NAME <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token string">'财务部'</span><span class="token punctuation">,</span><span class="token string">'市场部'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="3-2-3-多行多列子查询"><a href="#3-2-3-多行多列子查询" class="headerlink" title="3.2.3 多行多列子查询"></a>3.2.3 多行多列子查询</h4><p>子查询结果可以作为一张虚拟表</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 查询2011-11-11后入职的员工信息和部门信息</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> dept t1<span class="token punctuation">,</span>
+<span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> emp <span class="token keyword">WHERE</span> join_date <span class="token operator">></span> <span class="token string">'2011-11-11'</span><span class="token punctuation">)</span> t2
+<span class="token keyword">WHERE</span> t1<span class="token punctuation">.</span>id <span class="token operator">=</span> t2<span class="token punctuation">.</span>dept_id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="四、事务管理"><a href="#四、事务管理" class="headerlink" title="四、事务管理"></a>四、事务管理</h2><h3 id="4-1-事务概念"><a href="#4-1-事务概念" class="headerlink" title="4.1 事务概念"></a>4.1 事务概念</h3><p>事务是一组操作的集合，这些操作要么全部成功，要么全部失败。事务是数据库维护数据一致性的单位。</p>
+<h3 id="4-2-事务的基本操作"><a href="#4-2-事务的基本操作" class="headerlink" title="4.2 事务的基本操作"></a>4.2 事务的基本操作</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 开启事务</span>
+<span class="token keyword">START</span> <span class="token keyword">TRANSACTION</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 提交事务</span>
+<span class="token keyword">COMMIT</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 回滚事务</span>
+<span class="token keyword">ROLLBACK</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="4-3-事务示例"><a href="#4-3-事务示例" class="headerlink" title="4.3 事务示例"></a>4.3 事务示例</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 创建账户表</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> account <span class="token punctuation">(</span>
+  id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token keyword">AUTO_INCREMENT</span><span class="token punctuation">,</span>
+  NAME <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  balance <span class="token keyword">DOUBLE</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 添加测试数据</span>
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> account <span class="token punctuation">(</span>NAME<span class="token punctuation">,</span> balance<span class="token punctuation">)</span> 
+<span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token string">'张三'</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'李四'</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 转账操作</span>
+<span class="token keyword">START</span> <span class="token keyword">TRANSACTION</span><span class="token punctuation">;</span>
+<span class="token comment">-- 张三账户减500</span>
+<span class="token keyword">UPDATE</span> account <span class="token keyword">SET</span> balance <span class="token operator">=</span> balance <span class="token operator">-</span> <span class="token number">500</span> 
+<span class="token keyword">WHERE</span> NAME <span class="token operator">=</span> <span class="token string">'张三'</span><span class="token punctuation">;</span>
+<span class="token comment">-- 李四账户加500</span>
+<span class="token keyword">UPDATE</span> account <span class="token keyword">SET</span> balance <span class="token operator">=</span> balance <span class="token operator">+</span> <span class="token number">500</span> 
+<span class="token keyword">WHERE</span> NAME <span class="token operator">=</span> <span class="token string">'李四'</span><span class="token punctuation">;</span>
+<span class="token keyword">COMMIT</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="4-4-事务的四大特性（ACID）"><a href="#4-4-事务的四大特性（ACID）" class="headerlink" title="4.4 事务的四大特性（ACID）"></a>4.4 事务的四大特性（ACID）</h3><ol>
+<li><strong>原子性（Atomicity）</strong>：事务是不可分割的最小操作单位</li>
+<li><strong>一致性（Consistency）</strong>：事务执行前后，数据保持一致</li>
+<li><strong>隔离性（Isolation）</strong>：多个事务之间相互独立</li>
+<li><strong>持久性（Durability）</strong>：事务一旦提交，结果永久保存</li>
+</ol>
+<h3 id="4-5-事务的隔离级别"><a href="#4-5-事务的隔离级别" class="headerlink" title="4.5 事务的隔离级别"></a>4.5 事务的隔离级别</h3><table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>READ UNCOMMITTED</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>读未提交</td>
+</tr>
+<tr>
+<td>READ COMMITTED</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+<td>读已提交（Oracle默认）</td>
+</tr>
+<tr>
+<td>REPEATABLE READ</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+<td>可重复读（MySQL默认）</td>
+</tr>
+<tr>
+<td>SERIALIZABLE</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td>串行化</td>
+</tr>
+</tbody></table>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 查询当前隔离级别</span>
+<span class="token keyword">SELECT</span> @<span class="token variable">@tx_isolation</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 设置隔离级别</span>
+<span class="token keyword">SET</span> <span class="token keyword">GLOBAL</span> <span class="token keyword">TRANSACTION</span> <span class="token keyword">ISOLATION</span> <span class="token keyword">LEVEL</span> <span class="token keyword">READ</span> <span class="token keyword">COMMITTED</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>注意：隔离级别从低到高安全性越来越高，但性能越来越低。应根据实际业务需求选择合适的隔离级别。</p>
+</div>
+      
+        <div class="article-credit"><span>作者 Ryo</span><a target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a><button class="text-link" type="button" data-copy-url hidden>复制文章链接</button></div>
+      
+      
+        <nav class="article-neighbours" aria-label="相邻文章">
+          <a href="/2025/03/12/hou-duan/shu-ju-ku/mysql/3.mysql-yue-shu-he-shu-ju-ku-she-ji/"><small>上一篇</small><strong>MySQL约束和数据库设计</strong></a>
+        
+          <a href="/2025/03/03/hou-duan/shang-cheng/shi-yong-minio-he-nestjs-shi-xian-wen-jian-cun-chu/"><small>下一篇</small><strong>使用Minio和Nestjs实现文件存储</strong></a>
+        </nav>
+      
+      
+        <details class="comments" data-comment-src="https://utteranc.es/client.js" data-repo="SaebaRyoo/SaebaRyoo.github.io" data-term="pathname" data-light="github-light" data-dark="github-dark">
+          <summary>读者回信</summary>
+          <div class="comment-mount"></div><a class="text-link" target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/SaebaRyoo.github.io/issues">在 GitHub 查看讨论</a>
+        </details>
+      
+    </div>
+  </div>
+</article>
+
+
+<dialog class="image-dialog" aria-label="查看原图"><form method="dialog"><button class="icon-btn" aria-label="关闭原图"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form><img alt=""></dialog>
+
+</main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+ 咕嘎邮便局 <span>·</span> Ryo</a>
+      <nav aria-label="页脚导航">
+        <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">GitHub</a>
+        <a href="/tags/">标签</a>
+        <a href="/visualization-layout/">可视化实验</a>
+        <a href="#main-content">回到顶部</a>
+      </nav>
+    </div>
+  </footer>
+  <dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="/search.xml">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form>
+  </header>
+  <label class="search-field"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>
+
+</body>
+</html>

@@ -1,0 +1,235 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:title" content="flex基础属性 · Ryo的小站">
+  <meta property="og:description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://saebaryoo.github.io/images/gugu-doro/web/anime-01-seaside-post.jpg">
+  <link rel="canonical" href="https://saebaryoo.github.io/2020/07/14/qian-duan/css/2.flex-ji-chu/">
+  <link rel="icon" href="/post-office/gugu-icon.png" type="image/png">
+  <title>flex基础属性 · Ryo的小站</title>
+  <script>
+    try {
+      var storedDark = localStorage.getItem('dark');
+      document.documentElement.dataset.theme = (storedDark === null ? matchMedia('(prefers-color-scheme: dark)').matches : storedDark === 'true') ? 'dark' : 'light';
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/post-office/post.css">
+  <script defer src="/post-office/post.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.3 8.5-6.3"/></symbol>
+    <symbol id="i-wing" viewBox="0 0 32 24"><path d="M1.5 6.5h8m-6.5 4h5m-3.5 4h2"/><path d="M12 5h18l-5 14H7z" fill="currentColor" stroke="none"/><path d="m12 7 6 5.6 10-5.8" stroke="var(--wing-line, #235344)"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" transform="rotate(-8 12 12)"/><path d="M8 8h.1m4 4h.1m3.9 4h.1" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a8.8 8.8 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 15 6 5h12l3 10v4H3z"/><path d="M3 14h5l2 3h4l2-3h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 3h10v11H3z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-5l2 2m0-5v5h-5M20 13a8 8 0 0 1-14 5l-2-2m0 5v-5h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 16h16v4H4zM7 16c0-3 3-3.5 3-5V9a4 4 0 1 1 4 0v2c0 1.5 3 2 3 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="m3 3 8 .3L21 13l-8 8-9.7-9.7z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="m2 10 20-7-6.5 18-4.3-7.7L2 10Z"/><path d="M11.2 13.3 22 3"/></symbol>
+  </defs>
+</svg>
+
+  <a class="skip" href="#main-content">跳到正文</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="/" aria-label="Ryo的小站首页">
+        <span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 32 24"><use href="#i-wing"/></svg></span>
+        <span><strong>Ryo的小站</strong><small lang="en">GUGU POST</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives/">文章归档</a>
+        
+          <a href="/categories/">分类索引</a>
+        
+          <a href="/visualization-layout/">实验室</a>
+        
+          <a href="/about/">关于</a>
+        
+      </nav>
+      <div class="header-tools">
+        <button class="search-trigger" type="button" data-search-open hidden aria-label="搜索文章" aria-haspopup="dialog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<span>搜索</span><kbd>/</kbd></button>
+        
+          <button type="button" class="icon-btn theme-trigger" data-theme-toggle hidden aria-label="夜间模式" title="夜间模式"><svg class="icon" aria-hidden="true"><use class="moon" href="#i-moon"/><use class="sun" href="#i-sun"/></svg></button>
+        
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="wrap" tabindex="-1">
+<article class="inner-page reading-page">
+  <a class="breadcrumb" href="/archives/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
+文章归档</a>
+  <header class="article-heading">
+    <div class="letter-meta">
+      <a class="category-ink ink-terminal" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span aria-hidden="true">/</span>
+      <time datetime="2020-07-14">2020.07.14</time><span aria-hidden="true">/</span>Ryo
+    </div>
+    <h1>flex基础属性</h1>
+    <div class="article-tags"><a href="/tags/css/"># css</a></div>
+  </header>
+  <div class="reading-grid with-toc">
+    
+      <aside class="contents"><details open><summary>信件目录</summary><nav aria-label="文章目录"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A5%E4%B8%8B%E6%89%80%E6%9C%89%E4%BB%A3%E7%A0%81%E7%9A%84%E7%A4%BA%E4%BE%8B%E9%83%BD%E5%9C%A8%E4%BB%93%E5%BA%93"><span class="toc-text">以下所有代码的示例都在仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%A8%E5%AE%B9%E5%99%A8%E4%B8%8A%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="toc-text">应用在容器上的属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-flex-direction-%E8%AE%BE%E7%BD%AE%E9%A1%B9%E7%9B%AE%E7%9A%84%E4%B8%BB%E8%BD%B4"><span class="toc-text">1. flex-direction 设置项目的主轴</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-flex-wrap-%E8%AE%BE%E7%BD%AE%E9%A1%B9%E7%9B%AE%E6%98%AF%E5%90%A6%E6%8D%A2%E8%A1%8C"><span class="toc-text">2. flex-wrap 设置项目是否换行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-flex-flow-%E4%BB%A5%E4%B8%8A%E4%B8%A4%E4%B8%AA%E7%9A%84%E7%AE%80%E5%86%99"><span class="toc-text">3. flex-flow 以上两个的简写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-justify-content-%E8%AE%BE%E7%BD%AE%E9%A1%B9%E7%9B%AE%E5%9C%A8%E4%B8%BB%E8%BD%B4%E4%B8%8A%E7%9A%84%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F"><span class="toc-text">4. justify-content 设置项目在主轴上的对齐方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-align-items-%E8%AE%BE%E7%BD%AE%E6%89%80%E6%9C%89%E9%A1%B9%E7%9B%AE%E5%9C%A8%E4%BA%A4%E5%8F%89%E8%BD%B4%E4%B8%8A%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="toc-text">5. align-items 设置所有项目在交叉轴上的位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-align-content-%E7%94%A8%E6%9D%A5%E5%88%86%E9%85%8D%E4%BA%A4%E5%8F%89%E8%BD%B4%E6%96%B9%E5%90%91%E7%9A%84%E5%89%A9%E4%BD%99%E7%A9%BA%E9%97%B4-%E8%A1%A8%E7%8E%B0%E8%A1%8C%E4%B8%BA%E5%92%8C-justify-content-%E5%B1%9E%E6%80%A7%E4%B8%80%E8%87%B4%EF%BC%8C%E9%99%A4%E4%BA%86%E5%A4%9A%E5%87%BA%E4%B8%80%E4%B8%AA-stretch"><span class="toc-text">6. align-content 用来分配交叉轴方向的剩余空间 表现行为和 justify-content 属性一致，除了多出一个 stretch.</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%A8%E9%A1%B9%E7%9B%AE%E4%B8%8A%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="toc-text">应用在项目上的属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-order-%E5%B1%9E%E6%80%A7-%E5%AE%9A%E4%B9%89%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8E%92%E5%88%97%E9%A1%BA%E5%BA%8F%EF%BC%8C%E6%95%B0%E5%80%BC%E8%B6%8A%E5%B0%8F%EF%BC%8C%E6%9C%88%E8%80%83%E5%8B%A4%EF%BC%8C%E9%BB%98%E8%AE%A4%E4%B8%BA-0%EF%BC%88%E4%B8%8D%E6%8E%A8%E8%8D%90%E4%BD%BF%E7%94%A8%EF%BC%8C%E6%80%A7%E8%83%BD%E6%8D%9F%E8%80%97%E5%A4%A7%EF%BC%89"><span class="toc-text">1. order 属性 定义项目的排列顺序，数值越小，月考勤，默认为 0（不推荐使用，性能损耗大）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-flex-grow-%E5%AE%9A%E4%B9%89%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%94%BE%E5%A4%A7%E6%AF%94%E4%BE%8B%EF%BC%8C%E9%BB%98%E8%AE%A4%E4%B8%BA-0%E3%80%82%E5%8D%B3%E5%AD%98%E5%9C%A8%E5%89%A9%E4%BD%99%E7%A9%BA%E9%97%B4%E4%B9%9F%E4%B8%8D%E6%94%BE%E5%A4%A7%E3%80%82"><span class="toc-text">2. flex-grow 定义项目的放大比例，默认为 0。即存在剩余空间也不放大。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-flex-shrink"><span class="toc-text">3. flex-shrink</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-flex-basis"><span class="toc-text">4. flex-basis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-flex-%E5%BB%BA%E8%AE%AE%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8-flex-%E5%B1%9E%E6%80%A7%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E5%8D%95%E7%8B%AC%E5%86%99%E4%B8%89%E4%B8%AA%E5%88%86%E7%A6%BB%E7%9A%84%E5%B1%9E%E6%80%A7-%E8%AF%A5%E5%B1%9E%E6%80%A7%E6%98%AF-flex-grow-flex-shrink-flex-basis-%E7%9A%84%E7%AE%80%E5%86%99%EF%BC%8C%E9%BB%98%E8%AE%A4%E5%80%BC%E6%98%AF0-1-auto%EF%BC%8C%E5%90%8E%E4%B8%A4%E4%B8%AA%E5%B1%9E%E6%80%A7%E5%8F%AF%E9%80%89"><span class="toc-text">5. flex(建议优先使用 flex 属性，而不是单独写三个分离的属性) 该属性是 flex-grow, flex-shrink, flex-basis 的简写，默认值是0 1 auto，后两个属性可选</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-align-self"><span class="toc-text">6. align-self</span></a></li></ol></li></ol></nav></details></aside>
+    
+    <div class="reading-column">
+      <div class="prose"><h2 id="以下所有代码的示例都在仓库"><a href="#以下所有代码的示例都在仓库" class="headerlink" title="以下所有代码的示例都在仓库"></a>以下所有代码的示例都在<a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/Demos/tree/main/html-css-demo/Flex-demo">仓库</a></h2><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html">基本概念</a></h2><p>flex 是弹性布局，任何一个容器都可以指定为 flex 布局。只需要设置<code>display: flex</code>即可。在设为 flex 布局后，子元素的<code>float</code>,<code>clear</code>,<code>vertical-align</code>属性会失效</p>
+<h2 id="应用在容器上的属性"><a href="#应用在容器上的属性" class="headerlink" title="应用在容器上的属性"></a>应用在容器上的属性</h2><h3 id="1-flex-direction-设置项目的主轴"><a href="#1-flex-direction-设置项目的主轴" class="headerlink" title="1. flex-direction 设置项目的主轴"></a>1. flex-direction 设置项目的主轴</h3><ul>
+<li>row（默认值）：主轴为水平方向，起点在左端。</li>
+<li>row-reverse：主轴为水平方向，起点在右端。</li>
+<li>column：主轴为垂直方向，起点在上沿。</li>
+<li>column-reverse：主轴为垂直方向，起点在下沿。</li>
+</ul>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">flex-direction</span><span class="token punctuation">:</span> row | row-reverse | column | column-reverse<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-flex-wrap-设置项目是否换行"><a href="#2-flex-wrap-设置项目是否换行" class="headerlink" title="2. flex-wrap 设置项目是否换行"></a>2. flex-wrap 设置项目是否换行</h3><ul>
+<li>nowrap(默认值): 不换行</li>
+<li>wrap: 换行</li>
+<li>wrap-reverse: 换行，第一行在下方</li>
+</ul>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">flex-wrap</span><span class="token punctuation">:</span> nowrap | wrap | wrap-reverse<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="3-flex-flow-以上两个的简写"><a href="#3-flex-flow-以上两个的简写" class="headerlink" title="3. flex-flow 以上两个的简写"></a>3. flex-flow 以上两个的简写</h3><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">flex-flow属性是flex-direction属性和flex-wrap属性的简写形式，默认值为row
+  nowrap。
+  .container</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">flex-flow</span><span class="token punctuation">:</span> &lt;flex-direction> || &lt;flex-wrap><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="4-justify-content-设置项目在主轴上的对齐方式"><a href="#4-justify-content-设置项目在主轴上的对齐方式" class="headerlink" title="4. justify-content 设置项目在主轴上的对齐方式"></a>4. justify-content 设置项目在主轴上的对齐方式</h3><ul>
+<li>flex-start: 在主轴的开始位置按顺序排序</li>
+<li>flex-end: 在主轴的结束位置按顺序排序</li>
+<li>center: 项目集中在主轴的中间</li>
+<li>space-between: 两边对齐，项目之间的间隔相等</li>
+<li>space-around: 每个项目两侧的间隔相等，所以，项目和项目之间的间隔比项目与边框的间隔大一倍</li>
+</ul>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">justify-content</span><span class="token punctuation">:</span> flex-start | flex-end | center | space-between | space-around<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="5-align-items-设置所有项目在交叉轴上的位置"><a href="#5-align-items-设置所有项目在交叉轴上的位置" class="headerlink" title="5. align-items 设置所有项目在交叉轴上的位置"></a>5. align-items 设置所有项目在交叉轴上的位置</h3><ul>
+<li>stretch（默认值）：如果项目未设置高度或设为 auto，将占满整个容器的高度。</li>
+<li>flex-start：交叉轴的起点对齐。</li>
+<li>flex-end：交叉轴的终点对齐。</li>
+<li>center：交叉轴的中点对齐。</li>
+<li>baseline: 项目的第一行文字的基线对齐。</li>
+</ul>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">align-items</span><span class="token punctuation">:</span> flex-start | flex-end | center | baseline | stretch<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="6-align-content-用来分配交叉轴方向的剩余空间-表现行为和-justify-content-属性一致，除了多出一个-stretch"><a href="#6-align-content-用来分配交叉轴方向的剩余空间-表现行为和-justify-content-属性一致，除了多出一个-stretch" class="headerlink" title="6. align-content 用来分配交叉轴方向的剩余空间 表现行为和 justify-content 属性一致，除了多出一个 stretch."></a>6. align-content 用来分配交叉轴方向的剩余空间 表现行为和 justify-content 属性一致，除了多出一个 stretch.</h3><ul>
+<li>stretch（默认值）：轴线占满整个交叉轴。</li>
+<li>flex-start：与交叉轴的起点对齐。</li>
+<li>flex-end：与交叉轴的终点对齐。</li>
+<li>center：与交叉轴的中点对齐。</li>
+<li>space-between：与交叉轴两端对齐，轴线之间的间隔平均分布。</li>
+<li>space-around：每根轴线两侧的间隔都相等。所以，轴线之间的间隔比轴线与边框的间隔大一倍。</li>
+</ul>
+<p><strong>如果 flex 项目未显式设置<code>height</code>或<code>block-size</code>时，除了设置 stretch 属性会拉伸 flex 项目，设置为其他属性时会改变 flex 项目的高度为内容最大高度</strong></p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">align-content</span><span class="token punctuation">:</span> flex-start | flex-end | center | space-between | space-around |
+    stretch<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="应用在项目上的属性"><a href="#应用在项目上的属性" class="headerlink" title="应用在项目上的属性"></a>应用在项目上的属性</h2><h3 id="1-order-属性-定义项目的排列顺序，数值越小，月考勤，默认为-0（不推荐使用，性能损耗大）"><a href="#1-order-属性-定义项目的排列顺序，数值越小，月考勤，默认为-0（不推荐使用，性能损耗大）" class="headerlink" title="1. order 属性 定义项目的排列顺序，数值越小，月考勤，默认为 0（不推荐使用，性能损耗大）"></a>1. order 属性 定义项目的排列顺序，数值越小，月考勤，默认为 0（不推荐使用，性能损耗大）</h3><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">order</span><span class="token punctuation">:</span> &lt;number><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-flex-grow-定义项目的放大比例，默认为-0。即存在剩余空间也不放大。"><a href="#2-flex-grow-定义项目的放大比例，默认为-0。即存在剩余空间也不放大。" class="headerlink" title="2. flex-grow 定义项目的放大比例，默认为 0。即存在剩余空间也不放大。"></a>2. flex-grow 定义项目的放大比例，默认为 0。即存在剩余空间也不放大。</h3><p>在一个 flex 容器内，如果给项目设置了 flex-grow,那么会每个设置了 flex-grow 的项目都会多分到: <strong>(剩余空间宽度&#x2F;flex-grow 总数) * 当前项目 flex-grow 数</strong><br>假设容器宽度为 600px,有三个项目 width 都为 100px, 后两个分别设置了以下属性，那么最后计算出来的宽度就是<br>item1: 100px,item2:200px, item3: 300px;</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item2</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">flex-grow</span><span class="token punctuation">:</span> 1<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token selector">.item3</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">flex-grow</span><span class="token punctuation">:</span> 2<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="3-flex-shrink"><a href="#3-flex-shrink" class="headerlink" title="3. flex-shrink"></a>3. flex-shrink</h3><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">flex-shrink</span><span class="token punctuation">:</span> &lt;number><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>定义项目的缩小比例，默认为 1，即如果容器空间不足，容器内的项目缩小。<br>但是 flex-shrink 会组织 flex 项目缩小为 0。所以继续缩小会按照<code>min-content</code>的大小计算。<br>这就是为什么显式设置<code>flex:1</code>不一定能让所有 flex 项目宽度相等的主要原因之一。所以有一个小技巧就是<br>要实现等分列布局效果时，显示的在 flex 项目上设置<code>min-width:0</code>，避免内容不等长，造成列不等分</p>
+<h3 id="4-flex-basis"><a href="#4-flex-basis" class="headerlink" title="4. flex-basis"></a>4. flex-basis</h3><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">flex-basis</span><span class="token punctuation">:</span> &lt;length> | auto<span class="token punctuation">;</span> <span class="token comment">/* default auto */</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>默认值时 auto ，用于给项目设置一个初始化的尺寸(理想的尺寸)。之所以说是理想的尺寸，是因为根据浏览器会<br>根据 <code>content ➜ width ➜ flex-basis</code> 来决定用哪个值来初始化 Flex 项目的假设主尺寸。如果 Flex 项目显式设置了 <code>flex-basis</code> 属性，则会忽略 <code>width</code> 和 <code>content</code> 。但最终浏览器计算出来的 Flex 项目主尺寸（计算后的 flex-basis 属性的值）会受到 CSS 的 <code>min-*</code> 和 <code>max-*</code> 属性值的限制，其中 <code>min-*</code> 用来设置 Flex 项目的下限值，<code>max-*</code>用来设置 Flex 项目的上限值 。</p>
+<h3 id="5-flex-建议优先使用-flex-属性，而不是单独写三个分离的属性-该属性是-flex-grow-flex-shrink-flex-basis-的简写，默认值是0-1-auto，后两个属性可选"><a href="#5-flex-建议优先使用-flex-属性，而不是单独写三个分离的属性-该属性是-flex-grow-flex-shrink-flex-basis-的简写，默认值是0-1-auto，后两个属性可选" class="headerlink" title="5. flex(建议优先使用 flex 属性，而不是单独写三个分离的属性) 该属性是 flex-grow, flex-shrink, flex-basis 的简写，默认值是0 1 auto，后两个属性可选"></a>5. flex(建议优先使用 flex 属性，而不是单独写三个分离的属性) 该属性是 flex-grow, flex-shrink, flex-basis 的简写，默认值是<code>0 1 auto</code>，后两个属性可选</h3><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">flex</span><span class="token punctuation">:</span> none | [ &lt; <span class="token string">"flex-grow"</span> > &lt; <span class="token string">"flex-shrink"</span> >? || &lt; <span class="token string">"flex-basis"</span> >]<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="6-align-self"><a href="#6-align-self" class="headerlink" title="6. align-self"></a>6. align-self</h3><p>该属性可用于设置单个项目与其他项目不同的对齐方式，会覆盖 align-items 属性，默认值为 auto(继承容器的 align-items 属性，如果父元素没设值则为 stretch)</p>
+<pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">.item</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">align-self</span><span class="token punctuation">:</span> auto | flex-start | flex-end | center | baseline | stretch<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+</div>
+      
+        <div class="article-credit"><span>作者 Ryo</span><a target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a><button class="text-link" type="button" data-copy-url hidden>复制文章链接</button></div>
+      
+      
+        <nav class="article-neighbours" aria-label="相邻文章">
+          <a href="/2020/07/14/qian-duan/css/1.css-ji-chu/"><small>上一篇</small><strong>css基础</strong></a>
+        
+          <a href="/2020/07/11/qian-duan/html/1.ji-chu/"><small>下一篇</small><strong>html基础</strong></a>
+        </nav>
+      
+      
+        <details class="comments" data-comment-src="https://utteranc.es/client.js" data-repo="SaebaRyoo/SaebaRyoo.github.io" data-term="pathname" data-light="github-light" data-dark="github-dark">
+          <summary>读者回信</summary>
+          <div class="comment-mount"></div><a class="text-link" target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/SaebaRyoo.github.io/issues">在 GitHub 查看讨论</a>
+        </details>
+      
+    </div>
+  </div>
+</article>
+
+
+<dialog class="image-dialog" aria-label="查看原图"><form method="dialog"><button class="icon-btn" aria-label="关闭原图"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form><img alt=""></dialog>
+
+</main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+ 咕嘎邮便局 <span>·</span> Ryo</a>
+      <nav aria-label="页脚导航">
+        <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">GitHub</a>
+        <a href="/tags/">标签</a>
+        <a href="/visualization-layout/">可视化实验</a>
+        <a href="#main-content">回到顶部</a>
+      </nav>
+    </div>
+  </footer>
+  <dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="/search.xml">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form>
+  </header>
+  <label class="search-field"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>
+
+</body>
+</html>

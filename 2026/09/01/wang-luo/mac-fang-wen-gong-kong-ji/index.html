@@ -1,0 +1,219 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:title" content="macOS 访问工控机（10.x.x.x）踩坑与排雷指南 · Ryo的小站">
+  <meta property="og:description" content="Ryo的全栈路的学习和生活记录">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://saebaryoo.github.io/images/gugu-doro/web/anime-06-night-coding.jpg">
+  <link rel="canonical" href="https://saebaryoo.github.io/2026/09/01/wang-luo/mac-fang-wen-gong-kong-ji/">
+  <link rel="icon" href="/post-office/gugu-icon.png" type="image/png">
+  <title>macOS 访问工控机（10.x.x.x）踩坑与排雷指南 · Ryo的小站</title>
+  <script>
+    try {
+      var storedDark = localStorage.getItem('dark');
+      document.documentElement.dataset.theme = (storedDark === null ? matchMedia('(prefers-color-scheme: dark)').matches : storedDark === 'true') ? 'dark' : 'light';
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="/post-office/post.css">
+  <script defer src="/post-office/post.js"></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-library" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.3 8.5-6.3"/></symbol>
+    <symbol id="i-wing" viewBox="0 0 32 24"><path d="M1.5 6.5h8m-6.5 4h5m-3.5 4h2"/><path d="M12 5h18l-5 14H7z" fill="currentColor" stroke="none"/><path d="m12 7 6 5.6 10-5.8" stroke="var(--wing-line, #235344)"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3 10 12 3l9 7v10H3z"/><path d="m3 10 9 6 9-6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3" transform="rotate(-8 12 12)"/><path d="M8 8h.1m4 4h.1m3.9 4h.1" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a8.8 8.8 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="M3 15 6 5h12l3 10v4H3z"/><path d="M3 14h5l2 3h4l2-3h5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 3h10v11H3z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 11a8 8 0 0 1 14-5l2 2m0-5v5h-5M20 13a8 8 0 0 1-14 5l-2-2m0 5v-5h5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-stamp" viewBox="0 0 24 24"><path d="M4 16h16v4H4zM7 16c0-3 3-3.5 3-5V9a4 4 0 1 1 4 0v2c0 1.5 3 2 3 5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="m3 3 8 .3L21 13l-8 8-9.7-9.7z"/><circle cx="7.5" cy="7.5" r="1"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="m2 10 20-7-6.5 18-4.3-7.7L2 10Z"/><path d="M11.2 13.3 22 3"/></symbol>
+  </defs>
+</svg>
+
+  <a class="skip" href="#main-content">跳到正文</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="brand" href="/" aria-label="Ryo的小站首页">
+        <span class="brand-mark"><svg aria-hidden="true" viewBox="0 0 32 24"><use href="#i-wing"/></svg></span>
+        <span><strong>Ryo的小站</strong><small lang="en">GUGU POST</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="主导航">
+        
+          <a href="/">首页</a>
+        
+          <a href="/archives/">文章归档</a>
+        
+          <a href="/categories/">分类索引</a>
+        
+          <a href="/visualization-layout/">实验室</a>
+        
+          <a href="/about/">关于</a>
+        
+      </nav>
+      <div class="header-tools">
+        <button class="search-trigger" type="button" data-search-open hidden aria-label="搜索文章" aria-haspopup="dialog"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<span>搜索</span><kbd>/</kbd></button>
+        
+          <button type="button" class="icon-btn theme-trigger" data-theme-toggle hidden aria-label="夜间模式" title="夜间模式"><svg class="icon" aria-hidden="true"><use class="moon" href="#i-moon"/><use class="sun" href="#i-sun"/></svg></button>
+        
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="wrap" tabindex="-1">
+<article class="inner-page reading-page">
+  <a class="breadcrumb" href="/archives/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-box"/></svg>
+文章归档</a>
+  <header class="article-heading">
+    <div class="letter-meta">
+      <a class="category-ink ink-network" href="/categories/%E7%BD%91%E7%BB%9C/">网络</a><span aria-hidden="true">/</span>
+      <time datetime="2026-09-01">2026.09.01</time><span aria-hidden="true">/</span>Ryo
+    </div>
+    <h1>macOS 访问工控机（10.x.x.x）踩坑与排雷指南</h1>
+    
+  </header>
+  <div class="reading-grid with-toc">
+    
+      <aside class="contents"><details open><summary>信件目录</summary><nav aria-label="文章目录"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#macOS-%E8%AE%BF%E9%97%AE%E5%B7%A5%E6%8E%A7%E6%9C%BA%EF%BC%8810-x-x-x%EF%BC%89%E8%B8%A9%E5%9D%91%E4%B8%8E%E6%8E%92%E9%9B%B7%E6%8C%87%E5%8D%97"><span class="toc-text">macOS 访问工控机（10.x.x.x）踩坑与排雷指南</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E8%83%8C%E6%99%AF%E4%B8%8E%E7%8E%B0%E8%B1%A1"><span class="toc-text">1. 背景与现象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%A0%B9%E6%9C%AC%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90"><span class="toc-text">2. 根本原因分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E8%8B%B9%E6%9E%9C%E7%9A%84%E2%80%9C%E6%9C%AC%E5%9C%B0%E7%BD%91%E7%BB%9C%E2%80%9D%E9%9A%90%E7%A7%81%E9%94%81"><span class="toc-text">2.1 苹果的“本地网络”隐私锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E4%B8%BA%E4%BB%80%E4%B9%88%E2%80%9C%E8%87%AA%E5%B8%A6%E7%BB%88%E7%AB%AF%E2%80%9D%E8%83%BD%E8%BF%9E%EF%BC%8C%E8%80%8C%E2%80%9CRoyal-TSX-Chrome%E2%80%9D%E4%B8%8D%E8%83%BD%EF%BC%9F"><span class="toc-text">2.2 为什么“自带终端”能连，而“Royal TSX &#x2F; Chrome”不能？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">3. 解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E7%BB%9F%E4%B8%80%E8%AE%BE%E7%BD%AE%E8%B7%AF%E5%BE%84%EF%BC%88%E7%B3%BB%E7%BB%9F%E7%BA%A7%EF%BC%89"><span class="toc-text">3.1 统一设置路径（系统级）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Chrome-%E6%B5%8F%E8%A7%88%E5%99%A8%E8%A1%A5%E5%85%85%E8%AF%B4%E6%98%8E"><span class="toc-text">3.2 Chrome 浏览器补充说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%81%BF%E5%9D%91%E6%80%BB%E7%BB%93"><span class="toc-text">4. 避坑总结</span></a></li></ol></li></ol></nav></details></aside>
+    
+    <div class="reading-column">
+      <div class="prose"><h1 id="macOS-访问工控机（10-x-x-x）踩坑与排雷指南"><a href="#macOS-访问工控机（10-x-x-x）踩坑与排雷指南" class="headerlink" title="macOS 访问工控机（10.x.x.x）踩坑与排雷指南"></a>macOS 访问工控机（10.x.x.x）踩坑与排雷指南</h1><h2 id="1-背景与现象"><a href="#1-背景与现象" class="headerlink" title="1. 背景与现象"></a>1. 背景与现象</h2><p>在 macOS 上调试内网工控机（IP：<code>10.0.0.32</code>）时，遇到了一系列“诡异”的网络不通问题：</p>
+<ul>
+<li><strong>Chrome 浏览器</strong>访问 <code>http://10.0.0.32:7688</code> 报错：<code>ERR_ADDRESS_UNREACHABLE</code>。</li>
+<li><strong>Royal TSX</strong>（第三方 SSH 客户端）连接 <code>10.0.0.32</code> 超时或拒绝连接。</li>
+<li><strong>macOS 自带终端（Terminal）</strong> 使用 SSH 连接正常（前提是用户名和密码输入正确）。</li>
+</ul>
+<h2 id="2-根本原因分析"><a href="#2-根本原因分析" class="headerlink" title="2. 根本原因分析"></a>2. 根本原因分析</h2><h3 id="2-1-苹果的“本地网络”隐私锁"><a href="#2-1-苹果的“本地网络”隐私锁" class="headerlink" title="2.1 苹果的“本地网络”隐私锁"></a>2.1 苹果的“本地网络”隐私锁</h3><p>从 macOS Catalina 开始，苹果强制要求：<strong>任何 App 尝试连接私有 IP 地址（内网）时，必须经过用户明确授权</strong>。</p>
+<p><strong>触发条件（数学判断）：</strong><br>macOS 不关心对方是工控机、打印机还是 NAS，只判断目标 IP 是否属于以下三大标准私有地址段：</p>
+<ul>
+<li><code>10.0.0.0/8</code> （10.x.x.x） —— <strong>你的工控机在此范围</strong></li>
+<li><code>172.16.0.0/12</code> （172.16.x.x ~ 172.31.x.x）</li>
+<li><code>192.168.0.0/16</code> （192.168.x.x）</li>
+</ul>
+<p>只要目标 IP 命中上述范围，macOS 网络内核会在底层直接拦截数据包，导致 App 无法收到任何回包。</p>
+<h3 id="2-2-为什么“自带终端”能连，而“Royal-TSX-Chrome”不能？"><a href="#2-2-为什么“自带终端”能连，而“Royal-TSX-Chrome”不能？" class="headerlink" title="2.2 为什么“自带终端”能连，而“Royal TSX &#x2F; Chrome”不能？"></a>2.2 为什么“自带终端”能连，而“Royal TSX &#x2F; Chrome”不能？</h3><p>权限是按 <strong>App（应用）</strong> 独立存储的：</p>
+<ul>
+<li><strong>自带终端（Terminal.app）</strong>：可能在系统安装时默认获得了权限，或者之前某次弹窗被你点过“允许”，因此它不受阻。*(注：本例中一开始连不上是因为用户名输错，属于认证失败，与权限无关。)*</li>
+<li><strong>Chrome &amp; Royal TSX</strong>：作为第三方 App，macOS 严格限制其内网访问。除非用户在弹窗中点“允许”或在系统设置中手动开权限，否则系统会直接丢弃发往 <code>10.0.0.32</code> 的数据包。</li>
+</ul>
+<blockquote>
+<p><strong>区分报错技巧</strong>：</p>
+<ul>
+<li><strong>权限问题</strong>：连接超时（Timeout）或 <code>ERR_ADDRESS_UNREACHABLE</code>（Chrome）。</li>
+<li><strong>用户名&#x2F;密码错误</strong>：提示 <code>Authentication failed</code> 或 <code>Permission denied</code>（SSH）。</li>
+</ul>
+</blockquote>
+<h2 id="3-解决方案"><a href="#3-解决方案" class="headerlink" title="3. 解决方案"></a>3. 解决方案</h2><h3 id="3-1-统一设置路径（系统级）"><a href="#3-1-统一设置路径（系统级）" class="headerlink" title="3.1 统一设置路径（系统级）"></a>3.1 统一设置路径（系统级）</h3><ol>
+<li>点击左上角苹果图标 &gt; <strong>系统设置</strong>。</li>
+<li>进入 <strong>隐私与安全性</strong> &gt; <strong>本地网络</strong>。</li>
+<li>在右侧列表中找到以下 App，并<strong>打开开关</strong>：<ul>
+<li><code>Google Chrome</code></li>
+<li><code>Royal TSX</code> （或 <code>Royal TSV</code>）</li>
+<li>（可选）<code>Terminal</code> —— 如果自带终端也被拦截，一并开启。</li>
+</ul>
+</li>
+</ol>
+<p><strong>操作提示</strong>：</p>
+<ul>
+<li>修改权限后，<strong>必须完全退出（Cmd + Q）并重启</strong>对应的 App，改动才会生效。</li>
+<li>如果列表中没有某个 App，可以尝试在该 App 中执行一次 <code>ping 10.0.0.32</code> 或随便输入一个 SSH 连接，系统检测到请求后会自动在列表中生成条目。</li>
+</ul>
+<h3 id="3-2-Chrome-浏览器补充说明"><a href="#3-2-Chrome-浏览器补充说明" class="headerlink" title="3.2 Chrome 浏览器补充说明"></a>3.2 Chrome 浏览器补充说明</h3><p>如果在系统设置中已开启权限，但 Chrome 依然报错，可以检查内部实验性功能（通常不需要改）：</p>
+<ul>
+<li>地址栏输入 <code>chrome://flags/#local-network-access-check</code>。</li>
+<li>确保该项为 <code>Default</code> 或 <code>Disabled</code>（默认为 Default 即可，系统权限优先级更高）。</li>
+</ul>
+<h2 id="4-避坑总结"><a href="#4-避坑总结" class="headerlink" title="4. 避坑总结"></a>4. 避坑总结</h2><table>
+<thead>
+<tr>
+<th align="left">现象</th>
+<th align="left">可能原因</th>
+<th align="left">解决办法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Chrome 无法打开内网 Web 页面</td>
+<td align="left">macOS 本地网络权限未开启</td>
+<td align="left">系统设置 -&gt; 隐私 -&gt; 本地网络 -&gt; 勾选 Chrome</td>
+</tr>
+<tr>
+<td align="left">Royal TSX SSH 连接超时</td>
+<td align="left">macOS 本地网络权限未开启</td>
+<td align="left">系统设置 -&gt; 隐私 -&gt; 本地网络 -&gt; 勾选 Royal TSX</td>
+</tr>
+<tr>
+<td align="left">Terminal SSH 提示 <code>Permission denied</code></td>
+<td align="left"><strong>用户名或密码错误</strong>（非网络问题）</td>
+<td align="left">核对工控机的登录凭据</td>
+</tr>
+<tr>
+<td align="left">Terminal SSH 提示 <code>Connection timed out</code></td>
+<td align="left">Terminal 也被系统拦截</td>
+<td align="left">在本地网络设置中勾选 Terminal</td>
+</tr>
+</tbody></table>
+<p><strong>核心结论</strong>：<br>遇到内网 IP（尤其是 <code>10.</code>、<code>172.16</code>、<code>192.168</code> 开头）连不上时，<strong>第一反应先去检查 macOS 的“本地网络”隐私设置</strong>，不要先怀疑网线、防火墙或工控机挂了。大多数情况下，这只是苹果给第三方 App 套上的“紧箍咒”在作祟。</p>
+</div>
+      
+        <div class="article-credit"><span>作者 Ryo</span><a target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license noopener">CC BY-NC-ND 4.0</a><button class="text-link" type="button" data-copy-url hidden>复制文章链接</button></div>
+      
+      
+        <nav class="article-neighbours" aria-label="相邻文章">
+          <a href="/2026/09/04/hou-duan/java/sdkman/"><small>上一篇</small><strong>Java SDKMAN使用指南</strong></a>
+        
+          <a href="/2026/04/27/ai-kai-fa/gong-ju/1.claude-jie-deepseekv4/"><small>下一篇</small><strong>Claude Code 免费接入 DeepSeek V4 教程</strong></a>
+        </nav>
+      
+      
+        <details class="comments" data-comment-src="https://utteranc.es/client.js" data-repo="SaebaRyoo/SaebaRyoo.github.io" data-term="pathname" data-light="github-light" data-dark="github-dark">
+          <summary>读者回信</summary>
+          <div class="comment-mount"></div><a class="text-link" target="_blank" rel="noopener" href="https://github.com/SaebaRyoo/SaebaRyoo.github.io/issues">在 GitHub 查看讨论</a>
+        </details>
+      
+    </div>
+  </div>
+</article>
+
+
+<dialog class="image-dialog" aria-label="查看原图"><form method="dialog"><button class="icon-btn" aria-label="关闭原图"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form><img alt=""></dialog>
+
+</main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <a class="footer-signature" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+ 咕嘎邮便局 <span>·</span> Ryo</a>
+      <nav aria-label="页脚导航">
+        <a target="_blank" rel="noopener" href="https://github.com/SaebaRyoo">GitHub</a>
+        <a href="/tags/">标签</a>
+        <a href="/visualization-layout/">可视化实验</a>
+        <a href="#main-content">回到顶部</a>
+      </nav>
+    </div>
+  </footer>
+  <dialog id="mail-search" class="search-dialog" aria-labelledby="search-title" data-index="/search.xml">
+  <header class="dialog-head">
+    <h2 id="search-title">搜索来信</h2>
+    <form method="dialog"><button class="icon-btn" aria-label="关闭搜索"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+</button></form>
+  </header>
+  <label class="search-field"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+<input type="search" name="q" aria-label="搜索文章标题、标签或正文" placeholder="输入标题、标签或正文关键词" autocomplete="off"></label>
+  <p class="search-status" role="status" aria-live="polite">输入关键词查找文章。</p>
+  <ul class="search-results"></ul>
+</dialog>
+
+</body>
+</html>
