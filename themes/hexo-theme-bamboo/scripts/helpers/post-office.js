@@ -17,7 +17,8 @@ const coverImages = [
   'anime-06-night-coding', 'anime-02-coastal-train', 'anime-03-rainy-cafe',
   'anime-04-sakura-picnic', 'anime-05-snowy-postcards', 'anime-01-seaside-post',
   '01-pair-programming', '02-rainy-delivery', '03-coffee-break',
-  '04-starlit-reading', '05-autumn-mail-route'
+  '04-starlit-reading', '05-autumn-mail-route',
+  'soft-01-sorting-letters', 'soft-02-forest-delivery', 'soft-03-debugging-break'
 ];
 
 hexo.extend.helper.register('postal_cover', post => {

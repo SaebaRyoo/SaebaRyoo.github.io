@@ -127,6 +127,103 @@
         "用户提供的海边双人插画"
       ],
       "prompt": "Use case: illustration-story. Asset type: a new landscape personal-blog cover illustration, wide 16:9 composition, preferably 1536x864.\nUse BOTH attached reference images as the sole character and art-style references, not as edit targets. Create a distinct new scene. Match their polished, warm Japanese chibi anime drawing: very big round heads, very short tiny clothed human bodies, huge glossy eyes, soft rosy cheeks, clean delicate linework, smooth gentle cel shading, luminous detailed painted environment and attractive depth of field. Little 2.5-head-high proportions, playful wholesome slice-of-life. Both characters are upright, bipedal chibi humanoids as in the reference images. Keep their recognizable faces consistent across the series.\nGugu Gaga / 咕嘎: tiny girl with chin-length straight charcoal-black bob and blunt bangs, small paired light hairclips, oversized warm gray-brown eyes, a plump black and white penguin onesie with short flipper sleeves and golden penguin feet. A small golden penguin beak above her forehead belongs to the hood. Face always human. Doro: tiny humanoid girl with soft pastel pink bobbed hair, distinct rose-coil buns at sides with a small braid, dark violet ribbon bows and big lavender-purple eyes. She wears a simple ivory-white puff-sleeve dress with a rounded scalloped collar and little beige crossbody bag, with seasonal accessories specified below. Doro's anatomy is two small arms and two small legs, with normal child-friendly chibi proportions matching the provided references.\nThe duo should have lively different expressions and actually interact in the scene. Keep their heads, eyes and important gestures fully visible, ample 6% safe space at edges for a blog card crop. Deliver one finished full-bleed scene, no panels, lettering, dialog balloons, labels, watermark, signature, UI, borders, white frames, photorealism or 3D rendering. No grainy print effect. Wholesome friendship.\nScene: a cosy little home desk at night, cool blue city bokeh outside a big window and warm cream desk-lamp light on two chibi friends. Medium-wide three-quarter side view. Gugu sits at left in her round black penguin onesie on a short swivel chair, focused but delighted, one little flipper tapping a laptop keyboard, the other raised in a tiny victory pose. Doro at right, standing on two legs in her ivory puff-sleeve dress and pale lilac cardigan, leans on the desk offering a mug of warm cocoa with both small hands, eyes smiling. Laptop screen is a soft dark teal with abstract coloured horizontal lines only, no readable code. A little plant, stacked notebooks, one small penguin-shaped paperweight, clear uncluttered work desk. Human-like chibi proportions, adorable round faces, glossy eyes and rose cheeks, expressive companionship. Luminous midnight navy, honey lamp light, delicate sakura pink, subtle cel shading and carefully painted background as in both reference images. Whole heads and hands visible with crop-safe margins, no text."
+    },
+    {
+      "title": "咕嘎盖章，Doro分信",
+      "file": "soft-01-sorting-letters.png",
+      "web_file": "web/soft-01-sorting-letters.jpg",
+      "style": "立体萌物插画",
+      "reference_videos": [
+        {
+          "creator": "咕咕嘎画",
+          "title": "认输吧，你扭不过咕嘎的",
+          "url": "https://www.bilibili.com/video/BV1KRup6TE2v/"
+        },
+        {
+          "creator": "咕咕嘎画",
+          "title": "幼儿园咕嘎（和妈妈doro一起去游乐园）",
+          "url": "https://www.bilibili.com/video/BV18FEy6dEeS/"
+        },
+        {
+          "creator": "锅锅Doro",
+          "title": "doro世界50：旅途终点",
+          "url": "https://www.bilibili.com/video/BV1cJaB6dEs1/"
+        },
+        {
+          "creator": "锅锅Doro",
+          "title": "doro世界59：森林日常",
+          "url": "https://www.bilibili.com/video/BV1eLxe6nE9i/"
+        }
+      ],
+      "reference_method": "观察公开视频试看画面中的角色比例、表情和材质，以文字描述用于生成。",
+      "prompt": "Use case: stylized-concept. Asset type: a landscape 16:9 illustration for a personal coding blog called the Gugu Post Office. One finished original scene, preferably 1672x941 or a similar wide resolution.\nVisual treatment: two tiny, very round, handcrafted 3D chibi mascots in a convincingly lit real miniature environment. Tactile collectible art-toy / plush appearance. Soft short-pile charcoal fleece, velvety ivory fabric, subtle moulded vinyl faces, tiny hair strands and knitted fabric details where appropriate. Gentle realistic daylight or practical lamplight, contact shadows, soft bounce light, shallow depth of field, close 50 mm camera, miniature photography feeling. High-quality stylized 3D animated short-film still. Clear readable silhouettes and facial gestures.\nGugu Gaga / 咕咕嘎嘎: a tiny, squat, pear-shaped mascot with a round belly, very short BLACK flipper sleeves and golden webbed feet. Charcoal-black penguin onesie with a white oval belly, hood with a small golden penguin beak on top above the forehead, visible PALE HUMAN round baby-doll face framed by a chin-length dark bob, blunt fringe and two small silver hair clips. Her face has round rosy cheeks, expressive dark almond eyes and visibly mobile eyebrows; mischievous, stubborn, slightly smug personality in a tiny cute body. Total height less than two head-heights, round head almost as wide as body. The entire body is compact with almost no visible neck.\nDoro: the pink-haired NIKKE meme reinterpreted as a tiny upright art toy. HUGE pale round human-like doll face, soft pastel-pink bob with forehead fringe, one small rolled rose-coil bun visible at the side, short braid and little violet ribbon. Half-lidded dark lavender eyes, low eyebrows, round rosy cheeks, tiny catlike w mouth with a deadpan knowing expression. Body is a small plain opaque cream-white pear / dumpling with very short round arms and two short little feet. Upright bipedal rounded mascot body, almost no visible neck, no long humanoid limbs, no frilly fashion dress, no realistic human proportions. Her full height is also about 1.6 heads. Doro and Gugu have roughly matching size and art-toy material.\nFull-bleed scene. Both characters completely in frame, faces in crisp focus and large enough for an article thumbnail. Leave 8 percent safe margin around heads and feet. Coherent physically readable actions and anatomically separate limbs. No extra characters, logos, subtitles, words, watermark, social-media layout, video interface, picture frame, anime linework, flat illustration or oil-paint texture. Small props can carry simple colour marks only.\nScene: inside a small sunlit vintage post office, the duo working behind a low oak sorting counter. Gugu is on the LEFT, facing three-quarter toward the viewer, stubbornly concentrating with puffed cheeks and knitted brows while using BOTH black flippers to hold a chunky oversized wooden postal rubber stamp above one plain cream envelope. The stamp has a forest-green handle and is half as big as Gugu's head. Doro on the RIGHT sits upright on a little short-legged stool, holding one cream envelope in each of her two tiny rounded hands, half-lidded lavender eyes giving Gugu an amused side-eye and a restrained tiny smirk. A tidy stack of airmail letters, red ink pad and twine ball in the foreground. Tiny wooden mail cubbies, a small green desk lamp and sunlit window with soft leaves outside in the gently blurred background. Their huge heads, soft round bodies and very short feet are fully visible above and beside the low counter. Warm ivory, deep forest green, blush pink, vermilion stamp ink, afternoon honey light. A gentle funny daily-life moment captured at their eye level."
+    },
+    {
+      "title": "森林里的投递搭档",
+      "file": "soft-02-forest-delivery.png",
+      "web_file": "web/soft-02-forest-delivery.jpg",
+      "style": "立体萌物插画",
+      "reference_videos": [
+        {
+          "creator": "咕咕嘎画",
+          "title": "认输吧，你扭不过咕嘎的",
+          "url": "https://www.bilibili.com/video/BV1KRup6TE2v/"
+        },
+        {
+          "creator": "咕咕嘎画",
+          "title": "幼儿园咕嘎（和妈妈doro一起去游乐园）",
+          "url": "https://www.bilibili.com/video/BV18FEy6dEeS/"
+        },
+        {
+          "creator": "锅锅Doro",
+          "title": "doro世界50：旅途终点",
+          "url": "https://www.bilibili.com/video/BV1cJaB6dEs1/"
+        },
+        {
+          "creator": "锅锅Doro",
+          "title": "doro世界59：森林日常",
+          "url": "https://www.bilibili.com/video/BV1eLxe6nE9i/"
+        }
+      ],
+      "reference_method": "观察公开视频试看画面中的角色比例、表情和材质，以文字描述用于生成。",
+      "reference_images": [
+        "soft-01-sorting-letters.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: a landscape 16:9 illustration for a personal coding blog called the Gugu Post Office. One finished original scene, preferably 1672x941 or a similar wide resolution.\nVisual treatment: two tiny, very round, handcrafted 3D chibi mascots in a convincingly lit real miniature environment. Tactile collectible art-toy / plush appearance. Soft short-pile charcoal fleece, velvety ivory fabric, subtle moulded vinyl faces, tiny hair strands and knitted fabric details where appropriate. Gentle realistic daylight or practical lamplight, contact shadows, soft bounce light, shallow depth of field, close 50 mm camera, miniature photography feeling. High-quality stylized 3D animated short-film still. Clear readable silhouettes and facial gestures.\nGugu Gaga / 咕咕嘎嘎: a tiny, squat, pear-shaped mascot with a round belly, very short BLACK flipper sleeves and golden webbed feet. Charcoal-black penguin onesie with a white oval belly, hood with a small golden penguin beak on top above the forehead, visible PALE HUMAN round baby-doll face framed by a chin-length dark bob, blunt fringe and two small silver hair clips. Her face has round rosy cheeks, expressive dark almond eyes and visibly mobile eyebrows; mischievous, stubborn, slightly smug personality in a tiny cute body. Total height less than two head-heights, round head almost as wide as body. The entire body is compact with almost no visible neck.\nDoro: the pink-haired NIKKE meme reinterpreted as a tiny upright art toy. HUGE pale round human-like doll face, soft pastel-pink bob with forehead fringe, one small rolled rose-coil bun visible at the side, short braid and little violet ribbon. Half-lidded dark lavender eyes, low eyebrows, round rosy cheeks, tiny catlike w mouth with a deadpan knowing expression. Body is a small plain opaque cream-white pear / dumpling with very short round arms and two short little feet. Upright bipedal rounded mascot body, almost no visible neck, no long humanoid limbs, no frilly fashion dress, no realistic human proportions. Her full height is also about 1.6 heads. Doro and Gugu have roughly matching size and art-toy material.\nFull-bleed scene. Both characters completely in frame, faces in crisp focus and large enough for an article thumbnail. Leave 8 percent safe margin around heads and feet. Coherent physically readable actions and anatomically separate limbs. No extra characters, logos, subtitles, words, watermark, social-media layout, video interface, picture frame, anime linework, flat illustration or oil-paint texture. Small props can carry simple colour marks only.\nScene: a little postal adventure at the edge of a mossy forest stream in morning sun. Both miniature mascots fully visible, walking on a wide flat stepping stone. Gugu on the LEFT waddles with her little orange mail satchel, one black flipper held out for balance, brows pressed together in exaggerated brave determination; she looks down at the stream as if this tiny crossing is a big expedition. Doro on the RIGHT is an upright little round cream-white toy creature with TWO tiny arms and TWO feet, holding a small sealed envelope against her round tummy, tilting her enormous pink-haired head toward Gugu with a half-lidded, slightly smug, reassuring expression. A little dark green soft cloth postal cap sits behind Doro's rose-coil side bun. Dappled sun and green leaves, tiny grass blades, clean sparkling water and moss-covered stones, realistic macro miniature setting. Palette muted forest green, creamy ivory, soft blush pink, amber sunlight. Very short limbs and plump near-neckless body silhouettes are essential; their hands are individual simple rounded mitten shapes. Focus is on character interaction, no extra figures.\nUse the attached generated post-office image solely as the precise reference for the two mascot identities, body proportions, facial features and tactile 3D materials. Keep their models consistent while creating the new scene and actions described above."
+    },
+    {
+      "title": "调试到一半的可可时间",
+      "file": "soft-03-debugging-break.png",
+      "web_file": "web/soft-03-debugging-break.jpg",
+      "style": "立体萌物插画",
+      "reference_videos": [
+        {
+          "creator": "咕咕嘎画",
+          "title": "认输吧，你扭不过咕嘎的",
+          "url": "https://www.bilibili.com/video/BV1KRup6TE2v/"
+        },
+        {
+          "creator": "咕咕嘎画",
+          "title": "幼儿园咕嘎（和妈妈doro一起去游乐园）",
+          "url": "https://www.bilibili.com/video/BV18FEy6dEeS/"
+        },
+        {
+          "creator": "锅锅Doro",
+          "title": "doro世界50：旅途终点",
+          "url": "https://www.bilibili.com/video/BV1cJaB6dEs1/"
+        },
+        {
+          "creator": "锅锅Doro",
+          "title": "doro世界59：森林日常",
+          "url": "https://www.bilibili.com/video/BV1eLxe6nE9i/"
+        }
+      ],
+      "reference_method": "观察公开视频试看画面中的角色比例、表情和材质，以文字描述用于生成。",
+      "reference_images": [
+        "soft-01-sorting-letters.png"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: a landscape 16:9 illustration for a personal coding blog called the Gugu Post Office. One finished original scene, preferably 1672x941 or a similar wide resolution.\nVisual treatment: two tiny, very round, handcrafted 3D chibi mascots in a convincingly lit real miniature environment. Tactile collectible art-toy / plush appearance. Soft short-pile charcoal fleece, velvety ivory fabric, subtle moulded vinyl faces, tiny hair strands and knitted fabric details where appropriate. Gentle realistic daylight or practical lamplight, contact shadows, soft bounce light, shallow depth of field, close 50 mm camera, miniature photography feeling. High-quality stylized 3D animated short-film still. Clear readable silhouettes and facial gestures.\nGugu Gaga / 咕咕嘎嘎: a tiny, squat, pear-shaped mascot with a round belly, very short BLACK flipper sleeves and golden webbed feet. Charcoal-black penguin onesie with a white oval belly, hood with a small golden penguin beak on top above the forehead, visible PALE HUMAN round baby-doll face framed by a chin-length dark bob, blunt fringe and two small silver hair clips. Her face has round rosy cheeks, expressive dark almond eyes and visibly mobile eyebrows; mischievous, stubborn, slightly smug personality in a tiny cute body. Total height less than two head-heights, round head almost as wide as body. The entire body is compact with almost no visible neck.\nDoro: the pink-haired NIKKE meme reinterpreted as a tiny upright art toy. HUGE pale round human-like doll face, soft pastel-pink bob with forehead fringe, one small rolled rose-coil bun visible at the side, short braid and little violet ribbon. Half-lidded dark lavender eyes, low eyebrows, round rosy cheeks, tiny catlike w mouth with a deadpan knowing expression. Body is a small plain opaque cream-white pear / dumpling with very short round arms and two short little feet. Upright bipedal rounded mascot body, almost no visible neck, no long humanoid limbs, no frilly fashion dress, no realistic human proportions. Her full height is also about 1.6 heads. Doro and Gugu have roughly matching size and art-toy material.\nFull-bleed scene. Both characters completely in frame, faces in crisp focus and large enough for an article thumbnail. Leave 8 percent safe margin around heads and feet. Coherent physically readable actions and anatomically separate limbs. No extra characters, logos, subtitles, words, watermark, social-media layout, video interface, picture frame, anime linework, flat illustration or oil-paint texture. Small props can carry simple colour marks only.\nScene: an intimate evening coding desk in the same miniature world. Both tiny round mascots at a very low wooden desk. Gugu sits on the LEFT in her fuzzy charcoal penguin onesie on a small stool, tiny feet visible, her round human face has puffed cheeks, a crooked little pout and furrowed brows as she stares at an open miniature dark-teal laptop. One flipper rests near the keyboard; the other points toward the abstract coloured bars on the screen. Doro stands upright on the RIGHT in her plain cream-white round dumpling body, huge pink-haired doll face, lavender half-lidded eyes and an amused tiny w smile. She offers Gugu a SINGLE small steaming terracotta mug held coherently with both of her tiny round hands under the mug, a calm helpful friend. Soft warm banker's lamp and a stack of small blank notebooks on the desk, a potted plant, navy rainy window with bokeh behind them. Warm amber, forest green, creamy ivory, blush pink, cool navy background. Their complete compact forms and feet are visible, gentle miniature toy photography depth of field, humorous little facial acting. Laptop display contains only unreadable coloured simple horizontal bars.\nUse the attached generated post-office image solely as the precise reference for the two mascot identities, body proportions, facial features and tactile 3D materials. Keep their models consistent while creating the new scene and actions described above."
     }
-  ]
+  ],
+  "updated": "2026-11-28"
 }
